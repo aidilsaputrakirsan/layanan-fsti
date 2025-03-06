@@ -2,7 +2,6 @@
 
 import { useEffect } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
-import DirectAnimation from '@/components/ui/DirectAnimation';
 import Link from 'next/link';
 import Image from 'next/image';
 import Button from '@/components/ui/Button';

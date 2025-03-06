@@ -226,6 +226,8 @@ body {
   @apply bg-dark-border text-dark-muted;
 }
 
+/* Pastikan semua kode CSS lain tetap ada, hanya fokus pada bagian animasi */
+
 /* ========== BACKGROUND ANIMATIONS ========== */
 /* Base container */
 .animated-background {
@@ -237,14 +239,15 @@ body {
   overflow: hidden;
   z-index: -1;
   background-color: var(--background);
+  pointer-events: none;
 }
 
 /* Gradient spheres */
 .gradient-sphere {
   position: absolute;
   border-radius: 50%;
-  filter: blur(60px);
-  opacity: 0.25;
+  filter: blur(40px);
+  opacity: 0.4;
   animation: float 20s infinite ease-in-out;
   will-change: transform;
 }
@@ -297,15 +300,15 @@ body {
 /* Light bars - more visible option */
 .light-bar {
   position: absolute;
-  height: 1px;
+  height: 2px;
   background: linear-gradient(90deg, 
     transparent 0%, 
-    rgba(47, 77, 211, 0.3) 20%, 
-    rgba(89, 120, 255, 0.6) 50%, 
-    rgba(47, 77, 211, 0.3) 80%, 
+    rgba(47, 77, 211, 0.5) 20%, 
+    rgba(89, 120, 255, 0.8) 50%, 
+    rgba(47, 77, 211, 0.5) 80%, 
     transparent 100%);
   width: 50%;
-  opacity: 0.3;
+  opacity: 0.5;
   animation: moveLightBar 8s infinite ease-in-out;
 }
 
@@ -343,7 +346,7 @@ body {
     radial-gradient(2px 2px at 160px 120px, #ffffff, rgba(0,0,0,0));
   background-repeat: repeat;
   background-size: 200px 200px;
-  opacity: 0.2;
+  opacity: 0.3;
   animation: twinkle 4s infinite;
 }
 
@@ -378,108 +381,31 @@ body {
 @keyframes moveLightBar {
   0%, 100% {
     transform: translateY(0) scaleX(1);
-    opacity: 0.2;
+    opacity: 0.4;
   }
   50% {
     transform: translateY(15px) scaleX(1.1);
-    opacity: 0.5;
+    opacity: 0.7;
   }
 }
 
 @keyframes twinkle {
-  0%, 100% { opacity: 0.15; }
-  50% { opacity: 0.3; }
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 0.4; }
 }
 
 /* Glowing circles - alternative style */
 .glowing-circle {
   position: absolute;
   border-radius: 50%;
-  opacity: 0.15;
+  opacity: 0.3;
   will-change: transform;
   animation: floatSlow 15s infinite ease-in-out;
   box-shadow: 0 0 80px 20px rgba(47, 77, 211, 0.6);
   background: radial-gradient(circle, rgba(79, 70, 229, 0.6) 0%, rgba(47, 77, 211, 0.4) 50%, transparent 70%);
 }
 
-.circle-1 {
-  width: 300px;
-  height: 300px;
-  top: 10%;
-  left: 15%;
-  animation-delay: 0s;
-}
-
-.circle-2 {
-  width: 400px;
-  height: 400px;
-  bottom: 10%;
-  right: 5%;
-  animation-delay: -3s;
-}
-
-.circle-3 {
-  width: 250px;
-  height: 250px;
-  top: 40%;
-  right: 15%;
-  animation-delay: -7s;
-}
-
-.circle-4 {
-  width: 350px;
-  height: 350px;
-  bottom: 25%;
-  left: 5%;
-  animation-delay: -11s;
-}
-
-/* ========== PERFORMANCE OPTIMIZATIONS ========== */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-  
-  .animate-on-scroll,
-  .hover-card,
-  .service-card,
-  .hover-effect {
-    transition: none !important;
-    transform: none !important;
-    animation: none !important;
-  }
-  
-  .animated-background {
-    display: none !important;
-  }
-}
-
-/* Mobile optimizations */
-@media (max-width: 640px) {
-  .gradient-sphere, 
-  .glowing-circle {
-    opacity: 0.1;
-  }
-  
-  .light-bar {
-    opacity: 0.2;
-  }
-  
-  .animated-stars {
-    opacity: 0.1;
-  }
-}
-
-/* Reduce animation load on low-end devices */
-@media (prefers-color-scheme: dark) and (max-width: 768px) {
-  .gradient-sphere, 
-  .glowing-circle,
-  .light-bar {
-    animation-duration: 30s;
-  }
+/* Menambahkan utility z-index */
+.z-[-1] {
+  z-index: -1;
 }

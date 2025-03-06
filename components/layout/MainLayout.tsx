@@ -35,10 +35,11 @@ const MainLayout = ({ children, hideBackground = false }: MainLayoutProps) => {
 
   return (
     <div className="flex flex-col min-h-screen bg-dark-bg relative overflow-hidden">
-      {/* Important: Move this to the top of the component to ensure it renders first */}
+      {/* Background animation component */}
       {!hideBackground && <AnimatedBackground />}
       
       <Navbar />
+      {/* z-index yang tidak terlalu tinggi untuk main content */}
       <main className="flex-grow relative z-10">{children}</main>
       <Footer />
     </div>

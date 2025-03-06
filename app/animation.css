@@ -1,0 +1,138 @@
+/* app/animation.css */
+.bg-animation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  
+  .bg-sphere {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(40px);
+    opacity: 0.6;
+    animation-duration: 20s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+    animation-name: float;
+  }
+  
+  .bg-sphere-1 {
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(95, 120, 255, 0.8) 0%, transparent 70%);
+    top: 10%;
+    left: 15%;
+  }
+  
+  .bg-sphere-2 {
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(47, 77, 211, 0.8) 0%, transparent 70%);
+    bottom: 5%;
+    right: 10%;
+    animation-delay: 5s;
+  }
+  
+  .bg-sphere-3 {
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(79, 70, 229, 0.8) 0%, transparent 70%);
+    top: 40%;
+    right: 25%;
+    animation-delay: 8s;
+  }
+  
+  .bg-sphere-4 {
+    width: 350px;
+    height: 350px;
+    background: radial-gradient(circle, rgba(59, 91, 219, 0.8) 0%, transparent 70%);
+    bottom: 30%;
+    left: 5%;
+    animation-delay: 12s;
+  }
+  
+  .bg-light-bar {
+    position: absolute;
+    height: 2px;
+    background: linear-gradient(90deg, 
+      transparent 0%, 
+      rgba(47, 77, 211, 0.6) 20%, 
+      rgba(89, 120, 255, 0.9) 50%, 
+      rgba(47, 77, 211, 0.6) 80%, 
+      transparent 100%);
+    width: 50%;
+    opacity: 0.7;
+    animation: lightBarAnim 8s infinite ease-in-out;
+  }
+  
+  .bg-light-bar-1 {
+    top: 30%;
+    left: 0;
+  }
+  
+  .bg-light-bar-2 {
+    top: 45%;
+    right: 0;
+    animation-delay: 2s;
+  }
+  
+  .bg-light-bar-3 {
+    top: 70%;
+    left: 10%;
+    animation-delay: 5s;
+  }
+  
+  .bg-stars {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+      radial-gradient(2px 2px at 20px 30px, #ffffff, rgba(0,0,0,0)),
+      radial-gradient(2px 2px at 40px 70px, #ffffff, rgba(0,0,0,0)),
+      radial-gradient(2px 2px at 50px 160px, #ffffff, rgba(0,0,0,0)),
+      radial-gradient(2px 2px at 90px 40px, #ffffff, rgba(0,0,0,0)),
+      radial-gradient(2px 2px at 130px 80px, #ffffff, rgba(0,0,0,0)),
+      radial-gradient(2px 2px at 160px 120px, #ffffff, rgba(0,0,0,0));
+    background-repeat: repeat;
+    background-size: 200px 200px;
+    opacity: 0.4;
+    animation: twinkleAnim 4s infinite;
+  }
+  
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0) translateX(0);
+    }
+    25% {
+      transform: translateY(-40px) translateX(20px);
+    }
+    50% {
+      transform: translateY(20px) translateX(-30px);
+    }
+    75% {
+      transform: translateY(30px) translateX(15px);
+    }
+  }
+  
+  @keyframes lightBarAnim {
+    0%, 100% {
+      transform: translateY(0) scaleX(1);
+      opacity: 0.5;
+    }
+    50% {
+      transform: translateY(15px) scaleX(1.1);
+      opacity: 0.8;
+    }
+  }
+  
+  @keyframes twinkleAnim {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.5; }
+  }
