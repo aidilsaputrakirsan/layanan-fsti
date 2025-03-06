@@ -1,26 +1,485 @@
-@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Lexend:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ========== ROOT VARIABLES ========== */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* FSTI Colors */
+  --primary: #2f4dd3;
+  --primary-hover: #3b5bdb;
+  --primary-light: #5978ff;
+  
+  /* UI Theme Colors */
+  --background: #0f0f17;
+  --foreground: #f3f4f6;
+  --card-bg: #1a1a27;
+  --card-border: #2c2c44;
+  --accent: #4f46e5;
+  --muted: #6b7280;
+  
+  /* Animation Controls */
+  --animation-speed: 1;
+  --animation-intensity: 0.25;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ========== BASE STYLES ========== */
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-hover);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary) var(--background);
+}
+
+/* ========== TEXT EFFECTS ========== */
+.text-gradient {
+  background: linear-gradient(90deg, var(--primary-light), var(--primary));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* ========== BUTTON STYLES ========== */
+.btn {
+  @apply px-6 py-3 rounded-lg font-medium transition-all duration-300 transform;
+}
+
+.btn-primary {
+  @apply bg-fsti-primary text-white hover:bg-fsti-secondary;
+}
+
+.btn-outline {
+  @apply border-2 border-fsti-primary text-white hover:bg-fsti-primary/10;
+}
+
+.btn-white {
+  @apply bg-white text-fsti-primary hover:bg-gray-100;
+}
+
+/* ========== CARD EFFECTS ========== */
+/* Card hover effect */
+.hover-card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, box-shadow;
+}
+
+.hover-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+/* Glass effect for cards */
+.glass-effect {
+  background: rgba(26, 26, 39, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(44, 44, 68, 0.3);
+}
+
+/* Hover effect for service cards */
+.service-card {
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  will-change: transform, box-shadow;
+}
+
+.service-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 30px rgba(47, 77, 211, 0.2);
+}
+
+.service-card:hover .service-icon {
+  transform: scale(1.1);
+}
+
+.service-icon {
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* ========== ANIMATIONS & TRANSITIONS ========== */
+/* Section transitions */
+.section-fade-in {
+  @apply opacity-0 transition-opacity duration-1000;
+}
+
+.section-fade-in.is-visible {
+  @apply opacity-100;
+}
+
+/* Animate on scroll */
+.animate-on-scroll {
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+.animate-on-scroll.aos-animate {
+  animation-play-state: running;
+}
+
+.fade-in {
+  animation: fadeIn 1s;
+}
+
+.slide-up {
+  animation: slideUp 1s;
+}
+
+/* Define keyframes */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(30px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* Mobile menu animation */
+.mobile-menu {
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.mobile-menu-hidden {
+  transform: translateX(-100%);
+  opacity: 0;
+}
+
+.mobile-menu-visible {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+/* Navbar blur effect when scrolled */
+.navbar-blur {
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  background-color: rgba(15, 15, 23, 0.8);
+  border-bottom: 1px solid rgba(44, 44, 68, 0.3);
+}
+
+/* ========== LAYOUT COMPONENTS ========== */
+/* Hero gradient */
+.hero-gradient {
+  background: radial-gradient(circle at 50% 50%, #2f4dd3 0%, #202540 70%, #0f0f17 100%);
+  opacity: 0.2;
+}
+
+/* Timeline styles for tracking page */
+.timeline-container {
+  @apply relative;
+}
+
+.timeline-container::after {
+  @apply absolute top-0 bottom-0 left-5 w-0.5 bg-dark-border;
+  content: '';
+  z-index: 1;
+}
+
+.timeline-item {
+  @apply relative pl-10 pb-10;
+}
+
+.timeline-dot {
+  @apply absolute left-0 w-10 h-10 rounded-full flex items-center justify-center z-10;
+}
+
+.timeline-dot.active {
+  @apply bg-fsti-primary text-white;
+}
+
+.timeline-dot.completed {
+  @apply bg-green-500 text-white;
+}
+
+.timeline-dot.pending {
+  @apply bg-dark-border text-dark-muted;
+}
+
+/* ========== BACKGROUND ANIMATIONS ========== */
+/* Base container */
+.animated-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: -1;
+  background-color: var(--background);
+}
+
+/* Gradient spheres */
+.gradient-sphere {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.25;
+  animation: float 20s infinite ease-in-out;
+  will-change: transform;
+}
+
+.sphere-1 {
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(95, 120, 255, 0.8) 0%, transparent 70%);
+  top: 10%;
+  left: 15%;
+  animation-delay: 0s;
+}
+
+.sphere-2 {
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(47, 77, 211, 0.8) 0%, transparent 70%);
+  bottom: 5%;
+  right: 10%;
+  animation-delay: -5s;
+}
+
+.sphere-3 {
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(79, 70, 229, 0.8) 0%, transparent 70%);
+  top: 40%;
+  right: 25%;
+  animation-delay: -8s;
+}
+
+.sphere-4 {
+  width: 350px;
+  height: 350px;
+  background: radial-gradient(circle, rgba(59, 91, 219, 0.8) 0%, transparent 70%);
+  bottom: 30%;
+  left: 5%;
+  animation-delay: -12s;
+}
+
+.sphere-5 {
+  width: 450px;
+  height: 450px;
+  background: radial-gradient(circle, rgba(79, 70, 229, 0.8) 0%, transparent 70%);
+  top: 60%;
+  left: 25%;
+  animation-delay: -15s;
+}
+
+/* Light bars - more visible option */
+.light-bar {
+  position: absolute;
+  height: 1px;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    rgba(47, 77, 211, 0.3) 20%, 
+    rgba(89, 120, 255, 0.6) 50%, 
+    rgba(47, 77, 211, 0.3) 80%, 
+    transparent 100%);
+  width: 50%;
+  opacity: 0.3;
+  animation: moveLightBar 8s infinite ease-in-out;
+}
+
+.bar-1 {
+  top: 30%;
+  left: 0;
+  animation-delay: 0s;
+}
+
+.bar-2 {
+  top: 45%;
+  right: 0;
+  animation-delay: -2s;
+}
+
+.bar-3 {
+  top: 70%;
+  left: 10%;
+  animation-delay: -5s;
+}
+
+/* Stars effect */
+.animated-stars {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(2px 2px at 20px 30px, #ffffff, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 40px 70px, #ffffff, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 50px 160px, #ffffff, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 90px 40px, #ffffff, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 130px 80px, #ffffff, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 160px 120px, #ffffff, rgba(0,0,0,0));
+  background-repeat: repeat;
+  background-size: 200px 200px;
+  opacity: 0.2;
+  animation: twinkle 4s infinite;
+}
+
+/* Animation keyframes */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) translateX(0);
+  }
+  25% {
+    transform: translateY(-40px) translateX(20px);
+  }
+  50% {
+    transform: translateY(20px) translateX(-30px);
+  }
+  75% {
+    transform: translateY(30px) translateX(15px);
+  }
+}
+
+@keyframes floatSlow {
+  0%, 100% {
+    transform: translateY(0) translateX(0);
+  }
+  33% {
+    transform: translateY(-50px) translateX(25px);
+  }
+  66% {
+    transform: translateY(30px) translateX(-25px);
+  }
+}
+
+@keyframes moveLightBar {
+  0%, 100% {
+    transform: translateY(0) scaleX(1);
+    opacity: 0.2;
+  }
+  50% {
+    transform: translateY(15px) scaleX(1.1);
+    opacity: 0.5;
+  }
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.15; }
+  50% { opacity: 0.3; }
+}
+
+/* Glowing circles - alternative style */
+.glowing-circle {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.15;
+  will-change: transform;
+  animation: floatSlow 15s infinite ease-in-out;
+  box-shadow: 0 0 80px 20px rgba(47, 77, 211, 0.6);
+  background: radial-gradient(circle, rgba(79, 70, 229, 0.6) 0%, rgba(47, 77, 211, 0.4) 50%, transparent 70%);
+}
+
+.circle-1 {
+  width: 300px;
+  height: 300px;
+  top: 10%;
+  left: 15%;
+  animation-delay: 0s;
+}
+
+.circle-2 {
+  width: 400px;
+  height: 400px;
+  bottom: 10%;
+  right: 5%;
+  animation-delay: -3s;
+}
+
+.circle-3 {
+  width: 250px;
+  height: 250px;
+  top: 40%;
+  right: 15%;
+  animation-delay: -7s;
+}
+
+.circle-4 {
+  width: 350px;
+  height: 350px;
+  bottom: 25%;
+  left: 5%;
+  animation-delay: -11s;
+}
+
+/* ========== PERFORMANCE OPTIMIZATIONS ========== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  .animate-on-scroll,
+  .hover-card,
+  .service-card,
+  .hover-effect {
+    transition: none !important;
+    transform: none !important;
+    animation: none !important;
+  }
+  
+  .animated-background {
+    display: none !important;
+  }
+}
+
+/* Mobile optimizations */
+@media (max-width: 640px) {
+  .gradient-sphere, 
+  .glowing-circle {
+    opacity: 0.1;
+  }
+  
+  .light-bar {
+    opacity: 0.2;
+  }
+  
+  .animated-stars {
+    opacity: 0.1;
+  }
+}
+
+/* Reduce animation load on low-end devices */
+@media (prefers-color-scheme: dark) and (max-width: 768px) {
+  .gradient-sphere, 
+  .glowing-circle,
+  .light-bar {
+    animation-duration: 30s;
+  }
 }
