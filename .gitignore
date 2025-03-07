@@ -39,3 +39,11 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# .env.local - This file should be added to .gitignore
+
+# Google Sheets API Key (obtain from Google Cloud Console)
+GOOGLE_API_KEY=your_google_api_key_here
+
+# Only required for client-side API calls (use sparingly for security)
+NEXT_PUBLIC_GOOGLE_API_KEY=your_google_api_key_here
