@@ -8,7 +8,7 @@ const Footer = () => {
   const currentYear = new Date().getFullYear();
   
   return (
-    <footer className="bg-dark-card text-white" id="kontak">
+    <footer className="bg-dark-card text-white z-10 relative" id="kontak">
       {/* Top wave design */}
       <svg className="w-full h-12 -mb-1 text-dark-bg fill-current" viewBox="0 0 1440 60">
         <path d="M0,48 C480,0 960,0 1440,48 L1440,60 L0,60 Z"></path>
@@ -166,7 +166,7 @@ const Footer = () => {
                 <p className="text-sm text-gray-300">Dr. Swastya Rahastama, S.Si., M.Si.</p>
               </li>
               <li>
-                <p className="text-white font-medium mb-1">Ketua Jurusan TEIB:</p>
+                <p className="text-white font-medium mb-1">Ketua Jurusan Teknik Elektro, Informatika dan Bisnis:</p>
                 <p className="text-sm text-gray-300">M. Ihsan Alfani Putera, S.Tr.Kom, M.Kom</p>
               </li>
             </ul>

@@ -1,138 +1,183 @@
-/* app/animation.css */
-.bg-animation {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 0;
-    overflow: hidden;
-    pointer-events: none;
+/* app/animation.css - versi dengan bintang yang lebih besar dan garis yang repositioned */
+.animation-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* Spheres */
+.animation-sphere {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.4;
+  filter: blur(60px);
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+.sphere-1 {
+  width: 550px;
+  height: 550px;
+  background: radial-gradient(circle, rgba(95, 120, 255, 0.7) 0%, transparent 70%);
+  top: 10%;
+  left: 15%;
+  animation: floatSlow 40s infinite ease-in-out;
+}
+
+.sphere-2 {
+  width: 650px;
+  height: 650px;
+  background: radial-gradient(circle, rgba(47, 77, 211, 0.7) 0%, transparent 70%);
+  bottom: 5%;
+  right: 10%;
+  animation: floatSlow 45s infinite alternate ease-in-out;
+  animation-delay: -20s;
+}
+
+.sphere-3 {
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(79, 70, 229, 0.7) 0%, transparent 70%);
+  top: 45%;
+  right: 25%;
+  animation: floatSlow 50s infinite ease-in-out;
+  animation-delay: -30s;
+}
+
+.sphere-4 {
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(59, 91, 219, 0.7) 0%, transparent 70%);
+  bottom: 30%;
+  left: 5%;
+  animation: floatSlow 55s infinite ease-in-out;
+  animation-delay: -15s;
+}
+
+/* Light bars - PERUBAHAN: memindahkan ke bagian bawah layar */
+.animation-bar {
+  position: absolute;
+  height: 1.5px;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    rgba(47, 77, 211, 0.3) 20%, 
+    rgba(89, 120, 255, 0.6) 50%, 
+    rgba(47, 77, 211, 0.3) 80%, 
+    transparent 100%);
+  width: 70%;
+  opacity: 0.4;
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* MENGHAPUS GARIS 1: ganti dengan garis di posisi yang sangat bawah */
+.bar-1 {
+  top: 95%; /* Memindahkan ke bagian paling bawah layar */
+  left: -10%;
+  animation: moveBar 18s infinite ease-in-out;
+}
+
+.bar-2 {
+  top: 85%; /* Memindahkan lebih ke bawah */
+  right: -10%;
+  animation: moveBar 20s infinite ease-in-out;
+  animation-delay: -10s;
+}
+
+/* Stars effect DITINGKATKAN: bintang lebih besar dan lebih banyak */
+.animation-stars {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    /* Bintang besar (2.5px) */
+    radial-gradient(2.5px 2.5px at 20px 30px, rgba(255,255,255,0.9), rgba(0,0,0,0)),
+    radial-gradient(3px 3px at 40px 70px, rgba(255,255,255,0.9), rgba(0,0,0,0)),
+    radial-gradient(2.5px 2.5px at 50px 160px, rgba(255,255,255,0.9), rgba(0,0,0,0)),
+    radial-gradient(3px 3px at 90px 40px, rgba(255,255,255,0.9), rgba(0,0,0,0)),
+    radial-gradient(2.5px 2.5px at 130px 80px, rgba(255,255,255,0.9), rgba(0,0,0,0)),
+    /* Bintang menengah (2px) */
+    radial-gradient(2px 2px at 160px 120px, rgba(255,255,255,0.9), rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 200px 150px, rgba(255,255,255,0.9), rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 250px 220px, rgba(255,255,255,0.9), rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 300px 180px, rgba(255,255,255,0.9), rgba(0,0,0,0)),
+    /* Bintang kecil (1px) untuk background */
+    radial-gradient(1px 1px at 180px 250px, rgba(255,255,255,0.8), rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 220px 300px, rgba(255,255,255,0.8), rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 270px 350px, rgba(255,255,255,0.8), rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 330px 270px, rgba(255,255,255,0.8), rgba(0,0,0,0));
+  background-repeat: repeat;
+  background-size: 400px 400px;
+  opacity: 0.4; /* Meningkatkan opacity bintang */
+  transform: translateZ(0);
+  animation: starsMove 60s infinite linear;
+}
+
+/* Blobs tetap sama */
+.animation-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.08;
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+.blob-1 {
+  width: 800px;
+  height: 800px;
+  background: radial-gradient(circle, rgba(79, 70, 229, 0.3) 0%, transparent 70%);
+  top: -10%;
+  left: -10%;
+  animation: blobMove 60s infinite alternate ease-in-out;
+}
+
+.blob-2 {
+  width: 700px;
+  height: 700px;
+  background: radial-gradient(circle, rgba(47, 77, 211, 0.3) 0%, transparent 70%);
+  bottom: -10%;
+  right: -10%;
+  animation: blobMove 70s infinite alternate-reverse ease-in-out;
+  animation-delay: -15s;
+}
+
+/* Animasi Keyframes */
+@keyframes floatSlow {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(-20px, -20px); }
+  50% { transform: translate(0, 0); }
+  75% { transform: translate(20px, 20px); }
+  100% { transform: translate(0, 0); }
+}
+
+@keyframes moveBar {
+  0% { transform: translateY(0) scaleX(1); opacity: 0.3; }
+  50% { transform: translateY(15px) scaleX(1.05); opacity: 0.4; }
+  100% { transform: translateY(0) scaleX(1); opacity: 0.3; }
+}
+
+@keyframes starsMove {
+  from { background-position: 0 0; }
+  to { background-position: 400px 400px; }
+}
+
+@keyframes blobMove {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(40px, -40px); }
+}
+
+/* Media queries */
+@media (prefers-reduced-motion: reduce) {
+  .animation-sphere, .animation-bar, .animation-stars, .animation-blob {
+    animation: none !important;
+    transition: none !important;
   }
-  
-  .bg-sphere {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(40px);
-    opacity: 0.6;
-    animation-duration: 20s;
-    animation-iteration-count: infinite;
-    animation-timing-function: ease-in-out;
-    animation-name: float;
-  }
-  
-  .bg-sphere-1 {
-    width: 400px;
-    height: 400px;
-    background: radial-gradient(circle, rgba(95, 120, 255, 0.8) 0%, transparent 70%);
-    top: 10%;
-    left: 15%;
-  }
-  
-  .bg-sphere-2 {
-    width: 500px;
-    height: 500px;
-    background: radial-gradient(circle, rgba(47, 77, 211, 0.8) 0%, transparent 70%);
-    bottom: 5%;
-    right: 10%;
-    animation-delay: 5s;
-  }
-  
-  .bg-sphere-3 {
-    width: 300px;
-    height: 300px;
-    background: radial-gradient(circle, rgba(79, 70, 229, 0.8) 0%, transparent 70%);
-    top: 40%;
-    right: 25%;
-    animation-delay: 8s;
-  }
-  
-  .bg-sphere-4 {
-    width: 350px;
-    height: 350px;
-    background: radial-gradient(circle, rgba(59, 91, 219, 0.8) 0%, transparent 70%);
-    bottom: 30%;
-    left: 5%;
-    animation-delay: 12s;
-  }
-  
-  .bg-light-bar {
-    position: absolute;
-    height: 2px;
-    background: linear-gradient(90deg, 
-      transparent 0%, 
-      rgba(47, 77, 211, 0.6) 20%, 
-      rgba(89, 120, 255, 0.9) 50%, 
-      rgba(47, 77, 211, 0.6) 80%, 
-      transparent 100%);
-    width: 50%;
-    opacity: 0.7;
-    animation: lightBarAnim 8s infinite ease-in-out;
-  }
-  
-  .bg-light-bar-1 {
-    top: 30%;
-    left: 0;
-  }
-  
-  .bg-light-bar-2 {
-    top: 45%;
-    right: 0;
-    animation-delay: 2s;
-  }
-  
-  .bg-light-bar-3 {
-    top: 70%;
-    left: 10%;
-    animation-delay: 5s;
-  }
-  
-  .bg-stars {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: 
-      radial-gradient(2px 2px at 20px 30px, #ffffff, rgba(0,0,0,0)),
-      radial-gradient(2px 2px at 40px 70px, #ffffff, rgba(0,0,0,0)),
-      radial-gradient(2px 2px at 50px 160px, #ffffff, rgba(0,0,0,0)),
-      radial-gradient(2px 2px at 90px 40px, #ffffff, rgba(0,0,0,0)),
-      radial-gradient(2px 2px at 130px 80px, #ffffff, rgba(0,0,0,0)),
-      radial-gradient(2px 2px at 160px 120px, #ffffff, rgba(0,0,0,0));
-    background-repeat: repeat;
-    background-size: 200px 200px;
-    opacity: 0.4;
-    animation: twinkleAnim 4s infinite;
-  }
-  
-  @keyframes float {
-    0%, 100% {
-      transform: translateY(0) translateX(0);
-    }
-    25% {
-      transform: translateY(-40px) translateX(20px);
-    }
-    50% {
-      transform: translateY(20px) translateX(-30px);
-    }
-    75% {
-      transform: translateY(30px) translateX(15px);
-    }
-  }
-  
-  @keyframes lightBarAnim {
-    0%, 100% {
-      transform: translateY(0) scaleX(1);
-      opacity: 0.5;
-    }
-    50% {
-      transform: translateY(15px) scaleX(1.1);
-      opacity: 0.8;
-    }
-  }
-  
-  @keyframes twinkleAnim {
-    0%, 100% { opacity: 0.3; }
-    50% { opacity: 0.5; }
-  }
+}

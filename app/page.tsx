@@ -173,122 +173,196 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Program Studi Section */}
-      <section className="py-20 bg-dark-bg">
+       {/* Program Studi Section */}
+      <section className="py-20 bg-gradient-to-b from-dark-bg to-dark-bg/90">
         <div className="container mx-auto px-4">
-          <AnimatedSection animation="slideUp">
+          <AnimatedSection animation="fadeIn">
             <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-display font-bold mb-4 inline-block text-gradient">
+              <h2 className="text-4xl md:text-5xl font-display font-bold mb-6 inline-block text-gradient relative">
                 Program Studi FSTI
+                <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-fsti-light mt-2"></div>
               </h2>
-              <p className="text-gray-400 max-w-xl mx-auto">
+              <p className="text-gray-300 max-w-2xl mx-auto text-lg mt-6">
                 Fakultas Sains dan Teknologi Informasi memiliki 8 Program Studi yang dibagi ke dalam 2 Jurusan
               </p>
             </div>
           </AnimatedSection>
           
           {/* Jurusan Sains dan Analitika Data */}
-          <div className="mb-16">
+          <div className="mb-20">
             <AnimatedSection animation="slideUp" delay={0.1}>
-              <h3 className="text-2xl font-display font-semibold text-center mb-10 text-fsti-light">
-                Jurusan Sains dan Analitika Data
-              </h3>
+              <div className="text-center mb-14">
+                <div className="inline-block bg-dark-card/80 px-8 py-3 rounded-full shadow-lg">
+                  <h3 className="text-2xl font-display font-semibold text-fsti-light">
+                    Jurusan Sains dan Analitika Data
+                  </h3>
+                </div>
+              </div>
             </AnimatedSection>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {/* Prodi 1 */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {/* Prodi 1 - Fisika */}
               <AnimatedSection animation="slideUp" delay={0.2}>
-                <div className="bg-dark-card rounded-xl p-6 shadow-lg hover-card">
-                  <div className="w-12 h-12 bg-dark-bg rounded-full flex items-center justify-center mb-4 text-fsti-light">
-                    <Zap className="w-6 h-6" />
+                <div className="bg-dark-card rounded-xl overflow-hidden shadow-xl hover:shadow-fsti-light/20 transition-all duration-300 transform hover:-translate-y-2 group">
+                  <div className="relative h-40 w-full bg-gradient-to-r from-indigo-900 to-blue-900 flex items-center justify-center overflow-hidden">
+                    <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-all duration-300"></div>
+                    <div className="relative w-24 h-24 p-2 bg-white rounded-full">
+                      <Image 
+                        src="/images/program-studi/fisika-logo.png" 
+                        alt="Fisika"
+                        width={100}
+                        height={100}
+                        className="object-contain"
+                      />
+                    </div>
                   </div>
-                  <h4 className="text-xl font-semibold mb-3 text-white">Fisika</h4>
-                  <ul className="text-gray-400 space-y-2">
-                    <li className="flex items-start">
-                      <ChevronRight className="w-4 h-4 mr-1 mt-1 text-fsti-light flex-shrink-0" />
-                      <span>Penelitian fenomena fisika dan aplikasinya</span>
-                    </li>
-                    <li className="flex items-start">
-                      <ChevronRight className="w-4 h-4 mr-1 mt-1 text-fsti-light flex-shrink-0" />
-                      <span>Pengembangan teknologi berbasis ilmu fisika</span>
-                    </li>
-                    <li className="flex items-start">
-                      <ChevronRight className="w-4 h-4 mr-1 mt-1 text-fsti-light flex-shrink-0" />
-                      <span>Analisis dan pemodelan sistem fisis</span>
-                    </li>
-                  </ul>
+                  <div className="p-6">
+                    <h4 className="text-xl font-semibold mb-3 text-white group-hover:text-fsti-light transition-colors">Fisika</h4>
+                    <ul className="text-gray-400 space-y-3">
+                      <li className="flex items-start">
+                        <ChevronRight className="w-4 h-4 mr-1 mt-1 text-fsti-light flex-shrink-0" />
+                        <span>Penelitian fenomena fisika dan aplikasinya</span>
+                      </li>
+                      <li className="flex items-start">
+                        <ChevronRight className="w-4 h-4 mr-1 mt-1 text-fsti-light flex-shrink-0" />
+                        <span>Pengembangan teknologi berbasis ilmu fisika</span>
+                      </li>
+                      <li className="flex items-start">
+                        <ChevronRight className="w-4 h-4 mr-1 mt-1 text-fsti-light flex-shrink-0" />
+                        <span>Analisis dan pemodelan sistem fisis</span>
+                      </li>
+                    </ul>
+                    <div className="mt-6 pt-4 border-t border-gray-700">
+                      <a href="#" className="text-fsti-light hover:text-white inline-flex items-center text-sm font-medium">
+                        Pelajari Lebih Lanjut
+                        <ArrowRight className="w-4 h-4 ml-1" />
+                      </a>
+                    </div>
+                  </div>
                 </div>
               </AnimatedSection>
               
-              {/* Prodi 2 */}
+              {/* Prodi 2 - Matematika */}
               <AnimatedSection animation="slideUp" delay={0.3}>
-                <div className="bg-dark-card rounded-xl p-6 shadow-lg hover-card">
-                  <div className="w-12 h-12 bg-dark-bg rounded-full flex items-center justify-center mb-4 text-fsti-light">
-                    <GraduationCap className="w-6 h-6" />
+                <div className="bg-dark-card rounded-xl overflow-hidden shadow-xl hover:shadow-fsti-light/20 transition-all duration-300 transform hover:-translate-y-2 group">
+                  <div className="relative h-40 w-full bg-gradient-to-r from-blue-900 to-blue-700 flex items-center justify-center overflow-hidden">
+                    <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-all duration-300"></div>
+                    <div className="relative w-24 h-24 p-2 bg-white rounded-full">
+                      <Image 
+                        src="/images/program-studi/matematika-logo.png" 
+                        alt="Matematika"
+                        width={100}
+                        height={100}
+                        className="object-contain"
+                      />
+                    </div>
                   </div>
-                  <h4 className="text-xl font-semibold mb-3 text-white">Matematika</h4>
-                  <ul className="text-gray-400 space-y-2">
-                    <li className="flex items-start">
-                      <ChevronRight className="w-4 h-4 mr-1 mt-1 text-fsti-light flex-shrink-0" />
-                      <span>Penelitian dan pengembangan matematika murni</span>
-                    </li>
-                    <li className="flex items-start">
-                      <ChevronRight className="w-4 h-4 mr-1 mt-1 text-fsti-light flex-shrink-0" />
-                      <span>Aplikasi matematika dalam berbagai bidang</span>
-                    </li>
-                    <li className="flex items-start">
-                      <ChevronRight className="w-4 h-4 mr-1 mt-1 text-fsti-light flex-shrink-0" />
-                      <span>Pemodelan matematika untuk problem solving</span>
-                    </li>
-                  </ul>
+                  <div className="p-6">
+                    <h4 className="text-xl font-semibold mb-3 text-white group-hover:text-fsti-light transition-colors">Matematika</h4>
+                    <ul className="text-gray-400 space-y-3">
+                      <li className="flex items-start">
+                        <ChevronRight className="w-4 h-4 mr-1 mt-1 text-fsti-light flex-shrink-0" />
+                        <span>Penelitian dan pengembangan matematika murni</span>
+                      </li>
+                      <li className="flex items-start">
+                        <ChevronRight className="w-4 h-4 mr-1 mt-1 text-fsti-light flex-shrink-0" />
+                        <span>Aplikasi matematika dalam berbagai bidang</span>
+                      </li>
+                      <li className="flex items-start">
+                        <ChevronRight className="w-4 h-4 mr-1 mt-1 text-fsti-light flex-shrink-0" />
+                        <span>Pemodelan matematika</span>
+                      </li>
+                    </ul>
+                    <div className="mt-6 pt-4 border-t border-gray-700">
+                      <a href="#" className="text-fsti-light hover:text-white inline-flex items-center text-sm font-medium">
+                        Pelajari Lebih Lanjut
+                        <ArrowRight className="w-4 h-4 ml-1" />
+                      </a>
+                    </div>
+                  </div>
                 </div>
               </AnimatedSection>
+
+{/* Prodi 4 - Ilmu Aktuaria */}
+<AnimatedSection animation="slideUp" delay={0.5}>
+                <div className="bg-dark-card rounded-xl overflow-hidden shadow-xl hover:shadow-fsti-light/20 transition-all duration-300 transform hover:-translate-y-2 group">
+                  <div className="relative h-40 w-full bg-gradient-to-r from-blue-700 to-cyan-700 flex items-center justify-center overflow-hidden">
+                    <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-all duration-300"></div>
+                    <div className="relative w-24 h-24 p-2 bg-white rounded-full">
+                      <Image 
+                        src="/images/program-studi/ilmu-aktuaria-logo.png" 
+                        alt="Ilmu Aktuaria"
+                        width={100}
+                        height={100}
+                        className="object-contain"
+                      />
+                    </div>
+                  </div>
+                  <div className="p-6">
+                    <h4 className="text-xl font-semibold mb-3 text-white group-hover:text-fsti-light transition-colors">Ilmu Aktuaria</h4>
+                    <ul className="text-gray-400 space-y-3">
+                      <li className="flex items-start">
+                        <ChevronRight className="w-4 h-4 mr-1 mt-1 text-fsti-light flex-shrink-0" />
+                        <span>Analisis risiko keuangan dan asuransi</span>
+                      </li>
+                      <li className="flex items-start">
+                        <ChevronRight className="w-4 h-4 mr-1 mt-1 text-fsti-light flex-shrink-0" />
+                        <span>Pemodelan matematis untuk perencanaan keuangan</span>
+                      </li>
+                      <li className="flex items-start">
+                        <ChevronRight className="w-4 h-4 mr-1 mt-1 text-fsti-light flex-shrink-0" />
+                        <span>Perhitungan dan manajemen dana pensiun</span>
+                      </li>
+                    </ul>
+                    <div className="mt-6 pt-4 border-t border-gray-700">
+                      <a href="#" className="text-fsti-light hover:text-white inline-flex items-center text-sm font-medium">
+                        Pelajari Lebih Lanjut
+                        <ArrowRight className="w-4 h-4 ml-1" />
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </AnimatedSection>
+
               
-              {/* Prodi 3 */}
+              {/* Prodi 3 - Statistika */}
               <AnimatedSection animation="slideUp" delay={0.4}>
-                <div className="bg-dark-card rounded-xl p-6 shadow-lg hover-card">
-                  <div className="w-12 h-12 bg-dark-bg rounded-full flex items-center justify-center mb-4 text-fsti-light">
-                    <LineChart className="w-6 h-6" />
+              <div className="bg-dark-card rounded-xl overflow-hidden shadow-xl hover:shadow-fsti-light/20 transition-all duration-300 transform hover:-translate-y-2 group">
+                  <div className="relative h-40 w-full bg-gradient-to-r from-cyan-700 to-teal-700 flex items-center justify-center overflow-hidden">
+                    <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-all duration-300"></div>
+                    <div className="relative w-24 h-24 p-2 bg-white rounded-full">
+                      <Image 
+                        src="/images/program-studi/statistika-logo.png" 
+                        alt="Statistika"
+                        width={100}
+                        height={100}
+                        className="object-contain"
+                      />
+                    </div>
                   </div>
-                  <h4 className="text-xl font-semibold mb-3 text-white">Statistika</h4>
-                  <ul className="text-gray-400 space-y-2">
-                    <li className="flex items-start">
-                      <ChevronRight className="w-4 h-4 mr-1 mt-1 text-fsti-light flex-shrink-0" />
-                      <span>Analisis data dan metode statistika</span>
-                    </li>
-                    <li className="flex items-start">
-                      <ChevronRight className="w-4 h-4 mr-1 mt-1 text-fsti-light flex-shrink-0" />
-                      <span>Pengolahan big data</span>
-                    </li>
-                    <li className="flex items-start">
-                      <ChevronRight className="w-4 h-4 mr-1 mt-1 text-fsti-light flex-shrink-0" />
-                      <span>Pemodelan statistika untuk pengambilan keputusan</span>
-                    </li>
-                  </ul>
-                </div>
-              </AnimatedSection>
-              
-              {/* Prodi 4 */}
-              <AnimatedSection animation="slideUp" delay={0.5}>
-                <div className="bg-dark-card rounded-xl p-6 shadow-lg hover-card">
-                  <div className="w-12 h-12 bg-dark-bg rounded-full flex items-center justify-center mb-4 text-fsti-light">
-                    <Database className="w-6 h-6" />
+                  <div className="p-6">
+                    <h4 className="text-xl font-semibold mb-3 text-white group-hover:text-fsti-light transition-colors">Statistika</h4>
+                    <ul className="text-gray-400 space-y-3">
+                      <li className="flex items-start">
+                        <ChevronRight className="w-4 h-4 mr-1 mt-1 text-fsti-light flex-shrink-0" />
+                        <span>Analisis data dan metode statistika</span>
+                      </li>
+                      <li className="flex items-start">
+                        <ChevronRight className="w-4 h-4 mr-1 mt-1 text-fsti-light flex-shrink-0" />
+                        <span>Pengolahan big data</span>
+                      </li>
+                      <li className="flex items-start">
+                        <ChevronRight className="w-4 h-4 mr-1 mt-1 text-fsti-light flex-shrink-0" />
+                        <span>Pemodelan statistika untuk pengambilan keputusan</span>
+                      </li>
+                    </ul>
+                    <div className="mt-6 pt-4 border-t border-gray-700">
+                      <a href="#" className="text-fsti-light hover:text-white inline-flex items-center text-sm font-medium">
+                        Pelajari Lebih Lanjut
+                        <ArrowRight className="w-4 h-4 ml-1" />
+                      </a>
+                    </div>
                   </div>
-                  <h4 className="text-xl font-semibold mb-3 text-white">Sains Data</h4>
-                  <ul className="text-gray-400 space-y-2">
-                    <li className="flex items-start">
-                      <ChevronRight className="w-4 h-4 mr-1 mt-1 text-fsti-light flex-shrink-0" />
-                      <span>Pengolahan dan analisis big data</span>
-                    </li>
-                    <li className="flex items-start">
-                      <ChevronRight className="w-4 h-4 mr-1 mt-1 text-fsti-light flex-shrink-0" />
-                      <span>Machine learning dan AI</span>
-                    </li>
-                    <li className="flex items-start">
-                      <ChevronRight className="w-4 h-4 mr-1 mt-1 text-fsti-light flex-shrink-0" />
-                      <span>Data mining dan visualisasi data</span>
-                    </li>
-                  </ul>
                 </div>
               </AnimatedSection>
             </div>
@@ -297,111 +371,184 @@ export default function Home() {
           {/* Jurusan TEIB */}
           <div>
             <AnimatedSection animation="slideUp" delay={0.1}>
-              <h3 className="text-2xl font-display font-semibold text-center mb-10 text-fsti-light">
-                Jurusan Teknik Elektro, Informatika dan Bisnis (TEIB)
-              </h3>
+              <div className="text-center mb-14">
+                <div className="inline-block bg-dark-card/80 px-8 py-3 rounded-full shadow-lg">
+                  <h3 className="text-2xl font-display font-semibold text-fsti-light">
+                    Jurusan Teknik Elektro, Informatika dan Bisnis
+                  </h3>
+                </div>
+              </div>
             </AnimatedSection>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {/* Prodi 1 */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {/* Prodi 1 - Teknik Elektro */}
               <AnimatedSection animation="slideUp" delay={0.2}>
-                <div className="bg-dark-card rounded-xl p-6 shadow-lg hover-card">
-                  <div className="w-12 h-12 bg-dark-bg rounded-full flex items-center justify-center mb-4 text-fsti-light">
-                    <Zap className="w-6 h-6" />
+                <div className="bg-dark-card rounded-xl overflow-hidden shadow-xl hover:shadow-fsti-light/20 transition-all duration-300 transform hover:-translate-y-2 group">
+                  <div className="relative h-40 w-full bg-gradient-to-r from-red-900 to-red-700 flex items-center justify-center overflow-hidden">
+                    <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-all duration-300"></div>
+                    <div className="relative w-24 h-24 p-2 bg-white rounded-full">
+                      <Image 
+                        src="/images/program-studi/teknik-elektro-logo.png" 
+                        alt="Teknik Elektro"
+                        width={100}
+                        height={100}
+                        className="object-contain"
+                      />
+                    </div>
                   </div>
-                  <h4 className="text-xl font-semibold mb-3 text-white">Teknik Elektro</h4>
-                  <ul className="text-gray-400 space-y-2">
-                    <li className="flex items-start">
-                      <ChevronRight className="w-4 h-4 mr-1 mt-1 text-fsti-light flex-shrink-0" />
-                      <span>Teknologi kelistrikan dan elektronika</span>
-                    </li>
-                    <li className="flex items-start">
-                      <ChevronRight className="w-4 h-4 mr-1 mt-1 text-fsti-light flex-shrink-0" />
-                      <span>Sistem kontrol dan otomasi</span>
-                    </li>
-                    <li className="flex items-start">
-                      <ChevronRight className="w-4 h-4 mr-1 mt-1 text-fsti-light flex-shrink-0" />
-                      <span>Teknik tenaga listrik</span>
-                    </li>
-                  </ul>
+                  <div className="p-6">
+                    <h4 className="text-xl font-semibold mb-3 text-white group-hover:text-fsti-light transition-colors">Teknik Elektro</h4>
+                    <ul className="text-gray-400 space-y-3">
+                      <li className="flex items-start">
+                        <ChevronRight className="w-4 h-4 mr-1 mt-1 text-fsti-light flex-shrink-0" />
+                        <span>Teknologi kelistrikan dan elektronika</span>
+                      </li>
+                      <li className="flex items-start">
+                        <ChevronRight className="w-4 h-4 mr-1 mt-1 text-fsti-light flex-shrink-0" />
+                        <span>Sistem kontrol dan otomasi</span>
+                      </li>
+                      <li className="flex items-start">
+                        <ChevronRight className="w-4 h-4 mr-1 mt-1 text-fsti-light flex-shrink-0" />
+                        <span>Teknik tenaga listrik</span>
+                      </li>
+                    </ul>
+                    <div className="mt-6 pt-4 border-t border-gray-700">
+                      <a href="#" className="text-fsti-light hover:text-white inline-flex items-center text-sm font-medium">
+                        Pelajari Lebih Lanjut
+                        <ArrowRight className="w-4 h-4 ml-1" />
+                      </a>
+                    </div>
+                  </div>
                 </div>
               </AnimatedSection>
               
-              {/* Prodi 2 */}
+              {/* Prodi 2 - Sistem Informasi */}
               <AnimatedSection animation="slideUp" delay={0.3}>
-                <div className="bg-dark-card rounded-xl p-6 shadow-lg hover-card">
-                  <div className="w-12 h-12 bg-dark-bg rounded-full flex items-center justify-center mb-4 text-fsti-light">
-                    <Server className="w-6 h-6" />
+                <div className="bg-dark-card rounded-xl overflow-hidden shadow-xl hover:shadow-fsti-light/20 transition-all duration-300 transform hover:-translate-y-2 group">
+                  <div className="relative h-40 w-full bg-gradient-to-r from-orange-800 to-orange-600 flex items-center justify-center overflow-hidden">
+                    <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-all duration-300"></div>
+                    <div className="relative w-24 h-24 p-2 bg-white rounded-full">
+                      <Image 
+                        src="/images/program-studi/sistem-informasi-logo.png" 
+                        alt="Sistem Informasi"
+                        width={100}
+                        height={100}
+                        className="object-contain"
+                      />
+                    </div>
                   </div>
-                  <h4 className="text-xl font-semibold mb-3 text-white">Sistem Informasi</h4>
-                  <ul className="text-gray-400 space-y-2">
-                    <li className="flex items-start">
-                      <ChevronRight className="w-4 h-4 mr-1 mt-1 text-fsti-light flex-shrink-0" />
-                      <span>Analisis dan desain sistem informasi</span>
-                    </li>
-                    <li className="flex items-start">
-                      <ChevronRight className="w-4 h-4 mr-1 mt-1 text-fsti-light flex-shrink-0" />
-                      <span>Manajemen basis data</span>
-                    </li>
-                    <li className="flex items-start">
-                      <ChevronRight className="w-4 h-4 mr-1 mt-1 text-fsti-light flex-shrink-0" />
-                      <span>Integrasi sistem dan teknologi informasi</span>
-                    </li>
-                  </ul>
+                  <div className="p-6">
+                    <h4 className="text-xl font-semibold mb-3 text-white group-hover:text-fsti-light transition-colors">Sistem Informasi</h4>
+                    <ul className="text-gray-400 space-y-3">
+                      <li className="flex items-start">
+                        <ChevronRight className="w-4 h-4 mr-1 mt-1 text-fsti-light flex-shrink-0" />
+                        <span>Analisis dan desain sistem informasi</span>
+                      </li>
+                      <li className="flex items-start">
+                        <ChevronRight className="w-4 h-4 mr-1 mt-1 text-fsti-light flex-shrink-0" />
+                        <span>Manajemen basis data</span>
+                      </li>
+                      <li className="flex items-start">
+                        <ChevronRight className="w-4 h-4 mr-1 mt-1 text-fsti-light flex-shrink-0" />
+                        <span>Integrasi sistem dan teknologi informasi</span>
+                      </li>
+                    </ul>
+                    <div className="mt-6 pt-4 border-t border-gray-700">
+                      <a href="#" className="text-fsti-light hover:text-white inline-flex items-center text-sm font-medium">
+                        Pelajari Lebih Lanjut
+                        <ArrowRight className="w-4 h-4 ml-1" />
+                      </a>
+                    </div>
+                  </div>
                 </div>
               </AnimatedSection>
               
-              {/* Prodi 3 */}
+              {/* Prodi 3 - Informatika */}
               <AnimatedSection animation="slideUp" delay={0.4}>
-                <div className="bg-dark-card rounded-xl p-6 shadow-lg hover-card">
-                  <div className="w-12 h-12 bg-dark-bg rounded-full flex items-center justify-center mb-4 text-fsti-light">
-                    <Code className="w-6 h-6" />
+                <div className="bg-dark-card rounded-xl overflow-hidden shadow-xl hover:shadow-fsti-light/20 transition-all duration-300 transform hover:-translate-y-2 group">
+                  <div className="relative h-40 w-full bg-gradient-to-r from-yellow-700 to-amber-500 flex items-center justify-center overflow-hidden">
+                    <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-all duration-300"></div>
+                    <div className="relative w-24 h-24 p-2 bg-white rounded-full">
+                      <Image 
+                        src="/images/program-studi/informatika-logo.png" 
+                        alt="Informatika"
+                        width={100}
+                        height={100}
+                        className="object-contain"
+                      />
+                    </div>
                   </div>
-                  <h4 className="text-xl font-semibold mb-3 text-white">Informatika</h4>
-                  <ul className="text-gray-400 space-y-2">
-                    <li className="flex items-start">
-                      <ChevronRight className="w-4 h-4 mr-1 mt-1 text-fsti-light flex-shrink-0" />
-                      <span>Pengembangan perangkat lunak</span>
-                    </li>
-                    <li className="flex items-start">
-                      <ChevronRight className="w-4 h-4 mr-1 mt-1 text-fsti-light flex-shrink-0" />
-                      <span>Kecerdasan buatan dan machine learning</span>
-                    </li>
-                    <li className="flex items-start">
-                      <ChevronRight className="w-4 h-4 mr-1 mt-1 text-fsti-light flex-shrink-0" />
-                      <span>Komputasi dan algoritma</span>
-                    </li>
-                  </ul>
+                  <div className="p-6">
+                    <h4 className="text-xl font-semibold mb-3 text-white group-hover:text-fsti-light transition-colors">Informatika</h4>
+                    <ul className="text-gray-400 space-y-3">
+                      <li className="flex items-start">
+                        <ChevronRight className="w-4 h-4 mr-1 mt-1 text-fsti-light flex-shrink-0" />
+                        <span>Pengembangan perangkat lunak</span>
+                      </li>
+                      <li className="flex items-start">
+                        <ChevronRight className="w-4 h-4 mr-1 mt-1 text-fsti-light flex-shrink-0" />
+                        <span>Kecerdasan buatan dan machine learning</span>
+                      </li>
+                      <li className="flex items-start">
+                        <ChevronRight className="w-4 h-4 mr-1 mt-1 text-fsti-light flex-shrink-0" />
+                        <span>Komputasi dan algoritma</span>
+                      </li>
+                    </ul>
+                    <div className="mt-6 pt-4 border-t border-gray-700">
+                      <a href="#" className="text-fsti-light hover:text-white inline-flex items-center text-sm font-medium">
+                        Pelajari Lebih Lanjut
+                        <ArrowRight className="w-4 h-4 ml-1" />
+                      </a>
+                    </div>
+                  </div>
                 </div>
               </AnimatedSection>
               
-              {/* Prodi 4 */}
+              {/* Prodi 4 - Bisnis Digital */}
               <AnimatedSection animation="slideUp" delay={0.5}>
-                <div className="bg-dark-card rounded-xl p-6 shadow-lg hover-card">
-                  <div className="w-12 h-12 bg-dark-bg rounded-full flex items-center justify-center mb-4 text-fsti-light">
-                    <LineChart className="w-6 h-6" />
+                <div className="bg-dark-card rounded-xl overflow-hidden shadow-xl hover:shadow-fsti-light/20 transition-all duration-300 transform hover:-translate-y-2 group">
+                  <div className="relative h-40 w-full bg-gradient-to-r from-purple-800 to-indigo-800 flex items-center justify-center overflow-hidden">
+                    <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-all duration-300"></div>
+                    <div className="relative w-24 h-24 p-2 bg-white rounded-full">
+                      <Image 
+                        src="/images/program-studi/bisnis-digital-logo.png" 
+                        alt="Bisnis Digital"
+                        width={100}
+                        height={100}
+                        className="object-contain"
+                      />
+                    </div>
                   </div>
-                  <h4 className="text-xl font-semibold mb-3 text-white">Bisnis Digital</h4>
-                  <ul className="text-gray-400 space-y-2">
-                    <li className="flex items-start">
-                      <ChevronRight className="w-4 h-4 mr-1 mt-1 text-fsti-light flex-shrink-0" />
-                      <span>Transformasi digital bisnis</span>
-                    </li>
-                    <li className="flex items-start">
-                      <ChevronRight className="w-4 h-4 mr-1 mt-1 text-fsti-light flex-shrink-0" />
-                      <span>E-commerce dan digital marketing</span>
-                    </li>
-                    <li className="flex items-start">
-                      <ChevronRight className="w-4 h-4 mr-1 mt-1 text-fsti-light flex-shrink-0" />
-                      <span>Analisis data bisnis</span>
-                    </li>
-                  </ul>
+                  <div className="p-6">
+                    <h4 className="text-xl font-semibold mb-3 text-white group-hover:text-fsti-light transition-colors">Bisnis Digital</h4>
+                    <ul className="text-gray-400 space-y-3">
+                      <li className="flex items-start">
+                        <ChevronRight className="w-4 h-4 mr-1 mt-1 text-fsti-light flex-shrink-0" />
+                        <span>Transformasi digital bisnis</span>
+                      </li>
+                      <li className="flex items-start">
+                        <ChevronRight className="w-4 h-4 mr-1 mt-1 text-fsti-light flex-shrink-0" />
+                        <span>E-commerce dan digital marketing</span>
+                      </li>
+                      <li className="flex items-start">
+                        <ChevronRight className="w-4 h-4 mr-1 mt-1 text-fsti-light flex-shrink-0" />
+                        <span>Analisis data bisnis</span>
+                      </li>
+                    </ul>
+                    <div className="mt-6 pt-4 border-t border-gray-700">
+                      <a href="#" className="text-fsti-light hover:text-white inline-flex items-center text-sm font-medium">
+                        Pelajari Lebih Lanjut
+                        <ArrowRight className="w-4 h-4 ml-1" />
+                      </a>
+                    </div>
+                  </div>
                 </div>
               </AnimatedSection>
             </div>
           </div>
         </div>
       </section>
+    
 
       {/* Visi & Misi Section */}
       <section className="py-20 bg-dark-bg">
@@ -461,6 +608,140 @@ export default function Home() {
                     </div>
                   </div>
                 </div>
+              </div>
+            </AnimatedSection>
+          </div>
+        </div>
+      </section>
+
+      {/* Struktur Organisasi Section - TAMBAHKAN SETELAH SECTION VISI & MISI */}
+      <section className="py-20 bg-dark-bg">
+        <div className="container mx-auto px-4">
+          <AnimatedSection animation="slideUp">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-4xl font-display font-bold mb-4 inline-block text-gradient">
+                Struktur Organisasi
+              </h2>
+              <p className="text-gray-400 max-w-xl mx-auto">
+                Jajaran pimpinan fakultas dan jurusan yang bertanggung jawab dalam pengelolaan FSTI ITK
+              </p>
+            </div>
+          </AnimatedSection>
+          
+          <div className="max-w-6xl mx-auto">
+            {/* Dekan */}
+            <AnimatedSection animation="fadeIn" delay={0.1}>
+              <div className="flex flex-col items-center mb-12">
+                <div className="relative rounded-xl overflow-hidden border-4 border-fsti-primary mb-4 hover-card transition-all duration-300 shadow-lg">
+                  <div className="w-48 h-48 sm:w-64 sm:h-64">
+                    <Image 
+                      src="/images/pimpinan/dekan.png" 
+                      alt="Dekan FSTI" 
+                      width={256} 
+                      height={256} 
+                      className="object-cover"
+                    />
+                  </div>
+                </div>
+                <h3 className="text-white font-bold text-xl">Adi Mahmud Jaya Marindra, S.T., M.Eng., Ph.D.</h3>
+                <p className="text-fsti-light">Dekan Fakultas Sains dan Teknologi Informasi</p>
+              </div>
+            </AnimatedSection>
+            
+            {/* Wakil Dekan */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+              <AnimatedSection animation="slideUp" delay={0.2}>
+                <div className="flex flex-col items-center">
+                  <div className="relative rounded-xl overflow-hidden border-4 border-fsti-light/70 mb-4 hover-card transition-all duration-300 shadow-lg">
+                    <div className="w-40 h-40 sm:w-48 sm:h-48">
+                      <Image 
+                        src="/images/pimpinan/wakil-dekan-1.png" 
+                        alt="Wakil Dekan Akademik" 
+                        width={192} 
+                        height={192} 
+                        className="object-cover"
+                      />
+                    </div>
+                  </div>
+                  <h3 className="text-white font-bold text-lg">Irma Fitria, S.Si., M.Si.</h3>
+                  <p className="text-fsti-light text-sm text-center">Wakil Dekan Bidang Akademik dan Kemahasiswaan</p>
+                </div>
+              </AnimatedSection>
+              
+              <AnimatedSection animation="slideUp" delay={0.3}>
+                <div className="flex flex-col items-center">
+                  <div className="relative rounded-xl overflow-hidden border-4 border-fsti-light/70 mb-4 hover-card transition-all duration-300 shadow-lg">
+                    <div className="w-40 h-40 sm:w-48 sm:h-48">
+                      <Image 
+                        src="/images/pimpinan/wakil-dekan-2.png" 
+                        alt="Wakil Dekan Keuangan" 
+                        width={192} 
+                        height={192} 
+                        className="object-cover"
+                      />
+                    </div>
+                  </div>
+                  <h3 className="text-white font-bold text-lg">Yun Tonce Kusuma Priyanto, S.T., M.T.</h3>
+                  <p className="text-fsti-light text-sm text-center">Wakil Dekan Bidang Keuangan dan Umum</p>
+                </div>
+              </AnimatedSection>
+            </div>
+            
+            {/* Ketua Jurusan */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <AnimatedSection animation="slideUp" delay={0.4}>
+                <div className="flex flex-col items-center">
+                  <div className="relative rounded-xl overflow-hidden border-4 border-fsti-accent/70 mb-4 hover-card transition-all duration-300 shadow-lg">
+                    <div className="w-40 h-40 sm:w-48 sm:h-48">
+                      <Image 
+                        src="/images/pimpinan/ka-jurusan-1.png" 
+                        alt="Ketua Jurusan Sains dan Analitika Data" 
+                        width={192} 
+                        height={192} 
+                        className="object-cover"
+                      />
+                    </div>
+                  </div>
+                  <h3 className="text-white font-bold text-lg">Dr. Swastya Rahastama, S.Si., M.Si.</h3>
+                  <p className="text-fsti-light text-sm text-center">Ketua Jurusan Sains dan Analitika Data</p>
+                </div>
+              </AnimatedSection>
+              
+              <AnimatedSection animation="slideUp" delay={0.5}>
+                <div className="flex flex-col items-center">
+                  <div className="relative rounded-xl overflow-hidden border-4 border-fsti-accent/70 mb-4 hover-card transition-all duration-300 shadow-lg">
+                    <div className="w-40 h-40 sm:w-48 sm:h-48">
+                      <Image 
+                        src="/images/pimpinan/ka-jurusan-2.png" 
+                        alt="Ketua Jurusan TEIB" 
+                        width={192} 
+                        height={192} 
+                        className="object-cover"
+                      />
+                    </div>
+                  </div>
+                  <h3 className="text-white font-bold text-lg">M. Ihsan Alfani Putera, S.Tr.Kom, M.Kom</h3>
+                  <p className="text-fsti-light text-sm text-center">Ketua Jurusan Teknik Elektro, Informatika, dan Bisnis</p>
+                </div>
+              </AnimatedSection>
+            </div>
+
+            {/* Ka SubBagian Umum */}
+            <AnimatedSection animation="slideUp" delay={0.5}>
+              <div className="flex flex-col items-center mb-12">
+                <div className="relative rounded-xl overflow-hidden border-4 border-fsti-primary mb-4 hover-card transition-all duration-300 shadow-lg">
+                  <div className="w-40 h-40 sm:w-48 sm:h-48">
+                    <Image 
+                      src="/images/pimpinan/subbagian-umum.png" 
+                      alt="Subbagian Umum FSTI" 
+                      width={192} 
+                      height={192} 
+                      className="object-cover"
+                    />
+                  </div>
+                </div>
+                <h3 className="text-white font-bold text-xl">Desy Ridho Rahayu, S.SI</h3>
+                <p className="text-fsti-light">Kepala Subbagian Umum FSTI</p>
               </div>
             </AnimatedSection>
           </div>

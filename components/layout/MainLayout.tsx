@@ -13,15 +13,14 @@ interface MainLayoutProps {
 }
 
 const MainLayout = ({ children, hideBackground = false }: MainLayoutProps) => {
-  // Initialize AOS animation library
   useEffect(() => {
+    console.log("MainLayout mounted, background hidden:", hideBackground);
     AOS.init({
       duration: 800,
       once: true,
       easing: 'ease-in-out',
     });
     
-    // Update AOS on window resize
     const handleResize = () => {
       AOS.refresh();
     };
@@ -31,17 +30,16 @@ const MainLayout = ({ children, hideBackground = false }: MainLayoutProps) => {
     return () => {
       window.removeEventListener('resize', handleResize);
     };
-  }, []);
+  }, [hideBackground]);
 
   return (
-    <div className="flex flex-col min-h-screen bg-dark-bg relative overflow-hidden">
-      {/* Background animation component */}
+    <div className="flex flex-col min-h-screen relative">
       {!hideBackground && <AnimatedBackground />}
-      
-      <Navbar />
-      {/* z-index yang tidak terlalu tinggi untuk main content */}
-      <main className="flex-grow relative z-10">{children}</main>
-      <Footer />
+      <div className="flex flex-col min-h-screen relative z-10">
+        <Navbar />
+        <main className="flex-grow">{children}</main>
+        <Footer />
+      </div>
     </div>
   );
 };

@@ -30,26 +30,6 @@ module.exports = {
         zIndex: {
           '-1': '-1',
         },
-        animation: {
-          'float-slow': 'floatSlow 15s infinite ease-in-out',
-          'light-bar': 'moveLightBar 8s infinite ease-in-out',
-          'twinkle': 'twinkle 4s infinite',
-        },
-        keyframes: {
-          floatSlow: {
-            '0%, 100%': { transform: 'translateY(0) translateX(0)' },
-            '33%': { transform: 'translateY(-50px) translateX(25px)' },
-            '66%': { transform: 'translateY(30px) translateX(-25px)' },
-          },
-          moveLightBar: {
-            '0%, 100%': { transform: 'translateY(0) scaleX(1)', opacity: '0.4' },
-            '50%': { transform: 'translateY(15px) scaleX(1.1)', opacity: '0.7' },
-          },
-          twinkle: {
-            '0%, 100%': { opacity: '0.2' },
-            '50%': { opacity: '0.4' },
-          },
-        },
         transitionProperty: {
           'height': 'height',
           'spacing': 'margin, padding',
