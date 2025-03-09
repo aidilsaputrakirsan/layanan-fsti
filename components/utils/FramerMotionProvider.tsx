@@ -7,7 +7,8 @@ interface FramerMotionProviderProps {
   children: ReactNode;
 }
 
-export function FramerMotionProvider({ children }: FramerMotionProviderProps) {
+// Simple component that only loads framer-motion features on client side
+function FramerMotionProvider({ children }: FramerMotionProviderProps) {
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
@@ -15,7 +16,7 @@ export function FramerMotionProvider({ children }: FramerMotionProviderProps) {
   }, []);
 
   if (!isMounted) {
-    return null;
+    return <>{children}</>;
   }
 
   return (
@@ -24,3 +25,5 @@ export function FramerMotionProvider({ children }: FramerMotionProviderProps) {
     </LazyMotion>
   );
 }
+
+export default FramerMotionProvider;

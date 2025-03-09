@@ -4,12 +4,12 @@ import React, { ComponentType } from 'react';
 import dynamic from 'next/dynamic';
 import ClientOnly from './ClientOnly';
 
-// Fungsi untuk membuat versi SSR-safe dari setiap komponen
-export function createSafeComponent<T>(Component: ComponentType<T>) {
-  // Buat komponen dinamis dengan ssr: false
+// Fix for TypeScript constraint issue
+export function createSafeComponent<T extends React.JSX.IntrinsicAttributes>(Component: ComponentType<T>) {
+  // Create dynamic component with ssr: false
   const DynamicComponent = dynamic(() => Promise.resolve(Component), { ssr: false });
   
-  // Kembalikan pembungkus yang aman untuk digunakan
+  // Return wrapped safe component
   const SafeComponent = (props: T & { fallback?: React.ReactNode }) => {
     const { fallback, ...componentProps } = props;
     

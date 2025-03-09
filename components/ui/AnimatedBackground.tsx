@@ -4,31 +4,42 @@ import { useEffect, useState } from 'react';
 
 const AnimatedBackground = () => {
   const [mounted, setMounted] = useState(false);
+  // Only load animations on larger screens
+  const [isLargeScreen, setIsLargeScreen] = useState(true);
   
   useEffect(() => {
     setMounted(true);
+    
+    // Check if screen is large enough for animations
+    const checkScreenSize = () => {
+      setIsLargeScreen(window.innerWidth > 768);
+    };
+    
+    // Check on mount
+    checkScreenSize();
+    
+    // Check on resize
+    window.addEventListener('resize', checkScreenSize);
+    
+    return () => {
+      window.removeEventListener('resize', checkScreenSize);
+    };
   }, []);
   
-  if (!mounted) return null;
+  if (!mounted || !isLargeScreen) return null;
   
+  // Reduced number of animation elements for better performance
   return (
     <div className="animation-container">
-      {/* Spheres */}
+      {/* Spheres - reduced number */}
       <div className="animation-sphere sphere-1"></div>
       <div className="animation-sphere sphere-2"></div>
-      <div className="animation-sphere sphere-3"></div>
-      <div className="animation-sphere sphere-4"></div>
       
-      {/* Light bars - diposisikan ulang ke bagian bawah */}
+      {/* Light bars - reduced number */}
       <div className="animation-bar bar-1"></div>
-      <div className="animation-bar bar-2"></div>
       
-      {/* Blobs */}
+      {/* Blobs - reduced number */}
       <div className="animation-blob blob-1"></div>
-      <div className="animation-blob blob-2"></div>
-      
-      {/* Stars dengan ukuran yang lebih besar */}
-      <div className="animation-stars"></div>
     </div>
   );
 };
