@@ -2,18 +2,14 @@
 
 import { useState } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
-import ServiceCard from '@/components/ui/ServiceCard';
 import AnimatedSection from '@/components/ui/AnimatedSection';
 import Button from '@/components/ui/Button';
-import { motion } from 'framer-motion';
-import Link from 'next/link';
 
 // Import icons
 import { 
   FileText, 
   Briefcase, 
   CheckCircle, 
-  RefreshCcw, 
   Award, 
   Users,
   GraduationCap,

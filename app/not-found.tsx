@@ -1,6 +1,5 @@
 "use client";
 
-import Link from 'next/link';
 import { motion } from 'framer-motion';
 import MainLayout from '@/components/layout/MainLayout';
 import Button from '@/components/ui/Button';

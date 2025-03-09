@@ -11,7 +11,6 @@ import {
   CheckCircle2, 
   Clock, 
   AlertCircle, 
-  ArrowRight, 
   HelpCircle, 
   RotateCw,
   FileText,

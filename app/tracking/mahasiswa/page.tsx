@@ -21,8 +21,6 @@ import {
   FileSignature,
   BookOpen,
   Pencil,
-  MapPin,
-  Library,  // Changed from LibraryBig to Library
   Briefcase,
   ChevronLeft
 } from 'lucide-react';
