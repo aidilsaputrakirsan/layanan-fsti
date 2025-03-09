@@ -1,47 +1,13 @@
-"use client";
+// Pastikan file MainLayout.tsx ada di path:
+// components/layout/MainLayout.tsx
 
-import { ReactNode, useEffect } from 'react';
-import Navbar from './Navbar';
-import Footer from './Footer';
-import AnimatedBackground from '../ui/AnimatedBackground';
-import AOS from 'aos';
-import 'aos/dist/aos.css';
+// 1. Coba path relatif:
+import MainLayout from '../components/layout/MainLayout';
 
-interface MainLayoutProps {
-  children: ReactNode;
-  hideBackground?: boolean;
-}
+// 2. Atau jika @/ alias dikonfigurasi dengan benar di tsconfig.json,
+//    Anda bisa menggunakan:
+import MainLayout from '@/components/layout/MainLayout';
 
-const MainLayout = ({ children, hideBackground = false }: MainLayoutProps) => {
-  useEffect(() => {
-    console.log("MainLayout mounted, background hidden:", hideBackground);
-    AOS.init({
-      duration: 800,
-      once: true,
-      easing: 'ease-in-out',
-    });
-    
-    const handleResize = () => {
-      AOS.refresh();
-    };
-    
-    window.addEventListener('resize', handleResize);
-    
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, [hideBackground]);
-
-  return (
-    <div className="flex flex-col min-h-screen relative">
-      {!hideBackground && <AnimatedBackground />}
-      <div className="flex flex-col min-h-screen relative z-10">
-        <Navbar />
-        <main className="flex-grow">{children}</main>
-        <Footer />
-      </div>
-    </div>
-  );
-};
-
+// 3. Cek apakah file MainLayout di-export dengan benar:
+//    File MainLayout seharusnya memiliki default export seperti:
 export default MainLayout;
