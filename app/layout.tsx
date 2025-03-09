@@ -11,7 +11,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: 'Layanan Administrasi FSTI ITK',
+  title: 'Fakultas Sains dan Teknologi Informasi ITK',
   description: 'Portal Layanan Administrasi Fakultas Sains dan Teknologi Informasi Institut Teknologi Kalimantan',
   keywords: ['FSTI', 'ITK', 'Layanan Administrasi', 'Fakultas Sains dan Teknologi Informasi', 'Institut Teknologi Kalimantan'],
   authors: [{ name: 'FSTI ITK' }],

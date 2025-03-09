@@ -51,10 +51,14 @@ const Navbar = () => {
       }`}
     >
       <div className="container mx-auto px-4 flex justify-between items-center">
-        {/* Logo and Nama */}
+       {/* Logo and Nama */}
         <Link href="/" className="flex items-center space-x-3 group">
-          <div className="h-10 w-10 bg-white rounded-full flex items-center justify-center shadow-md group-hover:shadow-glow transition-all duration-300">
-            <span className="text-fsti-primary font-bold text-sm">FSTI</span>
+          <div className="h-10 w-10 bg-white rounded-full flex items-center justify-center shadow-md group-hover:shadow-glow transition-all duration-300 overflow-hidden">
+            <img 
+              src="/images/logofsti.jpg" 
+              alt="FSTI Logo" 
+              className="h-full w-full object-cover" 
+            />
           </div>
           <div className="hidden md:block">
             <div className="font-display font-bold text-lg text-white group-hover:text-gradient transition-all duration-300">FSTI ITK</div>

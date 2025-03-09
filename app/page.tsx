@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -26,6 +26,60 @@ import {
   Server,
   ChevronRight
 } from 'lucide-react';
+
+// Image Carousel Component
+const ImageCarousel = () => {
+  const [currentImage, setCurrentImage] = useState(0);
+  const images = [
+    '/images/gambar1.jpeg',
+    '/images/gambar2.jpeg',
+    '/images/gambar3.jpeg',
+    '/images/gambar4.jpeg',
+    '/images/gambar5.jpeg',
+  ];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImage((prev) => (prev + 1) % images.length);
+    }, 5000); // Change image every 5 seconds
+
+    return () => clearInterval(interval);
+  }, [images.length]);
+
+  return (
+    <div className="w-full h-80 md:h-96 bg-dark-bg rounded-xl overflow-hidden relative">
+      {images.map((src, index) => (
+        <div
+          key={src}
+          className={`absolute inset-0 transition-opacity duration-1000 ${
+            index === currentImage ? 'opacity-100' : 'opacity-0'
+          }`}
+        >
+          <Image
+            src={src}
+            alt={`Campus image ${index + 1}`}
+            fill
+            className="object-cover"
+            priority={index === 0}
+          />
+        </div>
+      ))}
+      <div className="absolute inset-0 bg-gradient-to-b from-dark-bg/50 to-dark-bg"></div>
+      <div className="relative z-10 text-center p-8 flex flex-col h-full justify-center">
+        
+        <h3 className="text-xl font-bold mb-3 text-white">Pusat Keunggulan Akademik</h3>
+        <p className="text-gray-300 mb-4">
+          Menghasilkan lulusan yang kompeten, adaptif, dan berdaya saing global
+        </p>
+        <div className="flex items-center justify-center space-x-2">
+          <span className="w-3 h-3 rounded-full bg-red-500"></span>
+          <span className="w-3 h-3 rounded-full bg-yellow-500"></span>
+          <span className="w-3 h-3 rounded-full bg-green-500"></span>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default function Home() {
   return (
@@ -86,23 +140,8 @@ export default function Home() {
                   repeatType: "reverse"
                 }}
               >
-                <div className="w-full h-80 md:h-96 bg-dark-bg rounded-xl overflow-hidden relative flex items-center justify-center">
-                  <div className="absolute inset-0 bg-gradient-to-b from-dark-bg/0 to-dark-bg"></div>
-                  <div className="relative z-10 text-center p-8">
-                    <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-6 shadow-glow">
-                      <span className="text-fsti-primary font-bold text-xl">FSTI</span>
-                    </div>
-                    <h3 className="text-xl font-bold mb-3 text-white">Pusat Keunggulan Akademik</h3>
-                    <p className="text-gray-300 mb-4">
-                      Menghasilkan lulusan yang kompeten, adaptif, dan berdaya saing global
-                    </p>
-                    <div className="flex items-center justify-center space-x-2">
-                      <span className="w-3 h-3 rounded-full bg-red-500"></span>
-                      <span className="w-3 h-3 rounded-full bg-yellow-500"></span>
-                      <span className="w-3 h-3 rounded-full bg-green-500"></span>
-                    </div>
-                  </div>
-                </div>
+                {/* Replace static background with image carousel */}
+                <ImageCarousel />
               </motion.div>
             </AnimatedSection>
           </div>
@@ -283,8 +322,8 @@ export default function Home() {
                 </div>
               </AnimatedSection>
 
-{/* Prodi 4 - Ilmu Aktuaria */}
-<AnimatedSection animation="slideUp" delay={0.5}>
+              {/* Prodi 4 - Ilmu Aktuaria */}
+              <AnimatedSection animation="slideUp" delay={0.5}>
                 <div className="bg-dark-card rounded-xl overflow-hidden shadow-xl hover:shadow-fsti-light/20 transition-all duration-300 transform hover:-translate-y-2 group">
                   <div className="relative h-40 w-full bg-gradient-to-r from-blue-700 to-cyan-700 flex items-center justify-center overflow-hidden">
                     <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-all duration-300"></div>
@@ -323,7 +362,6 @@ export default function Home() {
                   </div>
                 </div>
               </AnimatedSection>
-
               
               {/* Prodi 3 - Statistika */}
               <AnimatedSection animation="slideUp" delay={0.4}>
@@ -504,10 +542,10 @@ export default function Home() {
                 </div>
               </AnimatedSection>
               
-              {/* Prodi 4 - Bisnis Digital */}
+              {/* Prodi 4 - Bisnis Digital - Fixed the gradient color to maintain the sequence */}
               <AnimatedSection animation="slideUp" delay={0.5}>
                 <div className="bg-dark-card rounded-xl overflow-hidden shadow-xl hover:shadow-fsti-light/20 transition-all duration-300 transform hover:-translate-y-2 group">
-                  <div className="relative h-40 w-full bg-gradient-to-r from-purple-800 to-indigo-800 flex items-center justify-center overflow-hidden">
+                  <div className="relative h-40 w-full bg-gradient-to-r from-amber-500 to-lime-600 flex items-center justify-center overflow-hidden">
                     <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-all duration-300"></div>
                     <div className="relative w-24 h-24 p-2 bg-white rounded-full">
                       <Image 
@@ -548,7 +586,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-    
 
       {/* Visi & Misi Section */}
       <section className="py-20 bg-dark-bg">
