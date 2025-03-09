@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, ReactNode } from 'react';
+import dynamic from 'next/dynamic';
 import MainLayout from '@/components/layout/MainLayout';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -9,6 +10,7 @@ import ServiceCard from '@/components/ui/ServiceCard';
 import SafeAnimatedSection from '@/components/ui/SafeAnimatedSection';
 import { motion } from 'framer-motion';
 import ClientOnly from '@/components/utils/ClientOnly';
+
 
 // Icons
 import { 
