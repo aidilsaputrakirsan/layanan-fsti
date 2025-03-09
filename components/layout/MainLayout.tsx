@@ -1,13 +1,55 @@
-// Pastikan file MainLayout.tsx ada di path:
-// components/layout/MainLayout.tsx
+"use client";
+import { ReactNode, useEffect } from 'react';
+import Navbar from './Navbar';
+import Footer from './Footer';
+// Import AnimatedBackground dengan dynamic untuk client-side only
+import dynamic from 'next/dynamic';
 
-// 1. Coba path relatif:
-import MainLayout from '../components/layout/MainLayout';
+const AnimatedBackground = dynamic(
+  () => import('../ui/AnimatedBackground'),
+  { ssr: false }
+);
 
-// 2. Atau jika @/ alias dikonfigurasi dengan benar di tsconfig.json,
-//    Anda bisa menggunakan:
-import MainLayout from '@/components/layout/MainLayout';
+// AOS hanya diinisialisasi di sisi client
+const initAOS = () => {
+  if (typeof window !== 'undefined') {
+    import('aos').then((AOS) => {
+      AOS.init({
+        duration: 800,
+        once: true,
+        easing: 'ease-in-out',
+      });
+      
+      const handleResize = () => {
+        AOS.refresh();
+      };
+      
+      window.addEventListener('resize', handleResize);
+      return () => window.removeEventListener('resize', handleResize);
+    });
+  }
+};
 
-// 3. Cek apakah file MainLayout di-export dengan benar:
-//    File MainLayout seharusnya memiliki default export seperti:
+interface MainLayoutProps {
+  children: ReactNode;
+  hideBackground?: boolean;
+}
+
+const MainLayout = ({ children, hideBackground = false }: MainLayoutProps) => {
+  useEffect(() => {
+    initAOS();
+  }, []);
+
+  return (
+    <div className="flex flex-col min-h-screen relative">
+      {!hideBackground && <AnimatedBackground />}
+      <div className="flex flex-col min-h-screen relative z-10">
+        <Navbar />
+        <main className="flex-grow">{children}</main>
+        <Footer />
+      </div>
+    </div>
+  );
+};
+
 export default MainLayout;
