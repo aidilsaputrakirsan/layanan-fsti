@@ -2,7 +2,7 @@
 import { ReactNode, useEffect } from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
-// Import components dengan dynamic untuk client-side only
+// Import components with dynamic for client-side only
 import dynamic from 'next/dynamic';
 
 const AnimatedBackground = dynamic(
@@ -16,7 +16,7 @@ const BackgroundParticles = dynamic(
   { ssr: false }
 );
 
-// AOS hanya diinisialisasi di sisi client
+// AOS only initialized on client
 const initAOS = () => {
   if (typeof window !== 'undefined') {
     import('aos').then((AOS) => {
@@ -47,9 +47,9 @@ const MainLayout = ({ children, hideBackground = false }: MainLayoutProps) => {
   }, []);
 
   return (
-    <div className="flex flex-col min-h-screen relative">
+    <div className="flex flex-col min-h-screen relative bg-light-bg">
       {!hideBackground && <AnimatedBackground />}
-      {!hideBackground && <BackgroundParticles />} {/* Tambahkan komponen particles */}
+      {!hideBackground && <BackgroundParticles />} {/* Add particles component */}
       <div className="flex flex-col min-h-screen relative z-10">
         <Navbar />
         <main className="flex-grow">{children}</main>

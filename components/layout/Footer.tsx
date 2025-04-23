@@ -2,14 +2,16 @@
 
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+  const { t } = useLanguage();
   
   return (
-    <footer className="bg-dark-card text-white z-10 relative" id="kontak">
+    <footer className="bg-white shadow-md text-gray-800 z-10 relative" id="kontak">
       {/* Top wave design */}
-      <svg className="w-full h-12 -mb-1 text-dark-bg fill-current" viewBox="0 0 1440 60">
+      <svg className="w-full h-12 -mb-1 text-light-bg fill-current" viewBox="0 0 1440 60">
         <path d="M0,48 C480,0 960,0 1440,48 L1440,60 L0,60 Z"></path>
       </svg>
       
@@ -22,21 +24,21 @@ const Footer = () => {
             transition={{ duration: 0.5 }}
             viewport={{ once: true }}
           >
-            <h3 className="text-xl font-display font-bold mb-6 text-gradient">FSTI ITK</h3>
+            <h3 className="text-xl font-display font-bold mb-6 text-gradient">{t('footer.about')}</h3>
             <div className="flex items-start mb-4">
-              <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center mr-4 shadow-md">
-                <span className="text-fsti-primary font-bold">FSTI</span>
+              <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center mr-4 shadow-md border border-gray-200">
+                <span className="text-primary-600 font-bold">FSTI</span>
               </div>
               <div>
-                <p className="text-gray-200 mb-1 font-medium">
-                  Fakultas Sains dan Teknologi Informasi
+                <p className="text-gray-800 mb-1 font-medium">
+                  {t('common.siteTitle')}
                 </p>
-                <p className="text-gray-200 text-sm">
-                  Institut Teknologi Kalimantan
+                <p className="text-gray-600 text-sm">
+                  {t('common.university')}
                 </p>
               </div>
             </div>
-            <p className="text-sm text-gray-400 mb-5">
+            <p className="text-sm text-gray-600 mb-5">
               Kampus ITK, Jl. Soekarno Hatta KM 15, Karang Joang, 
               <br />
               Balikpapan Utara, Kalimantan Timur 76127
@@ -47,10 +49,10 @@ const Footer = () => {
                 href="https://www.instagram.com/fsti.itk" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="p-2 rounded-full bg-dark-bg hover:bg-fsti-primary transition-colors duration-300"
+                className="p-2 rounded-full bg-gray-100 hover:bg-primary-600 transition-colors duration-300"
                 aria-label="Instagram"
               >
-                <svg width="20" height="20" fill="currentColor" className="text-white" viewBox="0 0 24 24">
+                <svg width="20" height="20" fill="currentColor" className="text-primary-600 hover:text-white" viewBox="0 0 24 24">
                   <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
                 </svg>
               </a>
@@ -60,10 +62,10 @@ const Footer = () => {
                 href="https://www.tiktok.com/@fsti.itk" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="p-2 rounded-full bg-dark-bg hover:bg-fsti-primary transition-colors duration-300"
+                className="p-2 rounded-full bg-gray-100 hover:bg-primary-600 transition-colors duration-300"
                 aria-label="TikTok"
               >
-                <svg width="20" height="20" fill="currentColor" className="text-white" viewBox="0 0 24 24">
+                <svg width="20" height="20" fill="currentColor" className="text-primary-600 hover:text-white" viewBox="0 0 24 24">
                   <path d="M19.589 6.686a4.793 4.793 0 0 1-3.77-4.245V2h-3.445v13.672a2.896 2.896 0 0 1-5.201 1.743l-.002-.001.002.001a2.895 2.895 0 0 1 3.183-4.51v-3.5a6.329 6.329 0 0 0-5.394 10.692 6.33 6.33 0 0 0 10.857-4.424V8.687a8.182 8.182 0 0 0 4.773 1.526V6.79a4.831 4.831 0 0 1-1.003-.104z"/>
                 </svg>
               </a>
@@ -77,12 +79,12 @@ const Footer = () => {
             transition={{ duration: 0.5, delay: 0.1 }}
             viewport={{ once: true }}
           >
-            <h3 className="text-xl font-display font-bold mb-6 text-gradient">Kontak</h3>
+            <h3 className="text-xl font-display font-bold mb-6 text-gradient">{t('footer.contact')}</h3>
             <ul className="space-y-4">
               <li className="flex items-start">
                 <svg 
                   xmlns="http://www.w3.org/2000/svg" 
-                  className="h-5 w-5 mr-3 mt-1 text-fsti-light" 
+                  className="h-5 w-5 mr-3 mt-1 text-primary-600" 
                   fill="none" 
                   viewBox="0 0 24 24" 
                   stroke="currentColor"
@@ -95,8 +97,8 @@ const Footer = () => {
                   />
                 </svg>
                 <div>
-                  <p className="text-white font-medium mb-1">Email:</p>
-                  <a href="mailto:fsti@itk.ac.id" className="text-gray-300 hover:text-fsti-light transition-colors">
+                  <p className="text-gray-800 font-medium mb-1">{t('footer.email')}</p>
+                  <a href="mailto:fsti@itk.ac.id" className="text-gray-600 hover:text-primary-600 transition-colors">
                     fsti@itk.ac.id
                   </a>
                 </div>
@@ -104,7 +106,7 @@ const Footer = () => {
               <li className="flex items-start">
                 <svg 
                   xmlns="http://www.w3.org/2000/svg" 
-                  className="h-5 w-5 mr-3 mt-1 text-fsti-light" 
+                  className="h-5 w-5 mr-3 mt-1 text-primary-600" 
                   fill="none" 
                   viewBox="0 0 24 24" 
                   stroke="currentColor"
@@ -117,14 +119,14 @@ const Footer = () => {
                   />
                 </svg>
                 <div>
-                  <p className="text-white font-medium mb-1">Telepon:</p>
-                  <p className="text-gray-300 mb-1">Keuangan: 
-                    <a href="tel:+6285172312157" className="ml-1 hover:text-fsti-light transition-colors">
+                  <p className="text-gray-800 font-medium mb-1">{t('footer.phone')}</p>
+                  <p className="text-gray-600 mb-1">{t('footer.finance')}: 
+                    <a href="tel:+6285172312157" className="ml-1 hover:text-primary-600 transition-colors">
                       +6285172312157
                     </a>
                   </p>
-                  <p className="text-gray-300">Akademik: 
-                    <a href="tel:+6285172302157" className="ml-1 hover:text-fsti-light transition-colors">
+                  <p className="text-gray-600">{t('footer.academic')}: 
+                    <a href="tel:+6285172302157" className="ml-1 hover:text-primary-600 transition-colors">
                       +6285172302157
                     </a>
                   </p>
@@ -133,7 +135,7 @@ const Footer = () => {
               <li className="flex items-start">
                 <svg 
                   xmlns="http://www.w3.org/2000/svg" 
-                  className="h-5 w-5 mr-3 mt-1 text-fsti-light" 
+                  className="h-5 w-5 mr-3 mt-1 text-primary-600" 
                   fill="none" 
                   viewBox="0 0 24 24" 
                   stroke="currentColor"
@@ -146,8 +148,8 @@ const Footer = () => {
                   />
                 </svg>
                 <div>
-                  <p className="text-white font-medium mb-1">Jam Operasional:</p>
-                  <p className="text-gray-300">Senin - Jumat, 08.00 - 16.00 WITA</p>
+                  <p className="text-gray-800 font-medium mb-1">{t('footer.operationalHours')}</p>
+                  <p className="text-gray-600">{t('footer.operationalTime')}</p>
                 </div>
               </li>
             </ul>
@@ -160,46 +162,46 @@ const Footer = () => {
             transition={{ duration: 0.5, delay: 0.2 }}
             viewport={{ once: true }}
           >
-            <h3 className="text-xl font-display font-bold mb-6 text-gradient">Struktur Organisasi</h3>
+            <h3 className="text-xl font-display font-bold mb-6 text-gradient">{t('footer.organization')}</h3>
             <ul className="space-y-4">
               <li>
-                <p className="text-white font-medium mb-1">Dekan:</p>
-                <p className="text-sm text-gray-300">Adi Mahmud Jaya Marindra, S.T., M.Eng., Ph.D.</p>
+                <p className="text-gray-800 font-medium mb-1">{t('footer.dean')}</p>
+                <p className="text-sm text-gray-600">Adi Mahmud Jaya Marindra, S.T., M.Eng., Ph.D.</p>
               </li>
               <li>
-                <p className="text-white font-medium mb-1">Wakil Dekan I (Akademik dan Kemahasiswaan):</p>
-                <p className="text-sm text-gray-300">Irma Fitria, S.Si., M.Si.</p>
+                <p className="text-gray-800 font-medium mb-1">{t('footer.vdAcademic')}</p>
+                <p className="text-sm text-gray-600">Irma Fitria, S.Si., M.Si.</p>
               </li>
               <li>
-                <p className="text-white font-medium mb-1">Wakil Dekan II (Keuangan dan Umum):</p>
-                <p className="text-sm text-gray-300">Yun Tonce Kusuma Priyanto, S.T., M.T.</p>
+                <p className="text-gray-800 font-medium mb-1">{t('footer.vdFinance')}</p>
+                <p className="text-sm text-gray-600">Yun Tonce Kusuma Priyanto, S.T., M.T.</p>
               </li>
               <li>
-                <p className="text-white font-medium mb-1">Ketua Jurusan Sains dan Analitika Data:</p>
-                <p className="text-sm text-gray-300">Dr. Swastya Rahastama, S.Si., M.Si.</p>
+                <p className="text-gray-800 font-medium mb-1">{t('footer.headScienceData')}</p>
+                <p className="text-sm text-gray-600">Dr. Swastya Rahastama, S.Si., M.Si.</p>
               </li>
               <li>
-                <p className="text-white font-medium mb-1">Ketua Jurusan Teknik Elektro, Informatika dan Bisnis:</p>
-                <p className="text-sm text-gray-300">M. Ihsan Alfani Putera, S.Tr.Kom, M.Kom</p>
+                <p className="text-gray-800 font-medium mb-1">{t('footer.headTEIB')}</p>
+                <p className="text-sm text-gray-600">M. Ihsan Alfani Putera, S.Tr.Kom, M.Kom</p>
               </li>
             </ul>
           </motion.div>
         </div>
 
         {/* Quick Links */}
-        <div className="border-t border-dark-border pt-8 pb-6">
+        <div className="border-t border-gray-200 pt-8 pb-6">
           <div className="flex flex-wrap justify-center gap-x-8 gap-y-4 mb-8">
-            <Link href="/" className="text-sm text-gray-400 hover:text-white transition-colors">
-              Beranda
+            <Link href="/" className="text-sm text-gray-600 hover:text-primary-600 transition-colors">
+              {t('footer.home')}
             </Link>
-            <Link href="/layanan-administrasi" className="text-sm text-gray-400 hover:text-white transition-colors">
-              Layanan Administrasi
+            <Link href="/layanan-administrasi" className="text-sm text-gray-600 hover:text-primary-600 transition-colors">
+              {t('footer.services')}
             </Link>
-            <Link href="/tracking" className="text-sm text-gray-400 hover:text-white transition-colors">
-              Tracking Dokumen
+            <Link href="/tracking" className="text-sm text-gray-600 hover:text-primary-600 transition-colors">
+              {t('footer.tracking')}
             </Link>
-            <a href="https://itk.ac.id" target="_blank" rel="noopener noreferrer" className="text-sm text-gray-400 hover:text-white transition-colors">
-              Website ITK
+            <a href="https://itk.ac.id" target="_blank" rel="noopener noreferrer" className="text-sm text-gray-600 hover:text-primary-600 transition-colors">
+              {t('footer.itkWebsite')}
             </a>
           </div>
         </div>
@@ -207,12 +209,12 @@ const Footer = () => {
         {/* Copyright */}
         <div className="text-center text-sm text-gray-500">
         <p>
-          &copy; {currentYear} Fakultas Sains dan Teknologi Informasi - ITK. Hak Cipta Dilindungi. Dikembangkan oleh{" "}
+          {t('common.copyright')} {t('common.developedBy')}{" "}
           <a
             href="https://aidilsaputrakirsan.github.io"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-blue-600 hover:text-blue-800 transition-colors"
+            className="text-primary-600 hover:text-primary-800 transition-colors"
           >
             Aidil Saputra Kirsan
           </a>

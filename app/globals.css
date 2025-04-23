@@ -6,18 +6,18 @@
 
 /* ========== ROOT VARIABLES ========== */
 :root {
-  /* FSTI Colors */
+  /* Main Colors */
   --primary: #2f4dd3;
   --primary-hover: #3b5bdb;
   --primary-light: #5978ff;
   
-  /* UI Theme Colors */
-  --background: #0f0f17;
-  --foreground: #f3f4f6;
-  --card-bg: #1a1a27;
-  --card-border: #2c2c44;
+  /* UI Theme Colors - Light Theme */
+  --background: #f8fafc;
+  --foreground: #1e293b;
+  --card-bg: #ffffff;
+  --card-border: #e2e8f0;
   --accent: #4f46e5;
-  --muted: #6b7280;
+  --muted: #64748b;
   
   /* Animation Controls */
   --animation-speed: 1;
@@ -75,15 +75,15 @@ body {
 }
 
 .btn-primary {
-  @apply bg-fsti-primary text-white hover:bg-fsti-secondary;
+  @apply bg-primary-600 text-white hover:bg-primary-700;
 }
 
 .btn-outline {
-  @apply border-2 border-fsti-primary text-white hover:bg-fsti-primary/10;
+  @apply border-2 border-primary-600 text-primary-600 hover:bg-primary-50;
 }
 
 .btn-white {
-  @apply bg-white text-fsti-primary hover:bg-gray-100;
+  @apply bg-white text-primary-600 hover:bg-gray-100;
 }
 
 /* ========== CARD EFFECTS ========== */
@@ -95,15 +95,15 @@ body {
 
 .hover-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 10px 25px rgba(47, 77, 211, 0.2);
 }
 
 /* Glass effect for cards */
 .glass-effect {
-  background: rgba(26, 26, 39, 0.7);
+  background: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(44, 44, 68, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.5);
 }
 
 /* Hover effect for service cards */
@@ -114,7 +114,7 @@ body {
 
 .service-card:hover {
   transform: translateY(-10px);
-  box-shadow: 0 15px 30px rgba(47, 77, 211, 0.2);
+  box-shadow: 0 15px 30px rgba(47, 77, 211, 0.15);
 }
 
 .service-card:hover .service-icon {
@@ -184,15 +184,15 @@ body {
 .navbar-blur {
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  background-color: rgba(15, 15, 23, 0.8);
-  border-bottom: 1px solid rgba(44, 44, 68, 0.3);
+  background-color: rgba(248, 250, 252, 0.8);
+  border-bottom: 1px solid rgba(226, 232, 240, 0.3);
 }
 
 /* ========== LAYOUT COMPONENTS ========== */
 /* Hero gradient */
 .hero-gradient {
-  background: radial-gradient(circle at 50% 50%, #2f4dd3 0%, #202540 70%, #0f0f17 100%);
-  opacity: 0.2;
+  background: radial-gradient(circle at 50% 50%, #2f4dd3 0%, #3b5bdb 70%, #f8fafc 100%);
+  opacity: 0.1;
 }
 
 /* Timeline styles for tracking page */
@@ -201,7 +201,7 @@ body {
 }
 
 .timeline-container::after {
-  @apply absolute top-0 bottom-0 left-5 w-0.5 bg-dark-border;
+  @apply absolute top-0 bottom-0 left-5 w-0.5 bg-light-border;
   content: '';
   z-index: 1;
 }
@@ -215,7 +215,7 @@ body {
 }
 
 .timeline-dot.active {
-  @apply bg-fsti-primary text-white;
+  @apply bg-primary-600 text-white;
 }
 
 .timeline-dot.completed {
@@ -223,6 +223,5 @@ body {
 }
 
 .timeline-dot.pending {
-  @apply bg-dark-border text-dark-muted;
+  @apply bg-light-border text-light-muted;
 }
-

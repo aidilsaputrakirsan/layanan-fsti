@@ -2,12 +2,12 @@
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import type { Container, Engine } from "tsparticles-engine";
-import { loadSlim } from "tsparticles-slim"; // Gunakan slim version untuk performa lebih baik
+import { loadSlim } from "tsparticles-slim"; // Use slim version for better performance
 
-// Dynamic import untuk lazy-loading
+// Dynamic import for lazy-loading
 const Particles = dynamic(() => import("react-tsparticles"), {
   ssr: false,
-  loading: () => <div className="absolute inset-0 bg-dark-bg"></div>
+  loading: () => <div className="absolute inset-0 bg-light-bg"></div>
 });
 
 const BackgroundParticles = () => {
@@ -15,7 +15,7 @@ const BackgroundParticles = () => {
   
   useEffect(() => {
     setMounted(true);
-    // Deteksi perangkat lemah
+    // Detect weak devices
     if (typeof window !== "undefined") {
       const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       if (prefersReducedMotion) {
@@ -24,12 +24,12 @@ const BackgroundParticles = () => {
     }
   }, []);
 
-  // Periksa apakah dinonaktifkan
+  // Check if disabled
   const isDisabled = typeof localStorage !== "undefined" 
     ? localStorage.getItem("disable-particles") === "true" 
     : false;
 
-  // Inisialisasi dengan loadSlim
+  // Initialize with loadSlim
   const particlesInit = async (engine: Engine) => {
     await loadSlim(engine);
   };
@@ -63,7 +63,7 @@ const BackgroundParticles = () => {
             },
           },
           color: {
-            value: "#5978ff",
+            value: "#2f4dd3", // Primary color for particles
           },
           shape: {
             type: "circle",

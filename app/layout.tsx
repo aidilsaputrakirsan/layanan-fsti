@@ -1,7 +1,8 @@
 import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
-import './animation.css'; // Tambahkan import animasi CSS
+import './animation.css';
+import { LanguageProvider } from '@/lib/i18n/LanguageContext';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -11,9 +12,9 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: 'Fakultas Sains dan Teknologi Informasi ITK',
-  description: 'Portal Layanan Administrasi Fakultas Sains dan Teknologi Informasi Institut Teknologi Kalimantan',
-  keywords: ['FSTI', 'ITK', 'Layanan Administrasi', 'Fakultas Sains dan Teknologi Informasi', 'Institut Teknologi Kalimantan'],
+  title: 'Faculty of Science and Information Technology ITK',
+  description: 'Administrative Services Portal for the Faculty of Science and Information Technology at Kalimantan Institute of Technology',
+  keywords: ['FSTI', 'ITK', 'Administrative Services', 'Faculty of Science and Information Technology', 'Kalimantan Institute of Technology'],
   authors: [{ name: 'FSTI ITK' }],
   robots: 'index,follow',
 };
@@ -24,9 +25,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="id" className="scroll-smooth">
+    <html lang="en" className="scroll-smooth">
       <body className={inter.className}>
-        {children}
+        <LanguageProvider>
+          {children}
+        </LanguageProvider>
       </body>
     </html>
   );

@@ -2,8 +2,9 @@
 
 import dynamic from 'next/dynamic';
 
-// Import HomePage secara dinamis dengan SSR dimatikan
-const HomePage = dynamic(() => import('./HomePage'), {
+// Import HomePage dinamis dengan SSR dinonaktifkan
+// Perubahan: Perbaikan path import yang benar
+const HomePage = dynamic(() => import('@/components/HomePage'), {
   ssr: false,
 });
 
