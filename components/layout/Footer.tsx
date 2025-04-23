@@ -26,18 +26,22 @@ const Footer = () => {
           >
             <h3 className="text-xl font-display font-bold mb-6 text-gradient">{t('footer.about')}</h3>
             <div className="flex items-start mb-4">
-              <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center mr-4 shadow-md border border-gray-200">
-                <span className="text-primary-600 font-bold">FSTI</span>
-              </div>
-              <div>
-                <p className="text-gray-800 mb-1 font-medium">
-                  {t('common.siteTitle')}
-                </p>
-                <p className="text-gray-600 text-sm">
-                  {t('common.university')}
-                </p>
-              </div>
+            <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center mr-4 shadow-md border border-gray-200 overflow-hidden">
+              <img
+                src="/images/logofsti.png"
+                alt="FSTI Logo"
+                className="w-10 h-10 object-contain"
+              />
             </div>
+            <div>
+              <p className="text-gray-800 mb-1 font-medium">
+                {t('common.siteTitle')}
+              </p>
+              <p className="text-gray-600 text-sm">
+                {t('common.university')}
+              </p>
+            </div>
+          </div>
             <p className="text-sm text-gray-600 mb-5">
               Kampus ITK, Jl. Soekarno Hatta KM 15, Karang Joang, 
               <br />
@@ -216,7 +220,7 @@ const Footer = () => {
             rel="noopener noreferrer"
             className="text-primary-600 hover:text-primary-800 transition-colors"
           >
-            Aidil Saputra Kirsan
+            ADL
           </a>
         </p>
         </div>

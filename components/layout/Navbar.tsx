@@ -58,19 +58,19 @@ const Navbar = () => {
       >
         <div className="container mx-auto px-4 flex justify-between items-center">
         {/* Logo and Name */}
-          <Link href="/" className="flex items-center space-x-3 group">
-            <div className="h-10 w-10 bg-white rounded-full flex items-center justify-center shadow-md group-hover:shadow-glow transition-all duration-300 overflow-hidden">
-              <img 
-                src="/images/logofsti.jpg" 
-                alt="FSTI Logo" 
-                className="h-full w-full object-cover" 
-              />
-            </div>
-            <div className="hidden md:block">
-              <div className="font-display font-bold text-lg text-gray-800 group-hover:text-gradient transition-all duration-300">FSTI ITK</div>
-              <div className="text-xs text-gray-600 -mt-1 transform transition-all duration-300">{t('common.siteTitle')}</div>
-            </div>
-          </Link>
+        <Link href="/" className="flex items-center space-x-3 group">
+          <div className="h-12 w-auto flex items-center justify-center transition-all duration-300">
+            <img
+              src="/images/logofsti.png"
+              alt="FSTI Logo"
+              className="h-full w-auto object-contain"
+            />
+          </div>
+          <div className="hidden md:block">
+            <div className="font-display font-bold text-lg text-gray-800 group-hover:text-gradient transition-all duration-300">FSTI ITK</div>
+            <div className="text-xs text-gray-600 -mt-1 transform transition-all duration-300">{t('common.siteTitle')}</div>
+          </div>
+        </Link>
 
           {/* Menu Desktop */}
           <div className="hidden md:flex items-center space-x-6">
