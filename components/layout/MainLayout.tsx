@@ -2,7 +2,7 @@
 import { ReactNode, useEffect } from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
-// Import components with dynamic for client-side only
+// Import components dengan dynamic untuk client-side only
 import dynamic from 'next/dynamic';
 
 const AnimatedBackground = dynamic(
@@ -10,13 +10,16 @@ const AnimatedBackground = dynamic(
   { ssr: false }
 );
 
-// Dynamic import BackgroundParticles
+// Dynamic import BackgroundParticles dan pastikan mengimpor versi terbaru
 const BackgroundParticles = dynamic(
   () => import('../ui/BackgroundParticles'),
-  { ssr: false }
+  { 
+    ssr: false,
+    loading: () => <div className="fixed inset-0 bg-light-bg"></div>
+  }
 );
 
-// AOS only initialized on client
+// AOS hanya diinisialisasi di client
 const initAOS = () => {
   if (typeof window !== 'undefined') {
     import('aos').then((AOS) => {
@@ -44,12 +47,16 @@ interface MainLayoutProps {
 const MainLayout = ({ children, hideBackground = false }: MainLayoutProps) => {
   useEffect(() => {
     initAOS();
-  }, []);
+    
+    // Tambahkan debug untuk memeriksa apakah particles berhasil dimuat
+    console.log("MainLayout mounted, hideBackground:", hideBackground);
+  }, [hideBackground]);
 
   return (
     <div className="flex flex-col min-h-screen relative bg-light-bg">
+      {/* Particles ditampilkan terlebih dahulu agar berada di belakang */}
+      {!hideBackground && <BackgroundParticles />}
       {!hideBackground && <AnimatedBackground />}
-      {!hideBackground && <BackgroundParticles />} {/* Add particles component */}
       <div className="flex flex-col min-h-screen relative z-10">
         <Navbar />
         <main className="flex-grow">{children}</main>
