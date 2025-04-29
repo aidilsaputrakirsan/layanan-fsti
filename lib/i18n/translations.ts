@@ -205,6 +205,8 @@ export interface TranslationObject {
         detail: 'Detail View',
         submissionStatus: 'Submission Status',
         timeline: 'Timeline information not available',
+        uploadedFiles: "Uploaded Documents",
+        adminDocuments: "Documents from Admin",
         docTypes: {
           academicLetter: 'Academic Letter',
           internship: 'Internship',
@@ -243,6 +245,17 @@ export interface TranslationObject {
           inProgress: 'In Progress',
           pending: 'Waiting',
           rejected: 'Rejected',
+        },
+        fields: {
+          letterType: "Letter Type",
+          letterPurpose: "Letter Purpose",
+          description: "Description",
+          partner: "Partner",
+          partnerAddress: "Partner Address",
+          startDate: "Start Date",
+          endDate: "End Date",
+          reason: "Reason",
+          reportTitle: "Report Title"
         },
         faq: {
           title: 'Frequently Asked Questions',
@@ -418,7 +431,7 @@ export interface TranslationObject {
         searching: 'Mencari...',
         loadingData: 'Memuat Data...',
         searchResults: 'Hasil Pencarian',
-        documents: 'dokumen',
+        documents: 'Dokumen Terkait',
         detail: 'Detail',
         submissionStatus: 'Status Pengajuan',
         timeline: 'Informasi timeline tidak tersedia',
@@ -480,10 +493,12 @@ export interface TranslationObject {
         searching: 'Mencari...',
         loadingData: 'Memuat Data...',
         searchResults: 'Hasil Pencarian',
-        documents: 'dokumen',
+        documents: 'Dokumen Terkait',
         detail: 'Detail',
         submissionStatus: 'Status Pengajuan',
         timeline: 'Informasi timeline tidak tersedia',
+        uploadedFiles: "Dokumen yang Diupload",
+        adminDocuments: "Dokumen dari Admin",
         docTypes: {
           academicLetter: 'Surat Akademik',
           internship: 'Kerja Praktik',
@@ -522,6 +537,17 @@ export interface TranslationObject {
           inProgress: 'Dalam Proses',
           pending: 'Menunggu',
           rejected: 'Ditolak',
+        },
+        fields: {
+          letterType: "Jenis Surat",
+          letterPurpose: "Tujuan Surat",
+          description: "Keterangan",
+          partner: "Mitra",
+          partnerAddress: "Alamat Mitra",
+          startDate: "Tanggal Mulai",
+          endDate: "Tanggal Selesai",
+          reason: "Alasan",
+          reportTitle: "Judul Laporan"
         },
         faq: {
           title: 'Pertanyaan Umum',

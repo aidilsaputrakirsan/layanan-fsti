@@ -23,7 +23,10 @@ import {
   BookOpen,
   Pencil,
   Briefcase,
-  ChevronLeft
+  ChevronLeft,
+  Download,
+  ExternalLink,
+  X
 } from 'lucide-react';
 
 // Definisi tipe data untuk dokumen
@@ -38,6 +41,12 @@ interface DocumentDetail {
   icon: React.ReactNode;
   label: string;
   value: React.ReactNode;
+}
+
+interface DocumentFile {
+  label: string;
+  url: string;
+  type: 'upload' | 'feedback';
 }
 
 interface StudentDocument {
@@ -56,6 +65,10 @@ interface StudentDocument {
   totalSteps: number;
   lastUpdate: string;
   timeline: TimelineItem[];
+
+  // File references
+  files?: DocumentFile[];  // Student uploaded files
+  feedback?: DocumentFile[]; // Admin provided files/feedback
   
   // Possible additional fields depending on doc type
   mitra?: string;
@@ -72,6 +85,12 @@ interface StudentDocument {
   jumlahSertifikat?: string;
   kegiatan?: string;
   formulir?: string;
+
+  // Additional fields for specific document types
+  jenisSurat?: string;
+  tujuanSurat?: string;
+  alamatMitra?: string;
+  judulLaporan?: string;
 }
 
 interface ApiResponse {
@@ -82,7 +101,7 @@ interface ApiResponse {
 }
 
 // URL Google Apps Script Web App for Student Documents (replace with your real script URL)
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzs12GJHtyTI_bG0-h8bM2htF5ZbzQHALazenHMp897mvsv-oyyZmecaV74jKuMkMF0/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzQGqsCdcxcE8gbqPYTNt3zvbdfrtCZED7fV1GkwFyplhJtSK59Ga7yx4VOMZRkSw/exec';
 // Local CORS proxy
 const API_ENDPOINT = '/api/cors-proxy';
 
@@ -199,6 +218,7 @@ const MahasiswaTrackingPage = () => {
   const getDocumentDetails = useCallback((doc: StudentDocument | null): DocumentDetail[] => {
     if (!doc) return [];
     
+    // Bagian informasi umum dokumen
     const commonDetails: DocumentDetail[] = [
       {
         icon: <Tag className="w-5 h-5 mr-3 text-primary-600 mt-1" />,
@@ -227,15 +247,84 @@ const MahasiswaTrackingPage = () => {
       }
     ];
     
-    // Add type-specific details
+    // Informasi spesifik untuk tiap jenis dokumen
     let additionalDetails: DocumentDetail[] = [];
     
-    // Build additional details based on document type
-    // This could be expanded based on the document types in your system
-    if (doc.mitra) {
+    // Informasi khusus berdasarkan tipe dokumen
+    if (doc.type === "Surat Akademik") {
+      if (doc.jenisSurat) {
+        additionalDetails.push({
+          icon: <FileText className="w-5 h-5 mr-3 text-primary-600 mt-1" />,
+          label: t('studentTracking.fields.letterType') || "Jenis Surat",
+          value: doc.jenisSurat
+        });
+      }
+      if (doc.tujuanSurat) {
+        additionalDetails.push({
+          icon: <FileText className="w-5 h-5 mr-3 text-primary-600 mt-1" />,
+          label: t('studentTracking.fields.letterPurpose') || "Tujuan Surat",
+          value: doc.tujuanSurat
+        });
+      }
+      if (doc.keterangan) {
+        additionalDetails.push({
+          icon: <FileText className="w-5 h-5 mr-3 text-primary-600 mt-1" />,
+          label: t('studentTracking.fields.description') || "Keterangan",
+          value: doc.keterangan
+        });
+      }
+    } 
+    else if (doc.type === "Kerja Praktik") {
+      if (doc.mitra) {
+        additionalDetails.push({
+          icon: <Briefcase className="w-5 h-5 mr-3 text-primary-600 mt-1" />,
+          label: t('studentTracking.fields.partner') || "Mitra",
+          value: doc.mitra
+        });
+      }
+      if (doc.alamatMitra) {
+        additionalDetails.push({
+          icon: <FileText className="w-5 h-5 mr-3 text-primary-600 mt-1" />,
+          label: t('studentTracking.fields.partnerAddress') || "Alamat Mitra",
+          value: doc.alamatMitra
+        });
+      }
+      if (doc.tanggalMulai) {
+        additionalDetails.push({
+          icon: <Calendar className="w-5 h-5 mr-3 text-primary-600 mt-1" />,
+          label: t('studentTracking.fields.startDate') || "Tanggal Mulai",
+          value: doc.tanggalMulai
+        });
+      }
+      if (doc.tanggalSelesai) {
+        additionalDetails.push({
+          icon: <Calendar className="w-5 h-5 mr-3 text-primary-600 mt-1" />,
+          label: t('studentTracking.fields.endDate') || "Tanggal Selesai",
+          value: doc.tanggalSelesai
+        });
+      }
+    }
+    else if (doc.type === "Setelah KP") {
+      if (doc.mitra) {
+        additionalDetails.push({
+          icon: <Briefcase className="w-5 h-5 mr-3 text-primary-600 mt-1" />,
+          label: t('studentTracking.status.partner') || "Mitra",
+          value: doc.mitra
+        });
+      }
+      if (doc.judulLaporan) {
+        additionalDetails.push({
+          icon: <FileText className="w-5 h-5 mr-3 text-primary-600 mt-1" />,
+          label: t('studentTracking.fields.reportTitle') || "Judul Laporan",
+          value: doc.judulLaporan
+        });
+      }
+    }
+    // Field generik yang mungkin ada di berbagai tipe dokumen
+    if (doc.mitra && doc.type !== "Kerja Praktik" && doc.type !== "Setelah KP") {
       additionalDetails.push({
         icon: <Briefcase className="w-5 h-5 mr-3 text-primary-600 mt-1" />,
-        label: t('studentTracking.status.partner'),
+        label: t('studentTracking.status.partner') || "Mitra",
         value: doc.mitra
       });
     }
@@ -243,23 +332,163 @@ const MahasiswaTrackingPage = () => {
     if (doc.tujuan) {
       additionalDetails.push({
         icon: <FileText className="w-5 h-5 mr-3 text-primary-600 mt-1" />,
-        label: t('studentTracking.status.purpose'),
+        label: t('studentTracking.status.purpose') || "Tujuan",
         value: doc.tujuan
       });
     }
     
-    // Add file link if available
-    if (doc.fileSurat) {
+    if (doc.alasan) {
       additionalDetails.push({
         icon: <FileText className="w-5 h-5 mr-3 text-primary-600 mt-1" />,
-        label: t('studentTracking.status.letterFile'),
-        value: <a href={doc.fileSurat} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">{language === 'en' ? 'View Document' : 'Lihat Dokumen'}</a>
+        label: t('studentTracking.fields.reason') || "Alasan",
+        value: doc.alasan
+      });
+    }
+    
+    if (doc.kegiatan) {
+      additionalDetails.push({
+        icon: <FileText className="w-5 h-5 mr-3 text-primary-600 mt-1" />,
+        label: t('studentTracking.fields.activity') || "Kegiatan",
+        value: doc.kegiatan
+      });
+    }
+       
+    if (doc.files && doc.files.length > 0) {
+      doc.files.forEach((file) => {
+        let fileUrl = file.url;
+        
+        // Tambahkan log untuk debugging
+        console.log("File URL dari API:", fileUrl);
+        
+        // Hanya ganti jika bukan URL http DAN berisi .pdf
+        if (fileUrl && fileUrl.includes('.pdf') && !fileUrl.startsWith('http')) {
+          // PERBAIKAN: Gunakan pendekatan dinamis alih-alih hardcoding banyak URL
+          
+          // Pendekatan 1: Gunakan URL ke folder Google Drive umum yang berisi semua file
+          const folderUrl = "https://drive.google.com/drive/folders/FOLDER_ID_TERPUSAT";
+          fileUrl = folderUrl;
+          
+          // ATAU
+          
+          // Pendekatan 2: Hanya tampilkan nama file dan pesan kesalahan untuk admin
+          console.error(`URL tidak valid untuk file: ${fileUrl}. Ekstraksi hyperlink gagal.`);
+          // Jangan ubah fileUrl, biarkan error terjadi agar admin tahu
+        }
+        
+        additionalDetails.push({
+          icon: <FileText className="w-5 h-5 mr-3 text-primary-600 mt-1" />,
+          label: file.label,
+          value: <a 
+            href={fileUrl} 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="text-blue-600 hover:underline flex items-center"
+          >
+            {language === 'en' ? 'View Document' : 'Lihat Dokumen'}
+            <ExternalLink className="w-4 h-4 ml-1" />
+          </a>
+        });
+      });
+    }
+    
+    // 2. File feedback/dari admin
+    if (doc.feedback && doc.feedback.length > 0) {
+      doc.feedback.forEach((file) => {
+        let fileUrl = file.url;
+        if (!fileUrl || (fileUrl.indexOf(".pdf") !== -1 && !fileUrl.startsWith("http"))) {
+          const folderUrl = "https://drive.google.com/drive/folders/FOLDER_ID_TERPUSAT";
+          fileUrl = folderUrl;
+        }
+        
+        additionalDetails.push({
+          icon: <FileText className="w-5 h-5 mr-3 text-primary-600 mt-1" />,
+          label: file.label,
+          value: <a 
+            href={fileUrl} 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="text-blue-600 hover:underline flex items-center"
+          >
+            {language === 'en' ? 'View Document' : 'Lihat Dokumen'}
+            <ExternalLink className="w-4 h-4 ml-1" />
+          </a>
+        });
+      });
+    }
+    
+    // 3. Field spesifik file yang ada di berbagai tipe dokumen
+    if (doc.fileSurat) {
+      // PERBAIKAN: Sama seperti di atas
+      let fileUrl = doc.fileSurat;
+      if (!fileUrl || (fileUrl.indexOf(".pdf") !== -1 && !fileUrl.startsWith("http"))) {
+        const folderUrl = "https://drive.google.com/drive/folders/FOLDER_ID_TERPUSAT";
+        fileUrl = folderUrl;
+    }
+      
+      additionalDetails.push({
+        icon: <FileText className="w-5 h-5 mr-3 text-primary-600 mt-1" />,
+        label: t('studentTracking.status.letterFile') || "File Surat",
+        value: <a 
+          href={fileUrl} 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          className="text-blue-600 hover:underline flex items-center"
+        >
+          {language === 'en' ? 'View Document' : 'Lihat Dokumen'}
+          <ExternalLink className="w-4 h-4 ml-1" />
+        </a>
+      });
+    }
+    
+    // Lakukan hal yang sama untuk filePersetujuan dan formulir
+    if (doc.filePersetujuan) {
+      let fileUrl = doc.filePersetujuan;
+      if (!fileUrl || (fileUrl.indexOf(".pdf") !== -1 && !fileUrl.startsWith("http"))) {
+        const folderUrl = "https://drive.google.com/drive/folders/FOLDER_ID_TERPUSAT";
+        fileUrl = folderUrl;
+      }
+      
+      additionalDetails.push({
+        icon: <FileText className="w-5 h-5 mr-3 text-primary-600 mt-1" />,
+        label: t('studentTracking.status.approvalFile') || "File Persetujuan",
+        value: <a 
+          href={fileUrl} 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          className="text-blue-600 hover:underline flex items-center"
+        >
+          {language === 'en' ? 'View Document' : 'Lihat Dokumen'}
+          <ExternalLink className="w-4 h-4 ml-1" />
+        </a>
+      });
+    }
+    
+    if (doc.formulir) {
+      let fileUrl = doc.formulir;
+      if (!fileUrl || (fileUrl.indexOf(".pdf") !== -1 && !fileUrl.startsWith("http"))) {
+        const folderUrl = "https://drive.google.com/drive/folders/FOLDER_ID_TERPUSAT";
+        fileUrl = folderUrl;
+      }
+      
+      additionalDetails.push({
+        icon: <FileText className="w-5 h-5 mr-3 text-primary-600 mt-1" />,
+        label: t('studentTracking.status.form') || "Formulir",
+        value: <a 
+          href={fileUrl} 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          className="text-blue-600 hover:underline flex items-center"
+        >
+          {language === 'en' ? 'View Document' : 'Lihat Dokumen'}
+          <ExternalLink className="w-4 h-4 ml-1" />
+        </a>
       });
     }
     
     return [...commonDetails, ...additionalDetails];
   }, [t, language]);
 
+  
   // Handle search for documents
   const handleSearch = async (e: React.FormEvent | null) => {
     if (e && e.preventDefault) {
@@ -427,7 +656,7 @@ const MahasiswaTrackingPage = () => {
             </div>
           </AnimatedSection>
           
-          {/* Search Results List */}
+         {/* Search Results List */}
           <AnimatePresence>
             {searchResults.length > 1 && (
               <motion.div
@@ -473,7 +702,7 @@ const MahasiswaTrackingPage = () => {
               </motion.div>
             )}
           </AnimatePresence>
-          
+
           {/* Detail Tracking */}
           <AnimatePresence>
             {trackingResult && (
@@ -523,7 +752,8 @@ const MahasiswaTrackingPage = () => {
                   </div>
                 </div>
                 
-                <h3 className="text-xl font-bold mb-6 text-gray-800">{t('studentTracking.submissionStatus')}</h3>
+                
+                <h3 className="text-xl font-bold mb-6 text-gray-800 mt-6">{t('studentTracking.submissionStatus')}</h3>
                 {trackingResult.timeline && trackingResult.timeline.length > 0 ? (
                   <div className="timeline-container relative pl-8 before:content-[''] before:absolute before:left-3 before:top-2 before:bottom-2 before:w-0.5 before:bg-gradient-to-b before:from-primary-600/80 before:via-primary-400/50 before:to-gray-300/30 space-y-8">
                     {trackingResult.timeline.map((item, index) => (
