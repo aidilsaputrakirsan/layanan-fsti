@@ -83,6 +83,9 @@ const Navbar = () => {
             <NavLink href="/tracking" active={pathname?.includes('/tracking')}>
               {t('nav.docTracking')}
             </NavLink>
+            <NavLink href="/survey-kepuasan" active={pathname?.includes('/survey-kepuasan')}>
+              {t('nav.survey')}
+            </NavLink>
             <NavLink href="#kontak" active={false}>
               {t('nav.contact')}
             </NavLink>
@@ -150,6 +153,13 @@ const Navbar = () => {
                     onClick={() => setIsOpen(false)}
                   >
                     {t('nav.docTracking')}
+                  </MobileNavLink>
+                  <MobileNavLink 
+                    href="/survey-kepuasan" 
+                    active={pathname?.includes('/survey-kepuasan')} 
+                    onClick={() => setIsOpen(false)}
+                  >
+                    {t('nav.survey')}
                   </MobileNavLink>
                   <MobileNavLink 
                     href="#kontak" 

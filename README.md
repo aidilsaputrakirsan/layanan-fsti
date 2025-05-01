@@ -1,36 +1,198 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Portal Layanan Administrasi FSTI
 
-## Getting Started
+Aplikasi web komprehensif untuk Fakultas Sains dan Teknologi Informasi (FSTI) di Institut Teknologi Kalimantan (ITK). Portal ini mengelola layanan administrasi, pelacakan dokumen, dan informasi fakultas.
 
-First, run the development server:
+![Portal FSTI](https://github.com/yourusername/layanan-fsti/raw/main/public/images/logofsti.png)
+
+## Daftar Isi
+
+- [Fitur](#fitur)
+- [Teknologi yang Digunakan](#teknologi-yang-digunakan)
+- [Struktur Proyek](#struktur-proyek)
+- [Instalasi](#instalasi)
+- [Konfigurasi](#konfigurasi)
+- [Pengembangan](#pengembangan)
+- [Internasionalisasi](#internasionalisasi)
+- [Deployment](#deployment)
+- [Kontribusi](#kontribusi)
+
+## Fitur
+
+- **Portal Layanan Administrasi**: Daftar komprehensif layanan yang tersedia untuk mahasiswa dan dosen
+- **Sistem Pelacakan Dokumen**: Pelacakan real-time dokumen administrasi untuk mahasiswa dan dosen
+- **Desain Responsif**: Antarmuka yang sepenuhnya responsif, berfungsi di desktop, tablet, dan perangkat seluler
+- **Dukungan Dwibahasa**: Dukungan penuh untuk bahasa Indonesia dan Inggris
+- **UI Modern**: Antarmuka yang bersih dan mudah diakses dengan animasi dan umpan balik visual
+- **Dioptimalkan untuk SEO**: Dibangun dengan mempertimbangkan optimasi mesin pencari
+
+## Teknologi yang Digunakan
+
+- **Framework**: [Next.js 15+](https://nextjs.org/)
+- **Bahasa**: [TypeScript](https://www.typescriptlang.org/)
+- **Styling**: [TailwindCSS](https://tailwindcss.com/)
+- **Komponen UI**: Komponen kustom dengan [Framer Motion](https://www.framer.com/motion/) untuk animasi
+- **Ikon**: [Lucide React](https://lucide.dev/docs/lucide-react) untuk ikon SVG
+- **Efek Background**: [react-tsparticles](https://github.com/matteobruni/tsparticles)
+- **Library Animasi**: [AOS](https://michalsnik.github.io/aos/) untuk animasi scroll
+
+## Struktur Proyek
+
+```
+layanan-fsti/
+├── app/                         # Direktori app Next.js (App Router)
+│   ├── api/                     # Rute API
+│   │   └── cors-proxy/          # Proxy CORS untuk Google Apps Script
+│   ├── layanan-administrasi/    # Halaman layanan administrasi
+│   ├── tracking/                # Halaman pelacakan dokumen
+│   │   ├── dosen/               # Pelacakan dokumen dosen
+│   │   └── mahasiswa/           # Pelacakan dokumen mahasiswa
+│   ├── globals.css              # Stylesheet CSS global
+│   ├── animation.css            # Stylesheet animasi
+│   ├── layout.tsx               # Komponen layout utama
+│   └── page.tsx                 # Halaman beranda
+├── components/                  # Komponen React
+│   ├── layout/                  # Komponen layout (Navbar, Footer)
+│   ├── ui/                      # Komponen UI (Button, ServiceCard, dll)
+│   ├── utils/                   # Komponen utilitas
+│   ├── ClientWrapper.tsx        # Komponen wrapper sisi klien
+│   └── HomePage.tsx             # Komponen halaman beranda
+├── lib/                         # Fungsi dan hook utilitas
+│   ├── i18n/                    # Internasionalisasi
+│   │   ├── LanguageContext.tsx  # Provider konteks bahasa
+│   │   └── translations.ts      # String terjemahan
+│   └── ref-utils.ts             # Fungsi utilitas ref
+├── public/                      # Aset statis
+│   ├── images/                  # Gambar
+│   └── ...                      # File statis lainnya
+├── .gitignore                   # File Git ignore
+├── next.config.ts               # Konfigurasi Next.js
+├── package.json                 # Dependensi proyek
+├── postcss.config.js            # Konfigurasi PostCSS
+├── tailwind.config.js           # Konfigurasi TailwindCSS
+└── tsconfig.json                # Konfigurasi TypeScript
+```
+
+## Instalasi
+
+### Prasyarat
+
+- Node.js 18.x atau lebih tinggi
+- npm 9.x atau lebih tinggi
+
+### Langkah-langkah
+
+1. Clone repositori:
+   ```bash
+   git clone https://github.com/yourusername/layanan-fsti.git
+   cd layanan-fsti
+   ```
+
+2. Install dependensi:
+   ```bash
+   npm install
+   ```
+
+3. Buat file `.env.local` di direktori root dengan variabel berikut:
+   ```
+   # Kunci API Google (untuk integrasi Google Sheets)
+   GOOGLE_API_KEY=your_google_api_key_here
+   
+   # Kunci API Publik (gunakan dengan hemat untuk keamanan)
+   NEXT_PUBLIC_GOOGLE_API_KEY=your_google_api_key_here
+   ```
+
+## Konfigurasi
+
+### Integrasi Google Sheets
+
+Sistem pelacakan menggunakan Google Sheets sebagai backend melalui Google Apps Script. Anda perlu mengonfigurasi hal berikut:
+
+1. Buat proyek Google Apps Script dan deploy sebagai web app
+2. Perbarui variabel `SCRIPT_URL` di:
+   - `app/tracking/dosen/page.tsx`
+   - `app/tracking/mahasiswa/page.tsx`
+
+### CORS Proxy
+
+Aplikasi ini menyertakan CORS proxy untuk menangani permintaan API ke Google Apps Script:
+
+- Terletak di: `app/api/cors-proxy/route.js`
+- Secara otomatis menangani masalah CORS saat memanggil API eksternal
+
+## Pengembangan
+
+Jalankan server pengembangan:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Buka [http://localhost:3000](http://localhost:3000) dengan browser Anda untuk melihat hasilnya.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Build untuk Produksi
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+```
 
-## Learn More
+### Menjalankan Server Produksi
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm run start
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Internasionalisasi
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Aplikasi ini mendukung bahasa Indonesia dan Inggris:
 
-## Deploy on Vercel
+- Provider konteks bahasa: `lib/i18n/LanguageContext.tsx`
+- Terjemahan: `lib/i18n/translations.ts`
+- Komponen toggle bahasa: `components/ui/LanguageToggle.tsx`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Untuk menambahkan bahasa baru:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Tambahkan kode bahasa ke tipe `Language` di `LanguageContext.tsx`
+2. Tambahkan terjemahan ke objek `translations` di `translations.ts`
+
+## Deployment
+
+Aplikasi Next.js ini dapat di-deploy ke berbagai platform:
+
+### Vercel (Direkomendasikan)
+
+Cara termudah untuk men-deploy aplikasi ini adalah menggunakan [Platform Vercel](https://vercel.com/new).
+
+1. Push kode Anda ke repositori GitHub
+2. Impor proyek ke Vercel
+3. Atur variabel lingkungan yang diperlukan
+4. Deploy
+
+### Self-hosted
+
+Untuk deployment self-hosted:
+
+1. Build aplikasi:
+   ```bash
+   npm run build
+   ```
+
+2. Jalankan server produksi:
+   ```bash
+   npm run start
+   ```
+
+## Kontribusi
+
+1. Fork repositori
+2. Buat branch fitur (`git checkout -b fitur/fitur-luar-biasa`)
+3. Commit perubahan Anda (`git commit -m 'Menambahkan fitur luar biasa'`)
+4. Push ke branch (`git push origin fitur/fitur-luar-biasa`)
+5. Buka Pull Request
+
+## Lisensi
+
+Proyek ini dilisensikan di bawah Lisensi MIT - lihat file LICENSE untuk detailnya.
+
+---
+
+Dikembangkan untuk Fakultas Sains dan Teknologi Informasi - Institut Teknologi Kalimantan (ITK)

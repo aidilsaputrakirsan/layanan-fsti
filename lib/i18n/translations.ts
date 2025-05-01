@@ -33,6 +33,7 @@ export interface TranslationObject {
         docTracking: 'Document Tracking',
         contact: 'Contact',
         language: 'Language',
+        survey: 'Satisfaction Survey',
       },
       
       // Homepage
@@ -325,6 +326,7 @@ export interface TranslationObject {
         docTracking: 'Tracking Dokumen',
         contact: 'Kontak',
         language: 'Bahasa',
+        survey: 'Survey Kepuasan',
       },
       
       // Homepage
