@@ -25,7 +25,7 @@ import {
 } from 'lucide-react';
 
 // Pastikan URL ini diganti dengan Google Apps Script yang sudah dibuat
-const SCRIPT_URL = 'https://script.google.com/macros/s/YOUR_GOOGLE_APPS_SCRIPT_ID/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzuFtZWPoN6gqfRNLvhrFV1BFWXec49juZjivOuTvJTA-Cm6LWstWEyZsJn5JrRMIn2/exec';
 const API_ENDPOINT = '/api/cors-proxy';
 
 interface SurveyFormData {
