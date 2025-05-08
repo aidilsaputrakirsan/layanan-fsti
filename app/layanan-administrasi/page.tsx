@@ -479,90 +479,162 @@ const LayananAdministrasiPage = () => {
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <AnimatedSection animation="slideUp">
-            <h2 className="text-3xl font-display font-bold text-center mb-10 text-gradient">{t('services.workflow.title')}</h2>
+            <h2 className="text-3xl font-display font-bold text-center mb-6 text-gradient">{t('services.workflow.title')}</h2>
+            <p className="text-center text-gray-700 mb-8 max-w-3xl mx-auto">
+              {language === 'en' 
+                ? 'Below is the service request workflow for FSTI services from submission to completion, including status checking mechanism and improvement process if needed.'
+                : 'Berikut adalah alur proses permohonan layanan FSTI dari tahap pengajuan hingga penyelesaian, termasuk mekanisme pengecekan status dan perbaikan jika diperlukan.'}
+            </p>
           </AnimatedSection>
           
-          <div className="max-w-5xl mx-auto">
-            <div className="flex flex-wrap justify-center">
-              {/* Step 1 */}
-              <AnimatedSection 
-                className="w-full md:w-1/3 lg:w-1/6 px-4 mb-6 md:mb-0" 
-                animation="slideUp" 
-                delay={0.1}
-              >
-                <div className="bg-white rounded-xl shadow-md p-6 text-center h-full flex flex-col items-center hover-card">
-                  <div className="w-16 h-16 bg-primary-50 rounded-full flex items-center justify-center text-primary-600 font-bold text-2xl mb-4 shadow-md">1</div>
-                  <h3 className="font-semibold mb-2 text-gray-800 text-lg">{t('services.workflow.steps.submission')}</h3>
-                  <p className="text-gray-600 text-sm">Fill form and upload required documents</p>
-                </div>
-              </AnimatedSection>
-              
-              {/* Step 2 */}
-              <AnimatedSection 
-                className="w-full md:w-1/3 lg:w-1/6 px-4 mb-6 md:mb-0" 
-                animation="slideUp" 
-                delay={0.2}
-              >
-                <div className="bg-white rounded-xl shadow-md p-6 text-center h-full flex flex-col items-center hover-card">
-                  <div className="w-16 h-16 bg-primary-50 rounded-full flex items-center justify-center text-primary-600 font-bold text-2xl mb-4 shadow-md">2</div>
-                  <h3 className="font-semibold mb-2 text-gray-800 text-lg">{t('services.workflow.steps.verification')}</h3>
-                  <p className="text-gray-600 text-sm">Document verification by admin</p>
-                </div>
-              </AnimatedSection>
-              
-              {/* Step 3 */}
-              <AnimatedSection 
-                className="w-full md:w-1/3 lg:w-1/6 px-4 mb-6 md:mb-0" 
-                animation="slideUp" 
-                delay={0.3}
-              >
-                <div className="bg-white rounded-xl shadow-md p-6 text-center h-full flex flex-col items-center hover-card">
-                  <div className="w-16 h-16 bg-primary-50 rounded-full flex items-center justify-center text-primary-600 font-bold text-2xl mb-4 shadow-md">3</div>
-                  <h3 className="font-semibold mb-2 text-gray-800 text-lg">{t('services.workflow.steps.processing')}</h3>
-                  <p className="text-gray-600 text-sm">Processing by faculty admin</p>
-                </div>
-              </AnimatedSection>
-              
-              {/* Step 4 */}
-              <AnimatedSection 
-                className="w-full md:w-1/3 lg:w-1/6 px-4 mb-6 md:mb-0" 
-                animation="slideUp" 
-                delay={0.4}
-              >
-                <div className="bg-white rounded-xl shadow-md p-6 text-center h-full flex flex-col items-center hover-card">
-                  <div className="w-16 h-16 bg-primary-50 rounded-full flex items-center justify-center text-primary-600 font-bold text-2xl mb-4 shadow-md">4</div>
-                  <h3 className="font-semibold mb-2 text-gray-800 text-lg">{t('services.workflow.steps.approval')}</h3>
-                  <p className="text-gray-600 text-sm">Official signature and stamp</p>
-                </div>
-              </AnimatedSection>
-              
-              {/* Step 5 */}
-              <AnimatedSection 
-                className="w-full md:w-1/3 lg:w-1/6 px-4 mb-6 md:mb-0" 
-                animation="slideUp" 
-                delay={0.5}
-              >
-                <div className="bg-white rounded-xl shadow-md p-6 text-center h-full flex flex-col items-center hover-card">
-                  <div className="w-16 h-16 bg-primary-50 rounded-full flex items-center justify-center text-primary-600 font-bold text-2xl mb-4 shadow-md">5</div>
-                  <h3 className="font-semibold mb-2 text-gray-800 text-lg">{t('services.workflow.steps.distribution')}</h3>
-                  <p className="text-gray-600 text-sm">Document collection or delivery</p>
-                </div>
-              </AnimatedSection>
-              
-              {/* Step 6 */}
-              <AnimatedSection 
-                className="w-full md:w-1/3 lg:w-1/6 px-4" 
-                animation="slideUp" 
-                delay={0.6}
-              >
-                <div className="bg-white rounded-xl shadow-md p-6 text-center h-full flex flex-col items-center hover-card">
-                  <div className="w-16 h-16 bg-primary-50 rounded-full flex items-center justify-center text-primary-600 font-bold text-2xl mb-4 shadow-md">6</div>
-                  <h3 className="font-semibold mb-2 text-gray-800 text-lg">{t('services.workflow.steps.archiving')}</h3>
-                  <p className="text-gray-600 text-sm">Document copy storage</p>
-                </div>
-              </AnimatedSection>
+          {/* Alur Kerja Diagram */}
+          <AnimatedSection animation="fadeIn" delay={0.3} className="mb-12">
+            <div className="bg-white rounded-xl shadow-lg p-4 md:p-6 hover-card max-w-5xl mx-auto">
+              <div className="overflow-auto">
+                <img 
+                  src="/images/alur-kerja-fsti.png" 
+                  alt={language === 'en' ? 'FSTI Service Workflow' : 'Alur Kerja Layanan FSTI'} 
+                  className="w-full h-auto object-contain" 
+                />
+              </div>
+              <div className="mt-4 px-2">
+                <p className="text-sm text-gray-600">
+                  {language === 'en' 
+                    ? 'The workflow diagram shows the service process from both Applicant (top) and Staff (bottom) perspective. Applicants can check service status and make improvements if needed.'
+                    : 'Diagram alur kerja menunjukkan proses layanan dari perspektif Pemohon (atas) dan Tendik (bawah). Pemohon dapat memeriksa status layanan dan melakukan perbaikan jika diperlukan.'}
+                </p>
+              </div>
+            </div>
+          </AnimatedSection>
+          
+          {/* Ringkasan Tahapan */}
+          <div className="mt-10">
+            <AnimatedSection animation="slideUp">
+              <h3 className="text-2xl font-display font-semibold text-center mb-8 text-gradient">
+                {language === 'en' ? 'Service Request Steps Summary' : 'Ringkasan Tahapan Layanan'}
+              </h3>
+            </AnimatedSection>
+            
+            <div className="max-w-5xl mx-auto">
+              <div className="flex flex-wrap justify-center">
+                {/* Step 1 */}
+                <AnimatedSection 
+                  className="w-full md:w-1/3 lg:w-1/6 px-4 mb-6 md:mb-0" 
+                  animation="slideUp" 
+                  delay={0.1}
+                >
+                  <div className="bg-white rounded-xl shadow-md p-6 text-center h-full flex flex-col items-center hover-card">
+                    <div className="w-16 h-16 bg-primary-50 rounded-full flex items-center justify-center text-primary-600 font-bold text-2xl mb-4 shadow-md">1</div>
+                    <h3 className="font-semibold mb-2 text-gray-800 text-lg">{t('services.workflow.steps.submission')}</h3>
+                    <p className="text-gray-600 text-sm">
+                      {language === 'en' ? 'Select service and fill the required form' : 'Pilih layanan dan isi formulir yang diperlukan'}
+                    </p>
+                  </div>
+                </AnimatedSection>
+                
+                {/* Step 2 */}
+                <AnimatedSection 
+                  className="w-full md:w-1/3 lg:w-1/6 px-4 mb-6 md:mb-0" 
+                  animation="slideUp" 
+                  delay={0.2}
+                >
+                  <div className="bg-white rounded-xl shadow-md p-6 text-center h-full flex flex-col items-center hover-card">
+                    <div className="w-16 h-16 bg-primary-50 rounded-full flex items-center justify-center text-primary-600 font-bold text-2xl mb-4 shadow-md">2</div>
+                    <h3 className="font-semibold mb-2 text-gray-800 text-lg">{t('services.workflow.steps.verification')}</h3>
+                    <p className="text-gray-600 text-sm">
+                      {language === 'en' ? 'Document verification by admin staff' : 'Verifikasi dokumen oleh staf admin'}
+                    </p>
+                  </div>
+                </AnimatedSection>
+                
+                {/* Step 3 */}
+                <AnimatedSection 
+                  className="w-full md:w-1/3 lg:w-1/6 px-4 mb-6 md:mb-0" 
+                  animation="slideUp" 
+                  delay={0.3}
+                >
+                  <div className="bg-white rounded-xl shadow-md p-6 text-center h-full flex flex-col items-center hover-card">
+                    <div className="w-16 h-16 bg-primary-50 rounded-full flex items-center justify-center text-primary-600 font-bold text-2xl mb-4 shadow-md">3</div>
+                    <h3 className="font-semibold mb-2 text-gray-800 text-lg">{t('services.workflow.steps.processing')}</h3>
+                    <p className="text-gray-600 text-sm">
+                      {language === 'en' ? 'Request processing within 24 hours' : 'Pemrosesan permohonan dalam 24 jam kerja'}
+                    </p>
+                  </div>
+                </AnimatedSection>
+                
+                {/* Step 4 */}
+                <AnimatedSection 
+                  className="w-full md:w-1/3 lg:w-1/6 px-4 mb-6 md:mb-0" 
+                  animation="slideUp" 
+                  delay={0.4}
+                >
+                  <div className="bg-white rounded-xl shadow-md p-6 text-center h-full flex flex-col items-center hover-card">
+                    <div className="w-16 h-16 bg-primary-50 rounded-full flex items-center justify-center text-primary-600 font-bold text-2xl mb-4 shadow-md">4</div>
+                    <h3 className="font-semibold mb-2 text-gray-800 text-lg">{t('services.workflow.steps.approval')}</h3>
+                    <p className="text-gray-600 text-sm">
+                      {language === 'en' ? 'Check results via email' : 'Cek hasil melalui email'}
+                    </p>
+                  </div>
+                </AnimatedSection>
+                
+                {/* Step 5 */}
+                <AnimatedSection 
+                  className="w-full md:w-1/3 lg:w-1/6 px-4 mb-6 md:mb-0" 
+                  animation="slideUp" 
+                  delay={0.5}
+                >
+                  <div className="bg-white rounded-xl shadow-md p-6 text-center h-full flex flex-col items-center hover-card">
+                    <div className="w-16 h-16 bg-primary-50 rounded-full flex items-center justify-center text-primary-600 font-bold text-2xl mb-4 shadow-md">5</div>
+                    <h3 className="font-semibold mb-2 text-gray-800 text-lg">{t('services.workflow.steps.distribution')}</h3>
+                    <p className="text-gray-600 text-sm">
+                      {language === 'en' ? 'Make improvements via WA/Email if needed' : 'Lakukan perbaikan via WA/Email jika diperlukan'}
+                    </p>
+                  </div>
+                </AnimatedSection>
+                
+                {/* Step 6 */}
+                <AnimatedSection 
+                  className="w-full md:w-1/3 lg:w-1/6 px-4" 
+                  animation="slideUp" 
+                  delay={0.6}
+                >
+                  <div className="bg-white rounded-xl shadow-md p-6 text-center h-full flex flex-col items-center hover-card">
+                    <div className="w-16 h-16 bg-primary-50 rounded-full flex items-center justify-center text-primary-600 font-bold text-2xl mb-4 shadow-md">6</div>
+                    <h3 className="font-semibold mb-2 text-gray-800 text-lg">{t('services.workflow.steps.archiving')}</h3>
+                    <p className="text-gray-600 text-sm">
+                      {language === 'en' ? 'Request completed' : 'Permohonan terselesaikan'}
+                    </p>
+                  </div>
+                </AnimatedSection>
+              </div>
             </div>
           </div>
+          
+          {/* Petunjuk Tambahan */}
+          <AnimatedSection animation="fadeIn" delay={0.7} className="mt-12">
+            <div className="bg-gray-50 rounded-xl p-6 max-w-3xl mx-auto">
+              <h4 className="font-semibold text-lg mb-3 text-center text-gray-800">
+                {language === 'en' ? 'Additional Information' : 'Informasi Tambahan'}
+              </h4>
+              <ul className="list-disc pl-6 space-y-2 text-gray-700">
+                <li>
+                  {language === 'en' 
+                    ? 'For document status inquiries, you can contact FSTI admin via WhatsApp Business within 24 hours after submission'
+                    : 'Untuk menanyakan status dokumen, Anda dapat menghubungi admin FSTI melalui WhatsApp Business dalam waktu 24 jam setelah pengajuan'}
+                </li>
+                <li>
+                  {language === 'en' 
+                    ? 'If revisions are needed, you will be notified via email or WhatsApp Business'
+                    : 'Jika diperlukan revisi, Anda akan diberitahu melalui email atau WhatsApp Business'}
+                </li>
+                <li>
+                  {language === 'en' 
+                    ? 'Please ensure all required documents are complete to avoid processing delays'
+                    : 'Pastikan semua dokumen yang diperlukan lengkap untuk menghindari keterlambatan pemrosesan'}
+                </li>
+              </ul>
+            </div>
+          </AnimatedSection>
         </div>
       </section>
 
