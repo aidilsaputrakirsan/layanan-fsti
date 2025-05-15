@@ -12,10 +12,10 @@ const MaklumatPelayanan = () => {
     // Cek kapan terakhir kali pop-up ditampilkan
     const lastShown = localStorage.getItem('last_shown_maklumat');
     const now = new Date().getTime();
-    const oneWeek = 7 * 24 * 60 * 60 * 1000; // dalam milidetik (1 minggu)
+    const oneDay = 24 * 60 * 60 * 1000; // dalam milidetik (1 hari)
     
-    // Tampilkan jika belum pernah ditampilkan atau sudah lebih dari seminggu
-    if (!lastShown || now - parseInt(lastShown) > oneWeek) {
+    // Tampilkan jika belum pernah ditampilkan atau sudah lebih dari sehari
+    if (!lastShown || now - parseInt(lastShown) > oneDay) {
       const timer = setTimeout(() => setIsOpen(true), 1500);
       return () => clearTimeout(timer);
     }
