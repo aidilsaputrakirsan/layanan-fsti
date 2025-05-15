@@ -36,6 +36,12 @@ export interface TranslationObject {
         survey: 'Satisfaction Survey',
       },
       
+     // MaklumatPelayanan
+      maklumatPelayanan: {
+        title: "Service Commitment",
+        commitment: "WE HEREBY PROMISE TO PROVIDE EXCELLENT SERVICE IN ACCORDANCE WITH ESTABLISHED STANDARDS, AND IF WE FAIL TO KEEP THIS PROMISE, WE ARE PREPARED TO ACCEPT SANCTIONS IN ACCORDANCE WITH APPLICABLE LAWS AND REGULATIONS"
+      },
+ 
       // Homepage
       home: {
         hero: {
@@ -328,7 +334,13 @@ export interface TranslationObject {
         language: 'Bahasa',
         survey: 'Survey Kepuasan',
       },
-      
+
+      // Maklumat Pelayanan
+      maklumatPelayanan: {
+        title: "Maklumat Pelayanan",
+        commitment: "DENGAN INI KAMI BERJANJI AKAN MEMBERIKAN PELAYANAN PRIMA SESUAI DENGAN STANDAR YANG DITETAPKAN, DAN APABILA TIDAK MENEPATI JANJI, KAMI SIAP MENERIMA SANKSI SESUAI DENGAN PERATURAN PERUNDANG-UNDANGAN YANG BERLAKU"
+      },
+            
       // Homepage
       home: {
         hero: {

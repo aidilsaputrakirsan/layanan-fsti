@@ -77,9 +77,6 @@ export async function GET(request) {
   }
 }
 
-/**
- * Add POST method to handle survey form submissions and other POST requests
- */
 export async function POST(request) {
   try {
     // Extract the URL parameter from the query string

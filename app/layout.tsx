@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import './animation.css';
 import { LanguageProvider } from '@/lib/i18n/LanguageContext';
+import MaklumatPelayanan from '@/components/ui/MaklumatPelayanan';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -29,6 +30,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <LanguageProvider>
           {children}
+          <MaklumatPelayanan />
         </LanguageProvider>
       </body>
     </html>
