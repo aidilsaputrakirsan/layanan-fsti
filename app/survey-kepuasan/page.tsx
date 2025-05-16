@@ -9,15 +9,15 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Star, Send, CheckCircle, AlertCircle, RotateCw, MessageSquare, User, Type, 
   FileText, ThumbsUp, Heart, Award, GraduationCap, Users, DollarSign, Globe, 
-  Laptop, FileSignature, Folder, Briefcase, Edit // Tambahkan Edit
+  Laptop, FileSignature, Folder, Briefcase, Edit 
 } from 'lucide-react';
 
 // URL Google Apps Script
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzuFtZWPoN6gqfRNLvhrFV1BFWXec49juZjivOuTvJTA-Cm6LWstWEyZsJn5JrRMIn2/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzh_0Qd6yOaMp2f6qJS0xCRYTNgcDJm8YDCZaxretN0JiT4dAChQ1qtQe0kbixvL852_A/exec';
 
 interface SurveyFormData {
   nama: string;
-  identitas: string; // NIM/NIP
+  identitas: string;
   jenisLayanan: string;
   rating: number;
   komentar: string;
@@ -290,112 +290,33 @@ const SurveyKepuasanPage = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [hoverRating, setHoverRating] = useState(0);
 
-  // Layanan Mahasiswa
   const mahasiswaServices = [
-    { 
-      id: 'surat', 
-      label: language === 'en' ? 'Letter Services' : 'Layanan Surat',
-      icon: <FileText className="w-5 h-5" />
-    },
-    { 
-      id: 'kp-ta', 
-      label: language === 'en' ? 'Internship / Apprenticeship and Final Projects' : 'Kerja Praktek / Magang dan Tugas Akhir',
-      icon: <Briefcase className="w-5 h-5" />
-    },
-    { 
-      id: 'akademik', 
-      label: language === 'en' ? 'Academic Services' : 'Layanan Akademik',
-      icon: <GraduationCap className="w-5 h-5" />
-    },
-    { 
-      id: 'legalisasi', 
-      label: language === 'en' ? 'Document Legalization' : 'Legalisasi Dokumen',
-      icon: <CheckCircle className="w-5 h-5" />
-    },
-    { 
-      id: 'perubahan-matkul', 
-      label: language === 'en' ? 'Course Changes/Additions/Removals' : 'Layanan Perubahan/Penambahan/Penghapusan Mata Kuliah',
-      icon: <Edit className="w-5 h-5" />
-    },
-    { 
-      id: 'kemahasiswaan', 
-      label: language === 'en' ? 'Student Affairs' : 'Layanan Kemahasiswaan',
-      icon: <Users className="w-5 h-5" />
-    },
-    { 
-      id: 'keuangan', 
-      label: language === 'en' ? 'Financial Services' : 'Layanan Keuangan',
-      icon: <DollarSign className="w-5 h-5" />
-    },
-    { 
-      id: 'humas', 
-      label: language === 'en' ? 'Public Relations' : 'Layanan Humas',
-      icon: <Globe className="w-5 h-5" />
-    }
+    { id: 'surat', label: language === 'en' ? 'Letter Services' : 'Layanan Surat', icon: <FileText className="w-5 h-5" /> },
+    { id: 'kp-ta', label: language === 'en' ? 'Internship / Apprenticeship and Final Projects' : 'Kerja Praktek / Magang dan Tugas Akhir', icon: <Briefcase className="w-5 h-5" /> },
+    { id: 'akademik', label: language === 'en' ? 'Academic Services' : 'Layanan Akademik', icon: <GraduationCap className="w-5 h-5" /> },
+    { id: 'legalisasi', label: language === 'en' ? 'Document Legalization' : 'Legalisasi Dokumen', icon: <CheckCircle className="w-5 h-5" /> },
+    { id: 'perubahan-matkul', label: language === 'en' ? 'Course Changes/Additions/Removals' : 'Layanan Perubahan/Penambahan/Penghapusan Mata Kuliah', icon: <Edit className="w-5 h-5" /> },
+    { id: 'kemahasiswaan', label: language === 'en' ? 'Student Affairs' : 'Layanan Kemahasiswaan', icon: <Users className="w-5 h-5" /> },
+    { id: 'keuangan', label: language === 'en' ? 'Financial Services' : 'Layanan Keuangan', icon: <DollarSign className="w-5 h-5" /> },
+    { id: 'humas', label: language === 'en' ? 'Public Relations' : 'Layanan Humas', icon: <Globe className="w-5 h-5" /> },
   ];
 
-  // Layanan Dosen
   const dosenServices = [
-    { 
-      id: 'sistem-informasi-dosen', 
-      label: language === 'en' ? 'Lecturer Information Systems' : 'Sistem Informasi Dosen',
-      icon: <Laptop className="w-5 h-5" />
-    },
-    { 
-      id: 'pengajuan-surat-cek-plagiat', 
-      label: language === 'en' ? 'Plagiarism Check Letter' : 'Pengajuan Surat Ket. Cek Plagiasi Dosen',
-      icon: <FileText className="w-5 h-5" />
-    },
-    { 
-      id: 'template-form-cuti', 
-      label: language === 'en' ? 'Leave Form Template' : 'Template Form Cuti',
-      icon: <FileSignature className="w-5 h-5" />
-    },
-    { 
-      id: 'layanan-surat-tugas', 
-      label: language === 'en' ? 'Assignment Letter Service' : 'Layanan Pengajuan Surat Tugas',
-      icon: <FileText className="w-5 h-5" />
-    },
-    { 
-      id: 'peminjaman-sarana', 
-      label: language === 'en' ? 'ITK Facilities and Infrastructure Borrowing' : 'Layanan Peminjaman Sarana dan Prasarana ITK',
-      icon: <Laptop className="w-5 h-5" />
-    },
-    { 
-      id: 'pengesahan-dekan', 
-      label: language === 'en' ? 'Dean\'s Approval' : 'Layanan Pengesahan Dekan',
-      icon: <CheckCircle className="w-5 h-5" />
-    },
-    { 
-      id: 'inisiasi-kerjasama', 
-      label: language === 'en' ? 'Cooperation Initiation' : 'Layanan Pengajuan Inisiasi Kerjasama',
-      icon: <Briefcase className="w-5 h-5" />
-    },
-    { 
-      id: 'kumpulan-sk', 
-      label: language === 'en' ? 'Academic-Non Academic Decrees Collection' : 'Kumpulan SK Akademik-Non Akademik',
-      icon: <Folder className="w-5 h-5" />
-    },
-    { 
-      id: 'template-kp4', 
-      label: language === 'en' ? 'KP4 Form Template' : 'Template Form KP4',
-      icon: <FileSignature className="w-5 h-5" />
-    },
-    { 
-      id: 'pengajuan-sk-rektor', 
-      label: language === 'en' ? 'Rector\'s Decree Request' : 'Layanan Pengajuan SK Rektor',
-      icon: <Award className="w-5 h-5" />
-    }
+    { id: 'sistem-informasi-dosen', label: language === 'en' ? 'Lecturer Information Systems' : 'Sistem Informasi Dosen', icon: <Laptop className="w-5 h-5" /> },
+    { id: 'pengajuan-surat-cek-plagiat', label: language === 'en' ? 'Plagiarism Check Letter' : 'Pengajuan Surat Ket. Cek Plagiasi Dosen', icon: <FileText className="w-5 h-5" /> },
+    { id: 'template-form-cuti', label: language === 'en' ? 'Leave Form Template' : 'Template Form Cuti', icon: <FileSignature className="w-5 h-5" /> },
+    { id: 'layanan-surat-tugas', label: language === 'en' ? 'Assignment Letter Service' : 'Layanan Pengajuan Surat Tugas', icon: <FileText className="w-5 h-5" /> },
+    { id: 'peminjaman-sarana', label: language === 'en' ? 'ITK Facilities and Infrastructure Borrowing' : 'Layanan Peminjaman Sarana dan Prasarana ITK', icon: <Laptop className="w-5 h-5" /> },
+    { id: 'pengesahan-dekan', label: language === 'en' ? 'Dean\'s Approval' : 'Layanan Pengesahan Dekan', icon: <CheckCircle className="w-5 h-5" /> },
+    { id: 'inisiasi-kerjasama', label: language === 'en' ? 'Cooperation Initiation' : 'Layanan Pengajuan Inisiasi Kerjasama', icon: <Briefcase className="w-5 h-5" /> },
+    { id: 'kumpulan-sk', label: language === 'en' ? 'Academic-Non Academic Decrees Collection' : 'Kumpulan SK Akademik-Non Akademik', icon: <Folder className="w-5 h-5" /> },
+    { id: 'template-kp4', label: language === 'en' ? 'KP4 Form Template' : 'Template Form KP4', icon: <FileSignature className="w-5 h-5" /> },
+    { id: 'pengajuan-sk-rektor', label: language === 'en' ? 'Rector\'s Decree Request' : 'Layanan Pengajuan SK Rektor', icon: <Award className="w-5 h-5" /> },
   ];
 
-  // Fungsi untuk menentukan kategori berdasarkan jenisLayanan
   const determineCategory = (jenisLayanan: string) => {
-    if (mahasiswaServices.some(service => service.id === jenisLayanan)) {
-      return 'Mahasiswa';
-    }
-    if (dosenServices.some(service => service.id === jenisLayanan)) {
-      return 'Dosen';
-    }
+    if (mahasiswaServices.some(service => service.id === jenisLayanan)) return 'Mahasiswa';
+    if (dosenServices.some(service => service.id === jenisLayanan)) return 'Dosen';
     return 'Mahasiswa';
   };
 
@@ -427,23 +348,31 @@ const SurveyKepuasanPage = () => {
 
       const response = await fetch(SCRIPT_URL, {
         method: 'POST',
-        mode: 'no-cors',
+        mode: 'cors', // Ubah ke 'cors' untuk membaca respons
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          action: 'submitSurvey', // Tambahkan struktur action
+          data: formData
+        }),
       });
 
-      setSubmitStatus('success');
-      setFormData({
-        nama: '',
-        identitas: '',
-        jenisLayanan: '',
-        rating: 0,
-        komentar: '',
-        tanggal: new Date().toISOString(),
-        kategori: 'Mahasiswa'
-      });
+      const result = await response.json();
+      if (result.success) {
+        setSubmitStatus('success');
+        setFormData({
+          nama: '',
+          identitas: '',
+          jenisLayanan: '',
+          rating: 0,
+          komentar: '',
+          tanggal: new Date().toISOString(),
+          kategori: 'Mahasiswa'
+        });
+      } else {
+        throw new Error(result.message || (language === 'en' ? 'Failed to submit survey' : 'Gagal mengirim survey'));
+      }
     } catch (error) {
       setSubmitStatus('error');
       setErrorMessage(error instanceof Error ? error.message : String(error));
