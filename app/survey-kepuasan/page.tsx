@@ -13,7 +13,7 @@ import {
 } from 'lucide-react';
 
 // URL Google Apps Script
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzh_0Qd6yOaMp2f6qJS0xCRYTNgcDJm8YDCZaxretN0JiT4dAChQ1qtQe0kbixvL852_A/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw7qS5mbUHZh23hjpfRlWV84YdfvXib8Ev-uidCdMGtdpcQec1h1x2Apxa_9P6ylt5k-g/exec';
 
 interface SurveyFormData {
   nama: string;
