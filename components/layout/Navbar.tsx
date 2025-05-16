@@ -77,6 +77,10 @@ const Navbar = () => {
             <NavLink href="/" active={pathname === '/'}>
               {t('nav.home')}
             </NavLink>
+            {/* Menambahkan NavLink baru untuk Peraturan & Kebijakan */}
+            <NavLink href="/peraturan-kebijakan" active={pathname?.includes('/peraturan-kebijakan')}>
+              {t('nav.regulations') || (t('nav.language') === 'English' ? 'Regulations' : 'Peraturan')}
+            </NavLink>
             <NavLink href="/layanan-administrasi" active={pathname?.includes('/layanan-administrasi')}>
               {t('nav.adminServices')}
             </NavLink>
@@ -139,6 +143,14 @@ const Navbar = () => {
                 <div className="container mx-auto px-4 py-5 flex flex-col space-y-4">
                   <MobileNavLink href="/" active={pathname === '/'} onClick={() => setIsOpen(false)}>
                     {t('nav.home')}
+                  </MobileNavLink>
+                  {/* Menambahkan MobileNavLink baru untuk Peraturan & Kebijakan */}
+                  <MobileNavLink 
+                    href="/peraturan-kebijakan" 
+                    active={pathname?.includes('/peraturan-kebijakan')} 
+                    onClick={() => setIsOpen(false)}
+                  >
+                    {t('nav.regulations') || (t('nav.language') === 'English' ? 'Regulations' : 'Peraturan')}
                   </MobileNavLink>
                   <MobileNavLink 
                     href="/layanan-administrasi" 

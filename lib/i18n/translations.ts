@@ -34,6 +34,7 @@ export interface TranslationObject {
         contact: 'Contact',
         language: 'Language',
         survey: 'Satisfaction Survey',
+        regulations: 'Regulations & Policies',
       },
       
      // MaklumatPelayanan
@@ -284,6 +285,21 @@ export interface TranslationObject {
           },
         },
       },
+
+      peraturanKebijakan: {
+        title: "Regulations, Policies, and Student Guidelines",
+        description: "Documents related to rules and guidelines for student activities within FSTI",
+        searchPlaceholder: "Search documents...",
+        documentList: "Document List",
+        notFound: "Not Found",
+        noDocumentsMatch: "No documents match your search.",
+        resetSearch: "Reset Search",
+        openPdf: "Open PDF",
+        downloadPdf: "Download PDF",
+        importantInfo: "Important Information",
+        infoText1: "These documents are official guidelines established by Kalimantan Institute of Technology and the Faculty of Science and Information Technology. Students are expected to read and understand these documents for the smooth running of academic activities.",
+        infoText2: "All documents can be downloaded and saved for reference. If there are questions or matters that need clarification, please contact the FSTI admin."
+      },
       
       // Footer
       footer: {
@@ -333,6 +349,7 @@ export interface TranslationObject {
         contact: 'Kontak',
         language: 'Bahasa',
         survey: 'Survey Kepuasan',
+        regulations: 'Peraturan & Kebijakan',
       },
 
       // Maklumat Pelayanan
@@ -584,6 +601,21 @@ export interface TranslationObject {
         },
       },
       
+      peraturanKebijakan: {
+        title: "Peraturan, Kebijakan, dan Panduan Mahasiswa",
+        description: "Dokumen-dokumen terkait aturan dan panduan untuk aktifitas mahasiswa di lingkungan FSTI",
+        searchPlaceholder: "Cari dokumen...",
+        documentList: "Daftar Dokumen",
+        notFound: "Tidak Ditemukan",
+        noDocumentsMatch: "Tidak ada dokumen yang sesuai dengan pencarian Anda.",
+        resetSearch: "Reset Pencarian",
+        openPdf: "Buka PDF",
+        downloadPdf: "Unduh PDF",
+        importantInfo: "Informasi Penting",
+        infoText1: "Dokumen-dokumen ini merupakan pedoman resmi yang ditetapkan oleh Institut Teknologi Kalimantan dan Fakultas Sains dan Teknologi Informasi. Mahasiswa diharapkan untuk membaca dan memahami dokumen-dokumen ini untuk kelancaran kegiatan akademik.",
+        infoText2: "Seluruh dokumen dapat diunduh dan disimpan untuk referensi. Jika terdapat pertanyaan atau hal yang perlu diklarifikasi, silakan hubungi admin FSTI."
+      },
+
       // Footer
       footer: {
         about: 'FSTI ITK',
