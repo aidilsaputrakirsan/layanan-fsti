@@ -7,26 +7,13 @@ import Button from '@/components/ui/Button';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  Star, 
-  Send, 
-  CheckCircle, 
-  AlertCircle, 
-  RotateCw, 
-  MessageSquare, 
-  User, 
-  Type, 
-  FileText,
-  ThumbsUp,
-  Heart,
-  Award,
-  Clock,
-  TrendingUp,
-  Trophy
+  Star, Send, CheckCircle, AlertCircle, RotateCw, MessageSquare, User, Type, 
+  FileText, ThumbsUp, Heart, Award, GraduationCap, Users, DollarSign, Globe, 
+  Laptop, FileSignature, Folder, Briefcase, Edit // Tambahkan Edit
 } from 'lucide-react';
 
-// Pastikan URL ini diganti dengan Google Apps Script yang sudah dibuat
+// URL Google Apps Script
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzuFtZWPoN6gqfRNLvhrFV1BFWXec49juZjivOuTvJTA-Cm6LWstWEyZsJn5JrRMIn2/exec';
-const API_ENDPOINT = '/api/cors-proxy';
 
 interface SurveyFormData {
   nama: string;
@@ -35,39 +22,40 @@ interface SurveyFormData {
   rating: number;
   komentar: string;
   tanggal: string;
+  kategori: 'Mahasiswa' | 'Dosen';
 }
 
 // Fungsi untuk mendapatkan emoji berdasarkan rating
 const getRatingEmoji = (rating: number) => {
   if (rating <= 0) return <span className="text-2xl opacity-50">😶</span>;
-  if (rating === 1) return <span className="text-2xl">😫</span>; // Sangat kecewa/marah
-  if (rating === 2) return <span className="text-2xl">😔</span>; // Kecewa
-  if (rating === 3) return <span className="text-2xl">😐</span>; // Netral
-  if (rating === 4) return <span className="text-2xl">😊</span>; // Senang
-  return <span className="text-2xl">🤩</span>; // Sangat senang/luar biasa
+  if (rating === 1) return <span className="text-2xl">😫</span>;
+  if (rating === 2) return <span className="text-2xl">😔</span>;
+  if (rating === 3) return <span className="text-2xl">😐</span>;
+  if (rating === 4) return <span className="text-2xl">😊</span>;
+  return <span className="text-2xl">🤩</span>;
 };
 
 // Fungsi untuk mendapatkan teks rating
 const getRatingText = (rating: number, language: 'en' | 'id') => {
   if (rating <= 0) return language === 'en' ? 'Not rated yet' : 'Belum dinilai';
-  if (rating === 1) return language === 'en' ? 'Very Disappointed' : 'Sangat Kecewa'; // Lebih ekspresif untuk rating 1
+  if (rating === 1) return language === 'en' ? 'Very Disappointed' : 'Sangat Kecewa';
   if (rating === 2) return language === 'en' ? 'Unsatisfied' : 'Tidak Puas';
   if (rating === 3) return language === 'en' ? 'Neutral' : 'Netral';
   if (rating === 4) return language === 'en' ? 'Satisfied' : 'Puas';
-  return language === 'en' ? 'Outstanding' : 'Sangat Memuaskan'; // Lebih ekspresif untuk rating 5
+  return language === 'en' ? 'Outstanding' : 'Sangat Memuaskan';
 };
 
 // Fungsi untuk mendapatkan warna berdasarkan rating
 const getRatingColor = (rating: number) => {
   if (rating <= 0) return 'text-gray-400';
-  if (rating === 1) return 'text-red-500'; // Warna lebih tegas untuk rating 1
+  if (rating === 1) return 'text-red-500';
   if (rating === 2) return 'text-orange-500';
   if (rating === 3) return 'text-yellow-500';
   if (rating === 4) return 'text-green-400';
-  return 'text-green-600'; // Warna lebih tegas untuk rating 5
+  return 'text-green-600';
 };
 
-// Komponen untuk rating yang lebih interaktif
+// Komponen untuk rating
 const RatingSelector = ({ rating, onChange, hoverRating, setHoverRating, language }: {
   rating: number;
   onChange: (rating: number) => void;
@@ -75,7 +63,6 @@ const RatingSelector = ({ rating, onChange, hoverRating, setHoverRating, languag
   setHoverRating: (rating: number) => void;
   language: 'en' | 'id';
 }) => {
-  // Warna untuk setiap level rating
   const ratingColors = {
     1: "text-red-500 hover:text-red-600",
     2: "text-orange-400 hover:text-orange-500",
@@ -83,8 +70,6 @@ const RatingSelector = ({ rating, onChange, hoverRating, setHoverRating, languag
     4: "text-green-400 hover:text-green-500",
     5: "text-green-500 hover:text-green-600"
   };
-
-
 
   return (
     <div className="bg-gray-50 p-5 rounded-lg border border-gray-200">
@@ -99,20 +84,19 @@ const RatingSelector = ({ rating, onChange, hoverRating, setHoverRating, languag
         </span>
       </div>
       
-      {/* Indicator untuk emoji di atas bintang */}
       <div className="flex justify-center space-x-8 mb-1">
         {[1, 2, 3, 4, 5].map((star) => (
           <div 
             key={`emoji-${star}`}
             className={`text-2xl transition-opacity duration-200 ${
-              (hoverRating === star || rating === star) ? 'opacity-100' : 'opacity-0'
+              (hoverRating === star || (!hoverRating && rating === star)) ? 'opacity-100' : 'opacity-0'
             }`}
           >
+            {getRatingEmoji(star)}
           </div>
         ))}
       </div>
       
-      {/* Bintang rating */}
       <div className="flex justify-center space-x-3 mb-6">
         {[1, 2, 3, 4, 5].map((star) => (
           <motion.button
@@ -124,13 +108,13 @@ const RatingSelector = ({ rating, onChange, hoverRating, setHoverRating, languag
             whileHover={{ scale: 1.2 }}
             whileTap={{ scale: 0.9 }}
             className={`focus:outline-none p-2 rounded-full transition-colors duration-200 ${
-              (hoverRating >= star || rating >= star) ? 
+              (hoverRating >= star || (!hoverRating && rating >= star)) ? 
                 `bg-gray-100 ${ratingColors[star as 1|2|3|4|5]}` : 'text-gray-300'
             }`}
           >
             <Star
               className={`w-10 h-10 transition-all duration-200 ${
-                (hoverRating >= star || rating >= star) ? 'fill-current' : ''
+                (hoverRating >= star || (!hoverRating && rating >= star)) ? 'fill-current' : ''
               }`}
             />
           </motion.button>
@@ -159,6 +143,8 @@ const RatingSelector = ({ rating, onChange, hoverRating, setHoverRating, languag
 
 // Komponen untuk animasi konfetti
 const UseConfetti = () => {
+  const [confettiLoaded, setConfettiLoaded] = useState<boolean>(false);
+
   useEffect(() => {
     const script = document.createElement('script');
     script.src = 'https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js';
@@ -166,31 +152,30 @@ const UseConfetti = () => {
     document.body.appendChild(script);
 
     script.onload = () => {
-      // @ts-ignore
-      if (typeof confetti !== 'undefined') {
-        // Pertama, memancar confetti dengan warna default
-        // @ts-ignore
+      setConfettiLoaded(true);
+      const confetti = (window as any).confetti;
+      if (confetti) {
         confetti({
           particleCount: 100,
           spread: 70,
           origin: { y: 0.6 }
         });
         
-        // Setelah delay, tampilkan confetti kedua dengan warna berbeda
         setTimeout(() => {
-          // @ts-ignore
-          if (typeof confetti !== 'undefined') {
-            // @ts-ignore
-            confetti({
-              particleCount: 50,
-              spread: 100,
-              origin: { y: 0.6 },
-              colors: ['#2f4dd3', '#4f46e5', '#5978ff'], // Menggunakan warna primary dari tema
-              ticks: 200
-            });
-          }
+          confetti({
+            particleCount: 50,
+            spread: 100,
+            origin: { y: 0.6 },
+            colors: ['#2f4dd3', '#4f46e5', '#5978ff'],
+            ticks: 200
+          });
         }, 700);
       }
+    };
+
+    script.onerror = () => {
+      console.error('Failed to load confetti script');
+      setConfettiLoaded(false);
     };
 
     return () => {
@@ -210,44 +195,26 @@ const SuccessAnimation = ({ onSubmitAnother, language }: {
 }) => {
   return (
     <div className="bg-white rounded-xl shadow-md p-8 border border-gray-200 text-center relative overflow-hidden">
-      {/* Efek background */}
       <div className="absolute inset-0 bg-gradient-to-br from-green-50 via-white to-blue-50 opacity-70"></div>
       
-      {/* Confetti effect with dynamic loading from CDN */}
       <UseConfetti />
       
-      {/* Success icon container with animations */}
       <div className="relative z-10">
         <motion.div
           initial={{ scale: 0, rotate: 0 }}
-          animate={{ 
-            scale: [0, 1.2, 1],
-            rotate: [0, 10, 0]
-          }}
-          transition={{ 
-            duration: 0.8,
-            type: "spring", 
-            stiffness: 200, 
-            damping: 10 
-          }}
+          animate={{ scale: [0, 1.2, 1], rotate: [0, 10, 0] }}
+          transition={{ duration: 0.8, type: "spring", stiffness: 200, damping: 10 }}
           className="relative"
         >
           <div className="w-24 h-24 mx-auto bg-green-100 rounded-full flex items-center justify-center mb-8">
             <motion.div
-              animate={{ 
-                scale: [1, 1.1, 1],
-              }}
-              transition={{
-                duration: 2,
-                repeat: Infinity,
-                repeatType: "reverse"
-              }}
+              animate={{ scale: [1, 1.1, 1] }}
+              transition={{ duration: 2, repeat: Infinity, repeatType: "reverse" }}
             >
               <div className="text-6xl">🎉</div>
             </motion.div>
           </div>
           
-          {/* Animated emojis around the success indicator */}
           <motion.div 
             className="absolute -top-4 -right-4"
             initial={{ scale: 0, rotate: -20 }}
@@ -290,10 +257,7 @@ const SuccessAnimation = ({ onSubmitAnother, language }: {
               : 'Survey Anda telah berhasil dikirimkan. Kami menghargai waktu dan umpan balik Anda.'}
           </p>
           
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
+          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
             <Button 
               onClick={onSubmitAnother}
               variant="primary"
@@ -318,24 +282,30 @@ const SurveyKepuasanPage = () => {
     rating: 0,
     komentar: '',
     tanggal: new Date().toISOString(),
+    kategori: 'Mahasiswa'
   });
   
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
   const [hoverRating, setHoverRating] = useState(0);
-  
-  // Available services with icons
-  const availableServices = [
+
+  // Layanan Mahasiswa
+  const mahasiswaServices = [
     { 
-      id: 'surat-umum', 
-      label: language === 'en' ? 'Cover Letters / General Documents' : 'Surat Pengantar / Dokumen Umum',
+      id: 'surat', 
+      label: language === 'en' ? 'Letter Services' : 'Layanan Surat',
       icon: <FileText className="w-5 h-5" />
     },
     { 
       id: 'kp-ta', 
-      label: language === 'en' ? 'Internship / Final Projects' : 'Kerja Praktek / Tugas Akhir',
-      icon: <Award className="w-5 h-5" />
+      label: language === 'en' ? 'Internship / Apprenticeship and Final Projects' : 'Kerja Praktek / Magang dan Tugas Akhir',
+      icon: <Briefcase className="w-5 h-5" />
+    },
+    { 
+      id: 'akademik', 
+      label: language === 'en' ? 'Academic Services' : 'Layanan Akademik',
+      icon: <GraduationCap className="w-5 h-5" />
     },
     { 
       id: 'legalisasi', 
@@ -343,20 +313,101 @@ const SurveyKepuasanPage = () => {
       icon: <CheckCircle className="w-5 h-5" />
     },
     { 
-      id: 'siakad', 
-      label: language === 'en' ? 'SIAKAD' : 'SIAKAD',
-      icon: <Clock className="w-5 h-5" />
+      id: 'perubahan-matkul', 
+      label: language === 'en' ? 'Course Changes/Additions/Removals' : 'Layanan Perubahan/Penambahan/Penghapusan Mata Kuliah',
+      icon: <Edit className="w-5 h-5" />
     },
     { 
-      id: 'tracking', 
-      label: language === 'en' ? 'Document Tracking' : 'Tracking Dokumen',
-      icon: <TrendingUp className="w-5 h-5" />
+      id: 'kemahasiswaan', 
+      label: language === 'en' ? 'Student Affairs' : 'Layanan Kemahasiswaan',
+      icon: <Users className="w-5 h-5" />
     },
+    { 
+      id: 'keuangan', 
+      label: language === 'en' ? 'Financial Services' : 'Layanan Keuangan',
+      icon: <DollarSign className="w-5 h-5" />
+    },
+    { 
+      id: 'humas', 
+      label: language === 'en' ? 'Public Relations' : 'Layanan Humas',
+      icon: <Globe className="w-5 h-5" />
+    }
   ];
+
+  // Layanan Dosen
+  const dosenServices = [
+    { 
+      id: 'sistem-informasi-dosen', 
+      label: language === 'en' ? 'Lecturer Information Systems' : 'Sistem Informasi Dosen',
+      icon: <Laptop className="w-5 h-5" />
+    },
+    { 
+      id: 'pengajuan-surat-cek-plagiat', 
+      label: language === 'en' ? 'Plagiarism Check Letter' : 'Pengajuan Surat Ket. Cek Plagiasi Dosen',
+      icon: <FileText className="w-5 h-5" />
+    },
+    { 
+      id: 'template-form-cuti', 
+      label: language === 'en' ? 'Leave Form Template' : 'Template Form Cuti',
+      icon: <FileSignature className="w-5 h-5" />
+    },
+    { 
+      id: 'layanan-surat-tugas', 
+      label: language === 'en' ? 'Assignment Letter Service' : 'Layanan Pengajuan Surat Tugas',
+      icon: <FileText className="w-5 h-5" />
+    },
+    { 
+      id: 'peminjaman-sarana', 
+      label: language === 'en' ? 'ITK Facilities and Infrastructure Borrowing' : 'Layanan Peminjaman Sarana dan Prasarana ITK',
+      icon: <Laptop className="w-5 h-5" />
+    },
+    { 
+      id: 'pengesahan-dekan', 
+      label: language === 'en' ? 'Dean\'s Approval' : 'Layanan Pengesahan Dekan',
+      icon: <CheckCircle className="w-5 h-5" />
+    },
+    { 
+      id: 'inisiasi-kerjasama', 
+      label: language === 'en' ? 'Cooperation Initiation' : 'Layanan Pengajuan Inisiasi Kerjasama',
+      icon: <Briefcase className="w-5 h-5" />
+    },
+    { 
+      id: 'kumpulan-sk', 
+      label: language === 'en' ? 'Academic-Non Academic Decrees Collection' : 'Kumpulan SK Akademik-Non Akademik',
+      icon: <Folder className="w-5 h-5" />
+    },
+    { 
+      id: 'template-kp4', 
+      label: language === 'en' ? 'KP4 Form Template' : 'Template Form KP4',
+      icon: <FileSignature className="w-5 h-5" />
+    },
+    { 
+      id: 'pengajuan-sk-rektor', 
+      label: language === 'en' ? 'Rector\'s Decree Request' : 'Layanan Pengajuan SK Rektor',
+      icon: <Award className="w-5 h-5" />
+    }
+  ];
+
+  // Fungsi untuk menentukan kategori berdasarkan jenisLayanan
+  const determineCategory = (jenisLayanan: string) => {
+    if (mahasiswaServices.some(service => service.id === jenisLayanan)) {
+      return 'Mahasiswa';
+    }
+    if (dosenServices.some(service => service.id === jenisLayanan)) {
+      return 'Dosen';
+    }
+    return 'Mahasiswa';
+  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData(prev => {
+      const updatedData = { ...prev, [name]: value };
+      if (name === 'jenisLayanan') {
+        updatedData.kategori = determineCategory(value);
+      }
+      return updatedData;
+    });
   };
 
   const handleRatingChange = (rating: number) => {
@@ -370,42 +421,29 @@ const SurveyKepuasanPage = () => {
     setErrorMessage('');
 
     try {
-      // Validate required fields
       if (!formData.nama || !formData.jenisLayanan || formData.rating === 0) {
         throw new Error(language === 'en' ? 'Please fill all required fields' : 'Harap isi semua kolom yang diperlukan');
       }
-      
-      // Menyiapkan data untuk dikirim ke Google Sheets
-      const apiUrl = `${API_ENDPOINT}?url=${encodeURIComponent(SCRIPT_URL)}`;
-      
-      // Send data to the API
-      const response = await fetch(apiUrl, {
+
+      const response = await fetch(SCRIPT_URL, {
         method: 'POST',
+        mode: 'no-cors',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          action: 'submitSurvey',
-          data: formData
-        }),
+        body: JSON.stringify(formData),
       });
-      
-      const result = await response.json();
-      
-      if (result.success) {
-        setSubmitStatus('success');
-        // Reset form after successful submission
-        setFormData({
-          nama: '',
-          identitas: '',
-          jenisLayanan: '',
-          rating: 0,
-          komentar: '',
-          tanggal: new Date().toISOString(),
-        });
-      } else {
-        throw new Error(result.message || (language === 'en' ? 'Failed to submit survey' : 'Gagal mengirim survey'));
-      }
+
+      setSubmitStatus('success');
+      setFormData({
+        nama: '',
+        identitas: '',
+        jenisLayanan: '',
+        rating: 0,
+        komentar: '',
+        tanggal: new Date().toISOString(),
+        kategori: 'Mahasiswa'
+      });
     } catch (error) {
       setSubmitStatus('error');
       setErrorMessage(error instanceof Error ? error.message : String(error));
@@ -417,7 +455,6 @@ const SurveyKepuasanPage = () => {
 
   return (
     <MainLayout>
-      {/* Header Section dengan Animasi yang Lebih Menarik */}
       <section className="relative py-20 overflow-hidden">
         <div className="absolute inset-0 hero-gradient"></div>
         <div className="container mx-auto px-4 relative z-10">
@@ -432,7 +469,6 @@ const SurveyKepuasanPage = () => {
                   : 'Bantu kami meningkatkan layanan dengan memberikan umpan balik dan penilaian atas pengalaman Anda.'}
               </p>
               
-              {/* Animated emoji */}
               <div className="flex justify-center items-center gap-6 mb-8">
                 <motion.div 
                   initial={{ y: 20, opacity: 0 }}
@@ -460,28 +496,21 @@ const SurveyKepuasanPage = () => {
                 </motion.div>
               </div>
               
-              {/* Added Stats for visual appeal with emoji */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-2xl mx-auto">
                 <div className="bg-white bg-opacity-90 rounded-lg p-4 shadow-md">
-                  <div className="text-3xl mb-2">
-                    ✅
-                  </div>
+                  <div className="text-3xl mb-2">✅</div>
                   <h3 className="font-bold">
                     {language === 'en' ? 'Quality Service' : 'Layanan Berkualitas'}
                   </h3>
                 </div>
                 <div className="bg-white bg-opacity-90 rounded-lg p-4 shadow-md">
-                  <div className="text-3xl mb-2">
-                    ⏱️
-                  </div>
+                  <div className="text-3xl mb-2">⏱️</div>
                   <h3 className="font-bold">
                     {language === 'en' ? 'Fast Response' : 'Respon Cepat'}
                   </h3>
                 </div>
                 <div className="bg-white bg-opacity-90 rounded-lg p-4 shadow-md">
-                  <div className="text-3xl mb-2">
-                    💬
-                  </div>
+                  <div className="text-3xl mb-2">💬</div>
                   <h3 className="font-bold">
                     {language === 'en' ? 'Your Opinion Matters' : 'Pendapat Anda Penting'}
                   </h3>
@@ -492,7 +521,6 @@ const SurveyKepuasanPage = () => {
         </div>
       </section>
 
-      {/* Form Survey dengan Animasi dan Interaksi yang Lebih Menarik */}
       <section className="py-16 bg-light-bg">
         <div className="container mx-auto px-4">
           <AnimatePresence mode="wait">
@@ -520,7 +548,6 @@ const SurveyKepuasanPage = () => {
                 className="max-w-2xl mx-auto"
               >
                 <div className="bg-white rounded-xl shadow-md p-8 border border-gray-200 relative overflow-hidden">
-                  {/* Background decorative elements */}
                   <div className="absolute -top-16 -right-16 w-40 h-40 bg-primary-50 rounded-full blur-3xl opacity-50"></div>
                   <div className="absolute -bottom-16 -left-16 w-40 h-40 bg-primary-50 rounded-full blur-3xl opacity-50"></div>
                   
@@ -530,7 +557,6 @@ const SurveyKepuasanPage = () => {
                       <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-16 h-1 bg-primary-600 rounded-full"></span>
                     </h2>
                     
-                    {/* Error Message with Animation */}
                     <AnimatePresence>
                       {submitStatus === 'error' && (
                         <motion.div 
@@ -547,7 +573,6 @@ const SurveyKepuasanPage = () => {
                       )}
                     </AnimatePresence>
                     
-                    {/* Name Input with Icon */}
                     <div className="mb-6">
                       <label htmlFor="nama" className="block text-gray-700 font-medium mb-2 flex items-center">
                         <User className="w-5 h-5 mr-2 text-primary-600" />
@@ -573,7 +598,6 @@ const SurveyKepuasanPage = () => {
                       </div>
                     </div>
                     
-                    {/* NIM/NIP Input with Icon */}
                     <div className="mb-6">
                       <label htmlFor="identitas" className="block text-gray-700 font-medium mb-2 flex items-center">
                         <Type className="w-5 h-5 mr-2 text-primary-600" />
@@ -599,7 +623,6 @@ const SurveyKepuasanPage = () => {
                       </div>
                     </div>
                     
-                    {/* Service Type Dropdown with Better Visual */}
                     <div className="mb-6">
                       <label htmlFor="jenisLayanan" className="block text-gray-700 font-medium mb-2 flex items-center">
                         <FileText className="w-5 h-5 mr-2 text-primary-600" />
@@ -617,11 +640,20 @@ const SurveyKepuasanPage = () => {
                           <option value="">
                             {language === 'en' ? '-- Select Service --' : '-- Pilih Layanan --'}
                           </option>
-                          {availableServices.map((service) => (
-                            <option key={service.id} value={service.id}>
-                              {service.label}
-                            </option>
-                          ))}
+                          <optgroup label={language === 'en' ? 'Student Services' : 'Layanan Mahasiswa'}>
+                            {mahasiswaServices.map((service) => (
+                              <option key={service.id} value={service.id}>
+                                {service.label}
+                              </option>
+                            ))}
+                          </optgroup>
+                          <optgroup label={language === 'en' ? 'Lecturer Services' : 'Layanan Dosen'}>
+                            {dosenServices.map((service) => (
+                              <option key={service.id} value={service.id}>
+                                {service.label}
+                              </option>
+                            ))}
+                          </optgroup>
                         </select>
                         <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-500">
                           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -630,26 +662,23 @@ const SurveyKepuasanPage = () => {
                         </div>
                       </div>
                       
-                      {/* Visual service indicator */}
                       {formData.jenisLayanan && (
                         <div className="mt-2 flex items-center bg-primary-50 p-2 rounded-md">
                           <span className="text-primary-600 mr-2">
-                            {availableServices.find(s => s.id === formData.jenisLayanan)?.icon || <FileText className="w-5 h-5" />}
+                            {[...mahasiswaServices, ...dosenServices].find(s => s.id === formData.jenisLayanan)?.icon || <FileText className="w-5 h-5" />}
                           </span>
                           <span className="text-sm text-primary-700">
-                            {availableServices.find(s => s.id === formData.jenisLayanan)?.label || formData.jenisLayanan}
+                            {[...mahasiswaServices, ...dosenServices].find(s => s.id === formData.jenisLayanan)?.label || formData.jenisLayanan}
                           </span>
                         </div>
                       )}
                     </div>
                     
-                    {/* Enhanced Star Rating with Animation and Emoji */}
                     <div className="mb-8">
                       <label className="block text-gray-700 font-medium mb-2 flex items-center">
                         <Star className="w-5 h-5 mr-2 text-primary-600" />
                         {language === 'en' ? 'Satisfaction Rating' : 'Rating Kepuasan'} <span className="text-red-500 ml-1">*</span>
                       </label>
-                      
                       <RatingSelector 
                         rating={formData.rating}
                         onChange={handleRatingChange}
@@ -659,7 +688,6 @@ const SurveyKepuasanPage = () => {
                       />
                     </div>
                     
-                    {/* Comments Textarea with Animated Counter */}
                     <div className="mb-8">
                       <label htmlFor="komentar" className="block text-gray-700 font-medium mb-2 flex items-center">
                         <MessageSquare className="w-5 h-5 mr-2 text-primary-600" />
@@ -682,11 +710,7 @@ const SurveyKepuasanPage = () => {
                       </div>
                     </div>
                     
-                    {/* Submit Button with Enhanced Animation */}
-                    <motion.div
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                    >
+                    <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                       <Button
                         type="submit"
                         fullWidth
@@ -712,7 +736,6 @@ const SurveyKepuasanPage = () => {
             )}
           </AnimatePresence>
           
-          {/* Additional info cards with emoji */}
           <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
             <AnimatedSection animation="slideUp" delay={0.1}>
               <div className="bg-white rounded-xl p-6 shadow-md hover-card group border border-gray-100">
