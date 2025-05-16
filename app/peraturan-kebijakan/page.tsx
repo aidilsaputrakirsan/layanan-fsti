@@ -4,20 +4,7 @@ import { useState } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import AnimatedSection from '@/components/ui/AnimatedSection';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
-import { 
-  Search, 
-  FileText, 
-  Download, 
-  ExternalLink, 
-  GraduationCap, 
-  BookOpen, 
-  FileSignature,
-  Briefcase, 
-  Award, 
-  Users,
-  Calendar, 
-  ClipboardList
-} from 'lucide-react';
+import { Search, Download, ExternalLink } from 'lucide-react';
 
 // Daftar dokumen peraturan dan kebijakan
 const documentsList = [
@@ -33,7 +20,6 @@ const documentsList = [
     },
     fileName: '9_PERATURAN_AKADEMIK.pdf',
     fileUrl: '/file/9_PERATURAN_AKADEMIK.pdf',
-    icon: <GraduationCap className="h-10 w-10" />
   },
   {
     id: 'kemahasiswaan',
@@ -47,7 +33,6 @@ const documentsList = [
     },
     fileName: 'Peraturan Rektor-Kemahasiswaan.pdf',
     fileUrl: '/file/Peraturan Rektor-Kemahasiswaan.pdf',
-    icon: <Users className="h-10 w-10" />
   },
   {
     id: 'tugasAkhir',
@@ -61,7 +46,6 @@ const documentsList = [
     },
     fileName: 'PERATURAN-TA.pdf',
     fileUrl: '/file/PERATURAN-TA.pdf',
-    icon: <FileSignature className="h-10 w-10" />
   },
   {
     id: 'magang',
@@ -75,7 +59,6 @@ const documentsList = [
     },
     fileName: 'PERATURAN-MAGANG.pdf',
     fileUrl: '/file/PERATURAN-MAGANG.pdf',
-    icon: <Briefcase className="h-10 w-10" />
   },
   {
     id: 'kerjaPraktik',
@@ -89,7 +72,6 @@ const documentsList = [
     },
     fileName: 'PERATURAN-KP.pdf',
     fileUrl: '/file/PERATURAN-KP.pdf',
-    icon: <ClipboardList className="h-10 w-10" />
   },
   {
     id: 'mbkm',
@@ -103,7 +85,6 @@ const documentsList = [
     },
     fileName: 'Peraturan Rektor-MBKM.pdf',
     fileUrl: '/file/Peraturan Rektor-MBKM.pdf',
-    icon: <Award className="h-10 w-10" />
   },
   {
     id: 'tataKehidupan',
@@ -117,7 +98,6 @@ const documentsList = [
     },
     fileName: 'Peraturan Rektor-Tata Kehidupan.pdf',
     fileUrl: '/file/Peraturan Rektor-Tata Kehidupan.pdf',
-    icon: <BookOpen className="h-10 w-10" />
   },
   {
     id: 'kalenderAkademik',
@@ -131,7 +111,6 @@ const documentsList = [
     },
     fileName: '726_KALENDER-AKADEMIK.pdf',
     fileUrl: '/file/726_KALENDER-AKADEMIK.pdf',
-    icon: <Calendar className="h-10 w-10" />
   },
 ];
 
@@ -192,64 +171,77 @@ const PeraturanKebijakanPage = () => {
           </AnimatedSection>
 
           {filteredDocuments.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {filteredDocuments.map((doc, index) => (
-                <AnimatedSection
-                  key={doc.id}
-                  animation="slideUp"
-                  delay={index * 0.1}
-                >
-                  <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border-l-4 border-primary-600 flex flex-col h-full">
-                    {/* Badge for Importance */}
-                    <div className="bg-primary-100 text-primary-800 text-sm font-semibold px-3 py-1 rounded-tr-lg absolute top-0 right-0 m-2">
-                      {language === 'id' ? 'Dokumen Penting' : 'Important Document'}
-                    </div>
+            <div className="max-w-6xl mx-auto">
+              <div className="flex justify-center flex-wrap gap-8">
+                {filteredDocuments.map((doc, index) => (
+                  <AnimatedSection
+                    key={doc.id}
+                    animation="slideUp"
+                    delay={index * 0.1}
+                    className="w-full max-w-md"
+                  >
+                    <div className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 h-full flex flex-col">
+                      {/* Badge for Importance */}
+                      <div className="bg-primary-100 text-primary-800 text-sm font-semibold px-3 py-1 rounded-tr-lg absolute top-0 right-0 m-2">
+                        {language === 'id' ? 'Dokumen Penting' : 'Important Document'}
+                      </div>
 
-                    {/* Icon Container with Pulse Animation */}
-                    <div className="h-48 bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center p-4 animate-pulse-slow">
-                      <div className="p-6 rounded-full bg-primary-50 text-primary-600 transition-transform hover:scale-110">
-                        {doc.icon}
+                      {/* Preview Frame */}
+                      <div className="h-48 bg-gray-100 flex items-center justify-center p-6 border-b border-gray-200">
+                        <div className="bg-white rounded-lg shadow-sm p-2 w-32 transform rotate-3 hover:rotate-0 transition-transform duration-300">
+                          <img 
+                            src="/images/pdf-icon.png" 
+                            alt="PDF Template" 
+                            className="w-full h-auto"
+                            onError={(e) => {
+                              (e.target as HTMLImageElement).src = "https://cdn-icons-png.flaticon.com/512/337/337946.png";
+                            }}
+                          />
+                        </div>
+                      </div>
+
+                      {/* Content */}
+                      <div className="p-6 flex-grow">
+                        <h3 className="text-xl font-semibold text-gray-800 mb-2 hover:text-primary-600 transition-colors">
+                          {doc.title[language as 'id' | 'en']}
+                        </h3>
+                        <p className="text-gray-600 mb-4 line-clamp-3">
+                          {doc.description[language as 'id' | 'en']}
+                        </p>
+                      </div>
+
+                      {/* Actions */}
+                      <div className="p-4 border-t border-gray-100 bg-gray-50">
+                        <div className="flex justify-between items-center">
+                          <div className="ml-auto flex space-x-2">
+                            <a 
+                              href={doc.fileUrl} 
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="p-2 rounded-lg text-primary-600 hover:bg-primary-50 flex items-center"
+                            >
+                              <ExternalLink className="h-5 w-5 mr-1" />
+                              <span className="text-sm font-medium">
+                                {language === 'id' ? 'Lihat' : 'View'}
+                              </span>
+                            </a>
+                            <a 
+                              href={doc.fileUrl} 
+                              download={doc.fileName}
+                              className="p-2 rounded-lg bg-primary-600 text-white hover:bg-primary-700 flex items-center"
+                            >
+                              <Download className="h-5 w-5 mr-1" />
+                              <span className="text-sm font-medium">
+                                {language === 'id' ? 'Unduh' : 'Download'}
+                              </span>
+                            </a>
+                          </div>
+                        </div>
                       </div>
                     </div>
-
-                    {/* Content */}
-                    <div className="p-6 flex-grow">
-                      <h3 className="text-xl font-semibold text-gray-800 mb-2">
-                        {doc.title[language as 'id' | 'en']}
-                      </h3>
-                      <p className="text-gray-600 mb-4 line-clamp-3">
-                        {doc.description[language as 'id' | 'en']}
-                      </p>
-                    </div>
-
-                    {/* Footer with Download Button */}
-                    <div className="p-4 bg-gray-50 border-t border-gray-100">
-                      <div className="flex flex-col items-center space-y-2">
-                        <span className="text-sm text-gray-500">PDF</span>
-                        <a
-                          href={doc.fileUrl}
-                          download={doc.fileName}
-                          className="w-full inline-flex justify-center items-center px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors duration-200 font-medium"
-                          title={language === 'id' ? 'Unduh Sekarang' : 'Download Now'}
-                        >
-                          <Download className="h-5 w-5 mr-2" />
-                          {language === 'id' ? 'Unduh Sekarang' : 'Download Now'}
-                        </a>
-                        <a
-                          href={doc.fileUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-sm text-primary-600 hover:underline flex items-center"
-                          title={language === 'id' ? 'Buka PDF' : 'Open PDF'}
-                        >
-                          <ExternalLink className="h-4 w-4 mr-1" />
-                          {language === 'id' ? 'Buka PDF' : 'Open PDF'}
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </AnimatedSection>
-              ))}
+                  </AnimatedSection>
+                ))}
+              </div>
             </div>
           ) : (
             <AnimatedSection animation="fadeIn">

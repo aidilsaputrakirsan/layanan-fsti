@@ -28,7 +28,9 @@ import {
   DollarSign,
   Bookmark,
   Calendar,
-  FilePlus
+  FilePlus,
+  Download,  // Tambahkan import ini
+  ExternalLink  // Tambahkan import ini
 } from 'lucide-react';
 
 const LayananAdministrasiPage = () => {
@@ -221,6 +223,20 @@ const LayananAdministrasiPage = () => {
       category: "dosen"
     },
     // ... more lecturer services can be added here
+  ];
+
+  const templateList = [
+  {
+    id: "template-akademik",
+    title: language === 'en' ? "Academic Form Template" : "Template Formulir Akademik",
+    description: language === 'en' 
+      ? "Use the provided template for student academic affairs."
+      : "Gunakan template yang telah disediakan untuk urusan akademik mahasiswa.",
+    icon: <FileText className="h-6 w-6" />,
+    fileName: "Format Surat Akademik 2024.pdf",
+    fileUrl: "/file/Format Surat Akademik 2024.pdf",
+  },
+  // Tambahkan template lainnya jika ada
   ];
 
   // Gabungkan semua layanan
@@ -471,6 +487,93 @@ const LayananAdministrasiPage = () => {
                 </div>
               </AnimatedSection>
             )}
+          </div>
+        </div>
+      </section>
+
+      {/* Template Dokumen Section */}
+      <section className="py-16 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <AnimatedSection animation="slideUp">
+            <h2 className="text-3xl font-display font-bold text-center mb-6 text-gradient">
+              {language === 'id' ? 'Template Dokumen' : 'Document Templates'}
+            </h2>
+            <p className="text-center text-gray-700 mb-12 max-w-3xl mx-auto">
+              {language === 'id' 
+                ? 'Gunakan template dokumen resmi berikut untuk keperluan administrasi di FSTI ITK.' 
+                : 'Use the following official document templates for administrative purposes at FSTI ITK.'}
+            </p>
+          </AnimatedSection>
+          
+          {/* Card container dengan rata tengah */}
+          <div className="max-w-6xl mx-auto">
+            <div className="flex justify-center">
+              {templateList.map((template, index) => (
+                <AnimatedSection 
+                  key={template.id} 
+                  animation="slideUp" 
+                  delay={index * 0.1}
+                  className="w-full max-w-md"
+                >
+                  <div className="bg-white rounded-xl shadow-md overflow-hidden hover-card h-full flex flex-col">
+                    {/* Preview Frame */}
+                    <div className="h-48 bg-gray-100 flex items-center justify-center p-6 border-b border-gray-200">
+                      <div className="bg-white rounded-lg shadow-sm p-2 w-32 transform rotate-3 hover:rotate-0 transition-transform duration-300">
+                        <img 
+                          src="/images/pdf-icon.png" 
+                          alt="PDF Template" 
+                          className="w-full h-auto"
+                          onError={(e) => {
+                            // Fallback jika gambar tidak tersedia
+                            (e.target as HTMLImageElement).src = "https://cdn-icons-png.flaticon.com/512/337/337946.png";
+                          }}
+                        />
+                      </div>
+                    </div>
+                    
+                    {/* Content */}
+                    <div className="p-6 flex-grow">
+                      <h3 className="text-xl font-semibold text-gray-800 mb-2 group-hover:text-primary-600">
+                        {template.title}
+                      </h3>
+                      <p className="text-gray-600 mb-4">
+                        {template.description}
+                      </p>
+                    </div>
+                    
+                    {/* Actions */}
+                    <div className="p-4 border-t border-gray-100 bg-gray-50">
+                      <div className="flex justify-between items-center">
+                        {/* Hapus label PDF di sini */}
+                        <div className="ml-auto flex space-x-2"> {/* ml-auto untuk memindahkan button ke kanan */}
+                          <a 
+                            href={template.fileUrl} 
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="p-2 rounded-lg text-primary-600 hover:bg-primary-50 flex items-center"
+                          >
+                            <ExternalLink className="h-5 w-5 mr-1" />
+                            <span className="text-sm font-medium">
+                              {language === 'id' ? 'Lihat' : 'View'}
+                            </span>
+                          </a>
+                          <a 
+                            href={template.fileUrl} 
+                            download={template.fileName}
+                            className="p-2 rounded-lg bg-primary-600 text-white hover:bg-primary-700 flex items-center"
+                          >
+                            <Download className="h-5 w-5 mr-1" />
+                            <span className="text-sm font-medium">
+                              {language === 'id' ? 'Unduh' : 'Download'}
+                            </span>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </AnimatedSection>
+              ))}
+            </div>
           </div>
         </div>
       </section>
