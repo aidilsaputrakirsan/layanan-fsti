@@ -4,7 +4,20 @@ import { useState } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import AnimatedSection from '@/components/ui/AnimatedSection';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
-import { Search, FileText, Download, ExternalLink } from 'lucide-react';
+import { 
+  Search, 
+  FileText, 
+  Download, 
+  ExternalLink, 
+  GraduationCap, 
+  BookOpen, 
+  FileSignature,
+  Briefcase, 
+  Award, 
+  Users,
+  Calendar, 
+  ClipboardList
+} from 'lucide-react';
 
 // Daftar dokumen peraturan dan kebijakan
 const documentsList = [
@@ -20,8 +33,7 @@ const documentsList = [
     },
     fileName: '9_PERATURAN_AKADEMIK.pdf',
     fileUrl: '/file/9_PERATURAN_AKADEMIK.pdf',
-    thumbnailUrl: '/images/peraturan/akademik.png',
-    icon: <FileText className="h-6 w-6" />,
+    icon: <GraduationCap className="h-10 w-10" />
   },
   {
     id: 'kemahasiswaan',
@@ -35,8 +47,7 @@ const documentsList = [
     },
     fileName: 'Peraturan Rektor-Kemahasiswaan.pdf',
     fileUrl: '/file/Peraturan Rektor-Kemahasiswaan.pdf',
-    thumbnailUrl: '/images/peraturan/kemahasiswaan.png',
-    icon: <FileText className="h-6 w-6" />,
+    icon: <Users className="h-10 w-10" />
   },
   {
     id: 'tugasAkhir',
@@ -50,8 +61,7 @@ const documentsList = [
     },
     fileName: 'PERATURAN-TA.pdf',
     fileUrl: '/file/PERATURAN-TA.pdf',
-    thumbnailUrl: '/images/peraturan/tugas-akhir.png',
-    icon: <FileText className="h-6 w-6" />,
+    icon: <FileSignature className="h-10 w-10" />
   },
   {
     id: 'magang',
@@ -65,8 +75,7 @@ const documentsList = [
     },
     fileName: 'PERATURAN-MAGANG.pdf',
     fileUrl: '/file/PERATURAN-MAGANG.pdf',
-    thumbnailUrl: '/images/peraturan/magang.png',
-    icon: <FileText className="h-6 w-6" />,
+    icon: <Briefcase className="h-10 w-10" />
   },
   {
     id: 'kerjaPraktik',
@@ -80,8 +89,7 @@ const documentsList = [
     },
     fileName: 'PERATURAN-KP.pdf',
     fileUrl: '/file/PERATURAN-KP.pdf',
-    thumbnailUrl: '/images/peraturan/kerja-praktik.png',
-    icon: <FileText className="h-6 w-6" />,
+    icon: <ClipboardList className="h-10 w-10" />
   },
   {
     id: 'mbkm',
@@ -95,8 +103,7 @@ const documentsList = [
     },
     fileName: 'Peraturan Rektor-MBKM.pdf',
     fileUrl: '/file/Peraturan Rektor-MBKM.pdf',
-    thumbnailUrl: '/images/peraturan/mbkm.png',
-    icon: <FileText className="h-6 w-6" />,
+    icon: <Award className="h-10 w-10" />
   },
   {
     id: 'tataKehidupan',
@@ -110,8 +117,7 @@ const documentsList = [
     },
     fileName: 'Peraturan Rektor-Tata Kehidupan.pdf',
     fileUrl: '/file/Peraturan Rektor-Tata Kehidupan.pdf',
-    thumbnailUrl: '/images/peraturan/tata-kehidupan.png',
-    icon: <FileText className="h-6 w-6" />,
+    icon: <BookOpen className="h-10 w-10" />
   },
   {
     id: 'kalenderAkademik',
@@ -125,8 +131,7 @@ const documentsList = [
     },
     fileName: '726_KALENDER-AKADEMIK.pdf',
     fileUrl: '/file/726_KALENDER-AKADEMIK.pdf',
-    thumbnailUrl: '/images/peraturan/kalender-akademik.png',
-    icon: <FileText className="h-6 w-6" />,
+    icon: <Calendar className="h-10 w-10" />
   },
 ];
 
@@ -185,62 +190,61 @@ const PeraturanKebijakanPage = () => {
               {searchTerm && ` - ${language === 'id' ? 'Hasil pencarian untuk' : 'Search results for'} "${searchTerm}"`}
             </h2>
           </AnimatedSection>
-          
+
           {filteredDocuments.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               {filteredDocuments.map((doc, index) => (
-                <AnimatedSection 
-                  key={doc.id} 
-                  animation="slideUp" 
+                <AnimatedSection
+                  key={doc.id}
+                  animation="slideUp"
                   delay={index * 0.1}
                 >
-                  <div className="bg-white rounded-xl shadow-md overflow-hidden hover-card h-full flex flex-col">
-                    {/* Thumbnail */}
-                    <div className="h-48 bg-gray-100 flex items-center justify-center p-4">
-                      <img 
-                        src={doc.thumbnailUrl || `/images/peraturan/default.png`} 
-                        alt={doc.title[language as 'id' | 'en']}
-                        className="max-h-full max-w-full object-contain"
-                        onError={(e) => {
-                          // Fallback jika thumbnail tidak tersedia
-                          (e.target as HTMLImageElement).src = "/images/peraturan/default.png";
-                        }}
-                      />
+                  <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border-l-4 border-primary-600 flex flex-col h-full">
+                    {/* Badge for Importance */}
+                    <div className="bg-primary-100 text-primary-800 text-sm font-semibold px-3 py-1 rounded-tr-lg absolute top-0 right-0 m-2">
+                      {language === 'id' ? 'Dokumen Penting' : 'Important Document'}
                     </div>
-                    
-                    {/* Konten */}
+
+                    {/* Icon Container with Pulse Animation */}
+                    <div className="h-48 bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center p-4 animate-pulse-slow">
+                      <div className="p-6 rounded-full bg-primary-50 text-primary-600 transition-transform hover:scale-110">
+                        {doc.icon}
+                      </div>
+                    </div>
+
+                    {/* Content */}
                     <div className="p-6 flex-grow">
                       <h3 className="text-xl font-semibold text-gray-800 mb-2">
                         {doc.title[language as 'id' | 'en']}
                       </h3>
-                      <p className="text-gray-600 mb-4">
+                      <p className="text-gray-600 mb-4 line-clamp-3">
                         {doc.description[language as 'id' | 'en']}
                       </p>
                     </div>
-                    
-                    {/* Footer dengan tombol download */}
-                    <div className="p-4 border-t border-gray-100 bg-gray-50">
-                      <div className="flex items-center justify-between">
+
+                    {/* Footer with Download Button */}
+                    <div className="p-4 bg-gray-50 border-t border-gray-100">
+                      <div className="flex flex-col items-center space-y-2">
                         <span className="text-sm text-gray-500">PDF</span>
-                        <div className="flex space-x-2">
-                          <a 
-                            href={doc.fileUrl} 
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="p-2 rounded-lg text-gray-600 hover:bg-gray-200 transition-colors"
-                            title={language === 'id' ? 'Buka PDF' : 'Open PDF'}
-                          >
-                            <ExternalLink className="h-5 w-5" />
-                          </a>
-                          <a 
-                            href={doc.fileUrl} 
-                            download={doc.fileName}
-                            className="p-2 rounded-lg text-primary-600 hover:bg-primary-50 transition-colors"
-                            title={language === 'id' ? 'Unduh PDF' : 'Download PDF'}
-                          >
-                            <Download className="h-5 w-5" />
-                          </a>
-                        </div>
+                        <a
+                          href={doc.fileUrl}
+                          download={doc.fileName}
+                          className="w-full inline-flex justify-center items-center px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors duration-200 font-medium"
+                          title={language === 'id' ? 'Unduh Sekarang' : 'Download Now'}
+                        >
+                          <Download className="h-5 w-5 mr-2" />
+                          {language === 'id' ? 'Unduh Sekarang' : 'Download Now'}
+                        </a>
+                        <a
+                          href={doc.fileUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-sm text-primary-600 hover:underline flex items-center"
+                          title={language === 'id' ? 'Buka PDF' : 'Open PDF'}
+                        >
+                          <ExternalLink className="h-4 w-4 mr-1" />
+                          {language === 'id' ? 'Buka PDF' : 'Open PDF'}
+                        </a>
                       </div>
                     </div>
                   </div>
@@ -256,12 +260,12 @@ const PeraturanKebijakanPage = () => {
                     {language === 'id' ? 'Tidak Ditemukan' : 'Not Found'}
                   </h3>
                   <p>
-                    {language === 'id' 
-                      ? 'Tidak ada dokumen yang sesuai dengan pencarian Anda.' 
+                    {language === 'id'
+                      ? 'Tidak ada dokumen yang sesuai dengan pencarian Anda.'
                       : 'No documents match your search.'}
                   </p>
                 </div>
-                <button 
+                <button
                   onClick={() => setSearchTerm('')}
                   className="px-6 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors"
                 >
