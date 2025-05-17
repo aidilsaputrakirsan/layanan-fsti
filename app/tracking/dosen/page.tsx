@@ -6,6 +6,7 @@ import MainLayout from '@/components/layout/MainLayout';
 import AnimatedSection from '@/components/ui/AnimatedSection';
 import Button from '@/components/ui/Button';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 import { 
   Search, 
@@ -25,7 +26,9 @@ import {
   Award,
   Box,
   ClipboardList,
-  ChevronLeft
+  ChevronLeft,
+  ExternalLink,
+  X
 } from 'lucide-react';
 
 // Definisi tipe data untuk dokumen
@@ -99,8 +102,10 @@ const DosenTrackingPage = () => {
   const [dataLoaded, setDataLoaded] = useState<boolean>(false);
   const [allDocuments, setAllDocuments] = useState<FacultyDocument[]>([]);
   const [docTypes, setDocTypes] = useState<string[]>([]);
+  const [showSurveyModal, setShowSurveyModal] = useState(false);
   
   const { t, language } = useLanguage();
+  const router = useRouter();
   
   // Fetch all documents when component mounts
   useEffect(() => {
@@ -331,7 +336,18 @@ const DosenTrackingPage = () => {
         additionalDetails.push({
           icon: <FileText className="w-5 h-5 mr-3 text-primary-600 mt-1" />,
           label: t('lecturerTracking.status.supportingDoc'),
-          value: <a href={doc.fileDokumen} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">{t('lecturerTracking.status.viewDoc')}</a>
+          value: (
+            <button
+              onClick={() => {
+                window.open(doc.fileDokumen!, '_blank');
+                setShowSurveyModal(true);
+              }}
+              className="text-blue-600 hover:underline flex items-center bg-transparent border-0 p-0"
+            >
+              {t('lecturerTracking.status.viewDoc')}
+              <ExternalLink className="w-4 h-4 ml-1" />
+            </button>
+          )
         });
       }
     } else if (doc.type === "Pengesahan TTD Dekanat") {
@@ -348,7 +364,18 @@ const DosenTrackingPage = () => {
         additionalDetails.push({
           icon: <FileText className="w-5 h-5 mr-3 text-primary-600 mt-1" />,
           label: t('lecturerTracking.status.resultDoc'),
-          value: <a href={doc.fileSudahSah} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">{t('lecturerTracking.status.viewDoc')}</a>
+          value: (
+            <button
+              onClick={() => {
+                window.open(doc.fileSudahSah!, '_blank');
+                setShowSurveyModal(true);
+              }}
+              className="text-blue-600 hover:underline flex items-center bg-transparent border-0 p-0"
+            >
+              {t('lecturerTracking.status.viewDoc')}
+              <ExternalLink className="w-4 h-4 ml-1" />
+            </button>
+          )
         });
       }
     } else if (doc.type === "Peminjaman Sarpras") {
@@ -633,6 +660,27 @@ const DosenTrackingPage = () => {
                 ) : (
                   <p className="text-gray-500">{t('lecturerTracking.timeline')}</p>
                 )}
+              </motion.div>
+            )}
+          </AnimatePresence>
+          
+          {/* Survey modal prompting navigation */}
+          <AnimatePresence>
+            {showSurveyModal && (
+              <motion.div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                <motion.div className="bg-white rounded-xl p-6 max-w-md mx-auto relative" initial={{ scale: 0.8 }} animate={{ scale: 1 }} exit={{ scale: 0.8 }}>
+                  <button className="absolute top-3 right-3" onClick={() => setShowSurveyModal(false)}><X /></button>
+                  <h2 className="text-xl font-bold mb-4">{language === 'en' ? 'Help us with a quick survey!' : 'Bantu kami dengan survey singkat!'}</h2>
+                  <p className="mb-6">{language === 'en' ? 'Please fill out our satisfaction survey before viewing the document.' : 'Isi survey kepuasan sebelum melihat dokumen.'}</p>
+                  <div className="flex justify-end space-x-2">
+                    <Button onClick={() => { setShowSurveyModal(false); router.push('/survey-kepuasan'); }}>
+                      {language === 'en' ? 'Fill Survey' : 'Isi Survey'}
+                    </Button>
+                    <Button variant="secondary" onClick={() => setShowSurveyModal(false)}>
+                      {language === 'en' ? 'Skip' : 'Lewati'}
+                    </Button>
+                  </div>
+                </motion.div>
               </motion.div>
             )}
           </AnimatePresence>

@@ -7,6 +7,7 @@ import AnimatedSection from '@/components/ui/AnimatedSection';
 import Button from '@/components/ui/Button';
 import Link from 'next/link';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
+import { useRouter } from 'next/navigation';
 import { 
   Search, 
   CheckCircle2, 
@@ -89,8 +90,10 @@ const MahasiswaTrackingPage = () => {
   const [sheets, setSheets] = useState<{id: number, title: string}[]>([]);
   const [dataLoaded, setDataLoaded] = useState<boolean>(false);
   const [docTypes, setDocTypes] = useState<string[]>([]);
-  
+  const [showSurveyModal, setShowSurveyModal] = useState(false);
+   
   const { t, language } = useLanguage();
+  const router = useRouter();
   
   // Fetch document types when component mounts
   useEffect(() => {
@@ -225,17 +228,20 @@ const MahasiswaTrackingPage = () => {
     // Tambahkan link surat jika tersedia
     if (doc.linkSurat && doc.linkSurat.url) {
       commonDetails.push({
-        icon: <FileText className="w-5 h-5 mr-3 text-primary-600 mt-1" />,
-        label: "Surat Anda Disini",
-        value: <a 
-          href={doc.linkSurat.url} 
-          target="_blank" 
-          rel="noopener noreferrer" 
-          className="text-blue-600 hover:underline flex items-center"
-        >
-          {language === 'en' ? 'View Document' : 'Lihat Dokumen'}
-          <ExternalLink className="w-4 h-4 ml-1" />
-        </a>
+        icon: <FileText className="w-5 h-5 mr-3 text-primary-600 mt-1" />, 
+        label: t('Surat Anda Disini'),
+        value: (
+          <button
+            onClick={() => {
+              window.open(doc.linkSurat!.url, '_blank');
+              setShowSurveyModal(true);
+            }}
+            className="text-blue-600 hover:underline flex items-center bg-transparent border-0 p-0"
+          >
+            {language === 'en' ? 'View Document' : 'Lihat Dokumen'}
+            <ExternalLink className="w-4 h-4 ml-1" />
+          </button>
+        )
       });
     }
     
@@ -607,6 +613,28 @@ const MahasiswaTrackingPage = () => {
               </motion.div>
             )}
           </AnimatePresence>
+
+         {/* Survey modal prompting navigation */}
+          <AnimatePresence>
+            {showSurveyModal && (
+              <motion.div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                <motion.div className="bg-white rounded-xl p-6 max-w-md mx-auto relative" initial={{ scale: 0.8 }} animate={{ scale: 1 }} exit={{ scale: 0.8 }}>
+                  <button className="absolute top-3 right-3" onClick={() => setShowSurveyModal(false)}><X /></button>
+                  <h2 className="text-xl font-bold mb-4">{language === 'en' ? 'Bantu kami dengan survey singkat!' : 'Bantu kami dengan survey singkat!'}</h2>
+                  <p className="mb-6">{language === 'en' ? 'Isi survey kepuasan setelah melihat dokumen.' : 'Isi survey kepuasan sebelum melihat dokumen.'}</p>
+                  <div className="flex justify-end space-x-2">
+                    <Button onClick={() => { setShowSurveyModal(false); router.push('/survey-kepuasan'); }}>
+                      {language === 'en' ? 'Isi Survey' : 'Isi Survey'}
+                    </Button>
+                    <Button variant="secondary" onClick={() => setShowSurveyModal(false)}>
+                      {language === 'en' ? 'Lewati' : 'Lewati'}
+                    </Button>
+                  </div>
+                </motion.div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
         </div>
       </section>
 
