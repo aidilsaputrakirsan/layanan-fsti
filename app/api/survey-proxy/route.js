@@ -1,7 +1,7 @@
 // app/api/survey-proxy/route.js
 import { NextResponse } from 'next/server';
 
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxcP6U6_8g20eQLiqmcPyBEjH2kHdz0cD_hlm6Iqk_Bw9CrXBt90_evA0uT8IU-1ToFhw/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw4oaqO977tdo8-04B28UlQtUnkqwN1_ZVjrPH9XMoP3IURcvxkDx1Buu1hAe6wojTpVg/exec';
 
 export async function POST(request) {
   try {
