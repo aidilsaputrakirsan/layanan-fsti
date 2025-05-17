@@ -187,14 +187,60 @@ const PeraturanKebijakanPage = () => {
                       </div>
 
                       {/* Preview Frame */}
-                      <div className="h-48 bg-gray-100 flex items-center justify-center p-6 border-b border-gray-200">
-                        <div className="bg-white rounded-lg shadow-sm p-2 w-32 transform rotate-3 hover:rotate-0 transition-transform duration-300">
-                          <img 
-                            src="/images/pdf-icon.png" 
-                            alt="PDF Template" 
+                      <div className="relative h-48 flex items-center justify-center p-6 border-b border-gray-200 overflow-hidden">
+                        {/* 1. Gradient background */}
+                        <span
+                          className="
+                            absolute inset-0
+                            bg-gradient-to-r from-blue-50 via-blue-100 to-blue-50
+                            animate-pulse
+                            z-0
+                          "
+                        />
+
+                        {/* 2. Dots yang lebih besar dan jelas (z-10) */}
+                        <div className="absolute inset-0 z-10 pointer-events-none">
+                          {[
+                            { top: '15%', left: '20%', delay: '0s' },
+                            { top: '70%', left: '30%', delay: '0.5s' },
+                            { top: '40%', left: '75%', delay: '1s' },
+                            { top: '60%', left: '60%', delay: '1.5s' },
+                            { top: '30%', left: '50%', delay: '2s' },
+                          ].map((dot, i) => (
+                            <span
+                              key={i}
+                              className="
+                                absolute
+                                bg-blue-300
+                                rounded-full
+                                opacity-75
+                                animate-ping
+                              "
+                              style={{
+                                width: '12px',
+                                height: '12px',
+                                top: dot.top,
+                                left: dot.left,
+                                animationDelay: dot.delay,
+                                animationDuration: '2s',
+                              }}
+                            />
+                          ))}
+                        </div>
+
+                        {/* 3. Card PDF (z-20) */}
+                        <div className="
+                          relative bg-white rounded-lg shadow-sm p-2 w-32
+                          transform rotate-3 hover:rotate-0 transition-transform duration-300
+                          z-20
+                        ">
+                          <img
+                            src="/images/pdf-icon.png"
+                            alt="PDF Template"
                             className="w-full h-auto"
                             onError={(e) => {
-                              (e.target as HTMLImageElement).src = "https://cdn-icons-png.flaticon.com/512/337/337946.png";
+                              (e.target as HTMLImageElement).src =
+                                "https://cdn-icons-png.flaticon.com/512/337/337946.png";
                             }}
                           />
                         </div>
