@@ -13,7 +13,8 @@ import {
 } from 'lucide-react';
 
 // URL Google Apps Script
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw7qS5mbUHZh23hjpfRlWV84YdfvXib8Ev-uidCdMGtdpcQec1h1x2Apxa_9P6ylt5k-g/exec';
+//const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw7qS5mbUHZh23hjpfRlWV84YdfvXib8Ev-uidCdMGtdpcQec1h1x2Apxa_9P6ylt5k-g/exec';
+const PROXY_URL = '/api/survey-proxy';
 
 interface SurveyFormData {
   nama: string;
@@ -346,9 +347,8 @@ const SurveyKepuasanPage = () => {
         throw new Error(language === 'en' ? 'Please fill all required fields' : 'Harap isi semua kolom yang diperlukan');
       }
 
-      const response = await fetch(SCRIPT_URL, {
+      const response = await fetch(PROXY_URL, {
         method: 'POST',
-        mode: 'cors', // Ubah ke 'cors' untuk membaca respons
         headers: {
           'Content-Type': 'application/json',
         },
