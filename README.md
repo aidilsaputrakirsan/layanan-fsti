@@ -41,8 +41,10 @@ Aplikasi web komprehensif untuk Fakultas Sains dan Teknologi Informasi (FSTI) di
 layanan-fsti/
 ├── app/                         # Direktori app Next.js (App Router)
 │   ├── api/                     # Rute API
-│   │   └── cors-proxy/          # Proxy CORS untuk Google Apps Script
+│   │   ├── cors-proxy/          # Proxy CORS untuk Google Apps Script
+│   │   └── survey-proxy/        # Proxy CORS untuk Google Apps Script Survey
 │   ├── layanan-administrasi/    # Halaman layanan administrasi
+│   ├── peraturan-kebijakan/     # Halaman peraturan dan kebijakan
 │   ├── tracking/                # Halaman pelacakan dokumen
 │   │   ├── dosen/               # Pelacakan dokumen dosen
 │   │   └── mahasiswa/           # Pelacakan dokumen mahasiswa
@@ -51,7 +53,7 @@ layanan-fsti/
 │   ├── layout.tsx               # Komponen layout utama
 │   └── page.tsx                 # Halaman beranda
 ├── components/                  # Komponen React
-│   ├── layout/                  # Komponen layout (Navbar, Footer)
+│   ├── layout/                  # Komponen layout (Navbar, Footer,dll)
 │   ├── ui/                      # Komponen UI (Button, ServiceCard, dll)
 │   ├── utils/                   # Komponen utilitas
 │   ├── ClientWrapper.tsx        # Komponen wrapper sisi klien
