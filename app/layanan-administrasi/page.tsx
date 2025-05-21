@@ -5,6 +5,7 @@ import MainLayout from '@/components/layout/MainLayout';
 import AnimatedSection from '@/components/ui/AnimatedSection';
 import Button from '@/components/ui/Button';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
+import WorkflowDiagram from '@/components/ui/WorkflowDiagram';
 
 // Import icons
 import { 
@@ -581,18 +582,15 @@ const LayananAdministrasiPage = () => {
           <AnimatedSection animation="fadeIn" delay={0.3} className="mb-12">
             <div className="bg-white rounded-xl shadow-lg p-4 md:p-6 hover-card max-w-5xl mx-auto">
               <div className="overflow-auto">
-                <img 
+                {/* Ganti baris ini: */}
+                {/* <img 
                   src="/images/alur-kerja-fsti.png" 
                   alt={language === 'en' ? 'FSTI Service Workflow' : 'Alur Kerja Layanan FSTI'} 
                   className="w-full h-auto object-contain" 
-                />
-              </div>
-              <div className="mt-4 px-2">
-                <p className="text-sm text-gray-600">
-                  {language === 'en' 
-                    ? 'The workflow diagram shows the service process from both Applicant (top) and Staff (bottom) perspective. Applicants can check service status and make improvements if needed.'
-                    : 'Diagram alur kerja menunjukkan proses layanan dari perspektif Pemohon (atas) dan Tendik (bawah). Pemohon dapat memeriksa status layanan dan melakukan perbaikan jika diperlukan.'}
-                </p>
+                /> */}
+                
+                {/* Dengan komponen WorkflowDiagram: */}
+                <WorkflowDiagram language={language} />
               </div>
             </div>
           </AnimatedSection>
