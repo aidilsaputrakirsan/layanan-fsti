@@ -714,8 +714,8 @@ const LayananAdministrasiPage = () => {
                 </li>
                 <li>
                   {language === 'en' 
-                    ? 'If revisions are needed, you will be notified via email or WhatsApp Business'
-                    : 'Jika diperlukan revisi, Anda akan diberitahu melalui email atau WhatsApp Business'}
+                    ? 'If a revision is required, you can check it through the document tracking system.'
+                    : 'Jika diperlukan revisi, Anda dapat memeriksanya melalui sistem tracking dokumen'}
                 </li>
                 <li>
                   {language === 'en' 
