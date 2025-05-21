@@ -121,7 +121,7 @@ export interface TranslationObject {
           },
           processingTime: {
             question: 'How long is the document submission process?',
-            answer: 'Processing times vary depending on the type of document. It generally ranges from 1-5 working days. Detailed processing times for each type of document can be seen on the Administrative Services page.'
+            answer: 'Processing times vary depending on the type of document. It generally ranges from 1-2 working days. Detailed processing times for each type of document can be seen on the Administrative Services page.'
           },
           statusNotChanging: {
             question: 'What should I do if the document status doesn\'t change?',
@@ -187,7 +187,7 @@ export interface TranslationObject {
           },
           processingTime: {
             question: 'How long is the document submission process?',
-            answer: 'Processing times vary depending on the type of document. It generally ranges from 1-5 working days. Detailed processing times for each type of document can be seen on the Administrative Services page.'
+            answer: 'Processing times vary depending on the type of document. It generally ranges from 1-2 working days. Detailed processing times for each type of document can be seen on the Administrative Services page.'
           },
           statusNotChanging: {
             question: 'What should I do if the document status doesn\'t change?',
@@ -277,7 +277,7 @@ export interface TranslationObject {
           },
           processingTime: {
             question: 'How long is the document submission process?',
-            answer: 'Processing times vary depending on the type of document. It generally ranges from 1-5 working days. Detailed processing times for each type of document can be seen on the Administrative Services page.'
+            answer: 'Processing times vary depending on the type of document. It generally ranges from 1-2 working days. Detailed processing times for each type of document can be seen on the Administrative Services page.'
           },
           statusNotChanging: {
             question: 'What should I do if the document status doesn\'t change?',
@@ -316,7 +316,8 @@ export interface TranslationObject {
         finance: 'Finance:',
         academic: 'Academic:',
         operationalHours: 'Operational Hours:',
-        operationalTime: 'Monday - Friday, 08.00 - 16.00 WITA',
+        operationalTime1: 'Monday - Thursday, 08.00 - 16.00 WITA',
+        operationalTime2: 'Friday, 08.00 - 16.30 WITA',
         quickLinks: 'Quick Links',
         home: 'Home',
         services: 'Administrative Services',
@@ -436,7 +437,7 @@ export interface TranslationObject {
           },
           processingTime: {
             question: 'Berapa lama proses pengajuan dokumen?',
-            answer: 'Waktu pemrosesan bervariasi tergantung jenis dokumen. Umumnya berkisar antara 1-5 hari kerja. Detail waktu pemrosesan untuk setiap jenis dokumen dapat dilihat pada halaman Layanan Administrasi.'
+            answer: 'Waktu pemrosesan bervariasi tergantung jenis dokumen. Umumnya berkisar antara 1-2 hari kerja. Detail waktu pemrosesan untuk setiap jenis dokumen dapat dilihat pada halaman Layanan Administrasi.'
           },
           statusNotChanging: {
             question: 'Apa yang harus dilakukan jika status dokumen tidak berubah?',
@@ -502,7 +503,7 @@ export interface TranslationObject {
           },
           processingTime: {
             question: 'Berapa lama proses pengajuan dokumen?',
-            answer: 'Waktu pemrosesan bervariasi tergantung jenis dokumen. Umumnya berkisar antara 1-5 hari kerja. Detail waktu pemrosesan untuk setiap jenis dokumen dapat dilihat pada halaman Layanan Administrasi.'
+            answer: 'Waktu pemrosesan bervariasi tergantung jenis dokumen. Umumnya berkisar antara 1-2 hari kerja. Detail waktu pemrosesan untuk setiap jenis dokumen dapat dilihat pada halaman Layanan Administrasi.'
           },
           statusNotChanging: {
             question: 'Apa yang harus dilakukan jika status dokumen tidak berubah?',
@@ -592,7 +593,7 @@ export interface TranslationObject {
           },
           processingTime: {
             question: 'Berapa lama proses pengajuan dokumen?',
-            answer: 'Waktu pemrosesan bervariasi tergantung jenis dokumen. Umumnya berkisar antara 1-5 hari kerja. Detail waktu pemrosesan untuk setiap jenis dokumen dapat dilihat pada halaman Layanan Administrasi.'
+            answer: 'Waktu pemrosesan bervariasi tergantung jenis dokumen. Umumnya berkisar antara 1-2 hari kerja. Detail waktu pemrosesan untuk setiap jenis dokumen dapat dilihat pada halaman Layanan Administrasi.'
           },
           statusNotChanging: {
             question: 'Apa yang harus dilakukan jika status dokumen tidak berubah?',
@@ -631,7 +632,8 @@ export interface TranslationObject {
         finance: 'Keuangan:',
         academic: 'Akademik:',
         operationalHours: 'Jam Operasional:',
-        operationalTime: 'Senin - Jumat, 08.00 - 16.00 WITA',
+        operationalTime1: 'Senin - Kamis, 08.00 - 16.00 WITA',
+        operationalTime2: 'Jumat, 08.00 - 16.30 WITA',
         quickLinks: 'Link Cepat',
         home: 'Beranda',
         services: 'Layanan Administrasi',

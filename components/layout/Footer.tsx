@@ -153,7 +153,8 @@ const Footer = () => {
                 </svg>
                 <div>
                   <p className="text-gray-800 font-medium mb-1">{t('footer.operationalHours')}</p>
-                  <p className="text-gray-600">{t('footer.operationalTime')}</p>
+                    <p className="text-gray-600">{t('footer.operationalTime1')}</p>
+                    <p className="text-gray-600">{t('footer.operationalTime2')}</p>
                 </div>
               </li>
             </ul>

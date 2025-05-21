@@ -389,7 +389,7 @@ const LayananAdministrasiPage = () => {
                     {language === 'en' ? 'Estimated Processing Time:' : 'Estimasi Waktu Proses:'} 
                   </span>
                   <span className="font-semibold text-primary-600 ml-2">
-                    {language === 'en' ? '1-3 working days' : '1-3 hari kerja'}
+                    {language === 'en' ? '1-2 working days' : '1-2 hari kerja'}
                   </span>
                 </div>
               </div>
