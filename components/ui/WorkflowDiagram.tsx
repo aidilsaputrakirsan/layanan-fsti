@@ -43,6 +43,7 @@ const ProcessNode = React.memo(({ data }: { data: any }) => {
     <>
       <Handle type="target" position={Position.Left} id="left" />
       <Handle type="target" position={Position.Top} id="top" />
+      <Handle type="target" position={Position.Bottom} id="bottom" />
       <Handle type="source" position={Position.Right} id="right" />
       <Handle type="source" position={Position.Bottom} id="bottom" />
       <Handle type="source" position={Position.Left} id="left-source" />
@@ -80,13 +81,13 @@ const nodeTypes: NodeTypes = {
 // Manual layout function
 const getLayoutedElements = (nodes: Node[], edges: Edge[]) => {
   const layoutPositions: { [key: string]: { x: number; y: number } } = {
-    '1': { x: 100, y: 50 },
+    '1': { x: 100, y: 60 },
     '2': { x: 400, y: 50 },
     '3': { x: 700, y: 50 },
-    'keputusan': { x: 764, y: 250 }, // Lowered to make arrow from node 3 more visible
-    'tidak-sesuai': { x: 499, y: 400 }, // Adjusted to accommodate keputusan
-    'sesuai': { x: 949, y: 400 }, // Adjusted to accommodate keputusan
-    'update': { x: 949, y: 600 }, // Adjusted to accommodate sesuai
+    'keputusan': { x: 850, y: 250 }, // Lowered to make arrow from node 3 more visible
+    'tidak-sesuai': { x: 570, y: 400 }, // Adjusted to accommodate keputusan
+    'sesuai': { x: 1050, y: 400 }, // Adjusted to accommodate keputusan
+    'update': { x: 1050, y: 600 }, // Adjusted to accommodate sesuai
   };
 
   const layoutedNodes = nodes.map((node) => ({
@@ -271,9 +272,10 @@ const WorkflowDiagramInner: React.FC<WorkflowDiagramProps> = ({ language = 'id' 
       target: '2',
       sourceHandle: 'right',
       targetHandle: 'left',
-      style: { stroke: '#2563EB', strokeWidth: 3 },
+      style: { stroke: '#2563EB', strokeWidth: 3, strokeDasharray: '10,5' },
       markerEnd: { type: MarkerType.ArrowClosed, color: '#2563EB', width: 25, height: 25 },
-      type: 'smoothstep', // Changed from bezier to smoothstep
+      type: 'smoothstep', 
+      animated: true,
     },
     {
       id: 'e2-3',
@@ -281,9 +283,10 @@ const WorkflowDiagramInner: React.FC<WorkflowDiagramProps> = ({ language = 'id' 
       target: '3',
       sourceHandle: 'right',
       targetHandle: 'left',
-      style: { stroke: '#2563EB', strokeWidth: 3 },
+      style: { stroke: '#2563EB', strokeWidth: 3, strokeDasharray: '10,5' },
       markerEnd: { type: MarkerType.ArrowClosed, color: '#2563EB', width: 25, height: 25 },
-      type: 'smoothstep', // Changed from bezier to smoothstep
+      type: 'smoothstep',
+      animated: true,
     },
     {
       id: 'e3-keputusan',
@@ -291,9 +294,10 @@ const WorkflowDiagramInner: React.FC<WorkflowDiagramProps> = ({ language = 'id' 
       target: 'keputusan',
       sourceHandle: 'bottom',
       targetHandle: 'diamond-top',
-      style: { stroke: '#2563EB', strokeWidth: 3 },
+      style: { stroke: '#2563EB', strokeWidth: 3,  strokeDasharray: '10,5' },
       markerEnd: { type: MarkerType.ArrowClosed, color: '#2563EB', width: 25, height: 25 },
       type: 'smoothstep',
+      animated: true,
     },
     {
       id: 'e-keputusan-tidak',
@@ -304,9 +308,10 @@ const WorkflowDiagramInner: React.FC<WorkflowDiagramProps> = ({ language = 'id' 
       label: language === 'en' ? 'No' : 'Tidak',
       labelStyle: { fill: '#B91C1C', fontWeight: 'bold', fontSize: '14px' },
       labelBgStyle: { fill: 'white', fillOpacity: 0.9, stroke: '#B91C1C', strokeWidth: 1, borderRadius: 4 },
-      style: { stroke: '#B91C1C', strokeWidth: 3 },
+      style: { stroke: '#B91C1C', strokeWidth: 3 , strokeDasharray: '8,4' },
       markerEnd: { type: MarkerType.ArrowClosed, color: '#B91C1C', width: 25, height: 25 },
       type: 'smoothstep',
+      animated: true,
     },
     {
       id: 'e-keputusan-sesuai',
@@ -317,16 +322,17 @@ const WorkflowDiagramInner: React.FC<WorkflowDiagramProps> = ({ language = 'id' 
       label: language === 'en' ? 'Yes' : 'Ya',
       labelStyle: { fill: '#15803D', fontWeight: 'bold', fontSize: '14px' },
       labelBgStyle: { fill: 'white', fillOpacity: 0.9, stroke: '#15803D', strokeWidth: 1, borderRadius: 4 },
-      style: { stroke: '#15803D', strokeWidth: 3 },
+      style: { stroke: '#15803D', strokeWidth: 3 , strokeDasharray: '8,4' },
       markerEnd: { type: MarkerType.ArrowClosed, color: '#15803D', width: 25, height: 25 },
       type: 'smoothstep',
+      animated: true,
     },
     {
       id: 'e-tidak-loop',
       source: 'tidak-sesuai',
       target: '2',
       sourceHandle: 'left-source', // Changed from left-source to bottom
-      targetHandle: 'left', // Changed from left to top
+      targetHandle: 'bottom', // Changed from left to top
       label: language === 'en' ? 'Refill' : 'Mengisi Ulang',
       labelStyle: { fill: '#B91C1C', fontWeight: 'bold', fontSize: '12px' },
       labelBgStyle: { fill: '#FEF2F2', fillOpacity: 0.9, stroke: '#B91C1C', strokeWidth: 1, borderRadius: 4 },
@@ -347,6 +353,7 @@ const WorkflowDiagramInner: React.FC<WorkflowDiagramProps> = ({ language = 'id' 
       style: { stroke: '#374151', strokeWidth: 3, strokeDasharray: '10,5' },
       markerEnd: { type: MarkerType.ArrowClosed, color: '#374151', width: 25, height: 25 },
       type: 'smoothstep', // Changed from bezier to smoothstep
+      animated: true,
     },
   ], [language]);
 
