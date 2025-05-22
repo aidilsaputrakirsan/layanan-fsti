@@ -86,8 +86,8 @@ const getLayoutedElements = (nodes: Node[], edges: Edge[]) => {
     '3': { x: 700, y: 50 },
     'keputusan': { x: 850, y: 250 }, // Lowered to make arrow from node 3 more visible
     'tidak-sesuai': { x: 570, y: 400 }, // Adjusted to accommodate keputusan
-    'sesuai': { x: 1050, y: 400 }, // Adjusted to accommodate keputusan
-    'update': { x: 1050, y: 600 }, // Adjusted to accommodate sesuai
+    'sesuai': { x: 1000, y: 400 }, // Adjusted to accommodate keputusan
+    'update': { x: 1000, y: 600 }, // Adjusted to accommodate sesuai
   };
 
   const layoutedNodes = nodes.map((node) => ({

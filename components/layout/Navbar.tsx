@@ -57,20 +57,41 @@ const Navbar = () => {
         }`}
       >
         <div className="container mx-auto px-4 flex justify-between items-center">
-        {/* Logo and Name */}
-        <Link href="/" className="flex items-center space-x-3 group">
-          <div className="h-12 w-auto flex items-center justify-center transition-all duration-300">
-            <img
-              src="/images/logofsti.png"
-              alt="FSTI Logo"
-              className="h-full w-auto object-contain"
-            />
-          </div>
-          <div className="hidden md:block">
-            <div className="font-display font-bold text-lg text-gray-800 group-hover:text-gradient transition-all duration-300">FSTI ITK</div>
-            <div className="text-xs text-gray-600 -mt-1 transform transition-all duration-300">{t('common.siteTitle')}</div>
-          </div>
-        </Link>
+          {/* Four Logos Section */}
+          <Link href="/" className="flex items-center space-x-3 group">
+            {/* Logo Tut Wuri Handayani */}
+            <div className="h-10 w-auto flex items-center justify-center transition-all duration-300">
+              <img
+                src="/images/logotut.png"
+                alt="Tut Wuri Handayani Logo"
+                className="h-full w-auto object-contain"
+              />
+            </div>
+            {/* Logo Diktisaintek Berdampak */}
+            <div className="h-10 w-auto flex items-center justify-center transition-all duration-300">
+              <img
+                src="/images/logosaintek.png"
+                alt="Diktisaintek Berdampak Logo"
+                className="h-full w-auto object-contain"
+              />
+            </div>
+            {/* Logo ITK */}
+            <div className="h-10 w-auto flex items-center justify-center transition-all duration-300">
+              <img
+                src="/images/logoitk.png"
+                alt="ITK Logo"
+                className="h-full w-auto object-contain"
+              />
+            </div>
+            {/* Logo FSTI Prestasi */}
+            <div className="h-10 w-auto flex items-center justify-center transition-all duration-300">
+              <img
+                src="/images/logofsti.png"
+                alt="FSTI Prestasi Logo"
+                className="h-full w-auto object-contain"
+              />
+            </div>
+          </Link>
 
           {/* Menu Desktop */}
           <div className="hidden md:flex items-center space-x-6">
