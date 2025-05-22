@@ -371,7 +371,7 @@ const LayananAdministrasiPage = () => {
                 </span>
                 <span className="ml-2">
                   <a
-                    href="/file/Format Surat Akademik 2024.pdf"
+                    href="https://s.itk.ac.id/templateformulir"
                     className="font-semibold text-primary-600 hover:underline"
                     target="_blank"
                     rel="noopener noreferrer"
