@@ -15,11 +15,11 @@ const documentsList = [
       en: 'Academic',
     },
     description: {
-      id: 'Panduan dan peraturan akademik untuk mahasiswa FSTI ITK',
-      en: 'Academic guidelines and regulations for FSTI ITK students',
+      id: 'Panduan dan peraturan akademik untuk mahasiswa FSTI ITK (Peraturan Nomor 4 Tahun 2025 dan Peraturan Nomor 9 Tahun 2024)',
+      en: 'Academic guidelines and regulations for FSTI ITK students (Regulation Number 4 of 2025 and Regulation Number 9 of 2024)',
     },
     fileName: '9_PERATURAN_AKADEMIK.pdf',
-    fileUrl: '/file/9_PERATURAN_AKADEMIK.pdf',
+    fileUrl: '/file/Peraturan Akademik Nomor 4 dan Nomor 9.pdf',
   },
   {
     id: 'kemahasiswaan',
