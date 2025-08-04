@@ -87,7 +87,7 @@ interface ApiResponse {
 }
 
 // URL Google Apps Script Web App for Faculty Documents
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzvFO_vWdvVi68vNiyCB4D984Vc3s37yiOEmbUBVYoJ4B-J4c8vFnLkxWqbUmxdWvLp/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzrbINf2aCbj8PEyNTbcho_m5UL9xBjcRaqFbxJAi-ik2wRsdAl7rWoxejIZkn_M0s/exec';
 // Local CORS proxy
 const API_ENDPOINT = '/api/cors-proxy';
 
