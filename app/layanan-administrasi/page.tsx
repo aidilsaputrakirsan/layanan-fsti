@@ -71,6 +71,7 @@ const LayananAdministrasiPage = () => {
         {
           title: language === 'en' ? "Practical Work" : "Kerja Praktik",
           items: [
+            { text: language === 'en' ? "Practical Work Registration" : "Pendaftaran Kerja Praktik", url: "https://docs.google.com/forms/d/e/1FAIpQLSdq1GExnTNwAodG_NbZTskZE0SUZDycsArf7_2ybU2Qa61R4w/viewform?usp=dialog" },
             { text: language === 'en' ? "Registration Before Practical Work Acceptance" : "Pendaftaran Sebelum diterima Kerja Praktik", url: "https://forms.gle/XLPQbtTQatE4dgYN7" },
             { text: language === 'en' ? "Registration After Practical Work Acceptance" : "Pendaftaran Setelah diterima Kerja Praktik", url: "https://forms.gle/nQ85jfeA9L39NstL8" },
             { text: language === 'en' ? "Practical Work Seminar Registration" : "Pendaftaran Seminar Kerja Praktik", url: "https://forms.gle/KWrKUTqQG5uWbPQW6" },
@@ -92,6 +93,7 @@ const LayananAdministrasiPage = () => {
             { text: language === 'en' ? "Upload Student Results Form" : "Upload Formulir Hasil Mahasiswa", url: "https://docs.google.com/forms/d/e/1FAIpQLSfdRvocwHRo7F1EPPNjZVMYEK8oQzRlLB4WPx5Cx-8kCjphpw/viewform?usp=preview" },
             { text: language === 'en' ? "Final Project Results Seminar Registration" : "Pendaftaran Seminar Hasil Tugas Akhir", url: "#" },
             { text: language === 'en' ? "Final Project Defense Registration" : "Pendaftaran Sidang Tugas Akhir (TA)", url: "https://forms.gle/XtPfYYyuCJgPkgW68" },
+            { text: language === 'en' ? "Request for Final Project Defense Certificate" : "Permohonan Surat Keterangan Sidang TA", url: "https://docs.google.com/forms/d/e/1FAIpQLSfGMptnRk3vrXLxLAEZGbqrCp5WvwF7POlhAT5rMALPew30Nw/viewform" },
             { text: language === 'en' ? "Collection of Final Project Document Receipt" : "Pengumpulan Bukti Tanda Terima Berkas Tugas Akhir", url: "https://docs.google.com/forms/d/e/1FAIpQLSe5apOobV_VL4CJKSG0HtMLFsclxktmt7sNl0hyRllxq-xfKw/viewform?usp=preview" }
           ]
         }
