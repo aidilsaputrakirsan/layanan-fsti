@@ -321,7 +321,22 @@ const MahasiswaTrackingPage = () => {
             setTrackingResult(docs[0]);
           }
           setError("");
-        } else {
+          setTimeout(() => {
+              if (docs.length > 1) {
+                // Multiple results - scroll to results list
+                const resultsElement = document.getElementById('search-results-section');
+                if (resultsElement) {
+                  resultsElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+              } else {
+                // Single result - scroll to detail view
+                const detailElement = document.getElementById('detail-view');
+                if (detailElement) {
+                  detailElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+              }
+            }, 300); // Delay untuk animasi
+          } else {
           setSearchResults([]);
           setTrackingResult(null);
           setError(language === 'en' ? 'No documents found for this NIM.' : 'Tidak ada dokumen yang ditemukan untuk NIM tersebut.');
@@ -472,6 +487,7 @@ const MahasiswaTrackingPage = () => {
           <AnimatePresence>
             {searchResults.length > 1 && !trackingResult && (
               <motion.div
+                id="search-results-section"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}

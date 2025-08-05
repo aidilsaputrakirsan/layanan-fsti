@@ -190,6 +190,22 @@ const DosenTrackingPage = () => {
           setTrackingResult(localResults[0]);
         }
         setError("");
+
+        // 👈 TAMBAHKAN AUTO-SCROLL INI
+        setTimeout(() => {
+          if (localResults.length > 1) {
+            const resultsElement = document.getElementById('search-results-section');
+            if (resultsElement) {
+              resultsElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+          } else {
+            // Jika cuma 1 hasil, scroll ke detail view
+            const detailElement = document.getElementById('detail-view');
+            if (detailElement) {
+              detailElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+          }
+        }, 300); // Delay sedikit biar animasi selesai dulu
       } else {
         // If not found locally, try to search via API
         const queryParam = searchType === 'nama' ? 'nama' : 'nip';
@@ -207,6 +223,20 @@ const DosenTrackingPage = () => {
               setTrackingResult(docs[0]);
             }
             setError("");
+            setTimeout(() => {
+              if (docs.length > 1) {
+                const resultsElement = document.getElementById('search-results-section');
+                if (resultsElement) {
+                  resultsElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+              } else {
+                // Jika cuma 1 hasil, scroll ke detail view
+                const detailElement = document.getElementById('detail-view');
+                if (detailElement) {
+                  detailElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+              }
+            }, 300);
           } else {
             setSearchResults([]);
             setTrackingResult(null);
@@ -535,6 +565,7 @@ const DosenTrackingPage = () => {
           <AnimatePresence>
             {searchResults.length > 1 && (
               <motion.div
+                id="search-results-section" 
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
