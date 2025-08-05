@@ -29,6 +29,7 @@ export interface TranslationObject {
       // Navigation
       nav: {
         home: 'Home',
+        about: 'About FSTI',
         adminServices: 'Administrative Services',
         docTracking: 'Document Tracking',
         contact: 'Contact',
@@ -41,6 +42,49 @@ export interface TranslationObject {
       maklumatPelayanan: {
         title: "Service Commitment",
         commitment: "WE HEREBY PROMISE TO PROVIDE EXCELLENT SERVICE IN ACCORDANCE WITH ESTABLISHED STANDARDS, AND IF WE FAIL TO KEEP THIS PROMISE, WE ARE PREPARED TO ACCEPT SANCTIONS IN ACCORDANCE WITH APPLICABLE LAWS AND REGULATIONS"
+      },
+
+      about: {
+        title: 'About FSTI',
+        subtitle: 'Faculty of Science and Information Technology',
+        description: 'Faculty of Science and Information Technology - Kalimantan Institute of Technology',
+        visionMission: {
+          title: 'Vision and Mission',
+          vision: 'Vision',
+          mission: 'Mission: Excellence',
+        },
+        studyPrograms: {
+          title: 'Study Programs',
+          accreditation: 'Accreditation',
+          degree: 'Degree',
+          viewCurriculum: 'View Curriculum',
+        },
+        organizationalStructure: {
+          title: 'Organizational Structure',
+          dean: 'Dean',
+          viceDean1: 'Vice Dean I (Academic and Student Affairs)',
+          viceDean2: 'Vice Dean II (Finance and General Affairs)',
+          headSubDivision: 'Head of General Sub-Division',
+          headDeptSAD: 'Head of Science and Data Analytics Department',
+          headDeptTEIB: 'Head of Electrical Engineering, Informatics, and Business Department',
+          studyProgramCoordinators: 'Program Study Coordinators',
+        },
+        laboratories: {
+          title: 'Laboratories',
+          headOfLab: 'Head of Laboratory',
+        },
+        achievements: {
+          title: 'Achievements',
+        },
+        facilities: {
+          title: 'Facilities',
+        },
+        cta: {
+          title: 'Want to Learn More?',
+          description: 'Visit our official website or contact us directly to get more information about FSTI ITK.',
+          officialWebsite: 'ITK Official Website',
+          contactUs: 'Contact Us',
+        },
       },
  
       // Homepage
@@ -345,6 +389,7 @@ export interface TranslationObject {
       // Navigation
       nav: {
         home: 'Beranda',
+        about: 'Tentang FSTI',
         adminServices: 'Layanan Administrasi',
         docTracking: 'Tracking Dokumen',
         contact: 'Kontak',
@@ -357,6 +402,49 @@ export interface TranslationObject {
       maklumatPelayanan: {
         title: "Maklumat Pelayanan",
         commitment: "DENGAN INI KAMI BERJANJI AKAN MEMBERIKAN PELAYANAN PRIMA SESUAI DENGAN STANDAR YANG DITETAPKAN, DAN APABILA TIDAK MENEPATI JANJI, KAMI SIAP MENERIMA SANKSI SESUAI DENGAN PERATURAN PERUNDANG-UNDANGAN YANG BERLAKU"
+      },
+
+       about: {
+        title: 'Tentang FSTI',
+        subtitle: 'Fakultas Sains dan Teknologi Informasi',
+        description: 'Fakultas Sains dan Teknologi Informasi - Institut Teknologi Kalimantan',
+        visionMission: {
+          title: 'Visi dan Misi FSTI',
+          vision: 'Visi',
+          mission: 'Misi: Prestasi',
+        },
+        studyPrograms: {
+          title: 'Program Studi',
+          accreditation: 'Akreditasi',
+          degree: 'Gelar',
+          viewCurriculum: 'Lihat Kurikulum',
+        },
+        organizationalStructure: {
+          title: 'Struktur Organisasi',
+          dean: 'Dekan',
+          viceDean1: 'Wakil Dekan I (Akademik dan Kemahasiswaan)',
+          viceDean2: 'Wakil Dekan II (Keuangan dan Umum)',
+          headSubDivision: 'Kepala Sub Bagian Umum',
+          headDeptSAD: 'Ketua Jurusan Sains dan Analitika Data',
+          headDeptTEIB: 'Ketua Jurusan Teknik Elektro, Informatika, dan Bisnis',
+          studyProgramCoordinators: 'Koordinator Program Studi',
+        },
+        laboratories: {
+          title: 'Laboratorium',
+          headOfLab: 'Kepala Laboratorium',
+        },
+        achievements: {
+          title: 'Prestasi',
+        },
+        facilities: {
+          title: 'Fasilitas',
+        },
+        cta: {
+          title: 'Ingin Tahu Lebih Lanjut?',
+          description: 'Kunjungi website resmi kami atau hubungi kami langsung untuk mendapatkan informasi lebih lanjut tentang FSTI ITK.',
+          officialWebsite: 'Website Resmi ITK',
+          contactUs: 'Hubungi Kami',
+        },
       },
             
       // Homepage

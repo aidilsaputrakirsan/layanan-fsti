@@ -98,7 +98,10 @@ const Navbar = () => {
             <NavLink href="/" active={pathname === '/'}>
               {t('nav.home')}
             </NavLink>
-            {/* Menambahkan NavLink baru untuk Peraturan & Kebijakan */}
+            {/* 👈 TAMBAHAN BARU: Link Tentang FSTI */}
+            <NavLink href="/tentang-fsti" active={pathname?.includes('/tentang-fsti')}>
+              {t('nav.about') || (t('nav.language') === 'English' ? 'About FSTI' : 'Tentang FSTI')}
+            </NavLink>
             <NavLink href="/peraturan-kebijakan" active={pathname?.includes('/peraturan-kebijakan')}>
               {t('nav.regulations') || (t('nav.language') === 'English' ? 'Regulations' : 'Peraturan')}
             </NavLink>
@@ -165,7 +168,14 @@ const Navbar = () => {
                   <MobileNavLink href="/" active={pathname === '/'} onClick={() => setIsOpen(false)}>
                     {t('nav.home')}
                   </MobileNavLink>
-                  {/* Menambahkan MobileNavLink baru untuk Peraturan & Kebijakan */}
+                  {/* 👈 TAMBAHAN BARU: Mobile Link Tentang FSTI */}
+                  <MobileNavLink 
+                    href="/tentang-fsti" 
+                    active={pathname?.includes('/tentang-fsti')} 
+                    onClick={() => setIsOpen(false)}
+                  >
+                    {t('nav.about') || (t('nav.language') === 'English' ? 'About FSTI' : 'Tentang FSTI')}
+                  </MobileNavLink>
                   <MobileNavLink 
                     href="/peraturan-kebijakan" 
                     active={pathname?.includes('/peraturan-kebijakan')} 
