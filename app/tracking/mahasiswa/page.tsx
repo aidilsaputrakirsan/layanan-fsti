@@ -636,14 +636,24 @@ const MahasiswaTrackingPage = () => {
               <motion.div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
                 <motion.div className="bg-white rounded-xl p-6 max-w-md mx-auto relative" initial={{ scale: 0.8 }} animate={{ scale: 1 }} exit={{ scale: 0.8 }}>
                   <button className="absolute top-3 right-3" onClick={() => setShowSurveyModal(false)}><X /></button>
-                  <h2 className="text-xl font-bold mb-4">{language === 'en' ? 'Bantu kami dengan survey singkat!' : 'Bantu kami dengan survey singkat!'}</h2>
-                  <p className="mb-6">{language === 'en' ? 'Isi survey kepuasan setelah melihat dokumen.' : 'Isi survey kepuasan sebelum melihat dokumen.'}</p>
+                  <h2 className="text-xl font-bold mb-4">
+                    {language === 'en' ? '🥺 Help us with a quick survey!' : '🥺 Bantu kami dengan survey singkat!'}
+                  </h2>
+                  <p className="mb-6">
+                    {language === 'en' 
+                      ? 'Your feedback means the world to us! It only takes 30 seconds...' 
+                      : 'Masukan Anda sangat berharga bagi kami! Hanya butuh 30 detik...'}
+                  </p>
                   <div className="flex justify-end space-x-2">
                     <Button onClick={() => { setShowSurveyModal(false); router.push('/survey-kepuasan'); }}>
-                      {language === 'en' ? 'Isi Survey' : 'Isi Survey'}
+                      {language === 'en' ? '❤️ Isi Survey' : '❤️ Isi Survey'}
                     </Button>
-                    <Button variant="secondary" onClick={() => setShowSurveyModal(false)}>
-                      {language === 'en' ? 'Lewati' : 'Lewati'}
+                    <Button 
+                      variant="secondary" 
+                      className="hover:bg-gray-200 text-gray-500"
+                      onClick={() => setShowSurveyModal(false)}
+                    >
+                      {language === 'en' ? '💔 Break Our Hearts' : '💔 Hancurkan Hati Kami'}
                     </Button>
                   </div>
                 </motion.div>
