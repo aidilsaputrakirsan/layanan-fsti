@@ -77,7 +77,7 @@ interface ApiResponse {
 }
 
 // URL Google Apps Script Web App for Student Documents (replace with your real script URL)
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxE5Kew-wyzXFOGopGt6Co6k2Fo1SLh7RS7-D6MSdaHlfquq71bIG4EAOv0ilBgImKv/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwi2IpDjqkEleYQuif0RaV3P-kzDItATbS7AUyfqeI41MtyChDx6QTBKT9jomCOQwFM/exec';
 // Local CORS proxy
 const API_ENDPOINT = '/api/cors-proxy';
 
