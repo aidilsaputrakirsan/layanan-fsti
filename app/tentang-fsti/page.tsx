@@ -309,7 +309,7 @@ const TentangFSTIPage = () => {
                   <div className="text-gray-600 text-sm">{language === 'en' ? 'Faculty Members' : 'Dosen'}</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-primary-600">118</div>
+                  <div className="text-3xl font-bold text-primary-600">6</div>
                   <div className="text-gray-600 text-sm">{language === 'en' ? 'Staff' : 'Tendik'}</div>
                 </div>
               </div>
