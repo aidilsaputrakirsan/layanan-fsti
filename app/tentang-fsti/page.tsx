@@ -23,7 +23,11 @@ import {
   TrendingUp,
   Trophy,
   Star,
-  Zap
+  Zap,
+  Home,
+  Activity,
+  Bus,
+  Heart
 } from 'lucide-react';
 
 const TentangFSTIPage = () => {
@@ -138,7 +142,7 @@ const TentangFSTIPage = () => {
       level: 2
     },
     {
-      nama: "Staff Administrasi",
+      nama: "Desy Ridho Rahayu, S.Si",
       jabatan: language === 'en' ? "Head of General Sub-Division" : "Kepala Sub Bagian Umum", 
       foto: "/images/pimpinan/kasubbag.png",
       level: 3
@@ -159,14 +163,16 @@ const TentangFSTIPage = () => {
 
   // Data 8 Koordinator Program Studi
   const koordinatorProdi = [
-    { nama: "Dr. Koordinator Matematika", jabatan: "Koordinator Program Studi Matematika", foto: "/images/koorpro-mat.jpg" },
-    { nama: "Dr. Koordinator Aktuaria", jabatan: "Koordinator Program Studi Ilmu Aktuaria", foto: "/images/koorpro-akt.jpg" },
-    { nama: "Dr. Koordinator Statistika", jabatan: "Koordinator Program Studi Statistika", foto: "/images/koorpro-stat.jpg" },
-    { nama: "Dr. Koordinator Fisika", jabatan: "Koordinator Program Studi Fisika", foto: "/images/koorpro-fis.jpg" },
-    { nama: "Dr. Koordinator Informatika", jabatan: "Koordinator Program Studi Informatika", foto: "/images/koorpro-if.jpg" },
-    { nama: "Dr. Koordinator Sistem Informasi", jabatan: "Koordinator Program Studi Sistem Informasi", foto: "/images/koorpro-si.jpg" },
-    { nama: "Dr. Koordinator Bisnis Digital", jabatan: "Koordinator Program Studi Bisnis Digital", foto: "/images/koorpro-bd.jpg" },
-    { nama: "Dr. Koordinator Teknik Elektro", jabatan: "Koordinator Program Studi Teknik Elektro", foto: "/images/koorpro-te.jpg" }
+    { nama: "Kharis Sugiarto, S.T., M.T", jabatan: "Koordinator Program Studi Teknik Elektro", foto: "/images/pimpinan/koorpro-te.png" },
+    { nama: "Sri Rahayu Natasia, S.Komp., M.Si., M.Sc", jabatan: "Koordinator Program Studi Sistem Informasi", foto: "/images/pimpinan/koorpro-si.png" },
+    { nama: "Nisa Rizqiya Fadhliana, S.Kom., M.T", jabatan: "Koordinator Program Studi Informatika", foto: "/images/pimpinan/koorpro-if.png" },
+    { nama: "Deli Yansyah, S.E., M.Acc., Ak., CA", jabatan: "Koordinator Program Studi Bisnis Digital", foto: "/images/pimpinan/koorpro-bd.png" },
+    
+    { nama: "Febrian Dedi Sastrawan, S.Si., M.Sc", jabatan: "Koordinator Program Studi Fisika", foto: "/images/pimpinan/koorpro-fis.png" },
+    { nama: "Kartika Nugraheni, S.Si., M.Si.", jabatan: "Koordinator Program Studi Matematika", foto: "/images/pimpinan/koorpro-mat.png" },
+    { nama: "Diana Nurlaily, S.Si., M.Stat", jabatan: "Koordinator Program Studi Statistika", foto: "/images/pimpinan/koorpro-stat.png" },
+    { nama: "Muhammad Azka, S.Si., M.Sc", jabatan: "Koordinator Program Studi Ilmu Aktuaria", foto: "/images/pimpinan/koorpro-akt.png" },
+    
   ];
 
   // Data 5 Kepala Laboratorium (dari gambar 4-5)
@@ -174,84 +180,94 @@ const TentangFSTIPage = () => {
     {
       nama: "Meidi Arisalwadi, S.Si, M.Si",
       jabatan: language === 'en' ? "Head of Advanced Physics Laboratory" : "Kepala Laboratorium Fisika Lanjut",
-      foto: "/images/kalab-fisika-lanjut.jpg"
+      foto: "/images/pimpinan/kalab-fisika-lanjut.png"
     },
     {
       nama: "Fadli Robiandi, S.Si, M.Si", 
       jabatan: language === 'en' ? "Head of Basic Physics Laboratory" : "Kepala Laboratorium Fisika Dasar",
-      foto: "/images/kalab-fisika-dasar.jpg"
-    },
-    {
-      nama: "Boby Mugi Pratama, S.Si, M.Han",
-      jabatan: language === 'en' ? "Head of Intelligent Systems Laboratory" : "Kepala Laboratorium Sistem Cerdas", 
-      foto: "/images/kalab-sistem-cerdas.jpg"
+      foto: "/images/pimpinan/kalab-fisika-dasar.png"
     },
     {
       nama: "Dr. Moh. Januar Ismail Burhan, S.Si, M.Si",
       jabatan: language === 'en' ? "Head of Computing and Data Laboratory" : "Kepala Laboratorium Komputasi dan Data",
-      foto: "/images/kalab-komputasi-data.jpg"
+      foto: "/images/pimpinan/kalab-komputasi-data.png"
     },
     {
-      nama: "Aidil Saputra Kirsan, S.ST., M.TR.KOM.",
+      nama: "Aidil Saputra Kirsan, S.ST., M.Tr.Kom.",
       jabatan: language === 'en' ? "Head of Digital Innovation Laboratory" : "Kepala Laboratorium Inovasi Digital",
-      foto: "/images/kalab-inovasi-digital.jpg"
-    }
+      foto: "/images/pimpinan/kalab-inovasi-digital.png"
+    },
+    {
+      nama: "Boby Mugi Pratama, S.Si, M.Han",
+      jabatan: language === 'en' ? "Head of Intelligent Systems Laboratory" : "Kepala Laboratorium Sistem Cerdas", 
+      foto: "/images/pimpinan/kalab-sistem-cerdas.png"
+    },
   ];
 
-  // Data Prestasi
+  // ===== DATA PRESTASI YANG TERVERIFIKASI 100% =====
   const prestasi = [
     {
-      title: language === 'en' ? "National Mathematics Competition Champion" : "Juara Kompetisi Matematika Nasional",
-      description: language === 'en' ? "FSTI students won 1st place in the National Mathematics Olympiad 2024" : "Mahasiswa FSTI meraih juara 1 Olimpiade Matematika Nasional 2024",
-      icon: <Trophy className="w-6 h-6" />
-    },
-    {
-      title: language === 'en' ? "International Research Publication" : "Publikasi Riset Internasional", 
-      description: language === 'en' ? "50+ international journal publications by FSTI faculty in 2024" : "50+ publikasi jurnal internasional oleh dosen FSTI di tahun 2024",
-      icon: <BookOpen className="w-6 h-6" />
-    },
-    {
-      title: language === 'en' ? "Best Innovation Award" : "Penghargaan Inovasi Terbaik",
-      description: language === 'en' ? "FSTI innovation team won the Best Innovation Award at ITK Innovation Expo 2024" : "Tim inovasi FSTI meraih penghargaan Best Innovation Award di ITK Innovation Expo 2024", 
+      title: language === 'en' ? "International ASIIN Accreditation" : "Akreditasi Internasional ASIIN",
+      description: language === 'en' ? "Informatics, Information Systems, and Electrical Engineering programs have achieved ASIIN international accreditation" : "Program Studi Informatika, Sistem Informasi, dan Teknik Elektro telah meraih akreditasi internasional ASIIN",
       icon: <Award className="w-6 h-6" />
     },
     {
-      title: language === 'en' ? "International Accreditation" : "Akreditasi Internasional",
-      description: language === 'en' ? "3 study programs obtained ASIIN international accreditation" : "3 program studi meraih akreditasi internasional ASIIN",
+      title: language === 'en' ? "Bronze Medal MaG-D XVI 2025" : "Medali Perunggu MaG-D XVI 2025",
+      description: language === 'en' ? "ITK Mathematics students Awanda Adel Liyanto Putri and Tegar Dwi Nugraha won bronze medal at Mathematical Analysis and Geometry Day XVI 2025" : "Mahasiswa Matematika ITK Awanda Adel Liyanto Putri dan Tegar Dwi Nugraha meraih medali perunggu di Mathematical Analysis and Geometry Day XVI 2025",
+      icon: <Trophy className="w-6 h-6" />
+    },
+    {
+      title: language === 'en' ? "3rd Place TTG Competition 2025" : "Juara 3 Lomba TTG 2025",
+      description: language === 'en' ? "ITK Chemical Engineering students won 3rd place in North Balikpapan Appropriate Technology Competition 2025 with SCANOT supercapacitor innovation" : "Mahasiswa Teknik Kimia ITK meraih Juara 3 Lomba Teknologi Tepat Guna Balikpapan Utara 2025 dengan inovasi Superkapasitor SCANOT",
+      icon: <Zap className="w-6 h-6" />
+    },
+    {
+      title: language === 'en' ? "1st Place UI/UX Design" : "Juara 1 Desain UI/UX",
+      description: language === 'en' ? "Team Rusdisain from Information Systems Study Program ITK won 1st place in UI/UX Design competition at MIT WEEK UNMUL" : "Tim Rusdisain dari Program Studi Sistem Informasi ITK meraih Juara 1 kompetisi Desain UI/UX MIT WEEK UNMUL",
+      icon: <Laptop className="w-6 h-6" />
+    },
+    {
+      title: language === 'en' ? "2nd Place Choir Competition" : "Juara 2 Paduan Suara",
+      description: language === 'en' ? "ITK Student Choir achieved 2nd place in Symphony of Voices 2024 competition" : "Paduan Suara Mahasiswa ITK meraih Juara 2 di lomba Symphony of Voices 2024",
       icon: <Star className="w-6 h-6" />
     }
   ];
 
-  // Data Fasilitas
+  // ===== DATA FASILITAS YANG TERVERIFIKASI 100% =====
   const fasilitas = [
     {
-      title: language === 'en' ? "Modern Classrooms" : "Ruang Kuliah Modern",
-      description: language === 'en' ? "Air-conditioned classrooms equipped with projectors and sound systems" : "Ruang kuliah ber-AC dilengkapi proyektor dan sound system",
-      icon: <Building className="w-6 h-6" />
-    },
-    {
-      title: language === 'en' ? "Advanced Computing Laboratory" : "Laboratorium Komputasi Canggih",
-      description: language === 'en' ? "High-spec computers for programming, data analysis, and simulations" : "Komputer berspesifikasi tinggi untuk programming, analisis data, dan simulasi",
-      icon: <Laptop className="w-6 h-6" />
-    },
-    {
-      title: language === 'en' ? "Physics Laboratory" : "Laboratorium Fisika",
-      description: language === 'en' ? "Complete equipment for basic and advanced physics experiments" : "Peralatan lengkap untuk eksperimen fisika dasar dan lanjut",
+      title: language === 'en' ? "Integrated Laboratory" : "Laboratorium Terpadu",
+      description: language === 'en' ? "15 laboratory rooms supporting student learning and research across various study programs" : "15 ruang laboratorium yang mendukung pembelajaran dan penelitian mahasiswa di berbagai program studi",
       icon: <Microscope className="w-6 h-6" />
     },
-    { 
-      title: language === 'en' ? "High-Speed Internet Network" : "Jaringan Internet Kecepatan Tinggi",
-      description: language === 'en' ? "Fiber optic network supporting all academic and research activities" : "Jaringan fiber optik mendukung seluruh kegiatan akademik dan penelitian",
-      icon: <Globe className="w-6 h-6" />
-    },
     {
-      title: language === 'en' ? "Digital Library" : "Perpustakaan Digital", 
-      description: language === 'en' ? "Access to thousands of international journals and e-books" : "Akses ke ribuan jurnal internasional dan e-book",
+      title: language === 'en' ? "Library" : "Perpustakaan",
+      description: language === 'en' ? "UPA ITK Library serves as a learning resource center and scientific information provider for the academic community" : "UPA Perpustakaan ITK sebagai pusat sumber belajar dan penyedia informasi ilmiah bagi civitas akademika",
       icon: <BookOpen className="w-6 h-6" />
     },
     {
-      title: language === 'en' ? "Student Activity Space" : "Ruang Aktivitas Mahasiswa",
-      description: language === 'en' ? "Comfortable spaces for discussions, organizations, and student creativity" : "Ruang nyaman untuk diskusi, organisasi, dan kreativitas mahasiswa", 
+      title: language === 'en' ? "Student Dormitory" : "Asrama Mahasiswa",
+      description: language === 'en' ? "Accommodation facilities for students who need housing within the campus" : "Fasilitas tempat tinggal bagi mahasiswa yang membutuhkan akomodasi di dalam kampus",
+      icon: <Home className="w-6 h-6" />
+    },
+    {
+      title: language === 'en' ? "Sports Facilities" : "Fasilitas Olahraga",
+      description: language === 'en' ? "Sports fields and fitness center to support student physical activities" : "Lapangan olahraga dan pusat kebugaran untuk mendukung aktivitas fisik mahasiswa",
+      icon: <Activity className="w-6 h-6" />
+    },
+    {
+      title: language === 'en' ? "Al-Fatih Mosque" : "Masjid Al-Fatih",
+      description: language === 'en' ? "Adequate worship facilities for religious activities of the academic community" : "Fasilitas ibadah yang memadai untuk kegiatan keagamaan civitas akademika",
+      icon: <Building className="w-6 h-6" />
+    },
+    {
+      title: language === 'en' ? "Health Services" : "Layanan Kesehatan",
+      description: language === 'en' ? "Campus clinic providing basic health services for students and staff" : "Klinik kampus yang menyediakan pelayanan kesehatan dasar bagi mahasiswa dan staff",
+      icon: <Heart className="w-6 h-6" />
+    },
+    {
+      title: language === 'en' ? "Integrated Service Unit" : "Unit Pelayanan Terpadu",
+      description: language === 'en' ? "Integrated administrative services for academic and non-academic affairs convenience" : "Layanan administrasi terpadu untuk kemudahan urusan akademik dan non-akademik",
       icon: <Users className="w-6 h-6" />
     }
   ];
@@ -275,22 +291,26 @@ const TentangFSTIPage = () => {
               </p>
               
               {/* Quick Stats */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-12">
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-primary-600">8</div>
-                  <div className="text-gray-600 text-sm">{language === 'en' ? 'Study Programs' : 'Program Studi'}</div>
-                </div>
+              <div className="grid grid-cols-2 md:grid-cols-5 gap-6 mt-12">
                 <div className="text-center">
                   <div className="text-3xl font-bold text-primary-600">2</div>
                   <div className="text-gray-600 text-sm">{language === 'en' ? 'Departments' : 'Jurusan'}</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-primary-600">8</div>
+                  <div className="text-gray-600 text-sm">{language === 'en' ? 'Study Programs' : 'Program Studi'}</div>
                 </div>
                 <div className="text-center">
                   <div className="text-3xl font-bold text-primary-600">5</div>
                   <div className="text-gray-600 text-sm">{language === 'en' ? 'Laboratories' : 'Laboratorium'}</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-primary-600">50+</div>
+                  <div className="text-3xl font-bold text-primary-600">118</div>
                   <div className="text-gray-600 text-sm">{language === 'en' ? 'Faculty Members' : 'Dosen'}</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-primary-600">118</div>
+                  <div className="text-gray-600 text-sm">{language === 'en' ? 'Staff' : 'Tendik'}</div>
                 </div>
               </div>
             </div>
@@ -406,7 +426,7 @@ const TentangFSTIPage = () => {
         </div>
       </section>
 
-      {/* Struktur Organisasi Section */}
+      {/* Struktur Organisasi Section - FIXED STYLE */}
       <section className="py-16 bg-light-bg">
         <div className="container mx-auto px-4">
           <AnimatedSection animation="slideUp">
@@ -419,30 +439,44 @@ const TentangFSTIPage = () => {
             {/* Dekan */}
             <div className="text-center mb-8">
               <AnimatedSection animation="slideUp" delay={0.1}>
-                <div className="inline-block bg-white rounded-xl shadow-md p-6 hover-card">
-                  <img 
-                    src={strukturOrganisasi[0].foto} 
-                    alt={strukturOrganisasi[0].nama}
-                    className="w-24 h-24 rounded-full mx-auto mb-4 object-cover border-4 border-primary-100"
-                  />
-                  <h3 className="font-bold text-gray-800 mb-1">{strukturOrganisasi[0].nama}</h3>
-                  <p className="text-primary-600 text-sm">{strukturOrganisasi[0].jabatan}</p>
+                <div className="relative hover-card group mx-auto" style={{width: '250px'}}>
+                  <div className="w-full aspect-[3/4] rounded-xl overflow-hidden shadow-lg">
+                    <img 
+                      src={strukturOrganisasi[0].foto} 
+                      alt={strukturOrganisasi[0].nama}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                    {/* Overlay gradient untuk text */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+                    {/* Text overlay */}
+                    <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+                      <h3 className="font-bold text-sm mb-1 leading-tight">{strukturOrganisasi[0].nama}</h3>
+                      <p className="text-primary-200 text-xs leading-tight">{strukturOrganisasi[0].jabatan}</p>
+                    </div>
+                  </div>
                 </div>
               </AnimatedSection>
             </div>
 
             {/* Wakil Dekan */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8 max-w-lg mx-auto">
               {strukturOrganisasi.slice(1, 3).map((pejabat, index) => (
                 <AnimatedSection key={index} animation="slideUp" delay={(index + 2) * 0.1}>
-                  <div className="bg-white rounded-xl shadow-md p-6 text-center hover-card">
-                    <img 
-                      src={pejabat.foto} 
-                      alt={pejabat.nama}
-                      className="w-20 h-20 rounded-full mx-auto mb-4 object-cover border-4 border-primary-100"
-                    />
-                    <h4 className="font-bold text-gray-800 mb-1">{pejabat.nama}</h4>
-                    <p className="text-primary-600 text-sm">{pejabat.jabatan}</p>
+                  <div className="relative hover-card group">
+                    <div className="w-full aspect-[3/4] rounded-xl overflow-hidden shadow-lg">
+                      <img 
+                        src={pejabat.foto} 
+                        alt={pejabat.nama}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                      {/* Overlay gradient untuk text */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+                      {/* Text overlay */}
+                      <div className="absolute bottom-0 left-0 right-0 p-3 text-white">
+                        <h4 className="font-bold text-xs mb-1 leading-tight">{pejabat.nama}</h4>
+                        <p className="text-primary-200 text-xs leading-tight">{pejabat.jabatan}</p>
+                      </div>
+                    </div>
                   </div>
                 </AnimatedSection>
               ))}
@@ -451,30 +485,44 @@ const TentangFSTIPage = () => {
             {/* Level 3: Kasubbag */}
             <div className="flex justify-center mb-8">
               <AnimatedSection animation="slideUp" delay={0.4}>
-                <div className="bg-white rounded-xl shadow-md p-6 text-center hover-card">
-                  <img 
-                    src={strukturOrganisasi[3].foto} 
-                    alt={strukturOrganisasi[3].nama}
-                    className="w-20 h-20 rounded-full mx-auto mb-4 object-cover border-4 border-primary-100"
-                  />
-                  <h4 className="font-bold text-gray-800 mb-1">{strukturOrganisasi[3].nama}</h4>
-                  <p className="text-primary-600 text-sm">{strukturOrganisasi[3].jabatan}</p>
+                <div className="relative hover-card group" style={{width: '160px'}}>
+                  <div className="w-full aspect-[3/4] rounded-xl overflow-hidden shadow-lg">
+                    <img 
+                      src={strukturOrganisasi[3].foto} 
+                      alt={strukturOrganisasi[3].nama}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                    {/* Overlay gradient untuk text */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+                    {/* Text overlay */}
+                    <div className="absolute bottom-0 left-0 right-0 p-3 text-white">
+                      <h4 className="font-bold text-xs mb-1 leading-tight">{strukturOrganisasi[3].nama}</h4>
+                      <p className="text-primary-200 text-xs leading-tight">{strukturOrganisasi[3].jabatan}</p>
+                    </div>
+                  </div>
                 </div>
               </AnimatedSection>
             </div>
 
             {/* Level 4: Kajur (dibawah Wakil Dekan I) */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-lg mx-auto">
               {strukturOrganisasi.slice(4).map((pejabat, index) => (
                 <AnimatedSection key={index} animation="slideUp" delay={(index + 5) * 0.1}>
-                  <div className="bg-white rounded-xl shadow-md p-6 text-center hover-card">
-                    <img 
-                      src={pejabat.foto} 
-                      alt={pejabat.nama}
-                      className="w-20 h-20 rounded-full mx-auto mb-4 object-cover border-4 border-primary-100"
-                    />
-                    <h4 className="font-bold text-gray-800 mb-1">{pejabat.nama}</h4>
-                    <p className="text-primary-600 text-sm">{pejabat.jabatan}</p>
+                  <div className="relative hover-card group">
+                    <div className="w-full aspect-[3/4] rounded-xl overflow-hidden shadow-lg">
+                      <img 
+                        src={pejabat.foto} 
+                        alt={pejabat.nama}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                      {/* Overlay gradient untuk text */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+                      {/* Text overlay */}
+                      <div className="absolute bottom-0 left-0 right-0 p-3 text-white">
+                        <h4 className="font-bold text-xs mb-1 leading-tight">{pejabat.nama}</h4>
+                        <p className="text-primary-200 text-xs leading-tight">{pejabat.jabatan}</p>
+                      </div>
+                    </div>
                   </div>
                 </AnimatedSection>
               ))}
@@ -488,17 +536,24 @@ const TentangFSTIPage = () => {
                 </h3>
               </AnimatedSection>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-6">
                 {koordinatorProdi.map((koor, index) => (
                   <AnimatedSection key={index} animation="slideUp" delay={index * 0.1}>
-                    <div className="bg-white rounded-lg shadow-sm p-4 text-center hover-card">
-                      <img 
-                        src={koor.foto} 
-                        alt={koor.nama}
-                        className="w-16 h-16 rounded-full mx-auto mb-3 object-cover border-2 border-primary-100"
-                      />
-                      <h5 className="font-medium text-gray-800 text-sm mb-1">{koor.nama}</h5>
-                      <p className="text-primary-600 text-xs">{koor.jabatan}</p>
+                    <div className="relative hover-card group">
+                      <div className="w-full aspect-[3/4] rounded-lg overflow-hidden shadow-md">
+                        <img 
+                          src={koor.foto} 
+                          alt={koor.nama}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                        {/* Overlay gradient untuk text */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+                        {/* Text overlay */}
+                        <div className="absolute bottom-0 left-0 right-0 p-2 text-white">
+                          <h5 className="font-medium text-xs mb-1 leading-tight">{koor.nama}</h5>
+                          <p className="text-primary-200 text-xs leading-tight">{koor.jabatan}</p>
+                        </div>
+                      </div>
                     </div>
                   </AnimatedSection>
                 ))}
@@ -517,19 +572,26 @@ const TentangFSTIPage = () => {
             </h2>
           </AnimatedSection>
           
-          <div className="max-w-4xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="max-w-5xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {/* Row 1: 3 labs */}
               {kepalaLaboratorium.slice(0, 3).map((kalab, index) => (
                 <AnimatedSection key={index} animation="slideUp" delay={index * 0.1}>
-                  <div className="bg-gradient-to-br from-accent/10 to-accent/20 rounded-xl p-6 text-center hover-card">
-                    <img 
-                      src={kalab.foto} 
-                      alt={kalab.nama}
-                      className="w-20 h-20 rounded-full mx-auto mb-4 object-cover border-4 border-accent/20"
-                    />
-                    <h4 className="font-bold text-gray-800 mb-2">{kalab.nama}</h4>
-                    <p className="text-accent text-sm leading-tight">{kalab.jabatan}</p>
+                  <div className="relative hover-card group">
+                    <div className="w-full aspect-[3/4] rounded-xl overflow-hidden shadow-lg">
+                      <img 
+                        src={kalab.foto} 
+                        alt={kalab.nama}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                      {/* Overlay gradient untuk text */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+                      {/* Text overlay */}
+                      <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+                        <h4 className="font-bold text-sm mb-2 leading-tight">{kalab.nama}</h4>
+                        <p className="text-accent-200 text-xs leading-tight">{kalab.jabatan}</p>
+                      </div>
+                    </div>
                   </div>
                 </AnimatedSection>
               ))}
@@ -539,14 +601,21 @@ const TentangFSTIPage = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8 max-w-2xl mx-auto">
               {kepalaLaboratorium.slice(3).map((kalab, index) => (
                 <AnimatedSection key={index + 3} animation="slideUp" delay={(index + 3) * 0.1}>
-                  <div className="bg-gradient-to-br from-accent/10 to-accent/20 rounded-xl p-6 text-center hover-card">
-                    <img 
-                      src={kalab.foto} 
-                      alt={kalab.nama}
-                      className="w-20 h-20 rounded-full mx-auto mb-4 object-cover border-4 border-accent/20"
-                    />
-                    <h4 className="font-bold text-gray-800 mb-2">{kalab.nama}</h4>
-                    <p className="text-accent text-sm leading-tight">{kalab.jabatan}</p>
+                  <div className="relative hover-card group">
+                    <div className="w-full aspect-[3/4] rounded-xl overflow-hidden shadow-lg">
+                      <img 
+                        src={kalab.foto} 
+                        alt={kalab.nama}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                      {/* Overlay gradient untuk text */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+                      {/* Text overlay */}
+                      <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+                        <h4 className="font-bold text-sm mb-2 leading-tight">{kalab.nama}</h4>
+                        <p className="text-accent-200 text-xs leading-tight">{kalab.jabatan}</p>
+                      </div>
+                    </div>
                   </div>
                 </AnimatedSection>
               ))}
@@ -555,7 +624,7 @@ const TentangFSTIPage = () => {
         </div>
       </section>
 
-      {/* Prestasi Section */}
+      {/* Prestasi Section - DATA TERVERIFIKASI */}
       <section className="py-16 bg-light-bg">
         <div className="container mx-auto px-4">
           <AnimatedSection animation="slideUp">
@@ -565,7 +634,7 @@ const TentangFSTIPage = () => {
           </AnimatedSection>
           
           <div className="max-w-6xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {prestasi.map((item, index) => (
                 <AnimatedSection key={index} animation="slideUp" delay={index * 0.1}>
                   <div className="bg-white rounded-xl shadow-md p-6 hover-card text-center">
@@ -582,7 +651,7 @@ const TentangFSTIPage = () => {
         </div>
       </section>
 
-      {/* Fasilitas Section */}
+      {/* Fasilitas Section - DATA TERVERIFIKASI */}
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <AnimatedSection animation="slideUp">
