@@ -394,61 +394,76 @@ const TentangFSTIPage = () => {
 
       {/* Program Studi Section */}
       <section className="py-16 bg-white">
-        <div className="container mx-auto px-4">
-          <AnimatedSection animation="slideUp">
-            <h2 className="text-3xl font-display font-bold text-center mb-12 text-gradient">
-              {language === 'en' ? 'Study Programs' : 'Program Studi'}
-            </h2>
+  <div className="container mx-auto px-4">
+    <AnimatedSection animation="slideUp">
+      <h2 className="text-3xl font-display font-bold text-center mb-12 text-gradient">
+        {language === 'en' ? 'Study Programs' : 'Program Studi'}
+      </h2>
+    </AnimatedSection>
+    
+    <div className="max-w-6xl mx-auto">
+      {Object.entries(programStudi).map(([jurusan, prodis], jurusanIndex) => (
+        <div key={jurusan} className="mb-12">
+          <AnimatedSection animation="slideUp" delay={jurusanIndex * 0.1}>
+            <h3 className="text-xl font-bold mb-6 text-primary-600 text-center">{jurusan}</h3>
           </AnimatedSection>
           
-          <div className="max-w-6xl mx-auto">
-            {Object.entries(programStudi).map(([jurusan, prodis], jurusanIndex) => (
-              <div key={jurusan} className="mb-12">
-                <AnimatedSection animation="slideUp" delay={jurusanIndex * 0.1}>
-                  <h3 className="text-xl font-bold mb-6 text-primary-600 text-center">{jurusan}</h3>
-                </AnimatedSection>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                  {prodis.map((prodi, index) => (
-                    <AnimatedSection key={index} animation="slideUp" delay={(jurusanIndex * prodis.length + index) * 0.1}>
-                      <div className="bg-gradient-to-br from-primary-50 to-primary-100 rounded-xl p-6 hover-card">
-                        <div className="flex items-center mb-4">
-                          <GraduationCap className="w-8 h-8 text-primary-600 mr-3" />
-                          <h4 className="font-bold text-primary-800">{prodi.name}</h4>
-                        </div>
-                        
-                        <div className="space-y-2 text-sm">
-                          <div className="flex justify-between">
-                            <span className="text-gray-600">{language === 'en' ? 'Accreditation' : 'Akreditasi'}:</span>
-                            <span className="font-medium text-gray-800">{prodi.akreditasi}</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-gray-600">{language === 'en' ? 'Degree' : 'Gelar'}:</span>
-                            <span className="font-medium text-gray-800">{prodi.gelar}</span>
-                          </div>
-                        </div>
-                        
-                        {/* ===== BAGIAN YANG DIUPDATE: Button menjadi Link ===== */}
-                        <div className="mt-4 pt-4 border-t border-primary-200">
-                          <a 
-                            href={prodi.website}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-primary-600 hover:text-primary-800 text-sm font-medium flex items-center transition-colors"
-                          >
-                            {language === 'en' ? 'Visit Website' : 'Lihat Website'}
-                            <ExternalLink className="w-4 h-4 ml-1" />
-                          </a>
-                        </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {prodis.map((prodi, index) => (
+              <AnimatedSection key={index} animation="slideUp" delay={(jurusanIndex * prodis.length + index) * 0.1}>
+                {/* ===== CARD DENGAN BACKGROUND LOGO ===== */}
+                <div className="bg-gradient-to-br from-primary-50 to-primary-100 rounded-xl p-6 hover-card relative overflow-hidden">
+                  
+                  {/* ===== BACKGROUND LOGO TRANSPARAN ===== */}
+                  <img 
+                    src={`/images/program-studi/${prodi.name.toLowerCase().replace(/\s+/g, '-')}.png`}
+                    alt="" 
+                    className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-32 opacity-[0.18] object-contain"
+                    onError={(e) => {
+                      // Fallback ke logo FSTI umum jika logo spesifik tidak ada
+                      (e.target as HTMLImageElement).src = '/images/program-studi/fsti.png';
+                    }}
+                  />
+                  
+                  {/* Content Card - Tetap sama */}
+                  <div className="relative z-10">
+                    <div className="flex items-center mb-4">
+                      <GraduationCap className="w-8 h-8 text-primary-600 mr-3" />
+                      <h4 className="font-bold text-primary-800">{prodi.name}</h4>
+                    </div>
+                    
+                    <div className="space-y-2 text-sm">
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">{language === 'en' ? 'Accreditation' : 'Akreditasi'}:</span>
+                        <span className="font-medium text-gray-800">{prodi.akreditasi}</span>
                       </div>
-                    </AnimatedSection>
-                  ))}
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">{language === 'en' ? 'Degree' : 'Gelar'}:</span>
+                        <span className="font-medium text-gray-800">{prodi.gelar}</span>
+                      </div>
+                    </div>
+                    
+                    <div className="mt-4 pt-4 border-t border-primary-200">
+                      <a 
+                        href={prodi.website}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-primary-600 hover:text-primary-800 text-sm font-medium flex items-center transition-colors"
+                      >
+                        {language === 'en' ? 'Visit Website' : 'Lihat Website'}
+                        <ExternalLink className="w-4 h-4 ml-1" />
+                      </a>
+                    </div>
+                  </div>
                 </div>
-              </div>
+              </AnimatedSection>
             ))}
           </div>
         </div>
-      </section>
+      ))}
+    </div>
+  </div>
+</section>
 
       {/* Struktur Organisasi Section - FIXED STYLE */}
       <section className="py-16 bg-light-bg">
@@ -724,18 +739,33 @@ const TentangFSTIPage = () => {
               {language === 'en' ? 'Facilities' : 'Fasilitas'}
             </h2>
           </AnimatedSection>
-          
+        
           <div className="max-w-6xl mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {fasilitas.map((item, index) => (
                 <AnimatedSection key={index} animation="slideUp" delay={index * 0.1}>
-                  <div className="bg-gradient-to-br from-primary-50 to-primary-100 rounded-xl p-6 hover-card">
-                    <div className="w-12 h-12 bg-primary-200 rounded-full flex items-center justify-center mb-4">
-                      <div className="text-primary-600">{item.icon}</div>
+                  <div className="rounded-xl overflow-hidden hover-card relative h-64">
+                  {/* Full Background Image */}
+                  <img
+                    src={`/images/fasilitas/${index + 1}.png`}
+                    alt={item.title}
+                    className="absolute inset-0 w-full h-full object-cover"
+                  />
+                  
+                  {/* Glassmorphism Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-primary-900/80 via-primary-600/40 to-transparent"></div>
+                  
+                  {/* Content dengan glass effect */}
+                  <div className="absolute bottom-4 left-4 right-4 bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20 text-white">
+                    <div className="flex items-center mb-2">
+                      <div className="w-8 h-8 bg-white/30 rounded-full flex items-center justify-center mr-3">
+                        <div className="text-white text-sm">{item.icon}</div>
+                      </div>
+                      <h4 className="font-bold text-lg">{item.title}</h4>
                     </div>
-                    <h4 className="font-bold text-gray-800 mb-3">{item.title}</h4>
-                    <p className="text-gray-600 text-sm leading-relaxed">{item.description}</p>
+                    <p className="text-white/90 text-sm">{item.description}</p>
                   </div>
+                </div>
                 </AnimatedSection>
               ))}
             </div>
@@ -743,7 +773,6 @@ const TentangFSTIPage = () => {
         </div>
       </section>
 
-      {/* CTA Section */}
       {/* CTA Section */}
       <section className="py-16 bg-gradient-to-b from-light-bg to-white">
         <div className="container mx-auto px-4 text-center">
