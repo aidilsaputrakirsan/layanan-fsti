@@ -114,7 +114,7 @@ const LayananAdministrasiPage = () => {
           items: [
             { text: language === 'en' ? "Active Student Certificate Request" : "Permohonan Surat Keterangan Aktif Studi", url: "https://forms.gle/XG1TVHAG7cNkpKEG7" },
             { text: language === 'en' ? "Graduation Certificate Request" : "Permohonan Surat Keterangan Lulus (SKL)", url: "https://forms.gle/njqaU8cs81KwVHiJ9" },
-            { text: language === 'en' ? "Academic Document Service Request" : "Permohonan Layanan Dokumen Akademik", url: "https://forms.gle/YbWMvtHvbgKAQPkS7" },
+            { text: language === 'en' ? "Academic Document Service Request" : "Permohonan Layanan Dokumen Akademik (Transkip Mata Kuliah, KHS dan FRS)", url: "https://forms.gle/YbWMvtHvbgKAQPkS7" },
             { text: language === 'en' ? "Class Attendance Dispensation Request" : "Permohonan Dispensasi Perkuliahan", url: "https://docs.google.com/forms/u/0/d/1KgPpebd-SnQsAbTCvkn27H4JNBXS_05Amfd2kUw6YUA/viewform?edit_requested=true" },
             { text: language === 'en' ? "Resignation Request" : "Permohonan Pengunduran Diri", url: "https://docs.google.com/forms/u/0/d/1KgPpebd-SnQsAbTCvkn27H4JNBXS_05Amfd2kUw6YUA/viewform?edit_requested=true" }
           ]

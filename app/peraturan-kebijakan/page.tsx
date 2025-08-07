@@ -35,6 +35,19 @@ const documentsList = [
     fileUrl: '/file/Peraturan Rektor-Kemahasiswaan.pdf',
   },
   {
+    id: 'biayaPendidikan',
+    title: {
+      id: 'Biaya Pendidikan Mahasiswa',
+      en: 'Student Tuition Fees',
+    },
+    description: {
+      id: 'Informasi lengkap mengenai biaya pendidikan, UKT, dan komponen biaya lainnya untuk mahasiswa ITK',
+      en: 'Complete information about tuition fees, UKT, and other fee components for ITK students',
+    },
+    fileName: 'BIAYA-PENDIDIKAN-MAHASISWA.pdf',
+    fileUrl: '/file/BIAYA-PENDIDIKAN-MAHASISWA.pdf',
+  },
+  {
     id: 'tugasAkhir',
     title: {
       id: 'Tugas Akhir',

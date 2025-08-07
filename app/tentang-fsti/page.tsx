@@ -4,6 +4,7 @@ import { useState } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import AnimatedSection from '@/components/ui/AnimatedSection';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
+import Button from '@/components/ui/Button';
 import {
   GraduationCap,
   Users,
@@ -75,50 +76,66 @@ const TentangFSTIPage = () => {
 
   // Data Program Studi (dari gambar 3)
   const programStudi = {
-    "Jurusan Sains dan Analitika Data": [
-      {
-        name: "Matematika",
-        akreditasi: language === 'en' ? "Good" : "Baik",
-        gelar: "S.Math."
-      },
-      {
-        name: "Ilmu Aktuaria", 
-        akreditasi: language === 'en' ? "Good" : "Baik",
-        gelar: "S.Aktr."
-      },
-      {
-        name: "Statistika",
-        akreditasi: language === 'en' ? "Good" : "Baik", 
-        gelar: "S.Stat."
-      },
-      {
-        name: "Fisika",
-        akreditasi: language === 'en' ? "Good to Excellent" : "Baik Sekali",
-        gelar: "S.Si"
-      }
-    ],
     "Jurusan Teknik Elektro, Informatika, dan Bisnis": [
       {
-        name: "Informatika",
+        name: "Teknik Elektro",
         akreditasi: language === 'en' ? "Good to Excellent and ASIIN" : "Baik Sekali dan ASIIN",
-        gelar: "S.Kom."
+        gelar: "S.T.",
+        website: "https://ee.itk.ac.id/" // Tambahkan website URL
       },
       {
         name: "Sistem Informasi",
         akreditasi: language === 'en' ? "Good to Excellent and ASIIN" : "Baik Sekali dan ASIIN", 
-        gelar: "S.Kom."
+        gelar: "S.Kom.",
+        website: "https://is.itk.ac.id" // Tambahkan website URL
+      },
+      {
+        name: "Informatika",
+        akreditasi: language === 'en' ? "Good to Excellent and ASIIN" : "Baik Sekali dan ASIIN",
+        gelar: "S.Kom.",
+        website: "https://if.itk.ac.id" // Tambahkan website URL
       },
       {
         name: "Bisnis Digital",
         akreditasi: language === 'en' ? "Good" : "Baik",
-        gelar: "S.Bns."
+        gelar: "S.Bns.",
+        website: "https://bisnisdigital.itk.ac.id/" // Tambahkan website URL
       },
       {
-        name: "Teknik Elektro",
-        akreditasi: language === 'en' ? "Good to Excellent and ASIIN" : "Baik Sekali dan ASIIN",
-        gelar: "S.T."
+        name: "Magister Manajemen Teknologi",
+        akreditasi: language === 'en' ? "Good" : "Baik",
+        gelar: "M.MT.",
+        website: "https://itk.ac.id/pasca-mmt" // Tambahkan website URL
+      }
+    ],
+
+    "Jurusan Sains dan Analitika Data": [
+      {
+        name: "Fisika",
+        akreditasi: language === 'en' ? "Good to Excellent" : "Baik Sekali",
+        gelar: "S.Si",
+        website: "https://phy.itk.ac.id/" // Tambahkan website URL
+      },
+      {
+        name: "Matematika",
+        akreditasi: language === 'en' ? "Good" : "Baik",
+        gelar: "S.Math.",
+        website: "https://math.itk.ac.id" // Tambahkan website URL
+      },
+      {
+        name: "Statistika",
+        akreditasi: language === 'en' ? "Good" : "Baik", 
+        gelar: "S.Stat.",
+        website: "https://stat.itk.ac.id" // Tambahkan website URL
+      },
+      {
+        name: "Ilmu Aktuaria", 
+        akreditasi: language === 'en' ? "Good" : "Baik",
+        gelar: "S.Aktr.",
+        website: "https://actsci.itk.ac.id/" // Tambahkan website URL
       }
     ]
+    
   };
 
   // Data Struktur Organisasi (dengan foto)
@@ -167,6 +184,7 @@ const TentangFSTIPage = () => {
     { nama: "Sri Rahayu Natasia, S.Komp., M.Si., M.Sc", jabatan: "Koordinator Program Studi Sistem Informasi", foto: "/images/pimpinan/koorpro-si.png" },
     { nama: "Nisa Rizqiya Fadhliana, S.Kom., M.T", jabatan: "Koordinator Program Studi Informatika", foto: "/images/pimpinan/koorpro-if.png" },
     { nama: "Deli Yansyah, S.E., M.Acc., Ak., CA", jabatan: "Koordinator Program Studi Bisnis Digital", foto: "/images/pimpinan/koorpro-bd.png" },
+    { nama: "Bima Prihasto, Ph.D.", jabatan: "Koordinator Program Studi Magister Manajemen Teknologi", foto: "/images/pimpinan/koorpro-mmt.png" },
     
     { nama: "Febrian Dedi Sastrawan, S.Si., M.Sc", jabatan: "Koordinator Program Studi Fisika", foto: "/images/pimpinan/koorpro-fis.png" },
     { nama: "Kartika Nugraheni, S.Si., M.Si.", jabatan: "Koordinator Program Studi Matematika", foto: "/images/pimpinan/koorpro-mat.png" },
@@ -297,7 +315,7 @@ const TentangFSTIPage = () => {
                   <div className="text-gray-600 text-sm">{language === 'en' ? 'Departments' : 'Jurusan'}</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-primary-600">8</div>
+                  <div className="text-3xl font-bold text-primary-600">9</div>
                   <div className="text-gray-600 text-sm">{language === 'en' ? 'Study Programs' : 'Program Studi'}</div>
                 </div>
                 <div className="text-center">
@@ -410,11 +428,17 @@ const TentangFSTIPage = () => {
                           </div>
                         </div>
                         
+                        {/* ===== BAGIAN YANG DIUPDATE: Button menjadi Link ===== */}
                         <div className="mt-4 pt-4 border-t border-primary-200">
-                          <button className="text-primary-600 hover:text-primary-800 text-sm font-medium flex items-center">
-                            {language === 'en' ? 'View Curriculum' : 'Lihat Kurikulum'}
+                          <a 
+                            href={prodi.website}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-primary-600 hover:text-primary-800 text-sm font-medium flex items-center transition-colors"
+                          >
+                            {language === 'en' ? 'Visit Website' : 'Lihat Website'}
                             <ExternalLink className="w-4 h-4 ml-1" />
-                          </button>
+                          </a>
                         </div>
                       </div>
                     </AnimatedSection>
@@ -536,8 +560,9 @@ const TentangFSTIPage = () => {
                 </h3>
               </AnimatedSection>
               
-              <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-6">
-                {koordinatorProdi.map((koor, index) => (
+              {/* Baris 1: 4 Koordinator Teknik Elektro, Informatika, dan Bisnis */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
+                {koordinatorProdi.slice(0, 4).map((koor, index) => (
                   <AnimatedSection key={index} animation="slideUp" delay={index * 0.1}>
                     <div className="relative hover-card group">
                       <div className="w-full aspect-[3/4] rounded-lg overflow-hidden shadow-md">
@@ -546,9 +571,49 @@ const TentangFSTIPage = () => {
                           alt={koor.nama}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                         />
-                        {/* Overlay gradient untuk text */}
                         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
-                        {/* Text overlay */}
+                        <div className="absolute bottom-0 left-0 right-0 p-2 text-white">
+                          <h5 className="font-medium text-xs mb-1 leading-tight">{koor.nama}</h5>
+                          <p className="text-primary-200 text-xs leading-tight">{koor.jabatan}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </AnimatedSection>
+                ))}
+              </div>
+
+              {/* Baris 2: 1 Koordinator MMT (Kiri) */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
+                <AnimatedSection animation="slideUp" delay={0.4}>
+                  <div className="relative hover-card group">
+                    <div className="w-full aspect-[3/4] rounded-lg overflow-hidden shadow-md">
+                      <img 
+                        src={koordinatorProdi[4].foto} 
+                        alt={koordinatorProdi[4].nama}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+                      <div className="absolute bottom-0 left-0 right-0 p-2 text-white">
+                        <h5 className="font-medium text-xs mb-1 leading-tight">{koordinatorProdi[4].nama}</h5>
+                        <p className="text-primary-200 text-xs leading-tight">{koordinatorProdi[4].jabatan}</p>
+                      </div>
+                    </div>
+                  </div>
+                </AnimatedSection>
+              </div>
+
+              {/* Baris 3: 4 Koordinator Sains dan Analitika Data */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                {koordinatorProdi.slice(5).map((koor, index) => (
+                  <AnimatedSection key={index + 5} animation="slideUp" delay={(index + 5) * 0.1}>
+                    <div className="relative hover-card group">
+                      <div className="w-full aspect-[3/4] rounded-lg overflow-hidden shadow-md">
+                        <img 
+                          src={koor.foto} 
+                          alt={koor.nama}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
                         <div className="absolute bottom-0 left-0 right-0 p-2 text-white">
                           <h5 className="font-medium text-xs mb-1 leading-tight">{koor.nama}</h5>
                           <p className="text-primary-200 text-xs leading-tight">{koor.jabatan}</p>
@@ -679,36 +744,57 @@ const TentangFSTIPage = () => {
       </section>
 
       {/* CTA Section */}
+      {/* CTA Section */}
       <section className="py-16 bg-gradient-to-b from-light-bg to-white">
         <div className="container mx-auto px-4 text-center">
           <AnimatedSection animation="slideUp">
-            <h2 className="text-2xl font-display font-bold mb-6 text-gray-800">
-              {language === 'en' ? 'Want to Learn More?' : 'Ingin Tahu Lebih Lanjut?'}
-            </h2>
+            <h2 className="text-2xl font-display font-bold mb-6 text-gray-800">{t('services.needHelp.title')}</h2>
             <p className="text-gray-600 mb-8 max-w-2xl mx-auto">
-              {language === 'en' 
-                ? 'Visit our official website or contact us directly to get more information about FSTI ITK.'
-                : 'Kunjungi website resmi kami atau hubungi kami langsung untuk mendapatkan informasi lebih lanjut tentang FSTI ITK.'
-              }
+              {t('services.needHelp.description')}
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <a 
-                href="https://itk.ac.id" 
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center px-6 py-3 bg-primary-600 text-white rounded-lg font-medium hover:bg-primary-700 transition-colors"
+              <Button 
+                href="mailto:fsti@itk.ac.id" 
+                variant="primary"
+                icon={<svg 
+                  xmlns="http://www.w3.org/2000/svg" 
+                  className="h-5 w-5" 
+                  fill="none" 
+                  viewBox="0 0 24 24" 
+                  stroke="currentColor"
+                >
+                  <path 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round" 
+                    strokeWidth={2} 
+                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" 
+                  />
+                </svg>}
+                animate
               >
-                <Globe className="w-5 h-5 mr-2" />
-                {language === 'en' ? 'ITK Official Website' : 'Website Resmi ITK'}
-                <ExternalLink className="w-4 h-4 ml-2" />
-              </a>
-              <a 
-                href="mailto:fsti@itk.ac.id"
-                className="inline-flex items-center justify-center px-6 py-3 bg-white border-2 border-primary-600 text-primary-600 rounded-lg font-medium hover:bg-primary-50 transition-colors"
+                {t('common.email')}
+              </Button>
+              <Button 
+                href="#kontak" 
+                variant="outline"
+                icon={<svg 
+                  xmlns="http://www.w3.org/2000/svg" 
+                  className="h-5 w-5" 
+                  fill="none" 
+                  viewBox="0 0 24 24" 
+                  stroke="currentColor"
+                >
+                  <path 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round" 
+                    strokeWidth={2} 
+                    d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" 
+                  />
+                </svg>}
+                animate
               >
-                <Mail className="w-5 h-5 mr-2" />
-                {language === 'en' ? 'Contact Us' : 'Hubungi Kami'}
-              </a>
+                {t('common.contact')}
+              </Button>
             </div>
           </AnimatedSection>
         </div>
