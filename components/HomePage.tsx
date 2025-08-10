@@ -301,4 +301,4 @@ function HomePage() {
 }
 
 // Export with SSR disabled to avoid hydration issues
-export default dynamic(() => Promise.resolve(HomePage), { ssr: false });
+export default HomePage;
