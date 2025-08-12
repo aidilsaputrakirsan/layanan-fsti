@@ -194,11 +194,7 @@ const PeraturanKebijakanPage = () => {
                     className="w-full max-w-md"
                   >
                     <div className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 h-full flex flex-col">
-                      {/* Badge for Importance */}
-                      <div className="bg-primary-100 text-primary-800 text-sm font-semibold px-3 py-1 rounded-tr-lg absolute top-0 right-0 m-2">
-                        {language === 'id' ? 'Dokumen Penting' : 'Important Document'}
-                      </div>
-
+                     
                       {/* Preview Frame */}
                       <div className="relative h-48 flex items-center justify-center p-6 border-b border-gray-200 overflow-hidden">
                         {/* 1. Gradient background */}
