@@ -2,41 +2,51 @@ import { NextResponse } from 'next/server';
 
 /**
  * CORS Proxy dengan timeout handling untuk GAS
+ * Updated untuk handle semua parameters termasuk sheet selector
  */
 export async function GET(request) {
   try {
     const { searchParams } = new URL(request.url);
     const url = searchParams.get('url');
-   
+    
+    // Ambil semua parameter yang mungkin diperlukan
     const id = searchParams.get('id');
     const nama = searchParams.get('nama');
     const nip = searchParams.get('nip');
     const nim = searchParams.get('nim');
-   
+    const types = searchParams.get('types');
+    const force_sync = searchParams.get('force_sync');
+    const sheet = searchParams.get('sheet'); // NEW: Sheet selector parameter
+    
     if (!url) {
       return NextResponse.json(
         { success: false, message: 'Parameter URL diperlukan' },
         { status: 400 }
       );
     }
-   
-    // Construct target URL
+    
+    // Construct target URL dengan semua parameters
     let targetUrl = url;
     const params = [];
+    
     if (id) params.push(`id=${encodeURIComponent(id)}`);
     if (nama) params.push(`nama=${encodeURIComponent(nama)}`);
     if (nip) params.push(`nip=${encodeURIComponent(nip)}`);
     if (nim) params.push(`nim=${encodeURIComponent(nim)}`);
+    if (types) params.push(`types=${encodeURIComponent(types)}`);
+    if (force_sync) params.push(`force_sync=${encodeURIComponent(force_sync)}`);
+    if (sheet) params.push(`sheet=${encodeURIComponent(sheet)}`); // NEW
     
     if (params.length > 0) {
       targetUrl += `?${params.join('&')}`;
     }
-   
+    
     console.log("Fetching from:", targetUrl);
-   
-    // TIMEOUT CONTROLLER - 8 detik untuk Hobby plan Vercel
+    
+    // TIMEOUT CONTROLLER - 30 detik untuk single sheet search
+    const timeoutDuration = sheet ? 30000 : 90000; // 30s for single sheet, 90s for all sheets
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 8000);
+    const timeoutId = setTimeout(() => controller.abort(), timeoutDuration);
     
     const response = await fetch(targetUrl, {
       method: 'GET',
@@ -48,7 +58,7 @@ export async function GET(request) {
     });
     
     clearTimeout(timeoutId);
-   
+    
     if (!response.ok) {
       console.error("Error from GAS:", response.status);
       return NextResponse.json(
@@ -56,7 +66,7 @@ export async function GET(request) {
         { status: response.status }
       );
     }
-   
+    
     const data = await response.json();
     return NextResponse.json(data);
     
@@ -66,9 +76,9 @@ export async function GET(request) {
     // Handle timeout specifically
     if (error.name === 'AbortError') {
       return NextResponse.json(
-        { 
-          success: false, 
-          message: 'Request timeout. GAS membutuhkan waktu terlalu lama.',
+        {
+          success: false,
+          message: 'Request timeout. Please try selecting a specific document type to speed up search.',
           error: 'TIMEOUT'
         },
         { status: 408 }
@@ -98,7 +108,7 @@ export async function POST(request) {
     
     // Timeout controller untuk POST juga
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 8000);
+    const timeoutId = setTimeout(() => controller.abort(), 30000);
     
     const response = await fetch(url, {
       method: 'POST',

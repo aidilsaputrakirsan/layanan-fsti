@@ -77,7 +77,7 @@ interface ApiResponse {
 }
 
 // URL Google Apps Script Web App for Student Documents (replace with your real script URL)
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwAd4uQh_jgeLRmzYzGYSgta7DEFoCRdRmMm6tPOYjUbeLqd68ej92Bm6ODfeLBqHy3/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbycBVGdZklz3GqwKSbtx7bgUul_U48BXGRxCv3HLb4_-VR-KUyxyNeoVkTvFShUhwi1/exec';
 // Local CORS proxy
 const API_ENDPOINT = '/api/cors-proxy';
 
@@ -91,6 +91,7 @@ const MahasiswaTrackingPage = () => {
   const [dataLoaded, setDataLoaded] = useState<boolean>(false);
   const [docTypes, setDocTypes] = useState<string[]>([]);
   const [showSurveyModal, setShowSurveyModal] = useState(false);
+  const [selectedSheet, setSelectedSheet] = useState<string>("");
    
   const { t, language } = useLanguage();
   const router = useRouter();
@@ -305,8 +306,16 @@ const MahasiswaTrackingPage = () => {
     setIsLoading(true);
 
     try {
-      // Search by NIM via API
-      const apiUrl = `${API_ENDPOINT}?url=${encodeURIComponent(SCRIPT_URL)}&nim=${encodeURIComponent(searchQuery)}`;
+      // Build API URL dengan sheet parameter jika dipilih
+      let apiUrl = `${API_ENDPOINT}?url=${encodeURIComponent(SCRIPT_URL)}&nim=${encodeURIComponent(searchQuery)}`;
+      
+      // Tambahkan sheet parameter jika dipilih
+      if (selectedSheet) {
+        apiUrl += `&sheet=${encodeURIComponent(selectedSheet)}`;
+      }
+      
+      console.log("API URL:", apiUrl); // Debug log
+      console.log("Selected sheet:", selectedSheet); // Debug log
       
       const response = await fetch(apiUrl);
       const data = await response.json() as ApiResponse;
@@ -339,16 +348,25 @@ const MahasiswaTrackingPage = () => {
           } else {
           setSearchResults([]);
           setTrackingResult(null);
-          setError(language === 'en' ? 'No documents found for this NIM.' : 'Tidak ada dokumen yang ditemukan untuk NIM tersebut.');
+          const errorMsg = selectedSheet 
+            ? (language === 'en' ? 'No documents found for this NIM in the selected document type.' : 'Tidak ada dokumen yang ditemukan untuk NIM tersebut pada jenis dokumen yang dipilih.')
+            : (language === 'en' ? 'No documents found for this NIM.' : 'Tidak ada dokumen yang ditemukan untuk NIM tersebut.');
+          setError(errorMsg);
         }
       } else {
         setSearchResults([]);
         setTrackingResult(null);
-        setError(language === 'en' ? 'No documents found for this NIM.' : 'Tidak ada dokumen yang ditemukan untuk NIM tersebut.');
+        const errorMsg = selectedSheet 
+          ? (language === 'en' ? 'No documents found for this NIM in the selected document type.' : 'Tidak ada dokumen yang ditemukan untuk NIM tersebut pada jenis dokumen yang dipilih.')
+          : (language === 'en' ? 'No documents found for this NIM.' : 'Tidak ada dokumen yang ditemukan untuk NIM tersebut.');
+        setError(errorMsg);
       }
     } catch (err: unknown) {
       console.error('Error searching for student document:', err);
-      setError(language === 'en' ? 'An error occurred while searching for documents. Please try again.' : 'Terjadi kesalahan saat mencari dokumen. Silakan coba lagi.');
+      const errorMsg = selectedSheet
+        ? (language === 'en' ? 'An error occurred while searching. Try selecting "All Documents" or a different document type.' : 'Terjadi kesalahan saat mencari. Coba pilih "Semua Dokumen" atau jenis dokumen yang berbeda.')
+        : (language === 'en' ? 'An error occurred while searching for documents. Please try again.' : 'Terjadi kesalahan saat mencari dokumen. Silakan coba lagi.');
+      setError(errorMsg);
     } finally {
       setIsLoading(false);
     }
@@ -416,6 +434,45 @@ const MahasiswaTrackingPage = () => {
               <h2 className="text-xl font-display font-bold mb-4 text-center text-gray-800">{t('studentTracking.trackStatus')}</h2>
               
               <form onSubmit={handleSearch} className="mb-5">
+                {/* NEW: Document Type Selector */}
+                <div className="mb-4">
+                  <label htmlFor="documentType" className="block text-gray-700 text-sm font-medium mb-2">
+                    {language === 'en' ? 'Document Type (Optional - for faster search)' : 'Jenis Dokumen (Opsional - untuk pencarian lebih cepat)'}
+                  </label>
+                  <select 
+                    id="documentType"
+                    value={selectedSheet}
+                    onChange={(e) => setSelectedSheet(e.target.value)}
+                    className="w-full border border-gray-200 bg-gray-50 text-gray-800 rounded-lg px-3 py-3 focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent"
+                  >
+                    <option value="">
+                      {language === 'en' ? '🔍 All Documents (slower but complete)' : '🔍 Semua Dokumen (lebih lambat tapi lengkap)'}
+                    </option>
+                    <option value="SURAT_AKADEMIK">📄 Surat Akademik</option>
+                    <option value="SEBELUM_KP">💼 Permohonan Kerja Praktik</option>
+                    <option value="SETELAH_KP">📋 Laporan Kerja Praktik</option>
+                    <option value="SURAT_REKOMENDASI">📝 Surat Rekomendasi</option>
+                    <option value="LEGALISASI">🏛️ Legalisasi Dokumen</option>
+                    <option value="DISPENSASI">📅 Dispensasi Perkuliahan</option>
+                    <option value="NOMOR_SERTIFIKAT">🎓 Nomor Sertifikat</option>
+                    <option value="PERUBAHAN_FRS">✏️ Perubahan FRS</option>
+                    <option value="SURAT_TUGAS">📄 Surat Tugas Mahasiswa</option>
+                    <option value="TTD_DEKANAT">✍️ TTD Dekanat</option>
+                    <option value="TERIMA_BERKAS_TA">📁 Tanda Terima Berkas TA</option>
+                    <option value="TRANSKRIP_NILAI">📊 Transkrip Nilai & KHS</option>
+                    <option value="SURAT_AKTIF">📋 Surat Aktif Studi</option>
+                    <option value="SKL">🎓 Surat Keterangan Lulus</option>
+                    <option value="PENGUNDURAN_DIRI">📤 Pengunduran Diri</option>
+                    <option value="SUKET_SIDANG_TA">📑 Suket Sidang TA</option>
+                  </select>
+                  <p className="mt-1 text-xs text-gray-500">
+                    {language === 'en' 
+                      ? 'Select a specific document type for faster search, or leave empty to search all documents' 
+                      : 'Pilih jenis dokumen spesifik untuk pencarian lebih cepat, atau kosongkan untuk mencari semua dokumen'}
+                  </p>
+                </div>
+
+                {/* Existing NIM input field */}
                 <div className="mb-4">
                   <label htmlFor="searchQuery" className="block text-gray-700 text-sm font-medium mb-2">
                     {t('studentTracking.nimLabel')}
@@ -438,6 +495,8 @@ const MahasiswaTrackingPage = () => {
                     </p>
                   )}
                 </div>
+
+                 {/* Search button with dynamic text */}
                 <Button 
                   type="submit" 
                   fullWidth
@@ -447,7 +506,10 @@ const MahasiswaTrackingPage = () => {
                   {isLoading ? (
                     <>
                       <RotateCw className="w-5 h-5 mr-2 animate-spin" />
-                      {t('studentTracking.searching')}
+                      {selectedSheet 
+                        ? (language === 'en' ? 'Searching in selected type...' : 'Mencari di jenis dokumen yang dipilih...') 
+                        : t('studentTracking.searching')
+                      }
                     </>
                   ) : !dataLoaded ? (
                     <>
@@ -457,7 +519,15 @@ const MahasiswaTrackingPage = () => {
                   ) : (
                     <>
                       <Search className="w-5 h-5 mr-2" />
-                      {t('studentTracking.tracking')}
+                      {selectedSheet 
+                        ? (language === 'en' ? 'Quick Search' : 'Pencarian Cepat')
+                        : t('studentTracking.tracking')
+                      }
+                      {selectedSheet && (
+                        <span className="ml-2 px-2 py-1 bg-green-100 text-green-700 rounded text-xs">
+                          {language === 'en' ? 'Fast' : 'Cepat'}
+                        </span>
+                      )}
                     </>
                   )}
                 </Button>
@@ -470,11 +540,19 @@ const MahasiswaTrackingPage = () => {
                     {language === 'en' ? 'Search Tips' : 'Tips Pencarian'}
                   </summary>
                   <div className="mt-3 text-gray-600">
-                    <p className="mb-2">{language === 'en' ? 'You can search for documents using:' : 'Anda dapat mencari dokumen menggunakan:'}</p>
+                    <p className="mb-2">{language === 'en' ? 'For best search experience:' : 'Untuk pengalaman pencarian terbaik:'}</p>
                     <ul className="space-y-2">
                       <li className="flex items-start">
                         <GraduationCap className="w-4 h-4 mr-2 text-primary-600 flex-shrink-0 mt-0.5" />
-                        <span>{language === 'en' ? 'Enter full or partial NIM' : 'Masukkan NIM lengkap atau sebagian'}</span>
+                        <span>{language === 'en' ? 'Enter your full or partial NIM' : 'Masukkan NIM lengkap atau sebagian'}</span>
+                      </li>
+                      <li className="flex items-start">
+                        <Clock className="w-4 h-4 mr-2 text-green-600 flex-shrink-0 mt-0.5" />
+                        <span>{language === 'en' ? 'Select document type for faster search (5-10 seconds)' : 'Pilih jenis dokumen untuk pencarian lebih cepat (5-10 detik)'}</span>
+                      </li>
+                      <li className="flex items-start">
+                        <AlertCircle className="w-4 h-4 mr-2 text-orange-600 flex-shrink-0 mt-0.5" />
+                        <span>{language === 'en' ? 'Search all documents if unsure (may take 30-90 seconds)' : 'Cari semua dokumen jika tidak yakin (bisa 30-90 detik)'}</span>
                       </li>
                     </ul>
                   </div>
