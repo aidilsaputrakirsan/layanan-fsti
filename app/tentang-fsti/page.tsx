@@ -28,11 +28,88 @@ import {
   Home,
   Activity,
   Bus,
-  Heart
+  Heart,
+  FileText,
+  Settings,
+  Briefcase,
+  UserCheck,
+  Clipboard
 } from 'lucide-react';
 
 const TentangFSTIPage = () => {
   const { t, language } = useLanguage();
+
+  // Data Tugas dan Fungsi Fakultas (berdasarkan Permendikbudristek No. 41 Tahun 2024)
+  const tugasFungsi = {
+    tugas: {
+      title: language === 'en' ? 'Faculty Duties' : 'Tugas Fakultas',
+      content: language === 'en' 
+        ? "The Faculty has the duty to organize and manage academic, vocational, and/or professional education in one or several trees/groups of science and/or technology."
+        : "Fakultas mempunyai tugas menyelenggarakan dan mengelola pendidikan akademik, vokasi, dan/atau profesi dalam 1 (satu) atau beberapa pohon/kelompok ilmu pengetahuan dan/atau teknologi.",
+      source: language === 'en' 
+        ? "Based on: Minister of Education, Culture, Research, and Technology Regulation No. 41/2024, Article 12"
+        : "Berdasarkan: Peraturan Menteri Pendidikan, Kebudayaan, Riset, dan Teknologi No. 41 Tahun 2024, Pasal 12"
+    },
+    fungsi: {
+      title: language === 'en' ? 'Faculty Functions' : 'Fungsi Fakultas',
+      items: language === 'en' ? [
+        {
+          title: "Education Implementation and Development",
+          description: "Implementation and development of education within the faculty environment",
+          icon: <GraduationCap className="w-6 h-6" />
+        },
+        {
+          title: "Research Implementation", 
+          description: "Implementation of research for the development of science and/or technology within the faculty environment",
+          icon: <Microscope className="w-6 h-6" />
+        },
+        {
+          title: "Community Service Implementation",
+          description: "Implementation of community service in accordance with the scientific field within the faculty environment", 
+          icon: <Users className="w-6 h-6" />
+        },
+        {
+          title: "Academic Community Development",
+          description: "Development of Academic Community and Educational Personnel within the faculty environment",
+          icon: <UserCheck className="w-6 h-6" />
+        },
+        {
+          title: "Faculty Administration",
+          description: "Implementation of faculty administrative affairs",
+          icon: <Clipboard className="w-6 h-6" />
+        }
+      ] : [
+        {
+          title: "Pelaksanaan dan Pengembangan Pendidikan",
+          description: "Pelaksanaan dan pengembangan pendidikan di lingkungan fakultas",
+          icon: <GraduationCap className="w-6 h-6" />
+        },
+        {
+          title: "Pelaksanaan Penelitian",
+          description: "Pelaksanaan penelitian untuk pengembangan ilmu pengetahuan dan/atau teknologi di lingkungan fakultas",
+          icon: <Microscope className="w-6 h-6" />
+        },
+        {
+          title: "Pelaksanaan Pengabdian kepada Masyarakat", 
+          description: "Pelaksanaan pengabdian kepada masyarakat sesuai dengan bidang keilmuan di lingkungan fakultas",
+          icon: <Users className="w-6 h-6" />
+        },
+        {
+          title: "Pembinaan Sivitas Akademika",
+          description: "Pembinaan Sivitas Akademika dan Tenaga Kependidikan di lingkungan fakultas",
+          icon: <UserCheck className="w-6 h-6" />
+        },
+        {
+          title: "Pelaksanaan Urusan Administrasi",
+          description: "Pelaksanaan urusan administrasi fakultas",
+          icon: <Clipboard className="w-6 h-6" />
+        }
+      ],
+      source: language === 'en'
+        ? "Based on: Minister of Education, Culture, Research, and Technology Regulation No. 41/2024, Article 13" 
+        : "Berdasarkan: Peraturan Menteri Pendidikan, Kebudayaan, Riset, dan Teknologi No. 41 Tahun 2024, Pasal 13"
+    }
+  };
 
   // Data Visi Misi (dari gambar 1)
   const visiMisi = {
@@ -309,30 +386,108 @@ const TentangFSTIPage = () => {
               </p>
               
               {/* Quick Stats */}
-              <div className="grid grid-cols-2 md:grid-cols-5 gap-6 mt-12">
+              <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4 mt-12">
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-primary-600">2</div>
-                  <div className="text-gray-600 text-sm">{language === 'en' ? 'Departments' : 'Jurusan'}</div>
+                  <div className="text-2xl md:text-3xl font-bold text-primary-600">2.260</div>
+                  <div className="text-gray-600 text-xs md:text-sm">{language === 'en' ? 'Students' : 'Mahasiswa'}</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-primary-600">9</div>
-                  <div className="text-gray-600 text-sm">{language === 'en' ? 'Study Programs' : 'Program Studi'}</div>
+                  <div className="text-2xl md:text-3xl font-bold text-primary-600">2</div>
+                  <div className="text-gray-600 text-xs md:text-sm">{language === 'en' ? 'Departments' : 'Jurusan'}</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-primary-600">5</div>
-                  <div className="text-gray-600 text-sm">{language === 'en' ? 'Laboratories' : 'Laboratorium'}</div>
+                  <div className="text-2xl md:text-3xl font-bold text-primary-600">8</div>
+                  <div className="text-gray-600 text-xs md:text-sm">{language === 'en' ? 'S1 Programs' : 'Prodi S1'}</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-primary-600">118</div>
-                  <div className="text-gray-600 text-sm">{language === 'en' ? 'Faculty Members' : 'Dosen'}</div>
+                  <div className="text-2xl md:text-3xl font-bold text-primary-600">1</div>
+                  <div className="text-gray-600 text-xs md:text-sm">{language === 'en' ? 'S2 Programs' : 'Prodi S2'}</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-primary-600">6</div>
-                  <div className="text-gray-600 text-sm">{language === 'en' ? 'Staff' : 'Tendik'}</div>
+                  <div className="text-2xl md:text-3xl font-bold text-primary-600">5</div>
+                  <div className="text-gray-600 text-xs md:text-sm">{language === 'en' ? 'Laboratories' : 'Laboratorium'}</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl md:text-3xl font-bold text-primary-600">1.404</div>
+                  <div className="text-gray-600 text-xs md:text-sm">{language === 'en' ? 'Alumni' : 'Alumni'}</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl md:text-3xl font-bold text-primary-600">107</div>
+                  <div className="text-gray-600 text-xs md:text-sm">{language === 'en' ? 'Faculty Members' : 'Dosen'}</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl md:text-3xl font-bold text-primary-600">8</div>
+                  <div className="text-gray-600 text-xs md:text-sm">{language === 'en' ? 'Staff' : 'Tendik'}</div>
                 </div>
               </div>
             </div>
           </AnimatedSection>
+        </div>
+      </section>
+
+      {/* Tugas dan Fungsi Fakultas Section - SECTION BARU */}
+      <section className="py-16 bg-white">
+        <div className="container mx-auto px-4">
+          <AnimatedSection animation="slideUp">
+            <h2 className="text-3xl font-display font-bold text-center mb-12 text-gradient">
+              {language === 'en' ? 'Faculty Duties and Functions' : 'Tugas dan Fungsi Fakultas'}
+            </h2>
+          </AnimatedSection>
+          
+          <div className="max-w-6xl mx-auto">
+            {/* Tugas Fakultas */}
+            <div className="mb-12">
+              <AnimatedSection animation="slideUp" delay={0.1}>
+                <div className="bg-gradient-to-r from-primary-50 to-primary-100 rounded-xl p-8 shadow-md">
+                  <div className="flex items-center mb-6">
+                    <div className="w-12 h-12 bg-primary-600 rounded-full flex items-center justify-center mr-4">
+                      <Briefcase className="w-6 h-6 text-white" />
+                    </div>
+                    <h3 className="text-2xl font-bold text-primary-800">{tugasFungsi.tugas.title}</h3>
+                  </div>
+                  <p className="text-gray-700 leading-relaxed text-lg mb-4">
+                    {tugasFungsi.tugas.content}
+                  </p>
+                  <p className="text-sm text-gray-600 italic border-l-4 border-primary-300 pl-4">
+                    {tugasFungsi.tugas.source}
+                  </p>
+                </div>
+              </AnimatedSection>
+            </div>
+
+            {/* Fungsi Fakultas */}
+            <div>
+              <AnimatedSection animation="slideUp" delay={0.2}>
+                <h3 className="text-2xl font-bold text-center mb-8 text-primary-800">
+                  {tugasFungsi.fungsi.title}
+                </h3>
+              </AnimatedSection>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                {tugasFungsi.fungsi.items.map((item, index) => (
+                  <AnimatedSection key={index} animation="slideUp" delay={(index + 3) * 0.1}>
+                    <div className="bg-white rounded-xl shadow-md p-6 hover-card border border-gray-100">
+                      <div className="flex items-center mb-4">
+                        <div className="w-10 h-10 bg-primary-50 rounded-full flex items-center justify-center mr-3">
+                          <div className="text-primary-600">{item.icon}</div>
+                        </div>
+                        <h4 className="font-bold text-gray-800 text-sm leading-tight">{item.title}</h4>
+                      </div>
+                      <p className="text-gray-600 text-sm leading-relaxed">{item.description}</p>
+                    </div>
+                  </AnimatedSection>
+                ))}
+              </div>
+              
+              <AnimatedSection animation="slideUp" delay={0.8}>
+                <div className="text-center">
+                  <p className="text-sm text-gray-600 italic border-l-4 border-primary-300 pl-4 inline-block">
+                    {tugasFungsi.fungsi.source}
+                  </p>
+                </div>
+              </AnimatedSection>
+            </div>
+          </div>
         </div>
       </section>
 
