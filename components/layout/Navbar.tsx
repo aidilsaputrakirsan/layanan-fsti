@@ -1,17 +1,20 @@
 "use client";
 
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 import { AnimatePresence } from 'framer-motion';
 import { LazyMotion, domAnimation, m } from 'framer-motion';
 import ClientOnly from '@/components/utils/ClientOnly';
 import LanguageToggle from '@/components/ui/LanguageToggle';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
+import { ChevronDown } from 'lucide-react';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
   const { t } = useLanguage();
 
@@ -25,11 +28,22 @@ const Navbar = () => {
   }, []);
 
   useEffect(() => {
-    // Close mobile menu when pathname changes
     setIsOpen(false);
+    setDropdownOpen(false);
   }, [pathname]);
 
-  // Animation variants for mobile menu
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   const menuVariants = {
     closed: {
       opacity: 0,
@@ -59,7 +73,6 @@ const Navbar = () => {
         <div className="container mx-auto px-4 flex justify-between items-center">
           {/* Four Logos Section */}
           <Link href="/" className="flex items-center space-x-3 group">
-            {/* Logo Tut Wuri Handayani */}
             <div className="h-10 w-auto flex items-center justify-center transition-all duration-300">
               <img
                 src="/images/logotut.png"
@@ -67,7 +80,6 @@ const Navbar = () => {
                 className="h-full w-auto object-contain"
               />
             </div>
-            {/* Logo Diktisaintek Berdampak */}
             <div className="h-10 w-auto flex items-center justify-center transition-all duration-300">
               <img
                 src="/images/logosaintek.png"
@@ -75,7 +87,6 @@ const Navbar = () => {
                 className="h-full w-auto object-contain"
               />
             </div>
-            {/* Logo ITK */}
             <div className="h-10 w-auto flex items-center justify-center transition-all duration-300">
               <img
                 src="/images/logoitk.png"
@@ -83,7 +94,6 @@ const Navbar = () => {
                 className="h-full w-auto object-contain"
               />
             </div>
-            {/* Logo FSTI Prestasi */}
             <div className="h-10 w-auto flex items-center justify-center transition-all duration-300">
               <img
                 src="/images/logofsti.png"
@@ -98,12 +108,52 @@ const Navbar = () => {
             <NavLink href="/" active={pathname === '/'}>
               {t('nav.home')}
             </NavLink>
-            {/* 👈 TAMBAHAN BARU: Link Tentang FSTI */}
-            <NavLink href="/tentang-fsti" active={pathname?.includes('/tentang-fsti')}>
-              {t('nav.about') || (t('nav.language') === 'English' ? 'About FSTI' : 'Tentang FSTI')}
-            </NavLink>
+            
+            {/* Dropdown Menu Tentang FSTI */}
+            <div className="relative" ref={dropdownRef}>
+              <button
+                onClick={() => setDropdownOpen(!dropdownOpen)}
+                className={`relative py-2 text-gray-700 font-medium transition-all duration-300 flex items-center ${
+                  pathname?.includes('/tentang-fsti') ? 'text-primary-600' : 'text-gray-700 hover:text-primary-600'
+                }`}
+              >
+                {t('nav.about')}
+                <ChevronDown className={`w-4 h-4 ml-1 transition-transform duration-300 ${dropdownOpen ? 'rotate-180' : ''}`} />
+              </button>
+              
+              {/* Dropdown Content */}
+              <AnimatePresence>
+                {dropdownOpen && (
+                  <ClientOnly>
+                    <m.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      transition={{ duration: 0.2 }}
+                      className="absolute top-full left-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-100 overflow-hidden"
+                    >
+                      <Link 
+                        href="/tentang-fsti"
+                        className="block px-4 py-3 text-gray-700 hover:bg-primary-50 hover:text-primary-600 transition-colors"
+                        onClick={() => setDropdownOpen(false)}
+                      >
+                        {t('nav.aboutFSTI')}
+                      </Link>
+                      <Link 
+                        href="/tentang-fsti/tracer-study"
+                        className="block px-4 py-3 text-gray-700 hover:bg-primary-50 hover:text-primary-600 transition-colors border-t border-gray-100"
+                        onClick={() => setDropdownOpen(false)}
+                      >
+                        {t('nav.tracerStudy')}
+                      </Link>
+                    </m.div>
+                  </ClientOnly>
+                )}
+              </AnimatePresence>
+            </div>
+
             <NavLink href="/peraturan-kebijakan" active={pathname?.includes('/peraturan-kebijakan')}>
-              {t('nav.regulations') || (t('nav.language') === 'English' ? 'Regulations' : 'Peraturan')}
+              {t('nav.regulations')}
             </NavLink>
             <NavLink href="/layanan-administrasi" active={pathname?.includes('/layanan-administrasi')}>
               {t('nav.adminServices')}
@@ -153,7 +203,7 @@ const Navbar = () => {
           </div>
         </div>
 
-        {/* Mobile Menu with Animation - Only render on client */}
+        {/* Mobile Menu */}
         <ClientOnly>
           <AnimatePresence>
             {isOpen && (
@@ -168,20 +218,47 @@ const Navbar = () => {
                   <MobileNavLink href="/" active={pathname === '/'} onClick={() => setIsOpen(false)}>
                     {t('nav.home')}
                   </MobileNavLink>
-                  {/* 👈 TAMBAHAN BARU: Mobile Link Tentang FSTI */}
-                  <MobileNavLink 
-                    href="/tentang-fsti" 
-                    active={pathname?.includes('/tentang-fsti')} 
-                    onClick={() => setIsOpen(false)}
-                  >
-                    {t('nav.about') || (t('nav.language') === 'English' ? 'About FSTI' : 'Tentang FSTI')}
-                  </MobileNavLink>
+                  
+                  {/* Mobile Dropdown - Tentang FSTI */}
+                  <div>
+                    <button
+                      onClick={() => setDropdownOpen(!dropdownOpen)}
+                      className={`w-full text-left py-3 px-4 text-lg font-medium rounded-lg transition-colors duration-300 flex items-center justify-between ${
+                        pathname?.includes('/tentang-fsti') 
+                          ? 'bg-primary-50 text-primary-600' 
+                          : 'text-gray-700 hover:bg-gray-100 hover:text-primary-600'
+                      }`}
+                    >
+                      {t('nav.about')}
+                      <ChevronDown className={`w-5 h-5 transition-transform duration-300 ${dropdownOpen ? 'rotate-180' : ''}`} />
+                    </button>
+                    
+                    {dropdownOpen && (
+                      <div className="ml-4 mt-2 space-y-2">
+                        <MobileNavLink 
+                          href="/tentang-fsti" 
+                          active={pathname === '/tentang-fsti'} 
+                          onClick={() => setIsOpen(false)}
+                        >
+                          {t('nav.aboutFSTI')}
+                        </MobileNavLink>
+                        <MobileNavLink 
+                          href="/tentang-fsti/tracer-study" 
+                          active={pathname?.includes('/tracer-study')} 
+                          onClick={() => setIsOpen(false)}
+                        >
+                          {t('nav.tracerStudy')}
+                        </MobileNavLink>
+                      </div>
+                    )}
+                  </div>
+
                   <MobileNavLink 
                     href="/peraturan-kebijakan" 
                     active={pathname?.includes('/peraturan-kebijakan')} 
                     onClick={() => setIsOpen(false)}
                   >
-                    {t('nav.regulations') || (t('nav.language') === 'English' ? 'Regulations' : 'Peraturan')}
+                    {t('nav.regulations')}
                   </MobileNavLink>
                   <MobileNavLink 
                     href="/layanan-administrasi" 
@@ -238,7 +315,6 @@ const Navbar = () => {
   );
 };
 
-// Desktop Navigation Link - Fixed to use m instead of motion
 const NavLink = ({ href, active, children }: { href: string; active: boolean; children: React.ReactNode }) => {
   return (
     <Link 
@@ -263,7 +339,6 @@ const NavLink = ({ href, active, children }: { href: string; active: boolean; ch
   );
 };
 
-// Mobile Navigation Link
 const MobileNavLink = ({ 
   href, 
   active, 

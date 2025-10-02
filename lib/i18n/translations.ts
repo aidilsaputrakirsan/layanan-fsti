@@ -30,6 +30,8 @@ export interface TranslationObject {
       nav: {
         home: 'Home',
         about: 'About FSTI',
+        aboutFSTI: 'About FSTI',
+        tracerStudy: 'Tracer Study',
         adminServices: 'Administrative Services',
         docTracking: 'Document Tracking',
         contact: 'Contact',
@@ -42,6 +44,58 @@ export interface TranslationObject {
       maklumatPelayanan: {
         title: "Service Commitment",
         commitment: "WE HEREBY PROMISE TO PROVIDE EXCELLENT SERVICE IN ACCORDANCE WITH ESTABLISHED STANDARDS, AND IF WE FAIL TO KEEP THIS PROMISE, WE ARE PREPARED TO ACCEPT SANCTIONS IN ACCORDANCE WITH APPLICABLE LAWS AND REGULATIONS"
+      },
+
+      // Tracer Study
+      tracerStudy: {
+        title: "Alumni Tracer Study",
+        subtitle: "Faculty of Science and Information Technology - Kalimantan Institute of Technology",
+        whyImportant: {
+          title: "Why is Tracer Study Important?",
+          quality: {
+            title: "Education Quality",
+            desc: "Evaluating the effectiveness of educational programs and curriculum"
+          },
+          relevance: {
+            title: "Industry Relevance",
+            desc: "Ensuring graduate competencies align with job market needs"
+          },
+          network: {
+            title: "Alumni Network",
+            desc: "Building connections between alumni, students, and institutions"
+          },
+          accreditation: {
+            title: "Accreditation",
+            desc: "Supporting the accreditation process and quality improvement"
+          }
+        },
+        form: {
+          title: "Graduate Tracer Study Form",
+          description: "Please fill out this form to help us improve the quality of education at FSTI ITK"
+        },
+        benefits: {
+          title: "Benefits of Completing Tracer Study",
+          benefit1: {
+            title: "Contributing to Education",
+            desc: "Your input is very valuable for developing better curriculum and study programs"
+          },
+          benefit2: {
+            title: "Staying Connected",
+            desc: "Maintain relationships with alma mater and fellow alumni"
+          },
+          benefit3: {
+            title: "Career Development",
+            desc: "Get information about job opportunities and career development"
+          },
+          benefit4: {
+            title: "Recognition",
+            desc: "Recognition and appreciation for alumni achievements and contributions"
+          }
+        },
+        cta: {
+          title: "Need Help?",
+          description: "If you have questions about the tracer study or need assistance filling out the form, don't hesitate to contact us."
+        }
       },
 
       about: {
@@ -390,6 +444,8 @@ export interface TranslationObject {
       nav: {
         home: 'Beranda',
         about: 'Tentang FSTI',
+        aboutFSTI: 'Tentang FSTI',
+        tracerStudy: 'Tracer Study',
         adminServices: 'Layanan Administrasi',
         docTracking: 'Tracking Dokumen',
         contact: 'Kontak',
@@ -402,6 +458,58 @@ export interface TranslationObject {
       maklumatPelayanan: {
         title: "Maklumat Pelayanan",
         commitment: "DENGAN INI KAMI BERJANJI AKAN MEMBERIKAN PELAYANAN PRIMA SESUAI DENGAN STANDAR YANG DITETAPKAN, DAN APABILA TIDAK MENEPATI JANJI, KAMI SIAP MENERIMA SANKSI SESUAI DENGAN PERATURAN PERUNDANG-UNDANGAN YANG BERLAKU"
+      },
+
+      // Tracer Study
+      tracerStudy: {
+        title: "Tracer Study Alumni",
+        subtitle: "Fakultas Sains dan Teknologi Informasi - Institut Teknologi Kalimantan",
+        whyImportant: {
+          title: "Mengapa Tracer Study Penting?",
+          quality: {
+            title: "Kualitas Pendidikan",
+            desc: "Mengevaluasi efektivitas program pendidikan dan kurikulum"
+          },
+          relevance: {
+            title: "Relevansi Industri",
+            desc: "Memastikan kompetensi lulusan sesuai dengan kebutuhan dunia kerja"
+          },
+          network: {
+            title: "Jaringan Alumni",
+            desc: "Membangun koneksi antara alumni, mahasiswa, dan institusi"
+          },
+          accreditation: {
+            title: "Akreditasi",
+            desc: "Mendukung proses akreditasi dan peningkatan mutu"
+          }
+        },
+        form: {
+          title: "Formulir Tracer Study Lulusan",
+          description: "Silakan isi formulir ini untuk membantu kami meningkatkan kualitas pendidikan di FSTI ITK"
+        },
+        benefits: {
+          title: "Manfaat Mengisi Tracer Study",
+          benefit1: {
+            title: "Berkontribusi untuk Pendidikan",
+            desc: "Masukan Anda sangat berharga untuk pengembangan kurikulum dan program studi yang lebih baik"
+          },
+          benefit2: {
+            title: "Tetap Terhubung",
+            desc: "Mempertahankan hubungan dengan almamater dan sesama alumni"
+          },
+          benefit3: {
+            title: "Pengembangan Karir",
+            desc: "Mendapatkan informasi tentang peluang kerja dan pengembangan karir"
+          },
+          benefit4: {
+            title: "Pengakuan",
+            desc: "Pengakuan dan apresiasi atas prestasi dan kontribusi alumni"
+          }
+        },
+        cta: {
+          title: "Butuh Bantuan?",
+          description: "Jika Anda memiliki pertanyaan tentang tracer study atau membutuhkan bantuan dalam mengisi formulir, jangan ragu untuk menghubungi kami."
+        }
       },
 
        about: {
