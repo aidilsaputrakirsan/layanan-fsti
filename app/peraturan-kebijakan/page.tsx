@@ -4,7 +4,7 @@ import { useState } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import AnimatedSection from '@/components/ui/AnimatedSection';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
-import { Search, Download, ExternalLink } from 'lucide-react';
+import { Search, Download, ExternalLink, FileText } from 'lucide-react';
 
 // Daftar dokumen peraturan dan kebijakan
 const documentsList = [
@@ -18,8 +18,8 @@ const documentsList = [
       id: 'Panduan dan peraturan akademik untuk mahasiswa FSTI ITK (Peraturan Nomor 4 Tahun 2025 dan Peraturan Nomor 9 Tahun 2024)',
       en: 'Academic guidelines and regulations for FSTI ITK students (Regulation Number 4 of 2025 and Regulation Number 9 of 2024)',
     },
-    fileName: '9_PERATURAN_AKADEMIK.pdf',
-    fileUrl: '/file/Peraturan Akademik Nomor 4 dan Nomor 9.pdf',
+    fileName: 'PERATURAN-AKADEMIK.pdf',
+    fileUrl: '/file/PERATURAN-AKADEMIK.pdf',
   },
   {
     id: 'kemahasiswaan',
@@ -31,8 +31,8 @@ const documentsList = [
       id: 'Panduan kegiatan, organisasi, dan peraturan kemahasiswaan',
       en: 'Guidelines for activities, organizations, and student regulations',
     },
-    fileName: 'Peraturan Rektor-Kemahasiswaan.pdf',
-    fileUrl: '/file/Peraturan Rektor-Kemahasiswaan.pdf',
+    fileName: 'KEMAHASISWAAN.pdf',
+    fileUrl: '/file/KEMAHASISWAAN.pdf',
   },
   {
     id: 'biayaPendidikan',
@@ -44,8 +44,8 @@ const documentsList = [
       id: 'Informasi lengkap mengenai biaya pendidikan, UKT, dan komponen biaya lainnya untuk mahasiswa ITK',
       en: 'Complete information about tuition fees, UKT, and other fee components for ITK students',
     },
-    fileName: 'BIAYA-PENDIDIKAN-MAHASISWA.pdf',
-    fileUrl: '/file/BIAYA-PENDIDIKAN-MAHASISWA.pdf',
+    fileName: 'BIAYA-PENDIDIKAN.pdf',
+    fileUrl: '/file/BIAYA-PENDIDIKAN.pdf',
   },
   {
     id: 'tugasAkhir',
@@ -57,8 +57,8 @@ const documentsList = [
       id: 'Panduan pelaksanaan dan penulisan Tugas Akhir mahasiswa',
       en: 'Guidelines for implementation and writing of student Final Projects',
     },
-    fileName: 'PERATURAN-TA.pdf',
-    fileUrl: '/file/PERATURAN-TA.pdf',
+    fileName: 'TUGAS-AKHIR.pdf',
+    fileUrl: '/file/TUGAS-AKHIR.pdf',
   },
   {
     id: 'magang',
@@ -70,8 +70,8 @@ const documentsList = [
       id: 'Panduan pelaksanaan dan pelaporan kegiatan Magang',
       en: 'Guidelines for implementation and reporting of Internship activities',
     },
-    fileName: 'PERATURAN-MAGANG.pdf',
-    fileUrl: '/file/PERATURAN-MAGANG.pdf',
+    fileName: 'MAGANG.pdf',
+    fileUrl: '/file/MAGANG.pdf',
   },
   {
     id: 'kerjaPraktik',
@@ -83,8 +83,8 @@ const documentsList = [
       id: 'Panduan pelaksanaan dan pelaporan kegiatan Kerja Praktik',
       en: 'Guidelines for implementation and reporting of Practical Work activities',
     },
-    fileName: 'PERATURAN-KP.pdf',
-    fileUrl: '/file/PERATURAN-KP.pdf',
+    fileName: 'KERJA-PRAKTIK.pdf',
+    fileUrl: '/file/KERJA-PRAKTIK.pdf',
   },
   {
     id: 'mbkm',
@@ -96,8 +96,8 @@ const documentsList = [
       id: 'Panduan Merdeka Belajar Kampus Merdeka (MBKM) FSTI ITK',
       en: 'Independent Learning Campus (MBKM) guidelines for FSTI ITK',
     },
-    fileName: 'Peraturan Rektor-MBKM.pdf',
-    fileUrl: '/file/Peraturan Rektor-MBKM.pdf',
+    fileName: 'MBKM.pdf',
+    fileUrl: '/file/MBKM.pdf',
   },
   {
     id: 'tataKehidupan',
@@ -109,8 +109,8 @@ const documentsList = [
       id: 'Pedoman tata kehidupan dan etika di lingkungan kampus',
       en: 'Guidelines for campus life and ethics',
     },
-    fileName: 'Peraturan Rektor-Tata Kehidupan.pdf',
-    fileUrl: '/file/Peraturan Rektor-Tata Kehidupan.pdf',
+    fileName: 'TATA-KEHIDUPAN.pdf',
+    fileUrl: '/file/TATA-KEHIDUPAN.pdf',
   },
   {
     id: 'kalenderAkademik',
@@ -122,8 +122,113 @@ const documentsList = [
       id: 'Jadwal kegiatan akademik selama tahun ajaran',
       en: 'Schedule of academic activities throughout the academic year',
     },
-    fileName: '726_KALENDER-AKADEMIK.pdf',
-    fileUrl: '/file/726_KALENDER-AKADEMIK.pdf',
+    fileName: 'KALENDER-AKADEMIK.pdf',
+    fileUrl: '/file/KALENDER-AKADEMIK.pdf',
+  },
+  // ============= 8 FILE BARU =============
+  {
+    id: 'pembelajaranDiluarProdi',
+    title: {
+      id: 'Pembelajaran di Luar Program Studi',
+      en: 'Learning Outside Study Program',
+    },
+    description: {
+      id: 'Panduan pembelajaran di luar program studi untuk memperluas wawasan dan kompetensi mahasiswa',
+      en: 'Guidelines for learning outside the study program to broaden student insights and competencies',
+    },
+    fileName: 'PEMBELAJARAN-DILUAR-PRODI.pdf',
+    fileUrl: '/file/PEMBELAJARAN-DILUAR-PRODI.pdf',
+  },
+  {
+    id: 'magangRiset',
+    title: {
+      id: 'Magang Riset',
+      en: 'Research Internship',
+    },
+    description: {
+      id: 'Panduan pelaksanaan magang riset untuk mahasiswa yang ingin mengembangkan kemampuan penelitian',
+      en: 'Guidelines for research internships for students who want to develop research skills',
+    },
+    fileName: 'MAGANG-RISET.pdf',
+    fileUrl: '/file/MAGANG-RISET.pdf',
+  },
+  {
+    id: 'kknTematik',
+    title: {
+      id: 'Kuliah Kerja Nyata Tematik',
+      en: 'Thematic Community Service',
+    },
+    description: {
+      id: 'Panduan pelaksanaan KKN Tematik sebagai bentuk pengabdian kepada masyarakat',
+      en: 'Guidelines for implementing Thematic Community Service as a form of service to the community',
+    },
+    fileName: 'KKN-TEMATIK.pdf',
+    fileUrl: '/file/KKN-TEMATIK.pdf',
+  },
+  {
+    id: 'pertukaranMahasiswa',
+    title: {
+      id: 'Pertukaran Mahasiswa',
+      en: 'Student Exchange',
+    },
+    description: {
+      id: 'Panduan program pertukaran mahasiswa untuk pengalaman belajar di institusi lain',
+      en: 'Guidelines for student exchange programs for learning experiences at other institutions',
+    },
+    fileName: 'PERTUKARAN-MAHASISWA.pdf',
+    fileUrl: '/file/PERTUKARAN-MAHASISWA.pdf',
+  },
+  {
+    id: 'kewirausahaan',
+    title: {
+      id: 'Kewirausahaan',
+      en: 'Entrepreneurship',
+    },
+    description: {
+      id: 'Panduan kegiatan kewirausahaan untuk mengembangkan jiwa entrepreneur mahasiswa',
+      en: 'Entrepreneurship guidelines to develop student entrepreneurial spirit',
+    },
+    fileName: 'KEWIRAUSAHAAN.pdf',
+    fileUrl: '/file/KEWIRAUSAHAAN.pdf',
+  },
+  {
+    id: 'magangKeprofesian',
+    title: {
+      id: 'Magang Keprofesian',
+      en: 'Professional Internship',
+    },
+    description: {
+      id: 'Panduan magang keprofesian untuk pengalaman kerja di bidang profesi tertentu',
+      en: 'Professional internship guidelines for work experience in specific professional fields',
+    },
+    fileName: 'MAGANG-KEPROFESIAN.pdf',
+    fileUrl: '/file/MAGANG-KEPROFESIAN.pdf',
+  },
+  {
+    id: 'proyekKemanusiaan',
+    title: {
+      id: 'Proyek Kemanusiaan',
+      en: 'Humanitarian Project',
+    },
+    description: {
+      id: 'Panduan proyek kemanusiaan untuk berkontribusi dalam isu-isu sosial dan kemanusiaan',
+      en: 'Humanitarian project guidelines to contribute to social and humanitarian issues',
+    },
+    fileName: 'PROYEK-KEMANUSIAAN.pdf',
+    fileUrl: '/file/PROYEK-KEMANUSIAAN.pdf',
+  },
+  {
+    id: 'studiProyekIndependen',
+    title: {
+      id: 'Studi Proyek Independen',
+      en: 'Independent Project Study',
+    },
+    description: {
+      id: 'Panduan studi proyek independen untuk mengembangkan proyek secara mandiri',
+      en: 'Independent project study guidelines to develop projects independently',
+    },
+    fileName: 'STUDI-PROYEK-INDEPENDEN.pdf',
+    fileUrl: '/file/STUDI-PROYEK-INDEPENDEN.pdf',
   },
 ];
 
@@ -167,6 +272,11 @@ const PeraturanKebijakanPage = () => {
                     onChange={(e) => setSearchTerm(e.target.value)}
                   />
                 </div>
+                {searchTerm && (
+                  <div className="mt-3 text-sm text-gray-600">
+                    {filteredDocuments.length} {language === 'id' ? 'dokumen ditemukan' : 'documents found'}
+                  </div>
+                )}
               </div>
             </div>
           </AnimatedSection>
@@ -179,118 +289,85 @@ const PeraturanKebijakanPage = () => {
           <AnimatedSection animation="slideUp">
             <h2 className="text-3xl font-display font-bold text-center mb-12 text-gradient">
               {language === 'id' ? 'Daftar Dokumen' : 'Document List'}
-              {searchTerm && ` - ${language === 'id' ? 'Hasil pencarian untuk' : 'Search results for'} "${searchTerm}"`}
             </h2>
           </AnimatedSection>
 
           {filteredDocuments.length > 0 ? (
-            <div className="max-w-6xl mx-auto">
-              <div className="flex justify-center flex-wrap gap-8">
+            <div className="max-w-7xl mx-auto">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {filteredDocuments.map((doc, index) => (
                   <AnimatedSection
                     key={doc.id}
                     animation="slideUp"
-                    delay={index * 0.1}
-                    className="w-full max-w-md"
+                    delay={index * 0.05}
                   >
-                    <div className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 h-full flex flex-col">
+                    <div className="group bg-white rounded-2xl shadow-md hover:shadow-2xl transition-all duration-300 h-full flex flex-col overflow-hidden border border-gray-100 hover:border-primary-300">
                      
-                      {/* Preview Frame */}
-                      <div className="relative h-48 flex items-center justify-center p-6 border-b border-gray-200 overflow-hidden">
-                        {/* 1. Gradient background */}
-                        <span
-                          className="
-                            absolute inset-0
-                            bg-gradient-to-r from-blue-50 via-blue-100 to-blue-50
-                            animate-pulse
-                            z-0
-                          "
-                        />
-
-                        {/* 2. Dots yang lebih besar dan jelas (z-10) */}
-                        <div className="absolute inset-0 z-10 pointer-events-none">
-                          {[
-                            { top: '15%', left: '20%', delay: '0s' },
-                            { top: '70%', left: '30%', delay: '0.5s' },
-                            { top: '40%', left: '75%', delay: '1s' },
-                            { top: '60%', left: '60%', delay: '1.5s' },
-                            { top: '30%', left: '50%', delay: '2s' },
-                          ].map((dot, i) => (
+                      {/* Preview Header dengan Gradient */}
+                      <div className="relative h-40 bg-gradient-to-br from-primary-500 via-primary-600 to-purple-600 flex items-center justify-center overflow-hidden">
+                        {/* Overlay on hover */}
+                        <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
+                        
+                        {/* Animated dots background */}
+                        <div className="absolute inset-0 pointer-events-none opacity-30">
+                          {[...Array(5)].map((_, i) => (
                             <span
                               key={i}
-                              className="
-                                absolute
-                                bg-blue-300
-                                rounded-full
-                                opacity-75
-                                animate-ping
-                              "
+                              className="absolute bg-white rounded-full animate-ping"
                               style={{
-                                width: '12px',
-                                height: '12px',
-                                top: dot.top,
-                                left: dot.left,
-                                animationDelay: dot.delay,
-                                animationDuration: '2s',
+                                width: '8px',
+                                height: '8px',
+                                top: `${20 + i * 15}%`,
+                                left: `${15 + i * 20}%`,
+                                animationDelay: `${i * 0.5}s`,
+                                animationDuration: '3s',
                               }}
                             />
                           ))}
                         </div>
 
-                        {/* 3. Card PDF (z-20) */}
-                        <div className="
-                          relative bg-white rounded-lg shadow-sm p-2 w-32
-                          transform rotate-3 hover:rotate-0 transition-transform duration-300
-                          z-20
-                        ">
-                          <img
-                            src="/images/pdf-icon.png"
-                            alt="PDF Template"
-                            className="w-full h-auto"
-                            onError={(e) => {
-                              (e.target as HTMLImageElement).src =
-                                "https://cdn-icons-png.flaticon.com/512/337/337946.png";
-                            }}
-                          />
+                        {/* PDF Icon Card */}
+                        <div className="relative z-10 transform group-hover:scale-110 transition-transform duration-300">
+                          <div className="bg-white rounded-xl shadow-lg p-4">
+                            <FileText className="h-12 w-12 text-primary-600" />
+                          </div>
                         </div>
                       </div>
 
                       {/* Content */}
                       <div className="p-6 flex-grow">
-                        <h3 className="text-xl font-semibold text-gray-800 mb-2 hover:text-primary-600 transition-colors">
+                        <h3 className="text-xl font-semibold text-gray-800 mb-2 group-hover:text-primary-600 transition-colors line-clamp-2">
                           {doc.title[language as 'id' | 'en']}
                         </h3>
-                        <p className="text-gray-600 mb-4 line-clamp-3">
+                        <p className="text-gray-600 text-sm mb-4 line-clamp-3 leading-relaxed">
                           {doc.description[language as 'id' | 'en']}
                         </p>
                       </div>
 
                       {/* Actions */}
                       <div className="p-4 border-t border-gray-100 bg-gray-50">
-                        <div className="flex justify-between items-center">
-                          <div className="ml-auto flex space-x-2">
-                            <a 
-                              href={doc.fileUrl} 
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="p-2 rounded-lg text-primary-600 hover:bg-primary-50 flex items-center"
-                            >
-                              <ExternalLink className="h-5 w-5 mr-1" />
-                              <span className="text-sm font-medium">
-                                {language === 'id' ? 'Lihat' : 'View'}
-                              </span>
-                            </a>
-                            <a 
-                              href={doc.fileUrl} 
-                              download={doc.fileName}
-                              className="p-2 rounded-lg bg-primary-600 text-white hover:bg-primary-700 flex items-center"
-                            >
-                              <Download className="h-5 w-5 mr-1" />
-                              <span className="text-sm font-medium">
-                                {language === 'id' ? 'Unduh' : 'Download'}
-                              </span>
-                            </a>
-                          </div>
+                        <div className="flex gap-2">
+                          <a 
+                            href={doc.fileUrl} 
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border-2 border-primary-600 text-primary-600 hover:bg-primary-50 transition-all font-medium"
+                          >
+                            <ExternalLink className="h-4 w-4" />
+                            <span className="text-sm">
+                              {language === 'id' ? 'Lihat' : 'View'}
+                            </span>
+                          </a>
+                          <a 
+                            href={doc.fileUrl} 
+                            download={doc.fileName}
+                            className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-primary-600 text-white hover:bg-primary-700 transition-all font-medium shadow-md hover:shadow-lg"
+                          >
+                            <Download className="h-4 w-4" />
+                            <span className="text-sm">
+                              {language === 'id' ? 'Unduh' : 'Download'}
+                            </span>
+                          </a>
                         </div>
                       </div>
                     </div>
@@ -329,20 +406,20 @@ const PeraturanKebijakanPage = () => {
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto">
             <AnimatedSection animation="slideUp">
-              <div className="bg-gray-50 rounded-xl p-6 shadow-md">
+              <div className="bg-gradient-to-r from-primary-50 to-purple-50 rounded-xl p-8 shadow-md border border-primary-100">
                 <h3 className="text-xl font-semibold mb-4 text-gray-800">
-                  {language === 'id' ? 'Informasi Penting' : 'Important Information'}
+                  {language === 'id' ? '💡 Informasi Penting' : '💡 Important Information'}
                 </h3>
-                <div className="text-gray-700 space-y-4">
+                <div className="text-gray-700 space-y-4 leading-relaxed">
                   <p>
                     {language === 'id'
                       ? 'Dokumen-dokumen ini merupakan pedoman resmi yang ditetapkan oleh Institut Teknologi Kalimantan dan Fakultas Sains dan Teknologi Informasi. Mahasiswa diharapkan untuk membaca dan memahami dokumen-dokumen ini untuk kelancaran kegiatan akademik.'
                       : 'These documents are official guidelines established by Kalimantan Institute of Technology and the Faculty of Science and Information Technology. Students are expected to read and understand these documents for the smooth running of academic activities.'}
                   </p>
-                  <p>
+                  <p className="text-sm text-gray-600">
                     {language === 'id'
-                      ? 'Seluruh dokumen dapat diunduh dan disimpan untuk referensi. Jika terdapat pertanyaan atau hal yang perlu diklarifikasi, silakan hubungi admin FSTI.'
-                      : 'All documents can be downloaded and saved for reference. If there are questions or matters that need clarification, please contact the FSTI admin.'}
+                      ? '📥 Seluruh dokumen dapat diunduh dan disimpan untuk referensi. Jika terdapat pertanyaan atau hal yang perlu diklarifikasi, silakan hubungi admin FSTI.'
+                      : '📥 All documents can be downloaded and saved for reference. If there are questions or matters that need clarification, please contact the FSTI admin.'}
                   </p>
                 </div>
               </div>
