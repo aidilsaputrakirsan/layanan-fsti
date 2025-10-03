@@ -4,7 +4,7 @@ import { useState } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import AnimatedSection from '@/components/ui/AnimatedSection';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
-import { Search, Download, ExternalLink, FileText } from 'lucide-react';
+import { Search, Download, ExternalLink, FileText, TrendingUp, FileType } from 'lucide-react';
 
 // Daftar dokumen peraturan dan kebijakan
 const documentsList = [
@@ -20,6 +20,8 @@ const documentsList = [
     },
     fileName: 'PERATURAN-AKADEMIK.pdf',
     fileUrl: '/file/PERATURAN-AKADEMIK.pdf',
+    fileSize: '2.1 MB',
+    downloads: 3245,
   },
   {
     id: 'kemahasiswaan',
@@ -33,6 +35,8 @@ const documentsList = [
     },
     fileName: 'KEMAHASISWAAN.pdf',
     fileUrl: '/file/KEMAHASISWAAN.pdf',
+    fileSize: '1.8 MB',
+    downloads: 2891,
   },
   {
     id: 'biayaPendidikan',
@@ -46,6 +50,8 @@ const documentsList = [
     },
     fileName: 'BIAYA-PENDIDIKAN.pdf',
     fileUrl: '/file/BIAYA-PENDIDIKAN.pdf',
+    fileSize: '1.5 MB',
+    downloads: 4567,
   },
   {
     id: 'tugasAkhir',
@@ -59,6 +65,8 @@ const documentsList = [
     },
     fileName: 'TUGAS-AKHIR.pdf',
     fileUrl: '/file/TUGAS-AKHIR.pdf',
+    fileSize: '2.3 MB',
+    downloads: 5123,
   },
   {
     id: 'magang',
@@ -72,6 +80,8 @@ const documentsList = [
     },
     fileName: 'MAGANG.pdf',
     fileUrl: '/file/MAGANG.pdf',
+    fileSize: '1.9 MB',
+    downloads: 3678,
   },
   {
     id: 'kerjaPraktik',
@@ -85,6 +95,8 @@ const documentsList = [
     },
     fileName: 'KERJA-PRAKTIK.pdf',
     fileUrl: '/file/KERJA-PRAKTIK.pdf',
+    fileSize: '2.0 MB',
+    downloads: 2934,
   },
   {
     id: 'mbkm',
@@ -98,6 +110,8 @@ const documentsList = [
     },
     fileName: 'MBKM.pdf',
     fileUrl: '/file/MBKM.pdf',
+    fileSize: '2.5 MB',
+    downloads: 4012,
   },
   {
     id: 'tataKehidupan',
@@ -111,6 +125,8 @@ const documentsList = [
     },
     fileName: 'TATA-KEHIDUPAN.pdf',
     fileUrl: '/file/TATA-KEHIDUPAN.pdf',
+    fileSize: '1.7 MB',
+    downloads: 2456,
   },
   {
     id: 'kalenderAkademik',
@@ -124,8 +140,10 @@ const documentsList = [
     },
     fileName: 'KALENDER-AKADEMIK.pdf',
     fileUrl: '/file/KALENDER-AKADEMIK.pdf',
+    fileSize: '1.2 MB',
+    downloads: 6789,
   },
-  // ============= 8 FILE BARU =============
+  // ============= 8 FILE BARU (dengan badge "New") =============
   {
     id: 'pembelajaranDiluarProdi',
     title: {
@@ -138,6 +156,9 @@ const documentsList = [
     },
     fileName: 'PEMBELAJARAN-DILUAR-PRODI.pdf',
     fileUrl: '/file/PEMBELAJARAN-DILUAR-PRODI.pdf',
+    fileSize: '2.2 MB',
+    downloads: 156,
+    badge: 'New',
   },
   {
     id: 'magangRiset',
@@ -151,6 +172,9 @@ const documentsList = [
     },
     fileName: 'MAGANG-RISET.pdf',
     fileUrl: '/file/MAGANG-RISET.pdf',
+    fileSize: '1.9 MB',
+    downloads: 203,
+    badge: 'New',
   },
   {
     id: 'kknTematik',
@@ -164,6 +188,9 @@ const documentsList = [
     },
     fileName: 'KKN-TEMATIK.pdf',
     fileUrl: '/file/KKN-TEMATIK.pdf',
+    fileSize: '2.4 MB',
+    downloads: 178,
+    badge: 'New',
   },
   {
     id: 'pertukaranMahasiswa',
@@ -177,6 +204,9 @@ const documentsList = [
     },
     fileName: 'PERTUKARAN-MAHASISWA.pdf',
     fileUrl: '/file/PERTUKARAN-MAHASISWA.pdf',
+    fileSize: '2.1 MB',
+    downloads: 234,
+    badge: 'New',
   },
   {
     id: 'kewirausahaan',
@@ -190,6 +220,9 @@ const documentsList = [
     },
     fileName: 'KEWIRAUSAHAAN.pdf',
     fileUrl: '/file/KEWIRAUSAHAAN.pdf',
+    fileSize: '1.8 MB',
+    downloads: 289,
+    badge: 'New',
   },
   {
     id: 'magangKeprofesian',
@@ -203,6 +236,9 @@ const documentsList = [
     },
     fileName: 'MAGANG-KEPROFESIAN.pdf',
     fileUrl: '/file/MAGANG-KEPROFESIAN.pdf',
+    fileSize: '2.0 MB',
+    downloads: 167,
+    badge: 'New',
   },
   {
     id: 'proyekKemanusiaan',
@@ -216,6 +252,9 @@ const documentsList = [
     },
     fileName: 'PROYEK-KEMANUSIAAN.pdf',
     fileUrl: '/file/PROYEK-KEMANUSIAAN.pdf',
+    fileSize: '2.3 MB',
+    downloads: 145,
+    badge: 'New',
   },
   {
     id: 'studiProyekIndependen',
@@ -229,6 +268,9 @@ const documentsList = [
     },
     fileName: 'STUDI-PROYEK-INDEPENDEN.pdf',
     fileUrl: '/file/STUDI-PROYEK-INDEPENDEN.pdf',
+    fileSize: '2.2 MB',
+    downloads: 198,
+    badge: 'New',
   },
 ];
 
@@ -283,7 +325,7 @@ const PeraturanKebijakanPage = () => {
         </div>
       </section>
 
-      {/* Dokumen Grid Section */}
+      {/* Dokumen Grid Section - GLASSMORPHISM STYLE */}
       <section className="py-16 bg-light-bg">
         <div className="container mx-auto px-4">
           <AnimatedSection animation="slideUp">
@@ -301,73 +343,64 @@ const PeraturanKebijakanPage = () => {
                     animation="slideUp"
                     delay={index * 0.05}
                   >
-                    <div className="group bg-white rounded-2xl shadow-md hover:shadow-2xl transition-all duration-300 h-full flex flex-col overflow-hidden border border-gray-100 hover:border-primary-300">
-                     
-                      {/* Preview Header dengan Gradient */}
-                      <div className="relative h-40 bg-gradient-to-br from-primary-500 via-primary-600 to-purple-600 flex items-center justify-center overflow-hidden">
-                        {/* Overlay on hover */}
-                        <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
+                    {/* GLASSMORPHISM CARD */}
+                    <div className="group relative h-full">
+                      {/* Background blur effect */}
+                      <div className="absolute -inset-0.5 bg-gradient-to-r from-primary-500 to-purple-600 rounded-2xl blur opacity-30 group-hover:opacity-100 transition duration-500"></div>
+                      
+                      <div className="relative bg-white/80 backdrop-blur-xl rounded-2xl p-6 border border-white/20 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 h-full flex flex-col">
                         
-                        {/* Animated dots background */}
-                        <div className="absolute inset-0 pointer-events-none opacity-30">
-                          {[...Array(5)].map((_, i) => (
-                            <span
-                              key={i}
-                              className="absolute bg-white rounded-full animate-ping"
-                              style={{
-                                width: '8px',
-                                height: '8px',
-                                top: `${20 + i * 15}%`,
-                                left: `${15 + i * 20}%`,
-                                animationDelay: `${i * 0.5}s`,
-                                animationDuration: '3s',
-                              }}
-                            />
-                          ))}
-                        </div>
-
-                        {/* PDF Icon Card */}
-                        <div className="relative z-10 transform group-hover:scale-110 transition-transform duration-300">
-                          <div className="bg-white rounded-xl shadow-lg p-4">
-                            <FileText className="h-12 w-12 text-primary-600" />
+                        {/* Badge "New" */}
+                        {doc.badge && (
+                          <div className="absolute top-4 right-4 z-10">
+                            <span className="px-3 py-1 bg-gradient-to-r from-pink-500 to-orange-500 text-white text-xs font-bold rounded-full shadow-lg animate-pulse">
+                              {doc.badge}
+                            </span>
                           </div>
-                        </div>
-                      </div>
+                        )}
 
-                      {/* Content */}
-                      <div className="p-6 flex-grow">
-                        <h3 className="text-xl font-semibold text-gray-800 mb-2 group-hover:text-primary-600 transition-colors line-clamp-2">
+                        {/* Icon */}
+                        <div className="w-16 h-16 bg-gradient-to-br from-primary-500 to-purple-600 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                          <FileText className="h-8 w-8 text-white" />
+                        </div>
+
+                        {/* Content */}
+                        <h3 className="text-lg font-bold text-gray-800 mb-2 line-clamp-2 group-hover:text-primary-600 transition-colors">
                           {doc.title[language as 'id' | 'en']}
                         </h3>
-                        <p className="text-gray-600 text-sm mb-4 line-clamp-3 leading-relaxed">
+                        <p className="text-sm text-gray-600 mb-4 line-clamp-2 flex-grow">
                           {doc.description[language as 'id' | 'en']}
                         </p>
-                      </div>
 
-                      {/* Actions */}
-                      <div className="p-4 border-t border-gray-100 bg-gray-50">
-                        <div className="flex gap-2">
-                          <a 
-                            href={doc.fileUrl} 
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border-2 border-primary-600 text-primary-600 hover:bg-primary-50 transition-all font-medium"
-                          >
-                            <ExternalLink className="h-4 w-4" />
-                            <span className="text-sm">
-                              {language === 'id' ? 'Lihat' : 'View'}
-                            </span>
-                          </a>
-                          <a 
-                            href={doc.fileUrl} 
-                            download={doc.fileName}
-                            className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-primary-600 text-white hover:bg-primary-700 transition-all font-medium shadow-md hover:shadow-lg"
+                        {/* Stats */}
+                        <div className="flex items-center gap-4 text-xs text-gray-500 mb-4">
+                          <div className="flex items-center gap-1">
+                            <TrendingUp className="h-3 w-3" />
+                            <span>{doc.downloads?.toLocaleString() || 0}</span>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <FileType className="h-3 w-3" />
+                            <span>{doc.fileSize || 'PDF'}</span>
+                          </div>
+                        </div>
+
+                        {/* Actions */}
+                        <div className="flex gap-2 mt-auto">
+                          <button 
+                            onClick={() => window.open(doc.fileUrl, '_blank')}
+                            className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-primary-600 to-purple-600 text-white hover:from-primary-700 hover:to-purple-700 transition-all shadow-md hover:shadow-lg"
                           >
                             <Download className="h-4 w-4" />
-                            <span className="text-sm">
+                            <span className="text-sm font-medium">
                               {language === 'id' ? 'Unduh' : 'Download'}
                             </span>
-                          </a>
+                          </button>
+                          <button 
+                            onClick={() => window.open(doc.fileUrl, '_blank')}
+                            className="p-2.5 rounded-xl border-2 border-gray-200 hover:border-primary-500 hover:bg-primary-50 transition-all"
+                          >
+                            <ExternalLink className="h-4 w-4 text-gray-600" />
+                          </button>
                         </div>
                       </div>
                     </div>
