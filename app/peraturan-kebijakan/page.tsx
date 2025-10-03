@@ -20,6 +20,7 @@ const documentsList = [
     },
     fileName: 'PERATURAN-AKADEMIK.pdf',
     fileUrl: '/file/PERATURAN-AKADEMIK.pdf',
+    coverImage: '/images/docs/akademik.jpg',
     fileSize: '2.1 MB',
     downloads: 3245,
   },
@@ -35,6 +36,7 @@ const documentsList = [
     },
     fileName: 'KEMAHASISWAAN.pdf',
     fileUrl: '/file/KEMAHASISWAAN.pdf',
+    coverImage: '/images/docs/kemahasiswaan.jpg',
     fileSize: '1.8 MB',
     downloads: 2891,
   },
@@ -50,6 +52,7 @@ const documentsList = [
     },
     fileName: 'BIAYA-PENDIDIKAN.pdf',
     fileUrl: '/file/BIAYA-PENDIDIKAN.pdf',
+    coverImage: '/images/docs/biaya-pendidikan.jpg',
     fileSize: '1.5 MB',
     downloads: 4567,
   },
@@ -65,6 +68,7 @@ const documentsList = [
     },
     fileName: 'TUGAS-AKHIR.pdf',
     fileUrl: '/file/TUGAS-AKHIR.pdf',
+    coverImage: '/images/docs/tugas-akhir.jpg',
     fileSize: '2.3 MB',
     downloads: 5123,
   },
@@ -80,6 +84,7 @@ const documentsList = [
     },
     fileName: 'MAGANG.pdf',
     fileUrl: '/file/MAGANG.pdf',
+    coverImage: '/images/docs/magang.jpg',
     fileSize: '1.9 MB',
     downloads: 3678,
   },
@@ -95,6 +100,7 @@ const documentsList = [
     },
     fileName: 'KERJA-PRAKTIK.pdf',
     fileUrl: '/file/KERJA-PRAKTIK.pdf',
+    coverImage: '/images/docs/kerja-praktik.jpg',
     fileSize: '2.0 MB',
     downloads: 2934,
   },
@@ -110,6 +116,7 @@ const documentsList = [
     },
     fileName: 'MBKM.pdf',
     fileUrl: '/file/MBKM.pdf',
+    coverImage: '/images/docs/mbkm.jpg',
     fileSize: '2.5 MB',
     downloads: 4012,
   },
@@ -125,6 +132,7 @@ const documentsList = [
     },
     fileName: 'TATA-KEHIDUPAN.pdf',
     fileUrl: '/file/TATA-KEHIDUPAN.pdf',
+    coverImage: '/images/docs/tata-kehidupan.jpg',
     fileSize: '1.7 MB',
     downloads: 2456,
   },
@@ -140,6 +148,7 @@ const documentsList = [
     },
     fileName: 'KALENDER-AKADEMIK.pdf',
     fileUrl: '/file/KALENDER-AKADEMIK.pdf',
+    coverImage: '/images/docs/kalender-akademik.jpg',
     fileSize: '1.2 MB',
     downloads: 6789,
   },
@@ -156,6 +165,7 @@ const documentsList = [
     },
     fileName: 'PEMBELAJARAN-DILUAR-PRODI.pdf',
     fileUrl: '/file/PEMBELAJARAN-DILUAR-PRODI.pdf',
+    coverImage: '/images/docs/pembelajaran-diluar-prodi.jpg',
     fileSize: '2.2 MB',
     downloads: 156,
     badge: 'New',
@@ -172,6 +182,7 @@ const documentsList = [
     },
     fileName: 'MAGANG-RISET.pdf',
     fileUrl: '/file/MAGANG-RISET.pdf',
+    coverImage: '/images/docs/magang-riset.jpg',
     fileSize: '1.9 MB',
     downloads: 203,
     badge: 'New',
@@ -188,6 +199,7 @@ const documentsList = [
     },
     fileName: 'KKN-TEMATIK.pdf',
     fileUrl: '/file/KKN-TEMATIK.pdf',
+    coverImage: '/images/docs/kkn-tematik.jpg',
     fileSize: '2.4 MB',
     downloads: 178,
     badge: 'New',
@@ -204,6 +216,7 @@ const documentsList = [
     },
     fileName: 'PERTUKARAN-MAHASISWA.pdf',
     fileUrl: '/file/PERTUKARAN-MAHASISWA.pdf',
+    coverImage: '/images/docs/pertukaran-mahasiswa.jpg',
     fileSize: '2.1 MB',
     downloads: 234,
     badge: 'New',
@@ -220,6 +233,7 @@ const documentsList = [
     },
     fileName: 'KEWIRAUSAHAAN.pdf',
     fileUrl: '/file/KEWIRAUSAHAAN.pdf',
+    coverImage: '/images/docs/kewirausahaan.jpg',
     fileSize: '1.8 MB',
     downloads: 289,
     badge: 'New',
@@ -236,6 +250,7 @@ const documentsList = [
     },
     fileName: 'MAGANG-KEPROFESIAN.pdf',
     fileUrl: '/file/MAGANG-KEPROFESIAN.pdf',
+    coverImage: '/images/docs/magang-keprofesian.jpg',
     fileSize: '2.0 MB',
     downloads: 167,
     badge: 'New',
@@ -252,6 +267,7 @@ const documentsList = [
     },
     fileName: 'PROYEK-KEMANUSIAAN.pdf',
     fileUrl: '/file/PROYEK-KEMANUSIAAN.pdf',
+    coverImage: '/images/docs/proyek-kemanusiaan.jpg',
     fileSize: '2.3 MB',
     downloads: 145,
     badge: 'New',
@@ -268,6 +284,7 @@ const documentsList = [
     },
     fileName: 'STUDI-PROYEK-INDEPENDEN.pdf',
     fileUrl: '/file/STUDI-PROYEK-INDEPENDEN.pdf',
+    coverImage: '/images/docs/studi-proyek-independen.jpg',
     fileSize: '2.2 MB',
     downloads: 198,
     badge: 'New',
@@ -325,7 +342,7 @@ const PeraturanKebijakanPage = () => {
         </div>
       </section>
 
-      {/* Dokumen Grid Section - GLASSMORPHISM STYLE */}
+      {/* Dokumen Grid Section - GLASSMORPHISM WITH FULL BACKGROUND IMAGE */}
       <section className="py-16 bg-light-bg">
         <div className="container mx-auto px-4">
           <AnimatedSection animation="slideUp">
@@ -343,64 +360,87 @@ const PeraturanKebijakanPage = () => {
                     animation="slideUp"
                     delay={index * 0.05}
                   >
-                    {/* GLASSMORPHISM CARD */}
+                    {/* GLASSMORPHISM CARD WITH FULL BACKGROUND IMAGE */}
                     <div className="group relative h-full">
                       {/* Background blur effect */}
                       <div className="absolute -inset-0.5 bg-gradient-to-r from-primary-500 to-purple-600 rounded-2xl blur opacity-30 group-hover:opacity-100 transition duration-500"></div>
                       
-                      <div className="relative bg-white/80 backdrop-blur-xl rounded-2xl p-6 border border-white/20 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 h-full flex flex-col">
+                      <div className="relative bg-white rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 h-full flex flex-col">
                         
-                        {/* Badge "New" */}
-                        {doc.badge && (
-                          <div className="absolute top-4 right-4 z-10">
-                            <span className="px-3 py-1 bg-gradient-to-r from-pink-500 to-orange-500 text-white text-xs font-bold rounded-full shadow-lg animate-pulse">
-                              {doc.badge}
-                            </span>
-                          </div>
-                        )}
+                        {/* Background Image Header */}
+                        <div className="relative h-48 overflow-hidden">
+                          {/* Background Image */}
+                          <img 
+                            src={doc.coverImage} 
+                            alt={doc.title[language as 'id' | 'en']}
+                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                            onError={(e) => {
+                              // Fallback ke gambar default dari internet
+                              const target = e.target as HTMLImageElement;
+                              target.onerror = null; // Prevent infinite loop
+                              target.src = 'https://images.unsplash.com/photo-1568667256549-094345857637?w=800&h=600&fit=crop'; // Default office/education image
+                            }}
+                          />
+                          
+                          {/* Gradient Overlay */}
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
+                          
+                          {/* Badge "New" */}
+                          {doc.badge && (
+                            <div className="absolute top-4 right-4 z-10">
+                              <span className="px-3 py-1 bg-gradient-to-r from-pink-500 to-orange-500 text-white text-xs font-bold rounded-full shadow-lg backdrop-blur-sm animate-pulse">
+                                {doc.badge}
+                              </span>
+                            </div>
+                          )}
 
-                        {/* Icon */}
-                        <div className="w-16 h-16 bg-gradient-to-br from-primary-500 to-purple-600 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300 shadow-lg">
-                          <FileText className="h-8 w-8 text-white" />
+                          {/* Icon floating bottom left */}
+                          <div className="absolute bottom-4 left-4 z-10">
+                            <div className="w-14 h-14 bg-white/90 backdrop-blur-md rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                              <FileText className="h-7 w-7 text-primary-600" />
+                            </div>
+                          </div>
                         </div>
 
-                        {/* Content */}
-                        <h3 className="text-lg font-bold text-gray-800 mb-2 line-clamp-2 group-hover:text-primary-600 transition-colors">
-                          {doc.title[language as 'id' | 'en']}
-                        </h3>
-                        <p className="text-sm text-gray-600 mb-4 line-clamp-2 flex-grow">
-                          {doc.description[language as 'id' | 'en']}
-                        </p>
+                        {/* Content with glass effect */}
+                        <div className="p-6 bg-white/80 backdrop-blur-sm flex-grow">
+                          <h3 className="text-lg font-bold text-gray-800 mb-2 line-clamp-2 group-hover:text-primary-600 transition-colors">
+                            {doc.title[language as 'id' | 'en']}
+                          </h3>
+                          <p className="text-sm text-gray-600 mb-4 line-clamp-2">
+                            {doc.description[language as 'id' | 'en']}
+                          </p>
 
-                        {/* Stats */}
-                        <div className="flex items-center gap-4 text-xs text-gray-500 mb-4">
-                          <div className="flex items-center gap-1">
-                            <TrendingUp className="h-3 w-3" />
-                            <span>{doc.downloads?.toLocaleString() || 0}</span>
+                          {/* Stats */}
+                          <div className="flex items-center gap-4 text-xs text-gray-500 mb-4">
+                            <div className="flex items-center gap-1">
+                              <TrendingUp className="h-3 w-3" />
+                              <span>{doc.downloads?.toLocaleString() || 0}</span>
+                            </div>
+                            <div className="flex items-center gap-1">
+                              <FileType className="h-3 w-3" />
+                              <span>{doc.fileSize || 'PDF'}</span>
+                            </div>
                           </div>
-                          <div className="flex items-center gap-1">
-                            <FileType className="h-3 w-3" />
-                            <span>{doc.fileSize || 'PDF'}</span>
-                          </div>
-                        </div>
 
-                        {/* Actions */}
-                        <div className="flex gap-2 mt-auto">
-                          <button 
-                            onClick={() => window.open(doc.fileUrl, '_blank')}
-                            className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-primary-600 to-purple-600 text-white hover:from-primary-700 hover:to-purple-700 transition-all shadow-md hover:shadow-lg"
-                          >
-                            <Download className="h-4 w-4" />
-                            <span className="text-sm font-medium">
-                              {language === 'id' ? 'Unduh' : 'Download'}
-                            </span>
-                          </button>
-                          <button 
-                            onClick={() => window.open(doc.fileUrl, '_blank')}
-                            className="p-2.5 rounded-xl border-2 border-gray-200 hover:border-primary-500 hover:bg-primary-50 transition-all"
-                          >
-                            <ExternalLink className="h-4 w-4 text-gray-600" />
-                          </button>
+                          {/* Actions */}
+                          <div className="flex gap-2 mt-auto">
+                            <button 
+                              onClick={() => window.open(doc.fileUrl, '_blank')}
+                              className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-primary-600 to-purple-600 text-white hover:from-primary-700 hover:to-purple-700 transition-all shadow-md hover:shadow-lg"
+                            >
+                              <Download className="h-4 w-4" />
+                              <span className="text-sm font-medium">
+                                {language === 'id' ? 'Unduh' : 'Download'}
+                              </span>
+                            </button>
+                            <button 
+                              onClick={() => window.open(doc.fileUrl, '_blank')}
+                              className="p-2.5 rounded-xl border-2 border-gray-200 bg-white hover:border-primary-500 hover:bg-primary-50 transition-all"
+                            >
+                              <ExternalLink className="h-4 w-4 text-gray-600" />
+                            </button>
+                          </div>
                         </div>
                       </div>
                     </div>
