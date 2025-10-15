@@ -249,6 +249,16 @@ const LayananAdministrasiPage = () => {
       url: "#"
     },
     {
+      id: "pengajuan-surat-keterangan-kerja",
+      title: language === 'en' ? "Employment Certificate Letter" : "Pengajuan Surat Keterangan Kerja",
+      description: language === 'en'
+        ? "Service for requesting employment certificate letters."
+        : "Layanan pengajuan surat keterangan kerja untuk keperluan administrasi.",
+      icon: <FileText className="h-6 w-6" />,
+      url: "https://forms.gle/HUhx1fmpUSJwvziRA",
+      category: "dosen" // atau "tendik" atau "umum" sesuai kebutuhan
+    },
+    {
       id: "pengajuan-surat-cek-plagiat",
       title: language === 'en' ? "Plagiarism Check Letter" : "Pengajuan Surat Ket. Cek Plagiasi Dosen",
       description: language === 'en'
