@@ -216,7 +216,7 @@ const LayananAdministrasiPage = () => {
           title: language === 'en' ? "Financial Services" : "Layanan Keuangan",
           items: [
             { text: language === 'en' ? "Tuition Fee Relief Request" : "Permohonan Keringanan UKT", url: "http://s.itk.ac.id/ukttafsti" },
-            { text: language === 'en' ? "Activity Advance Payment Service" : "Layanan Pengajuan Uang Muka Kegiatan", url: "https://docs.google.com/forms/d/e/1FAIpQLSfpuV0Yb-fOfhfl5hhhVbsUfFW2pUb6LONB4TPGPCKh6ZpchQ/viewform?usp=header" }
+            { text: language === 'en' ? "Activity Advance Payment Service" : "Pengajuan Uang Muka Kegiatan", url: "https://docs.google.com/forms/d/e/1FAIpQLSfpuV0Yb-fOfhfl5hhhVbsUfFW2pUb6LONB4TPGPCKh6ZpchQ/viewform?usp=header" }
           ]
         }
       ],
@@ -257,7 +257,7 @@ const LayananAdministrasiPage = () => {
         {
           title: language === 'en' ? "Financial Services" : "Layanan Keuangan",
           items: [
-            { text: language === 'en' ? "Activity Advance Payment Service" : "Layanan Pengajuan Uang Muka Kegiatan", url: "https://docs.google.com/forms/d/e/1FAIpQLSfpuV0Yb-fOfhfl5hhhVbsUfFW2pUb6LONB4TPGPCKh6ZpchQ/viewform?usp=header" }
+            { text: language === 'en' ? "Activity Advance Payment Service" : "Pengajuan Uang Muka Kegiatan", url: "https://docs.google.com/forms/d/e/1FAIpQLSfpuV0Yb-fOfhfl5hhhVbsUfFW2pUb6LONB4TPGPCKh6ZpchQ/viewform?usp=header" }
           ]
         }
       ],
