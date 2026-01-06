@@ -15,7 +15,7 @@ const BackgroundParticles = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [mounted, setMounted] = useState(false);
   const [canvasReady, setCanvasReady] = useState(false);
-  const animationRef = useRef<number>();
+  const animationRef = useRef<number | undefined>(undefined);
   const particlesRef = useRef<Particle[]>([]);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
