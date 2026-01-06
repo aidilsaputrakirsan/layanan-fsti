@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useState, useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
-import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence, Variants } from 'framer-motion';
 import { LazyMotion, domAnimation, m } from 'framer-motion';
 import ClientOnly from '@/components/utils/ClientOnly';
 import LanguageToggle from '@/components/ui/LanguageToggle';
@@ -44,13 +44,13 @@ const Navbar = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const menuVariants = {
+  const menuVariants: Variants = {
     closed: {
       opacity: 0,
       x: "-100%",
       transition: {
         duration: 0.3,
-        ease: "easeInOut"
+        ease: [0.42, 0, 0.58, 1] as const
       }
     },
     open: {
@@ -58,7 +58,7 @@ const Navbar = () => {
       x: 0,
       transition: {
         duration: 0.3,
-        ease: "easeInOut"
+        ease: [0.42, 0, 0.58, 1] as const
       }
     }
   };
