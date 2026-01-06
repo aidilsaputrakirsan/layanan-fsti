@@ -215,7 +215,8 @@ const LayananAdministrasiPage = () => {
         {
           title: language === 'en' ? "Financial Services" : "Layanan Keuangan",
           items: [
-            { text: language === 'en' ? "Tuition Fee Relief Request" : "Permohonan Keringanan UKT", url: "http://s.itk.ac.id/ukttafsti" }
+            { text: language === 'en' ? "Tuition Fee Relief Request" : "Permohonan Keringanan UKT", url: "http://s.itk.ac.id/ukttafsti" },
+            { text: language === 'en' ? "Activity Advance Payment Service" : "Layanan Pengajuan Uang Muka Kegiatan", url: "https://docs.google.com/forms/d/e/1FAIpQLSfpuV0Yb-fOfhfl5hhhVbsUfFW2pUb6LONB4TPGPCKh6ZpchQ/viewform?usp=header" }
           ]
         }
       ],
@@ -245,6 +246,24 @@ const LayananAdministrasiPage = () => {
 
   // Data layanan dosen
   const dosenLayananList = [
+    {
+      id: "keuangan-dosen",
+      title: language === 'en' ? "Financial Services" : "Layanan Keuangan",
+      description: language === 'en'
+        ? "Financial administrative services for lecturers."
+        : "Layanan administrasi keuangan untuk dosen.",
+      icon: <DollarSign className="h-6 w-6" />,
+      subLayanan: [
+        {
+          title: language === 'en' ? "Financial Services" : "Layanan Keuangan",
+          items: [
+            { text: language === 'en' ? "Activity Advance Payment Service" : "Layanan Pengajuan Uang Muka Kegiatan", url: "https://docs.google.com/forms/d/e/1FAIpQLSfpuV0Yb-fOfhfl5hhhVbsUfFW2pUb6LONB4TPGPCKh6ZpchQ/viewform?usp=header" }
+          ]
+        }
+      ],
+      category: "dosen",
+      url: "#"
+    },
     {
       id: "sistem-informasi-dosen",
       title: language === 'en' ? "Lecturer Information Systems" : "Sistem Informasi Dosen",
