@@ -427,8 +427,8 @@ const TentangFSTIPage = () => {
       </section>
 
       {/* Tugas dan Fungsi Fakultas Section - SECTION BARU */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4">
+      <section className="relative py-16 bg-white/80 backdrop-blur-sm">
+        <div className="container mx-auto px-4 relative z-10">
           <AnimatedSection animation="slideUp">
             <h2 className="text-3xl font-display font-bold text-center mb-12 text-gradient">
               {language === 'en' ? 'Faculty Duties and Functions' : 'Tugas dan Fungsi Fakultas'}
@@ -493,8 +493,8 @@ const TentangFSTIPage = () => {
       </section>
 
       {/* Visi dan Misi Section */}
-      <section className="py-16 bg-light-bg">
-        <div className="container mx-auto px-4">
+      <section className="relative py-16 bg-white/80 backdrop-blur-sm">
+        <div className="container mx-auto px-4 relative z-10">
           <AnimatedSection animation="slideUp">
             <h2 className="text-3xl font-display font-bold text-center mb-12 text-gradient">
               {language === 'en' ? 'Vision and Mission' : 'Visi dan Misi FSTI'}
@@ -505,7 +505,7 @@ const TentangFSTIPage = () => {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               {/* Visi */}
               <AnimatedSection animation="slideUp" delay={0.1}>
-                <div className="bg-white rounded-xl shadow-md p-8 h-full">
+                <div className="bg-white/95 backdrop-blur-sm rounded-xl shadow-md p-8 h-full border border-gray-100">
                   <div className="flex items-center mb-6">
                     <div className="w-12 h-12 bg-primary-50 rounded-full flex items-center justify-center mr-4">
                       <Eye className="w-6 h-6 text-primary-600" />
@@ -522,7 +522,7 @@ const TentangFSTIPage = () => {
 
               {/* Misi */}
               <AnimatedSection animation="slideUp" delay={0.2}>
-                <div className="bg-white rounded-xl shadow-md p-8 h-full">
+                <div className="bg-white/95 backdrop-blur-sm rounded-xl shadow-md p-8 h-full border border-gray-100">
                   <div className="flex items-center mb-6">
                     <div className="w-12 h-12 bg-primary-50 rounded-full flex items-center justify-center mr-4">
                       <Target className="w-6 h-6 text-primary-600" />
@@ -534,7 +534,7 @@ const TentangFSTIPage = () => {
                   <div className="grid grid-cols-1 gap-3">
                     {visiMisi.misi.map((item, index) => (
                       <div key={index} className="flex items-center">
-                        <div className="w-6 h-6 bg-primary-100 text-primary-600 rounded-full flex items-center justify-center text-sm font-bold mr-3">
+                        <div className="w-6 h-6 bg-primary-100 text-primary-600 rounded-full flex items-center justify-center text-sm font-bold mr-3 shadow-sm">
                           {index + 1}
                         </div>
                         <span className="text-gray-700">{highlightFirstLetter(item)}</span>
@@ -549,8 +549,8 @@ const TentangFSTIPage = () => {
       </section>
 
       {/* Program Studi Section */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4">
+      <section className="relative py-16 bg-white/80 backdrop-blur-sm">
+        <div className="container mx-auto px-4 relative z-10">
           <AnimatedSection animation="slideUp">
             <h2 className="text-3xl font-display font-bold text-center mb-12 text-gradient">
               {language === 'en' ? 'Study Programs' : 'Program Studi'}
@@ -568,7 +568,7 @@ const TentangFSTIPage = () => {
                   {prodis.map((prodi, index) => (
                     <AnimatedSection key={index} animation="slideUp" delay={(jurusanIndex * prodis.length + index) * 0.1}>
                       {/* ===== CARD DENGAN BACKGROUND LOGO ===== */}
-                      <div className="bg-gradient-to-br from-primary-50 to-primary-100 rounded-xl p-6 hover-card relative overflow-hidden">
+                      <div className="bg-gradient-to-br from-primary-50/90 to-primary-100/90 backdrop-blur-sm rounded-xl p-6 hover-card relative overflow-hidden border border-primary-100 shadow-sm">
 
                         {/* ===== BACKGROUND LOGO TRANSPARAN ===== */}
                         <Image
@@ -585,7 +585,7 @@ const TentangFSTIPage = () => {
                             <h4 className="font-bold text-primary-800">{prodi.name}</h4>
                           </div>
 
-                          <div className="space-y-2 text-sm">
+                          <div className="space-y-2 text-sm bg-white/60 p-3 rounded-lg backdrop-blur-sm">
                             <div className="flex justify-between">
                               <span className="text-gray-600">{language === 'en' ? 'Accreditation' : 'Akreditasi'}:</span>
                               <span className="font-medium text-gray-800">{prodi.akreditasi}</span>
@@ -596,12 +596,12 @@ const TentangFSTIPage = () => {
                             </div>
                           </div>
 
-                          <div className="mt-4 pt-4 border-t border-primary-200">
+                          <div className="mt-4 pt-4 border-t border-primary-200/50">
                             <a
                               href={prodi.website}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="text-primary-600 hover:text-primary-800 text-sm font-medium flex items-center transition-colors"
+                              className="text-primary-700 hover:text-primary-900 text-sm font-medium flex items-center transition-colors bg-white/50 px-3 py-1.5 rounded-md w-fit"
                             >
                               {language === 'en' ? 'Visit Website' : 'Lihat Website'}
                               <ExternalLink className="w-4 h-4 ml-1" />
@@ -619,8 +619,8 @@ const TentangFSTIPage = () => {
       </section>
 
       {/* Struktur Organisasi Section - FIXED STYLE */}
-      <section className="py-16 bg-light-bg">
-        <div className="container mx-auto px-4">
+      <section className="relative py-16 bg-white/80 backdrop-blur-sm">
+        <div className="container mx-auto px-4 relative z-10">
           <AnimatedSection animation="slideUp">
             <h2 className="text-3xl font-display font-bold text-center mb-12 text-gradient">
               {language === 'en' ? 'Organizational Structure' : 'Struktur Organisasi'}
@@ -811,8 +811,8 @@ const TentangFSTIPage = () => {
       </section>
 
       {/* Laboratorium Section */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4">
+      <section className="relative py-16 bg-white/80 backdrop-blur-sm">
+        <div className="container mx-auto px-4 relative z-10">
           <AnimatedSection animation="slideUp">
             <h2 className="text-3xl font-display font-bold text-center mb-12 text-gradient">
               {language === 'en' ? 'Laboratories' : 'Laboratorium'}
@@ -871,9 +871,9 @@ const TentangFSTIPage = () => {
         </div>
       </section>
 
-      {/* Prestasi Section - DATA TERVERIFIKASI */}
-      <section className="py-16 bg-light-bg">
-        <div className="container mx-auto px-4">
+      {/* Prestasi Section */}
+      <section className="relative py-16 bg-white/80 backdrop-blur-sm">
+        <div className="container mx-auto px-4 relative z-10">
           <AnimatedSection animation="slideUp">
             <h2 className="text-3xl font-display font-bold text-center mb-12 text-gradient">
               {language === 'en' ? 'Achievements' : 'Prestasi'}
@@ -884,11 +884,43 @@ const TentangFSTIPage = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {prestasi.map((item, index) => (
                 <AnimatedSection key={index} animation="slideUp" delay={index * 0.1}>
-                  <div className="bg-white rounded-xl shadow-md p-6 hover-card text-center">
-                    <div className="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <div className="text-yellow-600">{item.icon}</div>
+                  <div className="bg-white/95 backdrop-blur-sm rounded-xl p-6 shadow-md hover-card h-full border border-gray-100 flex flex-col relative overflow-hidden">
+                    {/* Decorative element */}
+                    <div className="absolute -top-10 -right-10 w-24 h-24 bg-primary-50 rounded-full opacity-50 z-0"></div>
+
+                    <div className="relative z-10 flex flex-col h-full">
+                      <div className="w-12 h-12 bg-primary-100/80 rounded-full flex items-center justify-center mb-4 text-primary-600 shadow-sm">
+                        {item.icon}
+                      </div>
+                      <h3 className="text-xl font-bold mb-3 text-gray-800">{item.title}</h3>
+                      <p className="text-gray-600 flex-grow text-sm leading-relaxed">{item.description}</p>
                     </div>
-                    <h4 className="font-bold text-gray-800 mb-3">{item.title}</h4>
+                  </div>
+                </AnimatedSection>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Fasilitas Section */}
+      <section className="relative py-16 bg-white/80 backdrop-blur-sm">
+        <div className="container mx-auto px-4 relative z-10">
+          <AnimatedSection animation="slideUp">
+            <h2 className="text-3xl font-display font-bold text-center mb-12 text-gradient">
+              {language === 'en' ? 'Facilities' : 'Fasilitas'}
+            </h2>
+          </AnimatedSection>
+
+          <div className="max-w-6xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {fasilitas.map((item, index) => (
+                <AnimatedSection key={index} animation="slideUp" delay={index * 0.1}>
+                  <div className="bg-white/95 backdrop-blur-sm rounded-xl p-6 shadow-md hover-card h-full border border-gray-100 group">
+                    <div className="w-12 h-12 bg-primary-50/80 rounded-lg flex items-center justify-center mb-4 text-primary-600 group-hover:bg-primary-600 group-hover:text-white transition-colors duration-300 shadow-sm">
+                      {item.icon}
+                    </div>
+                    <h3 className="text-lg font-bold mb-2 text-gray-800">{item.title}</h3>
                     <p className="text-gray-600 text-sm leading-relaxed">{item.description}</p>
                   </div>
                 </AnimatedSection>
@@ -898,101 +930,66 @@ const TentangFSTIPage = () => {
         </div>
       </section>
 
-      {/* Fasilitas Section - DATA TERVERIFIKASI */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4">
-          <AnimatedSection animation="slideUp">
-            <h2 className="text-3xl font-display font-bold text-center mb-12 text-gradient">
-              {language === 'en' ? 'Facilities' : 'Fasilitas'}
-            </h2>
-          </AnimatedSection>
-
-          <div className="max-w-6xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {fasilitas.map((item, index) => (
-                <AnimatedSection key={index} animation="slideUp" delay={index * 0.1}>
-                  <div className="rounded-xl overflow-hidden hover-card relative h-64">
-                    {/* Full Background Image */}
-                    <img
-                      src={`/images/fasilitas/${index + 1}.png`}
-                      alt={item.title}
-                      className="absolute inset-0 w-full h-full object-cover"
-                    />
-
-                    {/* Glassmorphism Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-primary-900/80 via-primary-600/40 to-transparent"></div>
-
-                    {/* Content dengan glass effect */}
-                    <div className="absolute bottom-4 left-4 right-4 bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20 text-white">
-                      <div className="flex items-center mb-2">
-                        <div className="w-8 h-8 bg-white/30 rounded-full flex items-center justify-center mr-3">
-                          <div className="text-white text-sm">{item.icon}</div>
-                        </div>
-                        <h4 className="font-bold text-lg">{item.title}</h4>
-                      </div>
-                      <p className="text-white/90 text-sm">{item.description}</p>
+      {/* Contact Section */}
+      <section className="relative py-16 bg-white/80 backdrop-blur-sm">
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="max-w-4xl mx-auto bg-primary-900 rounded-2xl overflow-hidden shadow-xl">
+            <div className="grid grid-cols-1 md:grid-cols-2">
+              <div className="p-10 text-white flex flex-col justify-center relative z-10">
+                <AnimatedSection animation="slideInRight">
+                  <h2 className="text-3xl font-bold mb-6">
+                    {language === 'en' ? 'Contact Us' : 'Hubungi Kami'}
+                  </h2>
+                  <div className="space-y-6">
+                    <div className="flex items-start">
+                      <MapPin className="w-6 h-6 mr-4 text-primary-300 shrink-0 mt-1" />
+                      <p className="text-primary-100 text-sm md:text-base leading-relaxed">
+                        Kampus Institut Teknologi Kalimantan<br />
+                        Jl. Soekarno-Hatta Km. 15, Karang Joang,<br />
+                        Balikpapan, Kalimantan Timur 76127
+                      </p>
+                    </div>
+                    <div className="flex items-center">
+                      <Phone className="w-6 h-6 mr-4 text-primary-300 shrink-0" />
+                      <p className="text-primary-100 text-sm md:text-base">0542-8530801</p>
+                    </div>
+                    <div className="flex items-center">
+                      <Mail className="w-6 h-6 mr-4 text-primary-300 shrink-0" />
+                      <p className="text-primary-100 text-sm md:text-base">humas@itk.ac.id</p>
+                    </div>
+                    <div className="flex items-center">
+                      <Globe className="w-6 h-6 mr-4 text-primary-300 shrink-0" />
+                      <a href="https://itk.ac.id" target="_blank" rel="noopener noreferrer" className="text-primary-100 hover:text-white transition-colors text-sm md:text-base flex items-center">
+                        itk.ac.id
+                        <ExternalLink className="w-4 h-4 ml-2" />
+                      </a>
                     </div>
                   </div>
                 </AnimatedSection>
-              ))}
+              </div>
+              <div className="relative h-64 md:h-auto min-h-[300px]">
+                {/* Fallback pattern if image is not available */}
+                <div className="absolute inset-0 bg-primary-800 opacity-50"></div>
+                <div className="absolute inset-0 p-8 flex items-center justify-center">
+                  <div className="w-full h-full border-2 border-primary-700/50 rounded-lg flex items-center justify-center">
+                    <Building className="w-24 h-24 text-primary-700/30" />
+                  </div>
+                </div>
+
+                {/* NOTE: Replace src with actual image of ITK campus/FSTI building if available */}
+                <Image
+                  src="/images/itk-campus.jpg"
+                  alt="Kampus ITK"
+                  fill
+                  className="object-cover opacity-80"
+                  onError={(e) => {
+                    // Hide image if it fails to load, showing the pattern behind it
+                    (e.target as HTMLImageElement).style.display = 'none';
+                  }}
+                />
+              </div>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-16 bg-gradient-to-b from-light-bg to-white">
-        <div className="container mx-auto px-4 text-center">
-          <AnimatedSection animation="slideUp">
-            <h2 className="text-2xl font-display font-bold mb-6 text-gray-800">{t('services.needHelp.title')}</h2>
-            <p className="text-gray-600 mb-8 max-w-2xl mx-auto">
-              {t('services.needHelp.description')}
-            </p>
-            <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <Button
-                href="mailto:fsti@itk.ac.id"
-                variant="primary"
-                icon={<svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                  />
-                </svg>}
-                animate
-              >
-                {t('common.email')}
-              </Button>
-              <Button
-                href="#kontak"
-                variant="outline"
-                icon={<svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
-                  />
-                </svg>}
-                animate
-              >
-                {t('common.contact')}
-              </Button>
-            </div>
-          </AnimatedSection>
         </div>
       </section>
     </MainLayout>

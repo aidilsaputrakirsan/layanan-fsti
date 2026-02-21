@@ -31,15 +31,20 @@ import {
   ChevronRight
 } from 'lucide-react';
 
-// Image Carousel Component
-const ImageCarousel = () => {
+// Hero Background Component
+const HeroBackground = () => {
   const [currentImage, setCurrentImage] = useState(0);
   const images = [
-    '/images/gambar1.jpeg',
-    '/images/gambar2.jpeg',
-    '/images/gambar3.jpeg',
-    '/images/gambar4.jpeg',
-    '/images/gambar5.jpeg',
+    '/images/beranda/b1.jpg',
+    '/images/beranda/b2.jpg',
+    '/images/beranda/b3.JPG',
+    '/images/beranda/b4.JPG',
+    '/images/beranda/b5.jpg',
+    '/images/beranda/b6.jpg',
+    '/images/beranda/b7.jpg',
+    '/images/beranda/b8.JPG',
+    '/images/beranda/b9.JPG',
+    '/images/beranda/b10.jpg',
   ];
 
   useEffect(() => {
@@ -50,10 +55,8 @@ const ImageCarousel = () => {
     return () => clearInterval(interval);
   }, [images.length]);
 
-  const { t } = useLanguage();
-
   return (
-    <div className="w-full h-80 md:h-96 bg-light-bg rounded-xl overflow-hidden relative">
+    <div className="absolute inset-0 z-0">
       {images.map((src, index) => (
         <div
           key={src}
@@ -69,19 +72,8 @@ const ImageCarousel = () => {
           />
         </div>
       ))}
-      <div className="absolute inset-0 bg-gradient-to-b from-light-bg/30 to-light-bg/70"></div>
-      <div className="relative z-10 text-center p-8 flex flex-col h-full justify-center">
-
-        <h3 className="text-xl font-bold mb-3 text-primary-800">{t('home.academicCenter.title')}</h3>
-        <p className="text-gray-700 mb-4">
-          {t('home.academicCenter.description')}
-        </p>
-        <div className="flex items-center justify-center space-x-2">
-          <span className="w-3 h-3 rounded-full bg-red-500"></span>
-          <span className="w-3 h-3 rounded-full bg-yellow-500"></span>
-          <span className="w-3 h-3 rounded-full bg-green-500"></span>
-        </div>
-      </div>
+      {/* Dark gradient overlay to make text readable and pop */}
+      <div className="absolute inset-0 bg-gradient-to-r from-gray-950/95 via-gray-900/80 to-gray-800/40"></div>
     </div>
   );
 };
@@ -105,31 +97,80 @@ function HomePage() {
 
   return (
     <MainLayout>
-      {/* Hero Section */}
-      <section className="relative py-20 md:py-32 overflow-hidden">
-        <div className="absolute inset-0 hero-gradient"></div>
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="flex flex-col md:flex-row items-center">
-            <SafeAnimatedSection
-              className="md:w-1/2 mb-10 md:mb-0"
-              animation="slideInRight"
+      {/* Hero Section - Full Bleed Style */}
+      <section className="relative min-h-[90vh] flex items-center overflow-hidden">
+        <ClientOnly>
+          <HeroBackground />
+        </ClientOnly>
+
+        <div className="container mx-auto px-4 relative z-10 py-20 mt-10">
+          <ClientOnly>
+            <motion.div
+              className="max-w-3xl"
+              initial="hidden"
+              animate="visible"
+              variants={{
+                hidden: { opacity: 0 },
+                visible: {
+                  opacity: 1,
+                  transition: {
+                    staggerChildren: 0.2,
+                    delayChildren: 0.1
+                  }
+                }
+              }}
             >
-              <h1 className="text-4xl md:text-6xl font-display font-bold mb-6 leading-tight text-gray-900">
-                {t('home.hero.title')} <span className="text-gradient">{t('common.university')}</span>
-              </h1>
-              <h2 className="text-xl md:text-2xl mb-6 text-gray-700">
-                {t('common.university')}
-              </h2>
-              <p className="text-gray-700 mb-8 text-lg max-w-lg">
+              <motion.h1
+                variants={{
+                  hidden: { opacity: 0, y: 30 },
+                  visible: {
+                    opacity: 1,
+                    y: 0,
+                    transition: { duration: 0.8, ease: [0.25, 0.1, 0.25, 1.0] }
+                  }
+                }}
+                className="text-5xl md:text-6xl lg:text-7xl font-display font-bold mb-6 leading-tight text-white drop-shadow-lg"
+              >
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-blue-100 to-white bg-[length:200%_auto] animate-gradient-slow block">
+                  {t('home.hero.title')}
+                </span>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-300 to-blue-400 bg-[length:200%_auto] animate-gradient-slow">
+                  {t('common.university')}
+                </span>
+              </motion.h1>
+
+              <motion.p
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  visible: {
+                    opacity: 1,
+                    y: 0,
+                    transition: { duration: 0.8 }
+                  }
+                }}
+                className="text-gray-300 mb-10 text-lg md:text-xl max-w-2xl leading-relaxed font-light"
+              >
                 {t('home.hero.description')}
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4">
+              </motion.p>
+
+              <motion.div
+                variants={{
+                  hidden: { opacity: 0, y: 15 },
+                  visible: {
+                    opacity: 1,
+                    y: 0,
+                    transition: { duration: 0.8 }
+                  }
+                }}
+                className="flex flex-col sm:flex-row gap-4"
+              >
                 <Button
                   href="/layanan-administrasi"
                   variant="primary"
                   size="lg"
                   icon={<FileText className="w-5 h-5" />}
                   animate
+                  className="bg-blue-600 hover:bg-blue-500 text-white border-none shadow-[0_0_20px_rgba(37,99,235,0.4)] transition-all hover:scale-105"
                 >
                   {t('home.hero.viewServices')}
                 </Button>
@@ -139,45 +180,28 @@ function HomePage() {
                   size="lg"
                   icon={<RefreshCcw className="w-5 h-5" />}
                   animate
+                  className="bg-white/5 backdrop-blur-md border border-white/20 text-white hover:bg-white/10 transition-all hover:scale-105"
                 >
                   {t('home.hero.trackDocuments')}
                 </Button>
-              </div>
-            </SafeAnimatedSection>
-            <SafeAnimatedSection
-              className="md:w-1/2 flex justify-center"
-              animation="fadeIn"
-              delay={0.2}
-            >
-              <ClientOnly>
-                <SafeMotion
-                  className="rounded-2xl p-2 bg-gradient-to-tr from-primary-800 via-primary-600 to-primary-400 shadow-glow"
-                  animate={{
-                    boxShadow: ['0 0 15px rgba(47, 77, 211, 0.3)', '0 0 25px rgba(47, 77, 211, 0.5)', '0 0 15px rgba(47, 77, 211, 0.3)'],
-                  }}
-                  transition={{
-                    duration: 4,
-                    repeat: Infinity,
-                    repeatType: "reverse"
-                  }}
-                >
-                  {/* Replace static background with image carousel */}
-                  <ImageCarousel />
-                </SafeMotion>
-              </ClientOnly>
-            </SafeAnimatedSection>
-          </div>
+              </motion.div>
+            </motion.div>
+          </ClientOnly>
+        </div>
+
+        {/* Bottom Wave Transition */}
+        <div className="absolute bottom-0 left-0 w-full z-10 translate-y-[2px]">
+          <svg viewBox="0 0 1440 120" className="w-full h-auto block" preserveAspectRatio="none">
+            <path d="M0,64L80,69.3C160,75,320,85,480,80C640,75,800,53,960,48C1120,43,1280,53,1360,58.7L1440,64L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z" fill="#f8fafc"></path>
+          </svg>
         </div>
       </section>
 
-      {/* Divider: Hero → Popular Services */}
-      <SectionDivider type="wave" fillColor="#f8fafc" bgColor="transparent" />
-
       {/* Popular Services Section */}
-      <section className="py-20 bg-light-bg">
+      <section className="relative py-20 bg-white/80 backdrop-blur-sm">
         <div className="container mx-auto px-4">
           <SafeAnimatedSection animation="slideUp">
-            <div className="text-center mb-16">
+            <div className="text-center mb-16 relative z-10">
               <h2 className="text-3xl md:text-4xl font-display font-bold mb-4 inline-block text-gradient">
                 {t('home.popularServices.title')}
               </h2>
@@ -187,7 +211,7 @@ function HomePage() {
             </div>
           </SafeAnimatedSection>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative z-10">
             {/* Service 1 */}
             <SafeAnimatedSection animation="slideUp" delay={0.1}>
               <ServiceCard
@@ -225,7 +249,7 @@ function HomePage() {
             </SafeAnimatedSection>
           </div>
 
-          <SafeAnimatedSection className="text-center mt-12" animation="fadeIn" delay={0.4}>
+          <SafeAnimatedSection className="text-center mt-12 relative z-10" animation="fadeIn" delay={0.4}>
             <Button
               href="/layanan-administrasi"
               variant="outline"
@@ -243,11 +267,13 @@ function HomePage() {
       */}
 
       {/* Divider: Popular Services → CTA */}
-      <SectionDivider type="curve" fillColor="#ffffff" bgColor="#f8fafc" />
+      <div className="relative z-10">
+        <SectionDivider type="curve" fillColor="rgba(255, 255, 255, 0.8)" bgColor="rgba(248, 250, 252, 0.7)" />
+      </div>
 
       {/* CTA Section */}
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-4 text-center">
+      <section className="relative py-20 bg-white/80 backdrop-blur-sm">
+        <div className="container mx-auto px-4 text-center relative z-10">
           <SafeAnimatedSection animation="slideUp">
             <h2 className="text-3xl md:text-4xl font-display font-bold mb-4 text-primary-800">{t('common.needHelp')}</h2>
             <p className="text-gray-700 mb-10 max-w-2xl mx-auto text-lg">

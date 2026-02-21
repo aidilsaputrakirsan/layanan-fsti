@@ -8,12 +8,12 @@ import Button from '@/components/ui/Button';
 import Link from 'next/link';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 import { useRouter } from 'next/navigation';
-import { 
-  Search, 
-  CheckCircle2, 
-  Clock, 
-  AlertCircle, 
-  HelpCircle, 
+import {
+  Search,
+  CheckCircle2,
+  Clock,
+  AlertCircle,
+  HelpCircle,
   RotateCw,
   FileText,
   Calendar,
@@ -63,7 +63,7 @@ interface StudentDocument {
     url: string;
   };
   keterangan?: string;
-  
+
   // Field spesifik untuk dokumen tertentu yang masih dibutuhkan
   mitra?: string;
   alasan?: string;
@@ -87,32 +87,32 @@ const MahasiswaTrackingPage = () => {
   const [searchResults, setSearchResults] = useState<StudentDocument[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
-  const [sheets, setSheets] = useState<{id: number, title: string}[]>([]);
+  const [sheets, setSheets] = useState<{ id: number, title: string }[]>([]);
   const [dataLoaded, setDataLoaded] = useState<boolean>(false);
   const [docTypes, setDocTypes] = useState<string[]>([]);
   const [showSurveyModal, setShowSurveyModal] = useState(false);
   const [selectedSheet, setSelectedSheet] = useState<string>("");
-   
+
   const { t, language } = useLanguage();
   const router = useRouter();
-  
+
   // Fetch document types when component mounts
   useEffect(() => {
     const fetchDocTypes = async () => {
       try {
         setIsLoading(true);
-        
+
         // Use CORS proxy to fetch data
         const response = await fetch(`${API_ENDPOINT}?url=${encodeURIComponent(SCRIPT_URL)}&types=1`);
-        
+
         // Parse the response as JSON
         const data = await response.json() as ApiResponse;
-        
+
         if (data && data.success && data.documents && Array.isArray(data.documents)) {
           // Extract unique doc types
           const uniqueTypes = Array.from(new Set(data.documents.map(doc => doc.type)));
           setDocTypes(uniqueTypes);
-          
+
           // We indicate that minimal data is loaded
           setDataLoaded(true);
         } else {
@@ -196,7 +196,7 @@ const MahasiswaTrackingPage = () => {
   // Get document details based on type - memoized
   const getDocumentDetails = useCallback((doc: StudentDocument | null): DocumentDetail[] => {
     if (!doc) return [];
-    
+
     // Bagian informasi umum dokumen
     const commonDetails: DocumentDetail[] = [
       {
@@ -225,11 +225,11 @@ const MahasiswaTrackingPage = () => {
         value: doc.date
       }
     ];
-    
+
     // Tambahkan link surat jika tersedia
     if (doc.linkSurat && doc.linkSurat.url) {
       commonDetails.push({
-        icon: <FileText className="w-5 h-5 mr-3 text-primary-600 mt-1" />, 
+        icon: <FileText className="w-5 h-5 mr-3 text-primary-600 mt-1" />,
         label: t('Surat Anda Disini'),
         value: (
           <button
@@ -245,7 +245,7 @@ const MahasiswaTrackingPage = () => {
         )
       });
     }
-    
+
     // Tambahkan keterangan jika tersedia
     if (doc.keterangan) {
       commonDetails.push({
@@ -254,7 +254,7 @@ const MahasiswaTrackingPage = () => {
         value: doc.keterangan
       });
     }
-    
+
     // Tambahkan informasi status jika tersedia
     if (doc.statusText) {
       commonDetails.push({
@@ -263,7 +263,7 @@ const MahasiswaTrackingPage = () => {
         value: doc.statusText
       });
     }
-    
+
     // Informasi spesifik untuk tiap jenis dokumen yang masih dipertahankan
     // (seperti mitra untuk KP, dll)
     if (doc.type === "Kerja Praktik" && doc.mitra) {
@@ -273,7 +273,7 @@ const MahasiswaTrackingPage = () => {
         value: doc.mitra
       });
     }
-    
+
     // Jika ada informasi tambahan untuk dokumen ini (misalnya alasan dispensasi)
     if (doc.type === "Dispensasi Perkuliahan" && doc.alasan) {
       commonDetails.push({
@@ -282,22 +282,22 @@ const MahasiswaTrackingPage = () => {
         value: doc.alasan
       });
     }
-    
+
     // Return informasi dokumen yang sudah disederhanakan
     return commonDetails;
   }, [t, language]);
 
-  
+
   // Handle search for documents
   const handleSearch = async (e: React.FormEvent | null) => {
     if (e && e.preventDefault) {
       e.preventDefault();
     }
-    
+
     setError("");
     setTrackingResult(null);
     setSearchResults([]);
-    
+
     if (!searchQuery.trim()) {
       setError(language === 'en' ? 'Enter NIM to track documents.' : 'Masukkan NIM untuk melacak dokumen.');
       return;
@@ -308,47 +308,47 @@ const MahasiswaTrackingPage = () => {
     try {
       // Build API URL dengan sheet parameter jika dipilih
       let apiUrl = `${API_ENDPOINT}?url=${encodeURIComponent(SCRIPT_URL)}&nim=${encodeURIComponent(searchQuery)}`;
-      
+
       // Tambahkan sheet parameter jika dipilih
       if (selectedSheet) {
         apiUrl += `&sheet=${encodeURIComponent(selectedSheet)}`;
       }
-      
+
       console.log("API URL:", apiUrl); // Debug log
       console.log("Selected sheet:", selectedSheet); // Debug log
-      
+
       const response = await fetch(apiUrl);
       const data = await response.json() as ApiResponse;
-      
+
       if (data.success && 'documents' in data && Array.isArray(data.documents)) {
         const docs = data.documents;
         if (docs.length > 0) {
           setSearchResults(docs);
-          
+
           // If only 1 result, display its details directly
           if (docs.length === 1) {
             setTrackingResult(docs[0]);
           }
           setError("");
           setTimeout(() => {
-              if (docs.length > 1) {
-                // Multiple results - scroll to results list
-                const resultsElement = document.getElementById('search-results-section');
-                if (resultsElement) {
-                  resultsElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-              } else {
-                // Single result - scroll to detail view
-                const detailElement = document.getElementById('detail-view');
-                if (detailElement) {
-                  detailElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
+            if (docs.length > 1) {
+              // Multiple results - scroll to results list
+              const resultsElement = document.getElementById('search-results-section');
+              if (resultsElement) {
+                resultsElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
               }
-            }, 300); // Delay untuk animasi
-          } else {
+            } else {
+              // Single result - scroll to detail view
+              const detailElement = document.getElementById('detail-view');
+              if (detailElement) {
+                detailElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }
+            }
+          }, 300); // Delay untuk animasi
+        } else {
           setSearchResults([]);
           setTrackingResult(null);
-          const errorMsg = selectedSheet 
+          const errorMsg = selectedSheet
             ? (language === 'en' ? 'No documents found for this NIM in the selected document type.' : 'Tidak ada dokumen yang ditemukan untuk NIM tersebut pada jenis dokumen yang dipilih.')
             : (language === 'en' ? 'No documents found for this NIM.' : 'Tidak ada dokumen yang ditemukan untuk NIM tersebut.');
           setError(errorMsg);
@@ -356,7 +356,7 @@ const MahasiswaTrackingPage = () => {
       } else {
         setSearchResults([]);
         setTrackingResult(null);
-        const errorMsg = selectedSheet 
+        const errorMsg = selectedSheet
           ? (language === 'en' ? 'No documents found for this NIM in the selected document type.' : 'Tidak ada dokumen yang ditemukan untuk NIM tersebut pada jenis dokumen yang dipilih.')
           : (language === 'en' ? 'No documents found for this NIM.' : 'Tidak ada dokumen yang ditemukan untuk NIM tersebut.');
         setError(errorMsg);
@@ -371,7 +371,7 @@ const MahasiswaTrackingPage = () => {
       setIsLoading(false);
     }
   };
-  
+
   // Function to view detail of a document
   const handleViewDetail = useCallback((doc: StudentDocument) => {
     setTrackingResult(doc);
@@ -384,8 +384,8 @@ const MahasiswaTrackingPage = () => {
     }, 100);
   }, []);
 
-   // Function to go back to results
-   const handleBackToResults = useCallback(() => {
+  // Function to go back to results
+  const handleBackToResults = useCallback(() => {
     setTrackingResult(null);
   }, []);
 
@@ -400,7 +400,7 @@ const MahasiswaTrackingPage = () => {
               <p className="text-gray-700 text-lg mb-6">
                 {t('studentTracking.description')}
               </p>
-              
+
               <div className="hidden md:flex flex-wrap justify-center gap-2 mb-6">
                 {docTypes.slice(0, 6).map((type, index) => (
                   <span key={index} className="px-3 py-1 bg-white shadow-sm border border-gray-100 rounded-full text-sm text-gray-700">
@@ -424,26 +424,26 @@ const MahasiswaTrackingPage = () => {
       </section>
 
       {/* Tracking Form Section - Dioptimalkan dan dibuat lebih intuitif */}
-      <section className="py-10 bg-light-bg">
-        <div className="container mx-auto px-4">
+      <section className="relative py-10 bg-white/80 backdrop-blur-sm">
+        <div className="container mx-auto px-4 relative z-10">
           <AnimatedSection animation="slideUp">
-            <div className="max-w-xl mx-auto bg-white rounded-xl shadow-md p-6 border border-gray-100 relative overflow-hidden">
+            <div className="max-w-xl mx-auto bg-white/95 backdrop-blur-sm rounded-xl shadow-md p-6 border border-gray-100 relative overflow-hidden">
               {/* Background decoration */}
               <div className="absolute -top-16 -right-16 w-32 h-32 bg-primary-50 rounded-full blur-2xl opacity-70"></div>
-              
+
               <h2 className="text-xl font-display font-bold mb-4 text-center text-gray-800">{t('studentTracking.trackStatus')}</h2>
-              
-              <form onSubmit={handleSearch} className="mb-5">
+
+              <form onSubmit={handleSearch} className="mb-5 relative z-10">
                 {/* NEW: Document Type Selector */}
                 <div className="mb-4">
                   <label htmlFor="documentType" className="block text-gray-700 text-sm font-medium mb-2">
                     {language === 'en' ? 'Document Type (Optional - for faster search)' : 'Jenis Dokumen (Opsional - untuk pencarian lebih cepat)'}
                   </label>
-                  <select 
+                  <select
                     id="documentType"
                     value={selectedSheet}
                     onChange={(e) => setSelectedSheet(e.target.value)}
-                    className="w-full border border-gray-200 bg-gray-50 text-gray-800 rounded-lg px-3 py-3 focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent"
+                    className="w-full border border-gray-200 bg-white/80 text-gray-800 rounded-lg px-3 py-3 focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent"
                   >
                     <option value="">
                       {language === 'en' ? '🔍 All Documents (slower but complete)' : '🔍 Semua Dokumen (lebih lambat tapi lengkap)'}
@@ -466,8 +466,8 @@ const MahasiswaTrackingPage = () => {
                     <option value="SUKET_SIDANG_TA">📑 Suket Sidang TA</option>
                   </select>
                   <p className="mt-1 text-xs text-gray-500">
-                    {language === 'en' 
-                      ? 'Select a specific document type for faster search, or leave empty to search all documents' 
+                    {language === 'en'
+                      ? 'Select a specific document type for faster search, or leave empty to search all documents'
                       : 'Pilih jenis dokumen spesifik untuk pencarian lebih cepat, atau kosongkan untuk mencari semua dokumen'}
                   </p>
                 </div>
@@ -479,10 +479,10 @@ const MahasiswaTrackingPage = () => {
                   </label>
                   <div className="relative">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
-                    <input 
-                      type="text" 
-                      id="searchQuery" 
-                      className="w-full border border-gray-200 bg-gray-50 text-gray-800 rounded-lg px-10 py-3 focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent" 
+                    <input
+                      type="text"
+                      id="searchQuery"
+                      className="w-full border border-gray-200 bg-white/80 text-gray-800 rounded-lg px-10 py-3 focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent"
                       placeholder={t('studentTracking.nimExample')}
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
@@ -496,18 +496,18 @@ const MahasiswaTrackingPage = () => {
                   )}
                 </div>
 
-                 {/* Search button with dynamic text */}
-                <Button 
-                  type="submit" 
+                {/* Search button with dynamic text */}
+                <Button
+                  type="submit"
                   fullWidth
                   disabled={isLoading || !dataLoaded}
-                  className="flex items-center justify-center"
+                  className="flex items-center justify-center shadow-md"
                 >
                   {isLoading ? (
                     <>
                       <RotateCw className="w-5 h-5 mr-2 animate-spin" />
-                      {selectedSheet 
-                        ? (language === 'en' ? 'Searching in selected type...' : 'Mencari di jenis dokumen yang dipilih...') 
+                      {selectedSheet
+                        ? (language === 'en' ? 'Searching in selected type...' : 'Mencari di jenis dokumen yang dipilih...')
                         : t('studentTracking.searching')
                       }
                     </>
@@ -519,7 +519,7 @@ const MahasiswaTrackingPage = () => {
                   ) : (
                     <>
                       <Search className="w-5 h-5 mr-2" />
-                      {selectedSheet 
+                      {selectedSheet
                         ? (language === 'en' ? 'Quick Search' : 'Pencarian Cepat')
                         : t('studentTracking.tracking')
                       }
@@ -532,14 +532,14 @@ const MahasiswaTrackingPage = () => {
                   )}
                 </Button>
               </form>
-              
-              <div className="border-t border-gray-100 pt-4">
+
+              <div className="border-t border-gray-100 pt-4 relative z-10">
                 <details className="text-sm">
-                  <summary className="text-primary-600 cursor-pointer font-medium flex items-center">
+                  <summary className="text-primary-600 cursor-pointer font-medium flex items-center bg-primary-50/50 p-2 rounded-lg hover:bg-primary-50 transition-colors">
                     <HelpCircle className="w-4 h-4 mr-1" />
                     {language === 'en' ? 'Search Tips' : 'Tips Pencarian'}
                   </summary>
-                  <div className="mt-3 text-gray-600">
+                  <div className="mt-3 text-gray-600 p-2 bg-white/50 rounded-lg border border-gray-100">
                     <p className="mb-2">{language === 'en' ? 'For best search experience:' : 'Untuk pengalaman pencarian terbaik:'}</p>
                     <ul className="space-y-2">
                       <li className="flex items-start">
@@ -560,8 +560,8 @@ const MahasiswaTrackingPage = () => {
               </div>
             </div>
           </AnimatedSection>
-          
-         {/* Search Results List - UI yang lebih bersih dan mudah dibaca */}
+
+          {/* Search Results List - UI yang lebih bersih dan mudah dibaca */}
           <AnimatePresence>
             {searchResults.length > 1 && !trackingResult && (
               <motion.div
@@ -570,16 +570,16 @@ const MahasiswaTrackingPage = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.3 }}
-                className="max-w-3xl mx-auto mt-8 bg-white rounded-xl shadow-md p-6 border border-gray-100"
+                className="max-w-3xl mx-auto mt-8 bg-white/95 backdrop-blur-sm rounded-xl shadow-md p-6 border border-gray-100"
               >
                 <h3 className="text-lg font-bold mb-4 text-gray-800">
                   {t('studentTracking.searchResults')} ({searchResults.length} {t('studentTracking.documents')})
                 </h3>
                 <div className="space-y-3">
                   {searchResults.map((doc, index) => (
-                    <div 
-                      key={index} 
-                      className="p-4 border border-gray-100 rounded-lg hover:border-primary-200 hover:bg-primary-50/30 transition cursor-pointer shadow-sm"
+                    <div
+                      key={index}
+                      className="p-4 bg-white/80 border border-gray-100 rounded-lg hover:border-primary-200 hover:bg-primary-50/50 transition cursor-pointer shadow-sm hover:shadow-md"
                       onClick={() => handleViewDetail(doc)}
                     >
                       <div className="flex items-center justify-between mb-2">
@@ -587,7 +587,7 @@ const MahasiswaTrackingPage = () => {
                           {getDocTypeIcon(doc.type)}
                           <h4 className="font-medium text-gray-800">{doc.title}</h4>
                         </div>
-                        <span className="text-xs px-2 py-1 rounded bg-gray-100 text-gray-700">
+                        <span className="text-xs px-2 py-1 rounded bg-gray-100/80 text-gray-700 border border-gray-200">
                           {doc.type}
                         </span>
                       </div>
@@ -620,36 +620,36 @@ const MahasiswaTrackingPage = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.3 }}
-                className="max-w-3xl mx-auto mt-8 bg-white rounded-xl shadow-md overflow-hidden border border-gray-100"
+                className="max-w-3xl mx-auto mt-8 bg-white/95 backdrop-blur-sm rounded-xl shadow-md overflow-hidden border border-gray-100"
               >
                 {/* Header dengan tombol kembali */}
-                <div className="bg-gradient-to-r from-primary-50 to-primary-100 p-6 border-b border-gray-100">
+                <div className="bg-gradient-to-r from-primary-50/80 to-primary-100/80 p-6 border-b border-gray-100">
                   {searchResults.length > 1 && (
-                    <button 
+                    <button
                       onClick={handleBackToResults}
-                      className="flex items-center text-sm text-primary-700 hover:text-primary-900 transition-colors mb-3"
+                      className="flex items-center text-sm text-primary-700 hover:text-primary-900 transition-colors mb-3 bg-white/50 px-2 py-1 rounded-md mb-4"
                     >
                       <ArrowLeft className="w-4 h-4 mr-1" />
                       {language === 'en' ? 'Back to results' : 'Kembali ke hasil'}
                     </button>
                   )}
-                  
+
                   <div className="flex items-center justify-between">
                     <div className="flex items-center">
                       {getDocTypeIcon(trackingResult.type)}
                       <h3 className="text-xl font-bold text-gray-800">{trackingResult.title}</h3>
                     </div>
-                    <div className="px-3 py-1 rounded-lg bg-white text-primary-700 text-sm font-medium border border-primary-100">
+                    <div className="px-3 py-1 rounded-lg bg-white/90 text-primary-700 text-sm font-medium border border-primary-100 shadow-sm">
                       {trackingResult.type}
                     </div>
                   </div>
                 </div>
-                
+
                 {/* Body content */}
-                <div className="p-6">
+                <div className="p-6 relative z-10">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                     {getDocumentDetails(trackingResult).map((detail, index) => (
-                      <div key={index} className="flex items-start">
+                      <div key={index} className="flex items-start bg-gray-50/50 p-3 rounded-lg border border-gray-100">
                         {detail.icon}
                         <div>
                           <p className="text-gray-500 text-sm mb-1">{detail.label}</p>
@@ -657,8 +657,8 @@ const MahasiswaTrackingPage = () => {
                         </div>
                       </div>
                     ))}
-                    
-                    <div className="flex items-start md:col-span-2">
+
+                    <div className="flex items-start md:col-span-2 bg-gray-50/50 p-3 rounded-lg border border-gray-100">
                       <div className="w-5 h-5 mr-3"></div>
                       <div>
                         <p className="text-gray-500 text-sm mb-1">{t('studentTracking.status.status')}</p>
@@ -668,33 +668,29 @@ const MahasiswaTrackingPage = () => {
                       </div>
                     </div>
                   </div>
-                  
+
                   {/* Timeline */}
                   <h3 className="text-lg font-bold mb-4 text-gray-800 border-t border-gray-100 pt-6">{t('studentTracking.submissionStatus')}</h3>
                   {trackingResult.timeline && trackingResult.timeline.length > 0 ? (
-                    <div className="timeline-container relative pl-8 before:content-[''] before:absolute before:left-3 before:top-2 before:bottom-2 before:w-0.5 before:bg-gradient-to-b before:from-primary-600/80 before:via-primary-400/50 before:to-gray-300/30 space-y-6">
+                    <div className="timeline-container relative pl-8 before:content-[''] before:absolute before:left-3 before:top-2 before:bottom-2 before:w-0.5 before:bg-gradient-to-b before:from-primary-600/80 before:via-primary-400/50 before:to-gray-300/30 space-y-6 z-10">
                       {trackingResult.timeline.map((item, index) => (
                         <div key={index} className="timeline-item relative">
-                          <div className={`timeline-dot absolute -left-8 flex items-center justify-center w-6 h-6 rounded-full ${
-                            item.status === 'completed' ? 'bg-primary-600 text-white' : 
-                            item.status === 'active' ? 'bg-blue-500 text-white' : 
-                            'bg-gray-100 border border-gray-300 text-gray-500'
-                          }`}>
+                          <div className={`timeline-dot absolute -left-8 flex items-center justify-center w-6 h-6 rounded-full shadow-sm ${item.status === 'completed' ? 'bg-primary-600 text-white' :
+                            item.status === 'active' ? 'bg-blue-500 text-white' :
+                              'bg-white border border-gray-300 text-gray-500'
+                            }`}>
                             {item.status === 'completed' && <CheckCircle2 className="w-4 h-4" />}
                             {item.status === 'active' && <Clock className="w-4 h-4" />}
                             {item.status === 'pending' && <AlertCircle className="w-4 h-4" />}
                           </div>
-                          <div className={`ml-2 p-4 rounded-lg transition-all ${
-                            item.status === 'completed' ? 'bg-primary-50 border border-primary-100' : 
-                            item.status === 'active' ? 'bg-blue-50 border border-blue-100' : 
-                            'bg-gray-50 border border-gray-200'
-                          }`}>
-                            <h4 className={`text-base font-semibold ${
-                              item.status === 'pending' ? 'text-gray-500' : 'text-gray-800'
-                            }`}>{item.title}</h4>
-                            <p className={`${
-                              item.status === 'pending' ? 'text-gray-500' : 'text-gray-600'
-                            } mb-1 text-sm`}>{item.description}</p>
+                          <div className={`ml-2 p-4 rounded-lg shadow-sm transition-all ${item.status === 'completed' ? 'bg-primary-50/80 border border-primary-100' :
+                            item.status === 'active' ? 'bg-blue-50/80 border border-blue-100' :
+                              'bg-white/80 border border-gray-200 opacity-75'
+                            }`}>
+                            <h4 className={`text-base font-semibold ${item.status === 'pending' ? 'text-gray-500' : 'text-gray-800'
+                              }`}>{item.title}</h4>
+                            <p className={`${item.status === 'pending' ? 'text-gray-500' : 'text-gray-600'
+                              } mb-1 text-sm`}>{item.description}</p>
                             <p className="text-xs text-gray-500">{item.date}</p>
                           </div>
                         </div>
@@ -708,30 +704,30 @@ const MahasiswaTrackingPage = () => {
             )}
           </AnimatePresence>
 
-         {/* Survey modal prompting navigation */}
+          {/* Survey modal prompting navigation */}
           <AnimatePresence>
             {showSurveyModal && (
-              <motion.div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                <motion.div className="bg-white rounded-xl p-6 max-w-md mx-auto relative" initial={{ scale: 0.8 }} animate={{ scale: 1 }} exit={{ scale: 0.8 }}>
-                  <button className="absolute top-3 right-3" onClick={() => setShowSurveyModal(false)}><X /></button>
+              <motion.div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                <motion.div className="bg-white/95 backdrop-blur-md rounded-xl p-6 max-w-md mx-auto relative shadow-2xl border border-gray-200" initial={{ scale: 0.8 }} animate={{ scale: 1 }} exit={{ scale: 0.8 }}>
+                  <button className="absolute top-3 right-3 text-gray-500 hover:bg-gray-100 p-1 rounded-full transition-colors" onClick={() => setShowSurveyModal(false)}><X className="w-5 h-5" /></button>
                   <h2 className="text-xl font-bold mb-4">
                     {language === 'en' ? '🥺 Help us with a quick survey!' : '🥺 Bantu kami dengan survey singkat!'}
                   </h2>
-                  <p className="mb-6">
-                    {language === 'en' 
-                      ? 'Your feedback means the world to us! It only takes 30 seconds...' 
+                  <p className="mb-6 text-gray-600">
+                    {language === 'en'
+                      ? 'Your feedback means the world to us! It only takes 30 seconds...'
                       : 'Masukan Anda sangat berharga bagi kami! Hanya butuh 30 detik...'}
                   </p>
-                  <div className="flex justify-end space-x-2">
-                    <Button onClick={() => { setShowSurveyModal(false); router.push('/survey-kepuasan'); }}>
-                      {language === 'en' ? '❤️ Isi Survey' : '❤️ Isi Survey'}
-                    </Button>
-                    <Button 
-                      variant="secondary" 
-                      className="hover:bg-gray-200 text-gray-500"
+                  <div className="flex justify-end space-x-3 mt-2">
+                    <Button
+                      variant="outline"
+                      className="text-gray-600 border-gray-300 hover:bg-gray-50"
                       onClick={() => setShowSurveyModal(false)}
                     >
                       {language === 'en' ? '💔 Break Our Hearts' : '💔 Hancurkan Hati Kami'}
+                    </Button>
+                    <Button onClick={() => { setShowSurveyModal(false); router.push('/survey-kepuasan'); }}>
+                      {language === 'en' ? '❤️ Isi Survey' : '❤️ Isi Survey'}
                     </Button>
                   </div>
                 </motion.div>
@@ -743,23 +739,23 @@ const MahasiswaTrackingPage = () => {
       </section>
 
       {/* FAQ Section - Diperbarui dengan tampilan accordion */}
-      <section className="py-12 bg-white">
-        <div className="container mx-auto px-4">
+      <section className="relative py-12 bg-white/80 backdrop-blur-sm">
+        <div className="container mx-auto px-4 relative z-10">
           <AnimatedSection animation="slideUp">
             <h2 className="text-2xl font-display font-bold text-center mb-8 text-gradient">{t('studentTracking.faq.title')}</h2>
           </AnimatedSection>
-          
+
           <div className="max-w-3xl mx-auto">
             <div className="space-y-4">
               <AnimatedSection animation="slideUp" delay={0.1}>
-                <details className="bg-white rounded-xl shadow-sm p-4 group border border-gray-100">
+                <details className="bg-white/90 backdrop-blur-sm rounded-xl shadow-sm p-4 group border border-gray-100 hover:border-primary-200 transition-colors">
                   <summary className="flex items-center justify-between cursor-pointer font-medium">
                     <div className="flex items-center text-gray-800">
                       <HelpCircle className="w-5 h-5 mr-3 text-primary-600" />
                       <span>{t('studentTracking.faq.whatTypes.question')}</span>
                     </div>
                     <div className="transition group-open:rotate-180">
-                      <ChevronLeft className="w-5 h-5 rotate-270 text-gray-500" />
+                      <ChevronLeft className="w-5 h-5 -rotate-90 text-gray-500" />
                     </div>
                   </summary>
                   <div className="mt-4 ml-8 text-gray-600">
@@ -767,16 +763,16 @@ const MahasiswaTrackingPage = () => {
                   </div>
                 </details>
               </AnimatedSection>
-              
+
               <AnimatedSection animation="slideUp" delay={0.2}>
-                <details className="bg-white rounded-xl shadow-sm p-4 group border border-gray-100">
+                <details className="bg-white/90 backdrop-blur-sm rounded-xl shadow-sm p-4 group border border-gray-100 hover:border-primary-200 transition-colors">
                   <summary className="flex items-center justify-between cursor-pointer font-medium">
                     <div className="flex items-center text-gray-800">
                       <HelpCircle className="w-5 h-5 mr-3 text-primary-600" />
                       <span>{t('studentTracking.faq.howToFind.question')}</span>
                     </div>
                     <div className="transition group-open:rotate-180">
-                      <ChevronLeft className="w-5 h-5 rotate-270 text-gray-500" />
+                      <ChevronLeft className="w-5 h-5 -rotate-90 text-gray-500" />
                     </div>
                   </summary>
                   <div className="mt-4 ml-8 text-gray-600">
@@ -784,16 +780,16 @@ const MahasiswaTrackingPage = () => {
                   </div>
                 </details>
               </AnimatedSection>
-              
+
               <AnimatedSection animation="slideUp" delay={0.3}>
-                <details className="bg-white rounded-xl shadow-sm p-4 group border border-gray-100">
+                <details className="bg-white/90 backdrop-blur-sm rounded-xl shadow-sm p-4 group border border-gray-100 hover:border-primary-200 transition-colors">
                   <summary className="flex items-center justify-between cursor-pointer font-medium">
                     <div className="flex items-center text-gray-800">
                       <HelpCircle className="w-5 h-5 mr-3 text-primary-600" />
                       <span>{t('studentTracking.faq.processingTime.question')}</span>
                     </div>
                     <div className="transition group-open:rotate-180">
-                      <ChevronLeft className="w-5 h-5 rotate-270 text-gray-500" />
+                      <ChevronLeft className="w-5 h-5 -rotate-90 text-gray-500" />
                     </div>
                   </summary>
                   <div className="mt-4 ml-8 text-gray-600">
@@ -801,16 +797,16 @@ const MahasiswaTrackingPage = () => {
                   </div>
                 </details>
               </AnimatedSection>
-              
+
               <AnimatedSection animation="slideUp" delay={0.4}>
-                <details className="bg-white rounded-xl shadow-sm p-4 group border border-gray-100">
+                <details className="bg-white/90 backdrop-blur-sm rounded-xl shadow-sm p-4 group border border-gray-100 hover:border-primary-200 transition-colors">
                   <summary className="flex items-center justify-between cursor-pointer font-medium">
                     <div className="flex items-center text-gray-800">
                       <HelpCircle className="w-5 h-5 mr-3 text-primary-600" />
                       <span>{t('studentTracking.faq.statusNotChanging.question')}</span>
                     </div>
                     <div className="transition group-open:rotate-180">
-                      <ChevronLeft className="w-5 h-5 rotate-270 text-gray-500" />
+                      <ChevronLeft className="w-5 h-5 -rotate-90 text-gray-500" />
                     </div>
                   </summary>
                   <div className="mt-4 ml-8 text-gray-600">

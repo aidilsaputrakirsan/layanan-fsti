@@ -35,12 +35,7 @@ const MainLayout = ({ children, hideBackground = false }: MainLayoutProps) => {
 
   return (
     <div className="flex flex-col min-h-screen relative overflow-hidden">
-      {/* Global Particles Background */}
-      {!hideBackground && (
-        <div className="fixed inset-0 z-0 pointer-events-none">
-          <ParticlesBackground />
-        </div>
-      )}
+      {/* Global Particles Background removed from here as it is now in app/layout.tsx */}
 
       <Navbar />
       {/* Pastikan z-index positif untuk konten */}

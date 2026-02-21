@@ -5,11 +5,11 @@ import MainLayout from '@/components/layout/MainLayout';
 import AnimatedSection from '@/components/ui/AnimatedSection';
 import Button from '@/components/ui/Button';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
-import { 
-  GraduationCap, 
-  Briefcase, 
-  ArrowRight, 
-  HelpCircle 
+import {
+  GraduationCap,
+  Briefcase,
+  ArrowRight,
+  HelpCircle
 } from 'lucide-react';
 
 const TrackingSelectionPage = () => {
@@ -31,11 +31,11 @@ const TrackingSelectionPage = () => {
       </section>
 
       {/* Selection Cards Section */}
-      <section className="py-16 bg-light-bg">
-        <div className="container mx-auto px-4">
+      <section className="relative py-16 bg-white/80 backdrop-blur-sm">
+        <div className="container mx-auto px-4 relative z-10">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             <AnimatedSection animation="slideUp" delay={0.1}>
-              <div className="bg-white rounded-xl shadow-md p-8 border border-gray-200 hover:border-primary-600 transition-all duration-300 h-full">
+              <div className="bg-white/95 backdrop-blur-sm rounded-xl shadow-md p-8 border border-gray-200 hover:border-primary-600 transition-all duration-300 h-full">
                 <div className="flex flex-col h-full">
                   <div className="rounded-full bg-primary-50 p-4 w-16 h-16 flex items-center justify-center mb-6">
                     <Briefcase className="w-8 h-8 text-primary-600" />
@@ -55,9 +55,9 @@ const TrackingSelectionPage = () => {
                 </div>
               </div>
             </AnimatedSection>
-            
+
             <AnimatedSection animation="slideUp" delay={0.2}>
-              <div className="bg-white rounded-xl shadow-md p-8 border border-gray-200 hover:border-primary-600 transition-all duration-300 h-full">
+              <div className="bg-white/95 backdrop-blur-sm rounded-xl shadow-md p-8 border border-gray-200 hover:border-primary-600 transition-all duration-300 h-full">
                 <div className="flex flex-col h-full">
                   <div className="rounded-full bg-primary-50 p-4 w-16 h-16 flex items-center justify-center mb-6">
                     <GraduationCap className="w-8 h-8 text-primary-600" />
@@ -80,17 +80,17 @@ const TrackingSelectionPage = () => {
           </div>
         </div>
       </section>
-      
+
       {/* FAQ Section */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4">
+      <section className="relative py-16 bg-white/80 backdrop-blur-sm">
+        <div className="container mx-auto px-4 relative z-10">
           <AnimatedSection animation="slideUp">
             <h2 className="text-3xl font-display font-bold text-center mb-12 text-gradient">{t('tracking.faq.title')}</h2>
           </AnimatedSection>
-          
+
           <div className="max-w-3xl mx-auto">
             <AnimatedSection animation="slideUp" delay={0.1}>
-              <div className="bg-white rounded-xl shadow-md p-6 mb-6 hover-card group">
+              <div className="bg-white/90 backdrop-blur-sm rounded-xl shadow-md p-6 mb-6 hover-card group border border-gray-100">
                 <div className="flex items-start">
                   <div className="mt-1 mr-4 text-primary-600 group-hover:text-primary-700 transition-colors">
                     <HelpCircle className="w-6 h-6" />
@@ -104,9 +104,9 @@ const TrackingSelectionPage = () => {
                 </div>
               </div>
             </AnimatedSection>
-            
+
             <AnimatedSection animation="slideUp" delay={0.2}>
-              <div className="bg-white rounded-xl shadow-md p-6 mb-6 hover-card group">
+              <div className="bg-white/90 backdrop-blur-sm rounded-xl shadow-md p-6 mb-6 hover-card group border border-gray-100">
                 <div className="flex items-start">
                   <div className="mt-1 mr-4 text-primary-600 group-hover:text-primary-700 transition-colors">
                     <HelpCircle className="w-6 h-6" />
@@ -120,9 +120,9 @@ const TrackingSelectionPage = () => {
                 </div>
               </div>
             </AnimatedSection>
-            
+
             <AnimatedSection animation="slideUp" delay={0.3}>
-              <div className="bg-white rounded-xl shadow-md p-6 mb-6 hover-card group">
+              <div className="bg-white/90 backdrop-blur-sm rounded-xl shadow-md p-6 mb-6 hover-card group border border-gray-100">
                 <div className="flex items-start">
                   <div className="mt-1 mr-4 text-primary-600 group-hover:text-primary-700 transition-colors">
                     <HelpCircle className="w-6 h-6" />
@@ -136,9 +136,9 @@ const TrackingSelectionPage = () => {
                 </div>
               </div>
             </AnimatedSection>
-            
+
             <AnimatedSection animation="slideUp" delay={0.4}>
-              <div className="bg-white rounded-xl shadow-md p-6 hover-card group">
+              <div className="bg-white/90 backdrop-blur-sm rounded-xl shadow-md p-6 hover-card group border border-gray-100">
                 <div className="flex items-start">
                   <div className="mt-1 mr-4 text-primary-600 group-hover:text-primary-700 transition-colors">
                     <HelpCircle className="w-6 h-6" />

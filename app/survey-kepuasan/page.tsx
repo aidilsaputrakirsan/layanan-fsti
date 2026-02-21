@@ -6,10 +6,10 @@ import AnimatedSection from '@/components/ui/AnimatedSection';
 import Button from '@/components/ui/Button';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Star, Send, CheckCircle, AlertCircle, RotateCw, MessageSquare, User, Type, 
-  FileText, ThumbsUp, Heart, Award, GraduationCap, Users, DollarSign, Globe, 
-  Laptop, FileSignature, Folder, Briefcase, Edit 
+import {
+  Star, Send, CheckCircle, AlertCircle, RotateCw, MessageSquare, User, Type,
+  FileText, ThumbsUp, Heart, Award, GraduationCap, Users, DollarSign, Globe,
+  Laptop, FileSignature, Folder, Briefcase, Edit
 } from 'lucide-react';
 
 // URL Google Apps Script
@@ -67,7 +67,7 @@ const RatingSelector = ({ rating, onChange, hoverRating, setHoverRating, languag
   const ratingColors = {
     1: "text-red-500 hover:text-red-600",
     2: "text-orange-400 hover:text-orange-500",
-    3: "text-yellow-400 hover:text-yellow-500", 
+    3: "text-yellow-400 hover:text-yellow-500",
     4: "text-green-400 hover:text-green-500",
     5: "text-green-500 hover:text-green-600"
   };
@@ -84,20 +84,19 @@ const RatingSelector = ({ rating, onChange, hoverRating, setHoverRating, languag
           <span className="ml-1">{language === 'en' ? 'Excellent' : 'Sangat Baik'}</span>
         </span>
       </div>
-      
+
       <div className="flex justify-center space-x-8 mb-1">
         {[1, 2, 3, 4, 5].map((star) => (
-          <div 
+          <div
             key={`emoji-${star}`}
-            className={`text-2xl transition-opacity duration-200 ${
-              (hoverRating === star || (!hoverRating && rating === star)) ? 'opacity-100' : 'opacity-0'
-            }`}
+            className={`text-2xl transition-opacity duration-200 ${(hoverRating === star || (!hoverRating && rating === star)) ? 'opacity-100' : 'opacity-0'
+              }`}
           >
             {getRatingEmoji(star)}
           </div>
         ))}
       </div>
-      
+
       <div className="flex justify-center space-x-3 mb-6">
         {[1, 2, 3, 4, 5].map((star) => (
           <motion.button
@@ -108,20 +107,18 @@ const RatingSelector = ({ rating, onChange, hoverRating, setHoverRating, languag
             onMouseLeave={() => setHoverRating(0)}
             whileHover={{ scale: 1.2 }}
             whileTap={{ scale: 0.9 }}
-            className={`focus:outline-none p-2 rounded-full transition-colors duration-200 ${
-              (hoverRating >= star || (!hoverRating && rating >= star)) ? 
-                `bg-gray-100 ${ratingColors[star as 1|2|3|4|5]}` : 'text-gray-300'
-            }`}
+            className={`focus:outline-none p-2 rounded-full transition-colors duration-200 ${(hoverRating >= star || (!hoverRating && rating >= star)) ?
+              `bg-gray-100 ${ratingColors[star as 1 | 2 | 3 | 4 | 5]}` : 'text-gray-300'
+              }`}
           >
             <Star
-              className={`w-10 h-10 transition-all duration-200 ${
-                (hoverRating >= star || (!hoverRating && rating >= star)) ? 'fill-current' : ''
-              }`}
+              className={`w-10 h-10 transition-all duration-200 ${(hoverRating >= star || (!hoverRating && rating >= star)) ? 'fill-current' : ''
+                }`}
             />
           </motion.button>
         ))}
       </div>
-      
+
       <div className="flex flex-col items-center justify-center">
         <div className={`flex items-center font-medium text-lg ${getRatingColor(hoverRating || rating)}`}>
           {getRatingEmoji(hoverRating || rating)}
@@ -129,8 +126,8 @@ const RatingSelector = ({ rating, onChange, hoverRating, setHoverRating, languag
             {getRatingText(hoverRating || rating, language)}
           </span>
         </div>
-        
-        <motion.div 
+
+        <motion.div
           initial={{ width: 0 }}
           animate={{ width: hoverRating || rating ? `${(hoverRating || rating) * 20}%` : '0%' }}
           transition={{ duration: 0.3 }}
@@ -161,7 +158,7 @@ const UseConfetti = () => {
           spread: 70,
           origin: { y: 0.6 }
         });
-        
+
         setTimeout(() => {
           confetti({
             particleCount: 50,
@@ -190,16 +187,16 @@ const UseConfetti = () => {
 };
 
 // Komponen untuk animasi sukses
-const SuccessAnimation = ({ onSubmitAnother, language }: { 
-  onSubmitAnother: () => void, 
-  language: 'en' | 'id' 
+const SuccessAnimation = ({ onSubmitAnother, language }: {
+  onSubmitAnother: () => void,
+  language: 'en' | 'id'
 }) => {
   return (
     <div className="bg-white rounded-xl shadow-md p-8 border border-gray-200 text-center relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-br from-green-50 via-white to-blue-50 opacity-70"></div>
-      
+
       <UseConfetti />
-      
+
       <div className="relative z-10">
         <motion.div
           initial={{ scale: 0, rotate: 0 }}
@@ -215,8 +212,8 @@ const SuccessAnimation = ({ onSubmitAnother, language }: {
               <div className="text-6xl">🎉</div>
             </motion.div>
           </div>
-          
-          <motion.div 
+
+          <motion.div
             className="absolute -top-4 -right-4"
             initial={{ scale: 0, rotate: -20 }}
             animate={{ scale: 1, rotate: 0 }}
@@ -224,8 +221,8 @@ const SuccessAnimation = ({ onSubmitAnother, language }: {
           >
             <div className="text-3xl">👍</div>
           </motion.div>
-          
-          <motion.div 
+
+          <motion.div
             className="absolute -bottom-4 -left-4"
             initial={{ scale: 0, rotate: 20 }}
             animate={{ scale: 1, rotate: 0 }}
@@ -233,8 +230,8 @@ const SuccessAnimation = ({ onSubmitAnother, language }: {
           >
             <div className="text-3xl">🏆</div>
           </motion.div>
-          
-          <motion.div 
+
+          <motion.div
             className="absolute -top-2 -left-4"
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
@@ -243,7 +240,7 @@ const SuccessAnimation = ({ onSubmitAnother, language }: {
             <div className="text-3xl">⭐</div>
           </motion.div>
         </motion.div>
-        
+
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -253,13 +250,13 @@ const SuccessAnimation = ({ onSubmitAnother, language }: {
             {language === 'en' ? 'Thank You for Your Feedback!' : 'Terima Kasih atas Umpan Balik Anda!'}
           </h2>
           <p className="text-gray-600 mb-8">
-            {language === 'en' 
+            {language === 'en'
               ? 'Your survey has been successfully submitted. We appreciate your time and feedback.'
               : 'Survey Anda telah berhasil dikirimkan. Kami menghargai waktu dan umpan balik Anda.'}
           </p>
-          
+
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-            <Button 
+            <Button
               onClick={onSubmitAnother}
               variant="primary"
               icon={<MessageSquare className="w-5 h-5" />}
@@ -285,7 +282,7 @@ const SurveyKepuasanPage = () => {
     tanggal: new Date().toISOString(),
     kategori: 'Mahasiswa'
   });
-  
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
@@ -393,13 +390,13 @@ const SurveyKepuasanPage = () => {
                 {language === 'en' ? 'Service Satisfaction Survey' : 'Survey Kepuasan Layanan'}
               </h1>
               <p className="text-gray-700 text-lg mb-6">
-                {language === 'en' 
+                {language === 'en'
                   ? 'Help us improve our services by providing your feedback and rating your experience.'
                   : 'Bantu kami meningkatkan layanan dengan memberikan umpan balik dan penilaian atas pengalaman Anda.'}
               </p>
-              
+
               <div className="flex justify-center items-center gap-6 mb-8">
-                <motion.div 
+                <motion.div
                   initial={{ y: 20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: 0.2, duration: 0.5 }}
@@ -407,7 +404,7 @@ const SurveyKepuasanPage = () => {
                 >
                   👍
                 </motion.div>
-                <motion.div 
+                <motion.div
                   initial={{ y: 20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: 0.4, duration: 0.5 }}
@@ -415,7 +412,7 @@ const SurveyKepuasanPage = () => {
                 >
                   ❤️
                 </motion.div>
-                <motion.div 
+                <motion.div
                   initial={{ y: 20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: 0.6, duration: 0.5 }}
@@ -424,7 +421,7 @@ const SurveyKepuasanPage = () => {
                   ⭐
                 </motion.div>
               </div>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-2xl mx-auto">
                 <div className="bg-white bg-opacity-90 rounded-lg p-4 shadow-md">
                   <div className="text-3xl mb-2">✅</div>
@@ -450,8 +447,8 @@ const SurveyKepuasanPage = () => {
         </div>
       </section>
 
-      <section className="py-16 bg-light-bg">
-        <div className="container mx-auto px-4">
+      <section className="relative py-16 bg-white/80 backdrop-blur-sm">
+        <div className="container mx-auto px-4 relative z-10">
           <AnimatePresence mode="wait">
             {submitStatus === 'success' ? (
               <motion.div
@@ -462,9 +459,9 @@ const SurveyKepuasanPage = () => {
                 transition={{ duration: 0.5 }}
                 className="max-w-2xl mx-auto"
               >
-                <SuccessAnimation 
-                  onSubmitAnother={() => setSubmitStatus('idle')} 
-                  language={language} 
+                <SuccessAnimation
+                  onSubmitAnother={() => setSubmitStatus('idle')}
+                  language={language}
                 />
               </motion.div>
             ) : (
@@ -479,16 +476,16 @@ const SurveyKepuasanPage = () => {
                 <div className="bg-white rounded-xl shadow-md p-8 border border-gray-200 relative overflow-hidden">
                   <div className="absolute -top-16 -right-16 w-40 h-40 bg-primary-50 rounded-full blur-3xl opacity-50"></div>
                   <div className="absolute -bottom-16 -left-16 w-40 h-40 bg-primary-50 rounded-full blur-3xl opacity-50"></div>
-                  
+
                   <form onSubmit={handleSubmit} className="relative z-10">
                     <h2 className="text-2xl font-bold mb-8 text-center text-gray-800 relative">
                       <span className="relative z-10">{language === 'en' ? 'Your Feedback' : 'Umpan Balik Anda'}</span>
                       <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-16 h-1 bg-primary-600 rounded-full"></span>
                     </h2>
-                    
+
                     <AnimatePresence>
                       {submitStatus === 'error' && (
-                        <motion.div 
+                        <motion.div
                           initial={{ opacity: 0, height: 0 }}
                           animate={{ opacity: 1, height: 'auto' }}
                           exit={{ opacity: 0, height: 0 }}
@@ -501,7 +498,7 @@ const SurveyKepuasanPage = () => {
                         </motion.div>
                       )}
                     </AnimatePresence>
-                    
+
                     <div className="mb-6">
                       <label htmlFor="nama" className="block text-gray-700 font-medium mb-2 flex items-center">
                         <User className="w-5 h-5 mr-2 text-primary-600" />
@@ -518,7 +515,7 @@ const SurveyKepuasanPage = () => {
                           placeholder={language === 'en' ? 'Enter your full name' : 'Masukkan nama lengkap Anda'}
                           required
                         />
-                        <motion.span 
+                        <motion.span
                           className="absolute bottom-0 left-0 h-0.5 bg-primary-600 rounded-full"
                           initial={{ width: 0 }}
                           animate={{ width: formData.nama ? '100%' : 0 }}
@@ -526,11 +523,11 @@ const SurveyKepuasanPage = () => {
                         />
                       </div>
                     </div>
-                    
+
                     <div className="mb-6">
                       <label htmlFor="identitas" className="block text-gray-700 font-medium mb-2 flex items-center">
                         <Type className="w-5 h-5 mr-2 text-primary-600" />
-                        {language === 'en' ? 'Student/Staff ID (NIM/NIP)' : 'NIM/NIP'} 
+                        {language === 'en' ? 'Student/Staff ID (NIM/NIP)' : 'NIM/NIP'}
                         <span className="text-gray-500 text-sm ml-2">({language === 'en' ? 'Optional' : 'Opsional'})</span>
                       </label>
                       <div className="relative">
@@ -543,7 +540,7 @@ const SurveyKepuasanPage = () => {
                           className="w-full border border-gray-200 rounded-lg p-3 pl-4 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-primary-600 transition-all duration-300"
                           placeholder={language === 'en' ? 'Enter your ID number' : 'Masukkan nomor identitas Anda'}
                         />
-                        <motion.span 
+                        <motion.span
                           className="absolute bottom-0 left-0 h-0.5 bg-primary-600 rounded-full"
                           initial={{ width: 0 }}
                           animate={{ width: formData.identitas ? '100%' : 0 }}
@@ -551,7 +548,7 @@ const SurveyKepuasanPage = () => {
                         />
                       </div>
                     </div>
-                    
+
                     <div className="mb-6">
                       <label htmlFor="jenisLayanan" className="block text-gray-700 font-medium mb-2 flex items-center">
                         <FileText className="w-5 h-5 mr-2 text-primary-600" />
@@ -590,7 +587,7 @@ const SurveyKepuasanPage = () => {
                           </svg>
                         </div>
                       </div>
-                      
+
                       {formData.jenisLayanan && (
                         <div className="mt-2 flex items-center bg-primary-50 p-2 rounded-md">
                           <span className="text-primary-600 mr-2">
@@ -602,13 +599,13 @@ const SurveyKepuasanPage = () => {
                         </div>
                       )}
                     </div>
-                    
+
                     <div className="mb-8">
                       <label className="block text-gray-700 font-medium mb-2 flex items-center">
                         <Star className="w-5 h-5 mr-2 text-primary-600" />
                         {language === 'en' ? 'Satisfaction Rating' : 'Rating Kepuasan'} <span className="text-red-500 ml-1">*</span>
                       </label>
-                      <RatingSelector 
+                      <RatingSelector
                         rating={formData.rating}
                         onChange={handleRatingChange}
                         hoverRating={hoverRating}
@@ -616,7 +613,7 @@ const SurveyKepuasanPage = () => {
                         language={language}
                       />
                     </div>
-                    
+
                     <div className="mb-8">
                       <label htmlFor="komentar" className="block text-gray-700 font-medium mb-2 flex items-center">
                         <MessageSquare className="w-5 h-5 mr-2 text-primary-600" />
@@ -638,7 +635,7 @@ const SurveyKepuasanPage = () => {
                         </div>
                       </div>
                     </div>
-                    
+
                     <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                       <Button
                         type="submit"
@@ -664,7 +661,7 @@ const SurveyKepuasanPage = () => {
               </motion.div>
             )}
           </AnimatePresence>
-          
+
           <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
             <AnimatedSection animation="slideUp" delay={0.1}>
               <div className="bg-white rounded-xl p-6 shadow-md hover-card group border border-gray-100">
@@ -673,13 +670,13 @@ const SurveyKepuasanPage = () => {
                 </div>
                 <h3 className="text-lg font-bold mb-2 text-gray-800">{language === 'en' ? 'Why Your Feedback Matters' : 'Mengapa Umpan Balik Anda Penting'}</h3>
                 <p className="text-gray-600 text-sm">
-                  {language === 'en' 
+                  {language === 'en'
                     ? 'Your feedback helps us improve our services and provide better administrative support for all students and staff.'
                     : 'Umpan balik Anda membantu kami meningkatkan layanan dan memberikan dukungan administrasi yang lebih baik untuk semua mahasiswa dan staf.'}
                 </p>
               </div>
             </AnimatedSection>
-            
+
             <AnimatedSection animation="slideUp" delay={0.2}>
               <div className="bg-white rounded-xl p-6 shadow-md hover-card group border border-gray-100">
                 <div className="w-12 h-12 bg-primary-50 rounded-full flex items-center justify-center mb-4 text-3xl group-hover:bg-primary-600 group-hover:text-white transition-colors duration-300">
@@ -687,13 +684,13 @@ const SurveyKepuasanPage = () => {
                 </div>
                 <h3 className="text-lg font-bold mb-2 text-gray-800">{language === 'en' ? 'Continuous Improvement' : 'Peningkatan Berkelanjutan'}</h3>
                 <p className="text-gray-600 text-sm">
-                  {language === 'en' 
+                  {language === 'en'
                     ? 'We continuously monitor and evaluate feedback to enhance our service quality and customer satisfaction.'
                     : 'Kami terus memantau dan mengevaluasi umpan balik untuk meningkatkan kualitas layanan dan kepuasan pelanggan.'}
                 </p>
               </div>
             </AnimatedSection>
-            
+
             <AnimatedSection animation="slideUp" delay={0.3}>
               <div className="bg-white rounded-xl p-6 shadow-md hover-card group border border-gray-100">
                 <div className="w-12 h-12 bg-primary-50 rounded-full flex items-center justify-center mb-4 text-3xl group-hover:bg-primary-600 group-hover:text-white transition-colors duration-300">
@@ -701,7 +698,7 @@ const SurveyKepuasanPage = () => {
                 </div>
                 <h3 className="text-lg font-bold mb-2 text-gray-800">{language === 'en' ? 'Thank You' : 'Terima Kasih'}</h3>
                 <p className="text-gray-600 text-sm">
-                  {language === 'en' 
+                  {language === 'en'
                     ? 'We appreciate your time in completing this survey. Your input will be used to make meaningful improvements.'
                     : 'Kami menghargai waktu Anda dalam mengisi survey ini. Masukan Anda akan digunakan untuk melakukan perbaikan yang berarti.'}
                 </p>

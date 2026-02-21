@@ -329,8 +329,8 @@ const PeraturanKebijakanPage = () => {
       <SectionDivider type="tilt" fillColor="#f8fafc" bgColor="transparent" />
 
       {/* Dokumen Grid Section - GLASSMORPHISM WITH FULL BACKGROUND IMAGE */}
-      <section className="py-16 bg-light-bg">
-        <div className="container mx-auto px-4">
+      <section className="relative py-16 bg-white/80 backdrop-blur-sm">
+        <div className="container mx-auto px-4 relative z-10">
           <AnimatedSection animation="slideUp">
             <h2 className="text-3xl font-display font-bold text-center mb-12 text-gradient">
               {language === 'id' ? 'Daftar Dokumen' : 'Document List'}
@@ -480,11 +480,11 @@ const PeraturanKebijakanPage = () => {
       </section>
 
       {/* Info Section */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4">
+      <section className="relative py-16 bg-white/80 backdrop-blur-sm">
+        <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-3xl mx-auto">
             <AnimatedSection animation="slideUp">
-              <div className="bg-gradient-to-r from-primary-50 to-purple-50 rounded-xl p-8 shadow-md border border-primary-100">
+              <div className="bg-gradient-to-r from-primary-50/90 to-purple-50/90 backdrop-blur-sm rounded-xl p-8 shadow-md border border-primary-100">
                 <h3 className="text-xl font-semibold mb-4 text-gray-800">
                   {language === 'id' ? '💡 Informasi Penting' : '💡 Important Information'}
                 </h3>

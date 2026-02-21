@@ -466,10 +466,10 @@ const LayananAdministrasiPage = () => {
       <SectionDivider type="slant" fillColor="#f8fafc" bgColor="transparent" />
 
       {/* Daftar Layanan Section */}
-      <section className="py-16 bg-light-bg">
+      <section className="relative py-16 bg-white/80 backdrop-blur-sm">
         <div className="container mx-auto px-4">
           <AnimatedSection animation="slideUp">
-            <h2 className="text-3xl font-display font-bold text-center mb-12 text-gradient">
+            <h2 className="text-3xl font-display font-bold text-center mb-12 text-gradient relative z-10">
               {t('services.servicesList')}
               {filter !== 'all' && ` ${filter === 'mahasiswa' ? t('services.students') : t('services.lecturers')}`}
               {searchTerm && ` - ${t('services.searchResultsFor')} "${searchTerm}"`}
@@ -477,14 +477,14 @@ const LayananAdministrasiPage = () => {
           </AnimatedSection>
 
           {/* Search and Filter (Dipindahkan dari atas) */}
-          <div className="max-w-7xl mx-auto bg-white rounded-xl shadow-md p-6 mb-10 mt-2">
+          <div className="max-w-7xl mx-auto bg-white/90 backdrop-blur-md rounded-xl shadow-md p-6 mb-10 mt-2 relative z-10">
             <div className="flex flex-col md:flex-row gap-4">
               <div className="relative flex-grow">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
                 <input
                   type="text"
                   placeholder={t('services.search')}
-                  className="w-full bg-gray-50 text-gray-800 py-3 pl-10 pr-4 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary-600"
+                  className="w-full bg-gray-50/80 text-gray-800 py-3 pl-10 pr-4 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary-600"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
@@ -492,8 +492,8 @@ const LayananAdministrasiPage = () => {
               <div className="flex space-x-2">
                 <button
                   className={`px-4 py-3 rounded-lg transition-colors ${filter === 'all'
-                    ? 'bg-primary-600 text-white'
-                    : 'bg-gray-50 text-gray-600 hover:bg-gray-100'
+                    ? 'bg-primary-600 text-white shadow-md'
+                    : 'bg-gray-50/80 text-gray-600 hover:bg-gray-100/90 border border-gray-100'
                     }`}
                   onClick={() => setFilter('all')}
                 >
@@ -501,8 +501,8 @@ const LayananAdministrasiPage = () => {
                 </button>
                 <button
                   className={`px-4 py-3 rounded-lg transition-colors ${filter === 'mahasiswa'
-                    ? 'bg-primary-600 text-white'
-                    : 'bg-gray-50 text-gray-600 hover:bg-gray-100'
+                    ? 'bg-primary-600 text-white shadow-md'
+                    : 'bg-gray-50/80 text-gray-600 hover:bg-gray-100/90 border border-gray-100'
                     }`}
                   onClick={() => setFilter('mahasiswa')}
                 >
@@ -510,8 +510,8 @@ const LayananAdministrasiPage = () => {
                 </button>
                 <button
                   className={`px-4 py-3 rounded-lg transition-colors ${filter === 'dosen'
-                    ? 'bg-primary-600 text-white'
-                    : 'bg-gray-50 text-gray-600 hover:bg-gray-100'
+                    ? 'bg-primary-600 text-white shadow-md'
+                    : 'bg-gray-50/80 text-gray-600 hover:bg-gray-100/90 border border-gray-100'
                     }`}
                   onClick={() => setFilter('dosen')}
                 >
@@ -521,7 +521,7 @@ const LayananAdministrasiPage = () => {
             </div>
           </div>
 
-          <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+          <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-start relative z-10">
             {filteredServices.length > 0 ? (
               filteredServices.map((layanan, index) => (
                 <AnimatedSection
@@ -530,9 +530,9 @@ const LayananAdministrasiPage = () => {
                   delay={index * 0.1}
                   className="h-full"
                 >
-                  <div id={layanan.id} className={`bg-white rounded-xl shadow-md overflow-hidden hover-card h-full flex flex-col ${layanan.category === 'mahasiswa' ? 'border-t-4 border-t-primary-600' : 'border-t-4 border-t-accent'
+                  <div id={layanan.id} className={`bg-white/95 backdrop-blur-sm rounded-xl shadow-md overflow-hidden hover-card h-full flex flex-col ${layanan.category === 'mahasiswa' ? 'border-t-4 border-t-primary-600' : 'border-t-4 border-t-accent'
                     }`}>
-                    <div className={`p-5 flex items-center ${layanan.category === 'mahasiswa' ? 'bg-gradient-to-r from-primary-50 to-white' : 'bg-gradient-to-r from-accent/10 to-white'
+                    <div className={`p-5 flex items-center ${layanan.category === 'mahasiswa' ? 'bg-gradient-to-r from-primary-50/80 to-white' : 'bg-gradient-to-r from-accent/10 to-white'
                       }`}>
                       <div className={`mr-4 service-icon text-2xl ${layanan.category === 'mahasiswa' ? 'text-primary-600' : 'text-accent'
                         }`}>
@@ -542,8 +542,8 @@ const LayananAdministrasiPage = () => {
                         <div className="flex items-center">
                           <h3 className="text-xl font-semibold text-gray-800">{layanan.title}</h3>
                           <span className={`ml-3 text-xs px-2 py-1 rounded-full ${layanan.category === 'mahasiswa'
-                            ? 'bg-primary-50 text-primary-600'
-                            : 'bg-accent/10 text-accent'
+                            ? 'bg-primary-50 text-primary-600 border border-primary-100'
+                            : 'bg-accent/10 text-accent border border-accent/20'
                             }`}>
                             {layanan.category === 'mahasiswa' ? t('services.students') : t('services.lecturers')}
                           </span>
@@ -561,12 +561,12 @@ const LayananAdministrasiPage = () => {
                               const accId = `${layanan.id}-${idx}`;
                               const isOpen = expandedAccordions[accId];
                               return (
-                                <div key={idx} className={`bg-gray-50 rounded-lg overflow-hidden border transition-all duration-300 ${isOpen ? 'border-primary-200 shadow-sm' : 'border-gray-100'}`}>
+                                <div key={idx} className={`bg-gray-50/80 backdrop-blur-sm rounded-lg overflow-hidden border transition-all duration-300 ${isOpen ? 'border-primary-200 shadow-sm' : 'border-gray-100'}`}>
                                   <button
                                     onClick={() => toggleAccordion(accId)}
                                     className={`w-full text-left px-5 py-4 flex justify-between items-center transition-colors ${isOpen
-                                      ? (layanan.category === 'mahasiswa' ? 'bg-primary-50 text-primary-700' : 'bg-accent/10 text-accent')
-                                      : 'hover:bg-gray-100 text-gray-800'
+                                      ? (layanan.category === 'mahasiswa' ? 'bg-primary-50/80 text-primary-700' : 'bg-accent/10 text-accent')
+                                      : 'hover:bg-gray-100/90 text-gray-800'
                                       }`}
                                   >
                                     <h5 className="font-semibold text-base select-none">{sub.title}</h5>
@@ -574,14 +574,14 @@ const LayananAdministrasiPage = () => {
                                   </button>
 
                                   <div className={`transition-all duration-300 ease-in-out origin-top ${isOpen ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}>
-                                    <ul className="p-4 space-y-3 bg-white">
+                                    <ul className="p-4 space-y-3 bg-white/90">
                                       {sub.items.map((item: { text: string; url: string }, itemIdx: number) => (
                                         <li key={itemIdx} className="group">
                                           <a
                                             href={item.url}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className="flex items-start p-3 bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md hover:border-primary-300 hover:bg-primary-50 transition-all duration-300 group-hover:translate-x-1"
+                                            className="flex items-start p-3 bg-white hover:bg-primary-50/80 rounded-xl border border-gray-100 shadow-sm hover:shadow-md hover:border-primary-300 transition-all duration-300 group-hover:translate-x-1"
                                           >
                                             <div className={`p-2 rounded-lg mr-3 mt-0.5 transition-colors ${layanan.category === 'mahasiswa' ? 'bg-primary-100 group-hover:bg-primary-600' : 'bg-accent/20 group-hover:bg-accent'
                                               }`}>
@@ -620,7 +620,7 @@ const LayananAdministrasiPage = () => {
               ))
             ) : (
               <AnimatedSection animation="fadeIn">
-                <div className="text-center py-12">
+                <div className="text-center py-12 bg-white/80 backdrop-blur-md rounded-xl">
                   <div className="mb-6 text-gray-500">
                     <Search className="h-16 w-16 mx-auto opacity-30 mb-4" />
                     <h3 className="text-xl font-semibold mb-2">{t('services.notFound')}</h3>
@@ -643,8 +643,8 @@ const LayananAdministrasiPage = () => {
       </section>
 
       {/* Alur Kerja Section */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4">
+      <section className="relative py-16 bg-white/80 backdrop-blur-sm">
+        <div className="container mx-auto px-4 relative z-10">
           <AnimatedSection animation="slideUp">
             <h2 className="text-3xl font-display font-bold text-center mb-6 text-gradient">{t('services.workflow.title')}</h2>
             <p className="text-center text-gray-700 mb-8 max-w-3xl mx-auto">

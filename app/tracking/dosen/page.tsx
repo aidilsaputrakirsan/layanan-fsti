@@ -8,12 +8,12 @@ import Button from '@/components/ui/Button';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
-import { 
-  Search, 
-  CheckCircle2, 
-  Clock, 
-  AlertCircle, 
-  HelpCircle, 
+import {
+  Search,
+  CheckCircle2,
+  Clock,
+  AlertCircle,
+  HelpCircle,
   RotateCw,
   FileText,
   Calendar,
@@ -59,7 +59,7 @@ interface FacultyDocument {
   totalSteps: number;
   lastUpdate: string;
   timeline: TimelineItem[];
-  
+
   // Possible additional fields depending on doc type
   penyelenggara?: string;
   tanggalKegiatan?: string;
@@ -103,10 +103,10 @@ const DosenTrackingPage = () => {
   const [allDocuments, setAllDocuments] = useState<FacultyDocument[]>([]);
   const [docTypes, setDocTypes] = useState<string[]>([]);
   const [showSurveyModal, setShowSurveyModal] = useState(false);
-  
+
   const { t, language } = useLanguage();
   const router = useRouter();
-  
+
   // Fetch all documents when component mounts
   useEffect(() => {
     fetchAllDocuments();
@@ -116,23 +116,23 @@ const DosenTrackingPage = () => {
   const fetchAllDocuments = async () => {
     try {
       setIsLoading(true);
-      
+
       // Use CORS proxy to fetch data
       const response = await fetch(`${API_ENDPOINT}?url=${encodeURIComponent(SCRIPT_URL)}`);
-      
+
       // Parse the response as JSON
       const data = await response.json() as ApiResponse;
-      
+
       if (data && data.success && data.documents && Array.isArray(data.documents)) {
         setAllDocuments(data.documents);
-        
+
         // Extract unique doc types and sheet names
         const uniqueTypes = Array.from(new Set(data.documents.map(doc => doc.type)));
         const uniqueSheets = Array.from(new Set(data.documents.map(doc => doc.sheetName)));
-        
+
         setDocTypes(uniqueTypes);
         setSheets(uniqueSheets.map((title, index) => ({ id: index, title })));
-        
+
         setDataLoaded(true);
       } else {
         const errorMessage = data && data.message ? data.message : 'Invalid response format';
@@ -151,13 +151,13 @@ const DosenTrackingPage = () => {
     if (e && e.preventDefault) {
       e.preventDefault();
     }
-    
+
     setError("");
     setTrackingResult(null);
     setSearchResults([]);
-    
+
     if (!searchQuery.trim()) {
-      setError(searchType === 'nama' 
+      setError(searchType === 'nama'
         ? (language === 'en' ? 'Enter name to track documents.' : 'Masukkan nama untuk melacak dokumen.')
         : (language === 'en' ? 'Enter NIP to track documents.' : 'Masukkan NIP untuk melacak dokumen.')
       );
@@ -169,20 +169,20 @@ const DosenTrackingPage = () => {
     try {
       // Local search first (for better performance)
       let localResults: FacultyDocument[] = [];
-      
+
       if (searchType === 'nama') {
         // Search by name (case insensitive)
         const query = searchQuery.toLowerCase();
-        localResults = allDocuments.filter(doc => 
+        localResults = allDocuments.filter(doc =>
           doc.requestor && typeof doc.requestor === 'string' && doc.requestor.toLowerCase().includes(query)
         );
       } else if (searchType === 'nip') {
         // Search by NIP (partial match)
-        localResults = allDocuments.filter(doc => 
+        localResults = allDocuments.filter(doc =>
           doc.nip && doc.nip.toString().includes(searchQuery)
         );
       }
-      
+
       if (localResults.length > 0) {
         setSearchResults(localResults);
         // If only 1 result, display its details directly
@@ -210,10 +210,10 @@ const DosenTrackingPage = () => {
         // If not found locally, try to search via API
         const queryParam = searchType === 'nama' ? 'nama' : 'nip';
         const apiUrl = `${API_ENDPOINT}?url=${encodeURIComponent(SCRIPT_URL)}&${queryParam}=${encodeURIComponent(searchQuery)}`;
-        
+
         const response = await fetch(apiUrl);
         const data = await response.json() as ApiResponse;
-        
+
         if (data.success && data.documents && Array.isArray(data.documents)) {
           const docs = data.documents;
           if (docs.length > 0) {
@@ -240,7 +240,7 @@ const DosenTrackingPage = () => {
           } else {
             setSearchResults([]);
             setTrackingResult(null);
-            setError(language === 'en' 
+            setError(language === 'en'
               ? `No documents found for this ${searchType === 'nama' ? 'name' : 'NIP'}.`
               : `Tidak ada dokumen yang ditemukan untuk ${searchType === 'nama' ? 'nama' : 'NIP'} tersebut.`
             );
@@ -248,7 +248,7 @@ const DosenTrackingPage = () => {
         } else {
           setSearchResults([]);
           setTrackingResult(null);
-          setError(language === 'en' 
+          setError(language === 'en'
             ? `No documents found for this ${searchType === 'nama' ? 'name' : 'NIP'}.`
             : `Tidak ada dokumen yang ditemukan untuk ${searchType === 'nama' ? 'nama' : 'NIP'} tersebut.`
           );
@@ -256,7 +256,7 @@ const DosenTrackingPage = () => {
       }
     } catch (err: unknown) {
       console.error('Error searching for document:', err);
-      setError(language === 'en' 
+      setError(language === 'en'
         ? "An error occurred while searching for documents. Please try again."
         : "Terjadi kesalahan saat mencari dokumen. Silakan coba lagi."
       );
@@ -264,7 +264,7 @@ const DosenTrackingPage = () => {
       setIsLoading(false);
     }
   };
-  
+
   // Function to view detail of a document
   const handleViewDetail = (doc: FacultyDocument) => {
     setTrackingResult(doc);
@@ -321,7 +321,7 @@ const DosenTrackingPage = () => {
   // Get document details based on type
   const getDocumentDetails = useCallback((doc: FacultyDocument | null): DocumentDetail[] => {
     if (!doc) return [];
-    
+
     const commonDetails: DocumentDetail[] = [
       {
         icon: <Tag className="w-5 h-5 mr-3 text-primary-600 mt-1" />,
@@ -339,10 +339,10 @@ const DosenTrackingPage = () => {
         value: doc.date
       }
     ];
-    
+
     // Add type-specific details
     let additionalDetails: DocumentDetail[] = [];
-    
+
     if (doc.type === "Surat Tugas") {
       additionalDetails = [
         {
@@ -388,7 +388,7 @@ const DosenTrackingPage = () => {
           value: doc.jenisDokumen || (language === 'en' ? "Document" : "Dokumen")
         }
       ];
-      
+
       // Add file dokumen link if available
       if (doc.fileSudahSah) {
         additionalDetails.push({
@@ -422,7 +422,7 @@ const DosenTrackingPage = () => {
         }
       ];
     }
-    
+
     return [...commonDetails, ...additionalDetails];
   }, [t, language]);
 
@@ -437,7 +437,7 @@ const DosenTrackingPage = () => {
             <p className="text-gray-700 max-w-3xl mx-auto text-lg mb-6">
               {t('lecturerTracking.description')}
             </p>
-            
+
             <div className="flex flex-wrap justify-center gap-2 mb-8">
               {docTypes.map((type, index) => (
                 <div key={index} className="px-3 py-1 bg-white border border-gray-200 rounded-full text-sm text-gray-700">
@@ -455,52 +455,50 @@ const DosenTrackingPage = () => {
       </section>
 
       {/* Tracking Form Section */}
-      <section className="py-16 bg-light-bg">
-        <div className="container mx-auto px-4">
+      <section className="relative py-16 bg-white/80 backdrop-blur-sm">
+        <div className="container mx-auto px-4 relative z-10">
           <AnimatedSection animation="slideUp">
-            <div className="max-w-xl mx-auto bg-white rounded-xl shadow-md p-8 border border-gray-200 relative overflow-hidden">
+            <div className="max-w-xl mx-auto bg-white/95 backdrop-blur-sm rounded-xl shadow-md p-8 border border-gray-200 relative overflow-hidden">
               {/* Background decoration */}
               <div className="absolute -top-16 -right-16 w-32 h-32 bg-primary-50 rounded-full blur-2xl"></div>
               <div className="absolute -bottom-16 -left-16 w-32 h-32 bg-primary-50 rounded-full blur-2xl"></div>
-              
+
               <h2 className="text-2xl font-display font-bold mb-6 text-center text-gray-800">{t('lecturerTracking.trackStatus')}</h2>
-              
-              <form onSubmit={handleSearch} className="mb-8">
+
+              <form onSubmit={handleSearch} className="mb-8 relative z-10">
                 <div className="mb-6">
                   <div className="flex space-x-4 mb-4">
                     <button
                       type="button"
                       onClick={() => setSearchType('nama')}
-                      className={`flex-1 py-2 px-4 rounded-lg transition ${
-                        searchType === 'nama' 
-                          ? 'bg-primary-600 text-white' 
-                          : 'bg-gray-50 border border-gray-200 text-gray-700'
-                      }`}
+                      className={`flex-1 py-2 px-4 rounded-lg transition ${searchType === 'nama'
+                        ? 'bg-primary-600 text-white shadow-md'
+                        : 'bg-gray-50/80 border border-gray-200 text-gray-700 hover:bg-gray-100/80'
+                        }`}
                     >
                       {t('lecturerTracking.searchByName')}
                     </button>
                     <button
                       type="button"
                       onClick={() => setSearchType('nip')}
-                      className={`flex-1 py-2 px-4 rounded-lg transition ${
-                        searchType === 'nip' 
-                          ? 'bg-primary-600 text-white' 
-                          : 'bg-gray-50 border border-gray-200 text-gray-700'
-                      }`}
+                      className={`flex-1 py-2 px-4 rounded-lg transition ${searchType === 'nip'
+                        ? 'bg-primary-600 text-white shadow-md'
+                        : 'bg-gray-50/80 border border-gray-200 text-gray-700 hover:bg-gray-100/80'
+                        }`}
                     >
                       {t('lecturerTracking.searchByNip')}
                     </button>
                   </div>
-                  
+
                   <label htmlFor="searchQuery" className="block text-gray-700 font-medium mb-2">
                     {searchType === 'nama' ? t('lecturerTracking.nameLabel') : t('lecturerTracking.nipLabel')}
                   </label>
                   <div className="relative">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
-                    <input 
-                      type="text" 
-                      id="searchQuery" 
-                      className="w-full border border-gray-200 bg-gray-50 text-gray-800 rounded-lg px-10 py-3 focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent" 
+                    <input
+                      type="text"
+                      id="searchQuery"
+                      className="w-full border border-gray-200 bg-white/80 text-gray-800 rounded-lg px-10 py-3 focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent"
                       placeholder={searchType === 'nama' ? t('lecturerTracking.nameExample') : t('lecturerTracking.nipExample')}
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
@@ -513,11 +511,11 @@ const DosenTrackingPage = () => {
                     </p>
                   )}
                 </div>
-                <Button 
-                  type="submit" 
+                <Button
+                  type="submit"
                   fullWidth
                   disabled={isLoading || !dataLoaded}
-                  className="flex items-center justify-center"
+                  className="flex items-center justify-center shadow-md"
                 >
                   {isLoading ? (
                     <>
@@ -537,19 +535,19 @@ const DosenTrackingPage = () => {
                   )}
                 </Button>
               </form>
-              
-              <div className="border-t border-gray-200 pt-6">
+
+              <div className="border-t border-gray-200 pt-6 relative z-10">
                 <h3 className="text-lg font-semibold mb-4 text-gray-800">{t('lecturerTracking.searchInfo')}</h3>
                 <p className="text-gray-600 mb-4">{language === 'en' ? 'You can search for documents by:' : 'Anda dapat mencari dokumen berdasarkan:'}</p>
                 <ul className="space-y-2 text-gray-600">
-                  <li className="flex items-start">
+                  <li className="flex items-start bg-white/50 p-2 rounded-lg">
                     <User className="w-5 h-5 mr-2 text-primary-600 flex-shrink-0 mt-0.5" />
                     <div>
                       <span className="font-semibold">{t('lecturerTracking.nameLabel')}</span>
                       <p className="text-sm text-gray-500">{language === 'en' ? 'Enter full name or part of the name' : 'Masukkan nama lengkap atau sebagian nama'}</p>
                     </div>
                   </li>
-                  <li className="flex items-start">
+                  <li className="flex items-start bg-white/50 p-2 rounded-lg">
                     <FileText className="w-5 h-5 mr-2 text-primary-600 flex-shrink-0 mt-0.5" />
                     <div>
                       <span className="font-semibold">{t('lecturerTracking.nipLabel')}</span>
@@ -560,24 +558,24 @@ const DosenTrackingPage = () => {
               </div>
             </div>
           </AnimatedSection>
-          
+
           {/* Search Results List */}
           <AnimatePresence>
             {searchResults.length > 1 && (
               <motion.div
-                id="search-results-section" 
+                id="search-results-section"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.5 }}
-                className="max-w-3xl mx-auto mt-12 bg-white rounded-xl shadow-md p-8 border border-gray-200 relative overflow-hidden"
+                className="max-w-3xl mx-auto mt-12 bg-white/95 backdrop-blur-sm rounded-xl shadow-md p-8 border border-gray-200 relative overflow-hidden"
               >
                 <h3 className="text-xl font-bold mb-6 text-gray-800">{t('lecturerTracking.searchResults')} ({searchResults.length} {t('lecturerTracking.documents')})</h3>
                 <div className="space-y-4">
                   {searchResults.map((doc, index) => (
-                    <div 
-                      key={index} 
-                      className="p-4 border border-gray-200 rounded-lg hover:border-primary-600 transition cursor-pointer"
+                    <div
+                      key={index}
+                      className="p-4 bg-white/80 border border-gray-200 rounded-lg outline hover:outline-primary-600 outline-transparent transition cursor-pointer shadow-sm hover:shadow-md"
                       onClick={() => handleViewDetail(doc)}
                     >
                       <div className="flex items-center justify-between mb-2">
@@ -585,7 +583,7 @@ const DosenTrackingPage = () => {
                           {getDocTypeIcon(doc.type)}
                           <h4 className="font-medium text-gray-800">{doc.title}</h4>
                         </div>
-                        <span className="text-xs px-2 py-1 rounded bg-gray-100 text-gray-700">
+                        <span className="text-xs px-2 py-1 rounded bg-gray-100/80 text-gray-700 border border-gray-200">
                           {doc.type}
                         </span>
                       </div>
@@ -608,7 +606,7 @@ const DosenTrackingPage = () => {
               </motion.div>
             )}
           </AnimatePresence>
-          
+
           {/* Detail Tracking */}
           <AnimatePresence>
             {trackingResult && (
@@ -618,26 +616,26 @@ const DosenTrackingPage = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.5 }}
-                className="max-w-3xl mx-auto mt-12 bg-white rounded-xl shadow-md p-8 border border-gray-200 relative overflow-hidden"
+                className="max-w-3xl mx-auto mt-12 bg-white/95 backdrop-blur-sm rounded-xl shadow-md p-8 border border-gray-200 relative overflow-hidden"
               >
                 {/* Background decoration */}
                 <div className="absolute -top-16 -right-16 w-40 h-40 bg-primary-50 rounded-full blur-3xl"></div>
                 <div className="absolute -bottom-16 -left-16 w-40 h-40 bg-primary-50 rounded-full blur-3xl"></div>
-                
-                <div className="mb-6 pb-6 border-b border-gray-200">
+
+                <div className="mb-6 pb-6 border-b border-gray-200 relative z-10">
                   <div className="flex items-center justify-between mb-6">
                     <div className="flex items-center">
                       {getDocTypeIcon(trackingResult.type)}
                       <h3 className="text-xl font-bold text-gray-800">{trackingResult.title}</h3>
                     </div>
-                    <div className="px-3 py-1 rounded-lg bg-primary-50 text-primary-700 text-sm font-medium">
+                    <div className="px-3 py-1 rounded-lg bg-primary-50/80 border border-primary-100 text-primary-700 text-sm font-medium">
                       {trackingResult.type}
                     </div>
                   </div>
-                  
+
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {getDocumentDetails(trackingResult).map((detail, index) => (
-                      <div key={index} className="flex items-start">
+                      <div key={index} className="flex items-start bg-gray-50/50 p-3 rounded-lg border border-gray-100">
                         {detail.icon}
                         <div>
                           <p className="text-gray-500 text-sm mb-1">{detail.label}</p>
@@ -645,8 +643,8 @@ const DosenTrackingPage = () => {
                         </div>
                       </div>
                     ))}
-                    
-                    <div className="flex items-start md:col-span-2">
+
+                    <div className="flex items-start md:col-span-2 bg-gray-50/50 p-3 rounded-lg border border-gray-100">
                       <div className="w-5 h-5 mr-3"></div>
                       <div>
                         <p className="text-gray-500 text-sm mb-1">{t('lecturerTracking.status.status')}</p>
@@ -657,58 +655,54 @@ const DosenTrackingPage = () => {
                     </div>
                   </div>
                 </div>
-                
-                <h3 className="text-xl font-bold mb-6 text-gray-800">{t('lecturerTracking.submissionStatus')}</h3>
+
+                <h3 className="text-xl font-bold mb-6 text-gray-800 relative z-10">{t('lecturerTracking.submissionStatus')}</h3>
                 {trackingResult.timeline && trackingResult.timeline.length > 0 ? (
-                  <div className="timeline-container relative pl-8 before:content-[''] before:absolute before:left-3 before:top-2 before:bottom-2 before:w-0.5 before:bg-gradient-to-b before:from-primary-600/80 before:via-primary-400/50 before:to-gray-300/30 space-y-8">
+                  <div className="timeline-container relative pl-8 before:content-[''] before:absolute before:left-3 before:top-2 before:bottom-2 before:w-0.5 before:bg-gradient-to-b before:from-primary-600/80 before:via-primary-400/50 before:to-gray-300/30 space-y-8 z-10">
                     {trackingResult.timeline.map((item, index) => (
                       <div key={index} className="timeline-item relative">
-                        <div className={`timeline-dot absolute -left-8 flex items-center justify-center w-6 h-6 rounded-full ${
-                          item.status === 'completed' ? 'bg-primary-600 text-white' : 
-                          item.status === 'active' ? 'bg-blue-500 text-white' : 
-                          'bg-gray-100 border border-gray-300 text-gray-500'
-                        }`}>
+                        <div className={`timeline-dot absolute -left-8 flex items-center justify-center w-6 h-6 rounded-full shadow-sm ${item.status === 'completed' ? 'bg-primary-600 text-white' :
+                          item.status === 'active' ? 'bg-blue-500 text-white' :
+                            'bg-white border border-gray-300 text-gray-500'
+                          }`}>
                           {item.status === 'completed' && <CheckCircle2 className="w-4 h-4" />}
                           {item.status === 'active' && <Clock className="w-4 h-4" />}
                           {item.status === 'pending' && <AlertCircle className="w-4 h-4" />}
                         </div>
-                        <div className={`ml-2 p-4 rounded-lg transition-all ${
-                          item.status === 'completed' ? 'bg-primary-50 border border-primary-100' : 
-                          item.status === 'active' ? 'bg-blue-50 border border-blue-100' : 
-                          'bg-gray-50 border border-gray-200'
-                        }`}>
-                          <h4 className={`text-lg font-semibold ${
-                            item.status === 'pending' ? 'text-gray-500' : 'text-gray-800'
-                          }`}>{item.title}</h4>
-                          <p className={`${
-                            item.status === 'pending' ? 'text-gray-500' : 'text-gray-600'
-                          } mb-1`}>{item.description}</p>
+                        <div className={`ml-2 p-4 rounded-lg shadow-sm transition-all ${item.status === 'completed' ? 'bg-primary-50/80 border border-primary-100' :
+                          item.status === 'active' ? 'bg-blue-50/80 border border-blue-100' :
+                            'bg-white/80 border border-gray-200 opacity-75'
+                          }`}>
+                          <h4 className={`text-lg font-semibold ${item.status === 'pending' ? 'text-gray-500' : 'text-gray-800'
+                            }`}>{item.title}</h4>
+                          <p className={`${item.status === 'pending' ? 'text-gray-500' : 'text-gray-600'
+                            } mb-1`}>{item.description}</p>
                           <p className="text-sm text-gray-500">{item.date}</p>
                         </div>
                       </div>
                     ))}
                   </div>
                 ) : (
-                  <p className="text-gray-500">{t('lecturerTracking.timeline')}</p>
+                  <p className="text-gray-500 relative z-10">{t('lecturerTracking.timeline')}</p>
                 )}
               </motion.div>
             )}
           </AnimatePresence>
-          
+
           {/* Survey modal prompting navigation */}
           <AnimatePresence>
             {showSurveyModal && (
-              <motion.div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                <motion.div className="bg-white rounded-xl p-6 max-w-md mx-auto relative" initial={{ scale: 0.8 }} animate={{ scale: 1 }} exit={{ scale: 0.8 }}>
-                  <button className="absolute top-3 right-3" onClick={() => setShowSurveyModal(false)}><X /></button>
+              <motion.div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                <motion.div className="bg-white/95 backdrop-blur-md rounded-xl p-6 max-w-md mx-auto relative shadow-2xl border border-gray-200" initial={{ scale: 0.8 }} animate={{ scale: 1 }} exit={{ scale: 0.8 }}>
+                  <button className="absolute top-3 right-3 text-gray-500 hover:bg-gray-100 p-1 rounded-full transition-colors" onClick={() => setShowSurveyModal(false)}><X className="w-5 h-5" /></button>
                   <h2 className="text-xl font-bold mb-4">{language === 'en' ? 'Help us with a quick survey!' : 'Bantu kami dengan survey singkat!'}</h2>
-                  <p className="mb-6">{language === 'en' ? 'Please fill out our satisfaction survey before viewing the document.' : 'Isi survey kepuasan sebelum melihat dokumen.'}</p>
-                  <div className="flex justify-end space-x-2">
+                  <p className="mb-6 text-gray-600">{language === 'en' ? 'Please fill out our satisfaction survey before viewing the document.' : 'Isi survey kepuasan sebelum melihat dokumen.'}</p>
+                  <div className="flex justify-end space-x-3 mt-2">
+                    <Button variant="outline" className="text-gray-600 border-gray-300 hover:bg-gray-50" onClick={() => setShowSurveyModal(false)}>
+                      {language === 'en' ? 'Skip' : 'Lewati'}
+                    </Button>
                     <Button onClick={() => { setShowSurveyModal(false); router.push('/survey-kepuasan'); }}>
                       {language === 'en' ? 'Fill Survey' : 'Isi Survey'}
-                    </Button>
-                    <Button variant="secondary" onClick={() => setShowSurveyModal(false)}>
-                      {language === 'en' ? 'Skip' : 'Lewati'}
                     </Button>
                   </div>
                 </motion.div>
@@ -719,15 +713,15 @@ const DosenTrackingPage = () => {
       </section>
 
       {/* FAQ Section */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4">
+      <section className="relative py-16 bg-white/80 backdrop-blur-sm">
+        <div className="container mx-auto px-4 relative z-10">
           <AnimatedSection animation="slideUp">
             <h2 className="text-3xl font-display font-bold text-center mb-12 text-gradient">{t('lecturerTracking.faq.title')}</h2>
           </AnimatedSection>
-          
+
           <div className="max-w-3xl mx-auto">
             <AnimatedSection animation="slideUp" delay={0.1}>
-              <div className="bg-white rounded-xl shadow-md p-6 mb-6 hover-card group">
+              <div className="bg-white/90 backdrop-blur-sm rounded-xl shadow-md p-6 mb-6 hover-card group border border-gray-100">
                 <div className="flex items-start">
                   <div className="mt-1 mr-4 text-primary-600 group-hover:text-primary-700 transition-colors">
                     <HelpCircle className="w-6 h-6" />
@@ -741,9 +735,9 @@ const DosenTrackingPage = () => {
                 </div>
               </div>
             </AnimatedSection>
-            
+
             <AnimatedSection animation="slideUp" delay={0.2}>
-              <div className="bg-white rounded-xl shadow-md p-6 mb-6 hover-card group">
+              <div className="bg-white/90 backdrop-blur-sm rounded-xl shadow-md p-6 mb-6 hover-card group border border-gray-100">
                 <div className="flex items-start">
                   <div className="mt-1 mr-4 text-primary-600 group-hover:text-primary-700 transition-colors">
                     <HelpCircle className="w-6 h-6" />
@@ -757,9 +751,9 @@ const DosenTrackingPage = () => {
                 </div>
               </div>
             </AnimatedSection>
-            
+
             <AnimatedSection animation="slideUp" delay={0.3}>
-              <div className="bg-white rounded-xl shadow-md p-6 mb-6 hover-card group">
+              <div className="bg-white/90 backdrop-blur-sm rounded-xl shadow-md p-6 mb-6 hover-card group border border-gray-100">
                 <div className="flex items-start">
                   <div className="mt-1 mr-4 text-primary-600 group-hover:text-primary-700 transition-colors">
                     <HelpCircle className="w-6 h-6" />
@@ -773,9 +767,9 @@ const DosenTrackingPage = () => {
                 </div>
               </div>
             </AnimatedSection>
-            
+
             <AnimatedSection animation="slideUp" delay={0.4}>
-              <div className="bg-white rounded-xl shadow-md p-6 hover-card group">
+              <div className="bg-white/90 backdrop-blur-sm rounded-xl shadow-md p-6 hover-card group border border-gray-100">
                 <div className="flex items-start">
                   <div className="mt-1 mr-4 text-primary-600 group-hover:text-primary-700 transition-colors">
                     <HelpCircle className="w-6 h-6" />
