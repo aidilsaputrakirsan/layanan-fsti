@@ -1,14 +1,14 @@
-import { NextResponse } from 'next/server';
+import { NextResponse, NextRequest } from 'next/server';
 
 /**
  * CORS Proxy dengan timeout handling untuk GAS
  * Updated untuk handle semua parameters termasuk sheet selector
  */
-export async function GET(request) {
+export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const url = searchParams.get('url');
-    
+
     // Ambil semua parameter yang mungkin diperlukan
     const id = searchParams.get('id');
     const nama = searchParams.get('nama');
@@ -17,18 +17,18 @@ export async function GET(request) {
     const types = searchParams.get('types');
     const force_sync = searchParams.get('force_sync');
     const sheet = searchParams.get('sheet'); // NEW: Sheet selector parameter
-    
+
     if (!url) {
       return NextResponse.json(
         { success: false, message: 'Parameter URL diperlukan' },
         { status: 400 }
       );
     }
-    
+
     // Construct target URL dengan semua parameters
     let targetUrl = url;
     const params = [];
-    
+
     if (id) params.push(`id=${encodeURIComponent(id)}`);
     if (nama) params.push(`nama=${encodeURIComponent(nama)}`);
     if (nip) params.push(`nip=${encodeURIComponent(nip)}`);
@@ -36,18 +36,18 @@ export async function GET(request) {
     if (types) params.push(`types=${encodeURIComponent(types)}`);
     if (force_sync) params.push(`force_sync=${encodeURIComponent(force_sync)}`);
     if (sheet) params.push(`sheet=${encodeURIComponent(sheet)}`); // NEW
-    
+
     if (params.length > 0) {
       targetUrl += `?${params.join('&')}`;
     }
-    
+
     console.log("Fetching from:", targetUrl);
-    
+
     // TIMEOUT CONTROLLER - 30 detik untuk single sheet search
     const timeoutDuration = sheet ? 30000 : 90000; // 30s for single sheet, 90s for all sheets
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), timeoutDuration);
-    
+
     const response = await fetch(targetUrl, {
       method: 'GET',
       headers: {
@@ -56,9 +56,9 @@ export async function GET(request) {
       },
       signal: controller.signal
     });
-    
+
     clearTimeout(timeoutId);
-    
+
     if (!response.ok) {
       console.error("Error from GAS:", response.status);
       return NextResponse.json(
@@ -66,15 +66,15 @@ export async function GET(request) {
         { status: response.status }
       );
     }
-    
+
     const data = await response.json();
     return NextResponse.json(data);
-    
+
   } catch (error) {
     console.error('CORS Proxy error:', error);
-    
+
     // Handle timeout specifically
-    if (error.name === 'AbortError') {
+    if (error instanceof Error && error.name === 'AbortError') {
       return NextResponse.json(
         {
           success: false,
@@ -84,32 +84,32 @@ export async function GET(request) {
         { status: 408 }
       );
     }
-    
+
     return NextResponse.json(
-      { success: false, message: 'Proxy error: ' + error.message },
+      { success: false, message: 'Proxy error: ' + (error instanceof Error ? error.message : String(error)) },
       { status: 500 }
     );
   }
 }
 
-export async function POST(request) {
+export async function POST(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const url = searchParams.get('url');
-    
+
     if (!url) {
       return NextResponse.json(
         { success: false, message: 'Parameter URL diperlukan' },
         { status: 400 }
       );
     }
-    
+
     const body = await request.json();
-    
+
     // Timeout controller untuk POST juga
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 30000);
-    
+
     const response = await fetch(url, {
       method: 'POST',
       headers: {
@@ -119,29 +119,29 @@ export async function POST(request) {
       body: JSON.stringify(body),
       signal: controller.signal
     });
-    
+
     clearTimeout(timeoutId);
-    
+
     if (!response.ok) {
       return NextResponse.json(
         { success: false, message: `GAS Error: ${response.status}` },
         { status: response.status }
       );
     }
-    
+
     const data = await response.json();
     return NextResponse.json(data);
-    
+
   } catch (error) {
-    if (error.name === 'AbortError') {
+    if (error instanceof Error && error.name === 'AbortError') {
       return NextResponse.json(
         { success: false, message: 'Request timeout', error: 'TIMEOUT' },
         { status: 408 }
       );
     }
-    
+
     return NextResponse.json(
-      { success: false, message: 'Proxy error: ' + error.message },
+      { success: false, message: 'Proxy error: ' + (error instanceof Error ? error.message : String(error)) },
       { status: 500 }
     );
   }

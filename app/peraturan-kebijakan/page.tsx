@@ -4,6 +4,7 @@ import { useState } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import AnimatedSection from '@/components/ui/AnimatedSection';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
+import SectionDivider from '@/components/ui/SectionDivider';
 import { Search, Download, ExternalLink, FileText, TrendingUp, FileType } from 'lucide-react';
 
 // Daftar dokumen peraturan dan kebijakan
@@ -20,7 +21,7 @@ const documentsList = [
     },
     fileName: 'PERATURAN-AKADEMIK.pdf',
     fileUrl: '/file/PERATURAN-AKADEMIK.pdf',
-    coverImage: '/images/docs/akademik.jpg',
+    coverImage: 'https://picsum.photos/seed/akademik/800/600',
     fileSize: '2.1 MB',
     downloads: 3245,
   },
@@ -36,7 +37,7 @@ const documentsList = [
     },
     fileName: 'KEMAHASISWAAN.pdf',
     fileUrl: '/file/KEMAHASISWAAN.pdf',
-    coverImage: '/images/docs/kemahasiswaan.jpg',
+    coverImage: 'https://picsum.photos/seed/kemahasiswaan/800/600',
     fileSize: '1.8 MB',
     downloads: 2891,
   },
@@ -52,7 +53,7 @@ const documentsList = [
     },
     fileName: 'BIAYA-PENDIDIKAN.pdf',
     fileUrl: '/file/BIAYA-PENDIDIKAN.pdf',
-    coverImage: '/images/docs/biaya-pendidikan.jpg',
+    coverImage: 'https://picsum.photos/seed/biaya/800/600',
     fileSize: '1.5 MB',
     downloads: 4567,
   },
@@ -116,7 +117,7 @@ const documentsList = [
     },
     fileName: 'MBKM.pdf',
     fileUrl: '/file/MBKM.pdf',
-    coverImage: '/images/docs/mbkm.jpg',
+    coverImage: 'https://picsum.photos/seed/mbkm/800/600',
     fileSize: '2.5 MB',
     downloads: 4012,
   },
@@ -132,7 +133,7 @@ const documentsList = [
     },
     fileName: 'TATA-KEHIDUPAN.pdf',
     fileUrl: '/file/TATA-KEHIDUPAN.pdf',
-    coverImage: '/images/docs/tata-kehidupan.jpg',
+    coverImage: 'https://picsum.photos/seed/tatakehidupan/800/600',
     fileSize: '1.7 MB',
     downloads: 2456,
   },
@@ -148,7 +149,7 @@ const documentsList = [
     },
     fileName: 'KALENDER-AKADEMIK.pdf',
     fileUrl: '/file/KALENDER-AKADEMIK.pdf',
-    coverImage: '/images/docs/kalender-akademik.jpg',
+    coverImage: 'https://picsum.photos/seed/kalender/800/600',
     fileSize: '1.2 MB',
     downloads: 6789,
   },
@@ -294,12 +295,12 @@ const documentsList = [
 const PeraturanKebijakanPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const { language } = useLanguage();
-  
+
   // Filter dokumen berdasarkan pencarian
   const filteredDocuments = documentsList.filter(doc => {
     const searchLower = searchTerm.toLowerCase();
     return doc.title[language as 'id' | 'en'].toLowerCase().includes(searchLower) ||
-           doc.description[language as 'id' | 'en'].toLowerCase().includes(searchLower);
+      doc.description[language as 'id' | 'en'].toLowerCase().includes(searchLower);
   });
 
   return (
@@ -314,33 +315,18 @@ const PeraturanKebijakanPage = () => {
                 {language === 'id' ? 'Peraturan, Kebijakan, dan Panduan Mahasiswa' : 'Regulations, Policies, and Student Guidelines'}
               </h1>
               <p className="text-gray-700 text-lg mb-10">
-                {language === 'id' 
-                  ? 'Dokumen-dokumen terkait aturan dan panduan untuk aktifitas mahasiswa di lingkungan FSTI' 
+                {language === 'id'
+                  ? 'Dokumen-dokumen terkait aturan dan panduan untuk aktifitas mahasiswa di lingkungan FSTI'
                   : 'Documents related to rules and guidelines for student activities within FSTI'}
               </p>
-              
-              {/* Search */}
-              <div className="bg-white rounded-xl shadow-md p-6 mb-12">
-                <div className="relative flex-grow">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
-                  <input
-                    type="text"
-                    placeholder={language === 'id' ? 'Cari dokumen...' : 'Search documents...'}
-                    className="w-full bg-gray-50 text-gray-800 py-3 pl-10 pr-4 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary-600"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                  />
-                </div>
-                {searchTerm && (
-                  <div className="mt-3 text-sm text-gray-600">
-                    {filteredDocuments.length} {language === 'id' ? 'dokumen ditemukan' : 'documents found'}
-                  </div>
-                )}
-              </div>
+
             </div>
           </AnimatedSection>
         </div>
       </section>
+
+      {/* Divider: Hero → Dokumen Grid */}
+      <SectionDivider type="tilt" fillColor="#f8fafc" bgColor="transparent" />
 
       {/* Dokumen Grid Section - GLASSMORPHISM WITH FULL BACKGROUND IMAGE */}
       <section className="py-16 bg-light-bg">
@@ -350,6 +336,25 @@ const PeraturanKebijakanPage = () => {
               {language === 'id' ? 'Daftar Dokumen' : 'Document List'}
             </h2>
           </AnimatedSection>
+
+          {/* Search (Dipindahkan dari atas untuk konsistensi UI) */}
+          <div className="max-w-7xl mx-auto bg-white rounded-xl shadow-md p-6 mb-10 mt-2">
+            <div className="relative flex-grow">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+              <input
+                type="text"
+                placeholder={language === 'id' ? 'Cari dokumen...' : 'Search documents...'}
+                className="w-full bg-gray-50 text-gray-800 py-3 pl-10 pr-4 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary-600"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
+            {searchTerm && (
+              <div className="mt-3 text-sm text-gray-600 font-medium">
+                {filteredDocuments.length} {language === 'id' ? 'dokumen ditemukan' : 'documents found'}
+              </div>
+            )}
+          </div>
 
           {filteredDocuments.length > 0 ? (
             <div className="max-w-7xl mx-auto">
@@ -364,27 +369,27 @@ const PeraturanKebijakanPage = () => {
                     <div className="group relative h-full">
                       {/* Background blur effect */}
                       <div className="absolute -inset-0.5 bg-gradient-to-r from-primary-500 to-purple-600 rounded-2xl blur opacity-30 group-hover:opacity-100 transition duration-500"></div>
-                      
+
                       <div className="relative bg-white rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 h-full flex flex-col">
-                        
+
                         {/* Background Image Header */}
-                        <div className="relative h-48 overflow-hidden">
-                          {/* Background Image */}
-                          <img 
-                            src={doc.coverImage} 
+                        <div className="relative h-48 overflow-hidden bg-gray-50">
+                          {/* Main Image */}
+                          <img
+                            src={doc.coverImage}
                             alt={doc.title[language as 'id' | 'en']}
                             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                             onError={(e) => {
-                              // Fallback ke gambar default dari internet
+                              // Fallback ke gambar base64 SVG jika gagal
                               const target = e.target as HTMLImageElement;
                               target.onerror = null; // Prevent infinite loop
-                              target.src = 'https://images.unsplash.com/photo-1568667256549-094345857637?w=800&h=600&fit=crop'; // Default office/education image
+                              target.src = 'data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22800%22%20height%3D%22600%22%20viewBox%3D%220%200%20800%20600%22%3E%3Crect%20fill%3D%22%23e2e8f0%22%20width%3D%22800%22%20height%3D%22600%22%2F%3E%3Ctext%20fill%3D%22%2394a3b8%22%20font-family%3D%22sans-serif%22%20font-size%3D%2230%22%20dy%3D%2210.5%22%20font-weight%3D%22bold%22%20x%3D%2250%25%22%20y%3D%2250%25%22%20text-anchor%3D%22middle%22%3EDokumen%3C%2Ftext%3E%3C%2Fsvg%3E';
                             }}
                           />
-                          
+
                           {/* Gradient Overlay */}
                           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
-                          
+
                           {/* Badge "New" */}
                           {doc.badge && (
                             <div className="absolute top-4 right-4 z-10">
@@ -415,7 +420,7 @@ const PeraturanKebijakanPage = () => {
                           <div className="flex items-center gap-4 text-xs text-gray-500 mb-4">
                             <div className="flex items-center gap-1">
                               <TrendingUp className="h-3 w-3" />
-                              <span>{doc.downloads?.toLocaleString() || 0}</span>
+                              <span>{doc.downloads ? doc.downloads : 0}</span>
                             </div>
                             <div className="flex items-center gap-1">
                               <FileType className="h-3 w-3" />
@@ -425,7 +430,7 @@ const PeraturanKebijakanPage = () => {
 
                           {/* Actions */}
                           <div className="flex gap-2 mt-auto">
-                            <button 
+                            <button
                               onClick={() => window.open(doc.fileUrl, '_blank')}
                               className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-primary-600 to-purple-600 text-white hover:from-primary-700 hover:to-purple-700 transition-all shadow-md hover:shadow-lg"
                             >
@@ -434,7 +439,7 @@ const PeraturanKebijakanPage = () => {
                                 {language === 'id' ? 'Unduh' : 'Download'}
                               </span>
                             </button>
-                            <button 
+                            <button
                               onClick={() => window.open(doc.fileUrl, '_blank')}
                               className="p-2.5 rounded-xl border-2 border-gray-200 bg-white hover:border-primary-500 hover:bg-primary-50 transition-all"
                             >

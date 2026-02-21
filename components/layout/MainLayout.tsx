@@ -3,6 +3,7 @@
 import { ReactNode, useEffect } from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
+import ParticlesBackground from '../ui/ParticlesBackground';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 
@@ -19,14 +20,14 @@ const MainLayout = ({ children, hideBackground = false }: MainLayoutProps) => {
       once: true,
       easing: 'ease-in-out',
     });
-    
+
     // Update AOS on window resize
     const handleResize = () => {
       AOS.refresh();
     };
-    
+
     window.addEventListener('resize', handleResize);
-    
+
     return () => {
       window.removeEventListener('resize', handleResize);
     };
@@ -34,8 +35,13 @@ const MainLayout = ({ children, hideBackground = false }: MainLayoutProps) => {
 
   return (
     <div className="flex flex-col min-h-screen relative overflow-hidden">
- 
-      
+      {/* Global Particles Background */}
+      {!hideBackground && (
+        <div className="fixed inset-0 z-0 pointer-events-none">
+          <ParticlesBackground />
+        </div>
+      )}
+
       <Navbar />
       {/* Pastikan z-index positif untuk konten */}
       <main className="flex-grow relative z-10">{children}</main>

@@ -5,6 +5,7 @@ import MainLayout from '@/components/layout/MainLayout';
 import Link from 'next/link';
 import Image from 'next/image';
 import Button from '@/components/ui/Button';
+import SectionDivider from '@/components/ui/SectionDivider';
 import ServiceCard from '@/components/ui/ServiceCard';
 import SafeAnimatedSection from '@/components/ui/SafeAnimatedSection';
 import { motion } from 'framer-motion';
@@ -13,12 +14,12 @@ import dynamic from 'next/dynamic';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 // Icons
-import { 
-  FileText, 
-  Briefcase, 
-  CheckCircle, 
-  RefreshCcw, 
-  Award, 
+import {
+  FileText,
+  Briefcase,
+  CheckCircle,
+  RefreshCcw,
+  Award,
   Users,
   ArrowRight,
   GraduationCap,
@@ -56,9 +57,8 @@ const ImageCarousel = () => {
       {images.map((src, index) => (
         <div
           key={src}
-          className={`absolute inset-0 transition-opacity duration-1000 ${
-            index === currentImage ? 'opacity-100' : 'opacity-0'
-          }`}
+          className={`absolute inset-0 transition-opacity duration-1000 ${index === currentImage ? 'opacity-100' : 'opacity-0'
+            }`}
         >
           <Image
             src={src}
@@ -71,7 +71,7 @@ const ImageCarousel = () => {
       ))}
       <div className="absolute inset-0 bg-gradient-to-b from-light-bg/30 to-light-bg/70"></div>
       <div className="relative z-10 text-center p-8 flex flex-col h-full justify-center">
-        
+
         <h3 className="text-xl font-bold mb-3 text-primary-800">{t('home.academicCenter.title')}</h3>
         <p className="text-gray-700 mb-4">
           {t('home.academicCenter.description')}
@@ -102,7 +102,7 @@ const SafeMotion = ({ children, ...props }: SafeMotionProps) => (
 
 function HomePage() {
   const { t } = useLanguage();
-  
+
   return (
     <MainLayout>
       {/* Hero Section */}
@@ -110,7 +110,7 @@ function HomePage() {
         <div className="absolute inset-0 hero-gradient"></div>
         <div className="container mx-auto px-4 relative z-10">
           <div className="flex flex-col md:flex-row items-center">
-            <SafeAnimatedSection 
+            <SafeAnimatedSection
               className="md:w-1/2 mb-10 md:mb-0"
               animation="slideInRight"
             >
@@ -124,8 +124,8 @@ function HomePage() {
                 {t('home.hero.description')}
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button 
-                  href="/layanan-administrasi" 
+                <Button
+                  href="/layanan-administrasi"
                   variant="primary"
                   size="lg"
                   icon={<FileText className="w-5 h-5" />}
@@ -133,8 +133,8 @@ function HomePage() {
                 >
                   {t('home.hero.viewServices')}
                 </Button>
-                <Button 
-                  href="/tracking" 
+                <Button
+                  href="/tracking"
                   variant="outline"
                   size="lg"
                   icon={<RefreshCcw className="w-5 h-5" />}
@@ -144,18 +144,18 @@ function HomePage() {
                 </Button>
               </div>
             </SafeAnimatedSection>
-            <SafeAnimatedSection 
+            <SafeAnimatedSection
               className="md:w-1/2 flex justify-center"
               animation="fadeIn"
               delay={0.2}
             >
               <ClientOnly>
-                <SafeMotion 
+                <SafeMotion
                   className="rounded-2xl p-2 bg-gradient-to-tr from-primary-800 via-primary-600 to-primary-400 shadow-glow"
-                  animate={{ 
+                  animate={{
                     boxShadow: ['0 0 15px rgba(47, 77, 211, 0.3)', '0 0 25px rgba(47, 77, 211, 0.5)', '0 0 15px rgba(47, 77, 211, 0.3)'],
                   }}
-                  transition={{ 
+                  transition={{
                     duration: 4,
                     repeat: Infinity,
                     repeatType: "reverse"
@@ -170,6 +170,9 @@ function HomePage() {
         </div>
       </section>
 
+      {/* Divider: Hero → Popular Services */}
+      <SectionDivider type="wave" fillColor="#f8fafc" bgColor="transparent" />
+
       {/* Popular Services Section */}
       <section className="py-20 bg-light-bg">
         <div className="container mx-auto px-4">
@@ -183,11 +186,11 @@ function HomePage() {
               </p>
             </div>
           </SafeAnimatedSection>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* Service 1 */}
             <SafeAnimatedSection animation="slideUp" delay={0.1}>
-              <ServiceCard 
+              <ServiceCard
                 id="surat-umum"
                 title={t('home.popularServices.coverLetterTitle')}
                 description={t('home.popularServices.coverLetterDesc')}
@@ -199,7 +202,7 @@ function HomePage() {
 
             {/* Service 2 */}
             <SafeAnimatedSection animation="slideUp" delay={0.2}>
-              <ServiceCard 
+              <ServiceCard
                 id="kp-ta"
                 title={t('home.popularServices.internshipTitle')}
                 description={t('home.popularServices.internshipDesc')}
@@ -211,7 +214,7 @@ function HomePage() {
 
             {/* Service 3 */}
             <SafeAnimatedSection animation="slideUp" delay={0.3}>
-              <ServiceCard 
+              <ServiceCard
                 id="legalisasi"
                 title={t('home.popularServices.legalizationTitle')}
                 description={t('home.popularServices.legalizationDesc')}
@@ -223,8 +226,8 @@ function HomePage() {
           </div>
 
           <SafeAnimatedSection className="text-center mt-12" animation="fadeIn" delay={0.4}>
-            <Button 
-              href="/layanan-administrasi" 
+            <Button
+              href="/layanan-administrasi"
               variant="outline"
               icon={<ArrowRight className="w-4 h-4" />}
             >
@@ -239,8 +242,11 @@ function HomePage() {
         per requirement to focus on administrative services 
       */}
 
+      {/* Divider: Popular Services → CTA */}
+      <SectionDivider type="curve" fillColor="#ffffff" bgColor="#f8fafc" />
+
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-b from-light-bg to-white">
+      <section className="py-20 bg-white">
         <div className="container mx-auto px-4 text-center">
           <SafeAnimatedSection animation="slideUp">
             <h2 className="text-3xl md:text-4xl font-display font-bold mb-4 text-primary-800">{t('common.needHelp')}</h2>
@@ -248,44 +254,44 @@ function HomePage() {
               {t('services.needHelp.description')}
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <Button 
-                href="mailto:fsti@itk.ac.id" 
+              <Button
+                href="mailto:fsti@itk.ac.id"
                 variant="primary"
                 size="lg"
-                icon={<svg 
-                  xmlns="http://www.w3.org/2000/svg" 
-                  className="h-5 w-5" 
-                  fill="none" 
-                  viewBox="0 0 24 24" 
+                icon={<svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
                   stroke="currentColor"
                 >
-                  <path 
-                    strokeLinecap="round" 
-                    strokeLinejoin="round" 
-                    strokeWidth={2} 
-                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" 
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
                   />
                 </svg>}
                 animate
               >
                 {t('common.email')}
               </Button>
-              <Button 
-                href="#kontak" 
+              <Button
+                href="#kontak"
                 variant="outline"
                 size="lg"
-                icon={<svg 
-                  xmlns="http://www.w3.org/2000/svg" 
-                  className="h-5 w-5" 
-                  fill="none" 
-                  viewBox="0 0 24 24" 
+                icon={<svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
                   stroke="currentColor"
                 >
-                  <path 
-                    strokeLinecap="round" 
-                    strokeLinejoin="round" 
-                    strokeWidth={2} 
-                    d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" 
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
                   />
                 </svg>}
                 animate

@@ -6,14 +6,16 @@ import AnimatedSection from '@/components/ui/AnimatedSection';
 import Button from '@/components/ui/Button';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 import WorkflowDiagram from '@/components/ui/WorkflowDiagram';
+import SectionDivider from '@/components/ui/SectionDivider';
 
 // Import icons
-import { 
-  FileText, 
-  Briefcase, 
-  CheckCircle, 
-  Award, 
+import {
+  FileText,
+  Briefcase,
+  CheckCircle,
+  Award,
   Users,
+  ChevronDown,
   GraduationCap,
   ArrowRight,
   BookOpen,
@@ -37,14 +39,22 @@ import {
 const LayananAdministrasiPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filter, setFilter] = useState('all');
+  const [expandedAccordions, setExpandedAccordions] = useState<Record<string, boolean>>({});
   const { t, language } = useLanguage();
+
+  const toggleAccordion = (id: string) => {
+    setExpandedAccordions(prev => ({
+      ...prev,
+      [id]: !prev[id]
+    }));
+  };
 
   // Data layanan mahasiswa
   const mahasiswaLayananList = [
     {
       id: "surat",
       title: language === 'en' ? "Letter Services" : "Layanan Surat",
-      description: language === 'en' 
+      description: language === 'en'
         ? "Service for creating cover letters and general administrative documents for student needs."
         : "Layanan pembuatan surat pengantar dan dokumen administratif umum untuk keperluan mahasiswa.",
       icon: <FileText className="h-6 w-6" />,
@@ -52,19 +62,19 @@ const LayananAdministrasiPage = () => {
         {
           title: language === 'en' ? "Cover Letter Services" : "Layanan Surat Pengantar",
           items: [
-            { 
-              text: language === 'en' ? "Cover Letter Request" : "Permohonan Surat Pengantar", 
-              url: "https://forms.gle/TfydWAeGoFFQYdmR6" 
+            {
+              text: language === 'en' ? "Cover Letter Request" : "Permohonan Surat Pengantar",
+              url: "https://forms.gle/TfydWAeGoFFQYdmR6"
             },
-            { 
-              text: language === 'en' ? "Recommendation Letter Request for Activities/Scholarships/Other" : "Permohonan Surat Rekomendasi Kegiatan/Beasiswa/Kegiatan lainnya", 
-              url: "https://docs.google.com/forms/d/1nTZZM4hKMTcFOenFbIOUBrnCyaRLqzlifiDx6QAZEO0/viewform?edit_requested=true" 
+            {
+              text: language === 'en' ? "Recommendation Letter Request for Activities/Scholarships/Other" : "Permohonan Surat Rekomendasi Kegiatan/Beasiswa/Kegiatan lainnya",
+              url: "https://docs.google.com/forms/d/1nTZZM4hKMTcFOenFbIOUBrnCyaRLqzlifiDx6QAZEO0/viewform?edit_requested=true"
             },
-            { 
-              text: language === 'en' 
-                ? "Letter Request (Postgraduate / MMT)" 
-                : "Permohonan Surat (Pascasarjana / MMT)", 
-              url: "https://s.itk.ac.id/permohonansurats2" 
+            {
+              text: language === 'en'
+                ? "Letter Request (Postgraduate / MMT)"
+                : "Permohonan Surat (Pascasarjana / MMT)",
+              url: "https://s.itk.ac.id/permohonansurats2"
             }
           ]
         }
@@ -124,15 +134,15 @@ const LayananAdministrasiPage = () => {
         {
           title: language === 'en' ? "Academic Documents" : "Dokumen Akademik",
           items: [
-            { 
-              text: language === 'en' ? "Active Student Certificate Request" : "Permohonan Surat Keterangan Aktif Studi", 
-              url: "https://forms.gle/XG1TVHAG7cNkpKEG7" 
+            {
+              text: language === 'en' ? "Active Student Certificate Request" : "Permohonan Surat Keterangan Aktif Studi",
+              url: "https://forms.gle/XG1TVHAG7cNkpKEG7"
             },
-            { 
-              text: language === 'en' 
-                ? "Active Student Certificate Request (Postgraduate / MMT)" 
-                : "Permohonan Surat Keterangan Aktif Studi (Pascasarjana / MMT)", 
-              url: "https://s.itk.ac.id/surataktifstudis2" 
+            {
+              text: language === 'en'
+                ? "Active Student Certificate Request (Postgraduate / MMT)"
+                : "Permohonan Surat Keterangan Aktif Studi (Pascasarjana / MMT)",
+              url: "https://s.itk.ac.id/surataktifstudis2"
             },
             { text: language === 'en' ? "Graduation Certificate Request" : "Permohonan Surat Keterangan Lulus (SKL)", url: "https://forms.gle/njqaU8cs81KwVHiJ9" },
             { text: language === 'en' ? "Academic Document Service Request" : "Permohonan Layanan Dokumen Akademik (Transkip Mata Kuliah, KHS dan FRS)", url: "https://forms.gle/YbWMvtHvbgKAQPkS7" },
@@ -147,7 +157,7 @@ const LayananAdministrasiPage = () => {
     {
       id: "legalisasi",
       title: language === 'en' ? "Document Legalization" : "Legalisasi Dokumen",
-      description: language === 'en' 
+      description: language === 'en'
         ? "Legalization service for official faculty academic documents such as transcripts, diplomas, and certificates."
         : "Layanan legalisasi untuk dokumen akademik resmi fakultas seperti transkrip, ijazah, dan sertifikat.",
       icon: <CheckCircle className="h-6 w-6" />,
@@ -395,9 +405,9 @@ const LayananAdministrasiPage = () => {
 
   // Filter layanan berdasarkan pencarian
   const filteredServices = layananList.filter(layanan => {
-    const matchesSearch = layanan.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                          layanan.description.toLowerCase().includes(searchTerm.toLowerCase());
-    
+    const matchesSearch = layanan.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      layanan.description.toLowerCase().includes(searchTerm.toLowerCase());
+
     if (filter === 'all') return matchesSearch;
     return matchesSearch && layanan.category === filter;
   });
@@ -414,90 +424,46 @@ const LayananAdministrasiPage = () => {
               <p className="text-gray-700 text-lg mb-6">
                 {t('services.description')}
               </p>
-              
+
               {/* Template Dokumen */}
               <div className="bg-gray-50 rounded-xl p-4 mb-4 text-center">
-              <div className="text-gray-700">
-                <span className="font-medium">
-                  {language === 'en' ? 'Document Templates:' : 'Template Dokumen:'}
-                </span>
-                <span className="ml-2">
-                  <a
-                    href="https://s.itk.ac.id/templateformulir"
-                    className="font-semibold text-primary-600 hover:underline"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    download="Format Surat Akademik 2024.pdf"
-                  >
-                    {language === 'en' ? 'Student Academic Form Template' : 'Template Formulir Akademik Mahasiswa'}
-                  </a>
-                </span>
+                <div className="text-gray-700">
+                  <span className="font-medium">
+                    {language === 'en' ? 'Document Templates:' : 'Template Dokumen:'}
+                  </span>
+                  <span className="ml-2">
+                    <a
+                      href="https://s.itk.ac.id/templateformulir"
+                      className="font-semibold text-primary-600 hover:underline"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      download="Format Surat Akademik 2024.pdf"
+                    >
+                      {language === 'en' ? 'Student Academic Form Template' : 'Template Formulir Akademik Mahasiswa'}
+                    </a>
+                  </span>
+                </div>
               </div>
-            </div>
 
               {/* Estimasi Waktu Proses */}
               <div className="bg-gray-50 rounded-xl p-4 mb-10 text-center">
                 <div className="text-gray-700">
                   <span className="font-medium">
-                    {language === 'en' ? 'Estimated Processing Time:' : 'Estimasi Waktu Proses:'} 
+                    {language === 'en' ? 'Estimated Processing Time:' : 'Estimasi Waktu Proses:'}
                   </span>
                   <span className="font-semibold text-primary-600 ml-2">
                     {language === 'en' ? '1-2 working days' : '1-2 hari kerja'}
                   </span>
                 </div>
               </div>
-              
-              {/* Search and Filter */}
-              <div className="bg-white rounded-xl shadow-md p-6 mb-12">
-                <div className="flex flex-col md:flex-row gap-4">
-                  <div className="relative flex-grow">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
-                    <input
-                      type="text"
-                      placeholder={t('services.search')}
-                      className="w-full bg-gray-50 text-gray-800 py-3 pl-10 pr-4 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary-600"
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                    />
-                  </div>
-                  <div className="flex space-x-2">
-                    <button
-                      className={`px-4 py-3 rounded-lg transition-colors ${
-                        filter === 'all' 
-                          ? 'bg-primary-600 text-white' 
-                          : 'bg-gray-50 text-gray-600 hover:bg-gray-100'
-                      }`}
-                      onClick={() => setFilter('all')}
-                    >
-                      {t('services.all')}
-                    </button>
-                    <button
-                      className={`px-4 py-3 rounded-lg transition-colors ${
-                        filter === 'mahasiswa' 
-                          ? 'bg-primary-600 text-white' 
-                          : 'bg-gray-50 text-gray-600 hover:bg-gray-100'
-                      }`}
-                      onClick={() => setFilter('mahasiswa')}
-                    >
-                      {t('services.students')}
-                    </button>
-                    <button
-                      className={`px-4 py-3 rounded-lg transition-colors ${
-                        filter === 'dosen' 
-                          ? 'bg-primary-600 text-white' 
-                          : 'bg-gray-50 text-gray-600 hover:bg-gray-100'
-                      }`}
-                      onClick={() => setFilter('dosen')}
-                    >
-                      {t('services.lecturers')}
-                    </button>
-                  </div>
-                </div>
-              </div>
+
             </div>
           </AnimatedSection>
         </div>
       </section>
+
+      {/* Divider: Hero → Daftar Layanan */}
+      <SectionDivider type="slant" fillColor="#f8fafc" bgColor="transparent" />
 
       {/* Daftar Layanan Section */}
       <section className="py-16 bg-light-bg">
@@ -509,84 +475,142 @@ const LayananAdministrasiPage = () => {
               {searchTerm && ` - ${t('services.searchResultsFor')} "${searchTerm}"`}
             </h2>
           </AnimatedSection>
-          
-          <div className="max-w-4xl mx-auto">
+
+          {/* Search and Filter (Dipindahkan dari atas) */}
+          <div className="max-w-7xl mx-auto bg-white rounded-xl shadow-md p-6 mb-10 mt-2">
+            <div className="flex flex-col md:flex-row gap-4">
+              <div className="relative flex-grow">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+                <input
+                  type="text"
+                  placeholder={t('services.search')}
+                  className="w-full bg-gray-50 text-gray-800 py-3 pl-10 pr-4 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary-600"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+              </div>
+              <div className="flex space-x-2">
+                <button
+                  className={`px-4 py-3 rounded-lg transition-colors ${filter === 'all'
+                    ? 'bg-primary-600 text-white'
+                    : 'bg-gray-50 text-gray-600 hover:bg-gray-100'
+                    }`}
+                  onClick={() => setFilter('all')}
+                >
+                  {t('services.all')}
+                </button>
+                <button
+                  className={`px-4 py-3 rounded-lg transition-colors ${filter === 'mahasiswa'
+                    ? 'bg-primary-600 text-white'
+                    : 'bg-gray-50 text-gray-600 hover:bg-gray-100'
+                    }`}
+                  onClick={() => setFilter('mahasiswa')}
+                >
+                  {t('services.students')}
+                </button>
+                <button
+                  className={`px-4 py-3 rounded-lg transition-colors ${filter === 'dosen'
+                    ? 'bg-primary-600 text-white'
+                    : 'bg-gray-50 text-gray-600 hover:bg-gray-100'
+                    }`}
+                  onClick={() => setFilter('dosen')}
+                >
+                  {t('services.lecturers')}
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
             {filteredServices.length > 0 ? (
               filteredServices.map((layanan, index) => (
-                <AnimatedSection 
-                  key={layanan.id} 
-                  animation="slideUp" 
+                <AnimatedSection
+                  key={layanan.id}
+                  animation="slideUp"
                   delay={index * 0.1}
+                  className="h-full"
                 >
-                  <div id={layanan.id} className={`bg-white rounded-xl shadow-md overflow-hidden hover-card mb-10 ${
-                    layanan.category === 'mahasiswa' ? 'border-l-4 border-primary-600' : 'border-l-4 border-accent'
-                  }`}>
-                    <div className={`p-5 flex items-center ${
-                      layanan.category === 'mahasiswa' ? 'bg-gradient-to-r from-primary-50 to-white' : 'bg-gradient-to-r from-accent/10 to-white'
+                  <div id={layanan.id} className={`bg-white rounded-xl shadow-md overflow-hidden hover-card h-full flex flex-col ${layanan.category === 'mahasiswa' ? 'border-t-4 border-t-primary-600' : 'border-t-4 border-t-accent'
                     }`}>
-                      <div className={`mr-4 service-icon text-2xl ${
-                        layanan.category === 'mahasiswa' ? 'text-primary-600' : 'text-accent'
+                    <div className={`p-5 flex items-center ${layanan.category === 'mahasiswa' ? 'bg-gradient-to-r from-primary-50 to-white' : 'bg-gradient-to-r from-accent/10 to-white'
                       }`}>
+                      <div className={`mr-4 service-icon text-2xl ${layanan.category === 'mahasiswa' ? 'text-primary-600' : 'text-accent'
+                        }`}>
                         {layanan.icon}
                       </div>
                       <div>
                         <div className="flex items-center">
                           <h3 className="text-xl font-semibold text-gray-800">{layanan.title}</h3>
-                          <span className={`ml-3 text-xs px-2 py-1 rounded-full ${
-                            layanan.category === 'mahasiswa' 
-                              ? 'bg-primary-50 text-primary-600' 
-                              : 'bg-accent/10 text-accent'
-                          }`}>
+                          <span className={`ml-3 text-xs px-2 py-1 rounded-full ${layanan.category === 'mahasiswa'
+                            ? 'bg-primary-50 text-primary-600'
+                            : 'bg-accent/10 text-accent'
+                            }`}>
                             {layanan.category === 'mahasiswa' ? t('services.students') : t('services.lecturers')}
                           </span>
                         </div>
                       </div>
                     </div>
-                    <div className="p-6">
+                    <div className="p-6 flex flex-col flex-grow">
                       <p className="text-gray-700 mb-6">{layanan.description}</p>
-                      
+
                       {/* Kode untuk menampilkan daftar sub-layanan atau tombol untuk layanan tanpa subLayanan */}
                       {layanan.hasOwnProperty('subLayanan') && 'subLayanan' in layanan ? (
-                        <div className="mb-6">
-                          <h4 className="text-lg font-semibold mb-3 text-gray-800">
-                            {language === 'en' ? 'Related Links' : 'Tautan Terkait'}
-                          </h4>
+                        <div className="mt-2">
                           <div className="space-y-4">
-                            {(layanan as any).subLayanan.map((sub: { title: string; items: any[] }, idx: number) => (
-                              <div key={idx} className="bg-gray-50 p-4 rounded-lg">
-                                <h5 className={`font-medium mb-2 ${
-                                  layanan.category === 'mahasiswa' ? 'text-primary-600' : 'text-accent'
-                                }`}>
-                                  {sub.title}
-                                </h5>
-                                <ul className="space-y-2">
-                                  {sub.items.map((item: { text: string; url: string }, itemIdx: number) => (
-                                    <li key={itemIdx} className="flex items-center">
-                                      <ArrowRight className="h-4 w-4 mr-2 flex-shrink-0 text-gray-400" />
-                                      <a 
-                                        href={item.url} 
-                                        target="_blank" 
-                                        rel="noopener noreferrer" 
-                                        className="text-gray-700 hover:underline truncate"
-                                      >
-                                        {item.text}
-                                      </a>
-                                    </li>
-                                  ))}
-                                </ul>
-                              </div>
-                            ))}
+                            {(layanan as any).subLayanan.map((sub: { title: string; items: any[] }, idx: number) => {
+                              const accId = `${layanan.id}-${idx}`;
+                              const isOpen = expandedAccordions[accId];
+                              return (
+                                <div key={idx} className={`bg-gray-50 rounded-lg overflow-hidden border transition-all duration-300 ${isOpen ? 'border-primary-200 shadow-sm' : 'border-gray-100'}`}>
+                                  <button
+                                    onClick={() => toggleAccordion(accId)}
+                                    className={`w-full text-left px-5 py-4 flex justify-between items-center transition-colors ${isOpen
+                                      ? (layanan.category === 'mahasiswa' ? 'bg-primary-50 text-primary-700' : 'bg-accent/10 text-accent')
+                                      : 'hover:bg-gray-100 text-gray-800'
+                                      }`}
+                                  >
+                                    <h5 className="font-semibold text-base select-none">{sub.title}</h5>
+                                    <ChevronDown className={`w-5 h-5 flex-shrink-0 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
+                                  </button>
+
+                                  <div className={`transition-all duration-300 ease-in-out origin-top ${isOpen ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}>
+                                    <ul className="p-4 space-y-3 bg-white">
+                                      {sub.items.map((item: { text: string; url: string }, itemIdx: number) => (
+                                        <li key={itemIdx} className="group">
+                                          <a
+                                            href={item.url}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="flex items-start p-3 bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md hover:border-primary-300 hover:bg-primary-50 transition-all duration-300 group-hover:translate-x-1"
+                                          >
+                                            <div className={`p-2 rounded-lg mr-3 mt-0.5 transition-colors ${layanan.category === 'mahasiswa' ? 'bg-primary-100 group-hover:bg-primary-600' : 'bg-accent/20 group-hover:bg-accent'
+                                              }`}>
+                                              <FileText className={`h-4 w-4 ${layanan.category === 'mahasiswa' ? 'text-primary-600 group-hover:text-white' : 'text-accent group-hover:text-white'
+                                                }`} />
+                                            </div>
+                                            <span className="text-gray-700 text-sm group-hover:text-gray-900 transition-colors leading-relaxed break-words pr-2">
+                                              {item.text}
+                                            </span>
+                                          </a>
+                                        </li>
+                                      ))}
+                                    </ul>
+                                  </div>
+                                </div>
+                              )
+                            })}
                           </div>
                         </div>
                       ) : layanan.url && layanan.url !== '#' ? (
-                        <div className="mt-4">
+                        <div className="mt-2 pt-4">
                           <a
                             href={layanan.url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-block px-4 py-2 bg-accent text-white rounded-md hover:bg-accent/80 transition-colors duration-200"
+                            className="inline-flex items-center px-4 py-2 bg-accent text-white rounded-lg hover:bg-accent/90 hover:shadow-md transition-all duration-300 group"
                           >
-                            {language === 'en' ? 'Access Service' : 'Akses Layanan'}
+                            <span>{language === 'en' ? 'Access Service' : 'Akses Layanan'}</span>
+                            <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
                           </a>
                         </div>
                       ) : null}
@@ -602,7 +626,7 @@ const LayananAdministrasiPage = () => {
                     <h3 className="text-xl font-semibold mb-2">{t('services.notFound')}</h3>
                     <p>{t('services.noServicesMatch')}</p>
                   </div>
-                  <Button 
+                  <Button
                     onClick={() => {
                       setSearchTerm('');
                       setFilter('all');
@@ -616,7 +640,7 @@ const LayananAdministrasiPage = () => {
             )}
           </div>
         </div>
-      </section>   
+      </section>
 
       {/* Alur Kerja Section */}
       <section className="py-16 bg-white">
@@ -624,12 +648,12 @@ const LayananAdministrasiPage = () => {
           <AnimatedSection animation="slideUp">
             <h2 className="text-3xl font-display font-bold text-center mb-6 text-gradient">{t('services.workflow.title')}</h2>
             <p className="text-center text-gray-700 mb-8 max-w-3xl mx-auto">
-              {language === 'en' 
+              {language === 'en'
                 ? 'Below is the service request workflow for FSTI services from submission to completion, including status checking mechanism and improvement process if needed.'
                 : 'Berikut adalah alur proses permohonan layanan FSTI dari tahap pengajuan hingga penyelesaian, termasuk mekanisme pengecekan status dan perbaikan jika diperlukan.'}
             </p>
           </AnimatedSection>
-          
+
           {/* Alur Kerja Diagram */}
           <AnimatedSection animation="fadeIn" delay={0.3} className="mb-12">
             <div className="bg-white rounded-xl shadow-lg p-4 md:p-6 hover-card max-w-5xl mx-auto">
@@ -640,13 +664,13 @@ const LayananAdministrasiPage = () => {
                   alt={language === 'en' ? 'FSTI Service Workflow' : 'Alur Kerja Layanan FSTI'} 
                   className="w-full h-auto object-contain" 
                 /> */}
-                
+
                 {/* Dengan komponen WorkflowDiagram: */}
                 <WorkflowDiagram language={language} />
               </div>
             </div>
           </AnimatedSection>
-          
+
           {/* Ringkasan Tahapan */}
           <div className="mt-10">
             <AnimatedSection animation="slideUp">
@@ -654,13 +678,13 @@ const LayananAdministrasiPage = () => {
                 {language === 'en' ? 'Service Request Steps Summary' : 'Ringkasan Tahapan Layanan'}
               </h3>
             </AnimatedSection>
-            
+
             <div className="max-w-6xl mx-auto">
               <div className="flex flex-wrap justify-center">
                 {/* Step 1 */}
-                <AnimatedSection 
-                  className="w-full md:w-1/2 lg:w-1/5 px-4 mb-6 md:mb-0" 
-                  animation="slideUp" 
+                <AnimatedSection
+                  className="w-full md:w-1/2 lg:w-1/5 px-4 mb-6 md:mb-0"
+                  animation="slideUp"
                   delay={0.1}
                 >
                   <div className="bg-white rounded-xl shadow-md p-6 text-center h-full flex flex-col items-center hover-card">
@@ -669,18 +693,18 @@ const LayananAdministrasiPage = () => {
                       {language === 'en' ? 'Service Request Prerequisites' : 'Prasarat Permohonan'}
                     </h3>
                     <p className="text-gray-600 text-sm">
-                      {language === 'en' 
-                        ? 'Prepare required documents and select FSTI service via portal' 
+                      {language === 'en'
+                        ? 'Prepare required documents and select FSTI service via portal'
                         : 'Menyiapkan surat/tanda tangan dan memilih layanan FSTI via portal'
                       }
                     </p>
                   </div>
                 </AnimatedSection>
-                
+
                 {/* Step 2 */}
-                <AnimatedSection 
-                  className="w-full md:w-1/2 lg:w-1/5 px-4 mb-6 md:mb-0" 
-                  animation="slideUp" 
+                <AnimatedSection
+                  className="w-full md:w-1/2 lg:w-1/5 px-4 mb-6 md:mb-0"
+                  animation="slideUp"
                   delay={0.2}
                 >
                   <div className="bg-white rounded-xl shadow-md p-6 text-center h-full flex flex-col items-center hover-card">
@@ -689,18 +713,18 @@ const LayananAdministrasiPage = () => {
                       {language === 'en' ? 'Form Filling & Submit' : 'Pengisian Formulir & Submit'}
                     </h3>
                     <p className="text-gray-600 text-sm">
-                      {language === 'en' 
-                        ? 'Fill out complete form and submit request' 
+                      {language === 'en'
+                        ? 'Fill out complete form and submit request'
                         : 'Mengisi formulir lengkap dan menekan tombol Submit'
                       }
                     </p>
                   </div>
                 </AnimatedSection>
-                
+
                 {/* Step 3 */}
-                <AnimatedSection 
-                  className="w-full md:w-1/2 lg:w-1/5 px-4 mb-6 md:mb-0" 
-                  animation="slideUp" 
+                <AnimatedSection
+                  className="w-full md:w-1/2 lg:w-1/5 px-4 mb-6 md:mb-0"
+                  animation="slideUp"
                   delay={0.3}
                 >
                   <div className="bg-white rounded-xl shadow-md p-6 text-center h-full flex flex-col items-center hover-card">
@@ -709,18 +733,18 @@ const LayananAdministrasiPage = () => {
                       {language === 'en' ? 'Form Verification by Staff' : 'Pemeriksaan Formulir oleh Tendik'}
                     </h3>
                     <p className="text-gray-600 text-sm">
-                      {language === 'en' 
-                        ? 'Staff checks document completeness and data accuracy' 
+                      {language === 'en'
+                        ? 'Staff checks document completeness and data accuracy'
                         : 'Tendik memeriksa kelengkapan dan keabsahan data'
                       }
                     </p>
                   </div>
                 </AnimatedSection>
-                
+
                 {/* Step 4 */}
-                <AnimatedSection 
-                  className="w-full md:w-1/2 lg:w-1/5 px-4 mb-6 md:mb-0" 
-                  animation="slideUp" 
+                <AnimatedSection
+                  className="w-full md:w-1/2 lg:w-1/5 px-4 mb-6 md:mb-0"
+                  animation="slideUp"
                   delay={0.4}
                 >
                   <div className="bg-white rounded-xl shadow-md p-6 text-center h-full flex flex-col items-center hover-card">
@@ -729,18 +753,18 @@ const LayananAdministrasiPage = () => {
                       {language === 'en' ? 'Verification Decision' : 'Keputusan Verifikasi'}
                     </h3>
                     <p className="text-gray-600 text-sm">
-                      {language === 'en' 
-                        ? 'Document approved or requires revision' 
+                      {language === 'en'
+                        ? 'Document approved or requires revision'
                         : 'Dokumen disetujui atau perlu perbaikan'
                       }
                     </p>
                   </div>
                 </AnimatedSection>
-                
+
                 {/* Step 5 */}
-                <AnimatedSection 
-                  className="w-full md:w-1/2 lg:w-1/5 px-4" 
-                  animation="slideUp" 
+                <AnimatedSection
+                  className="w-full md:w-1/2 lg:w-1/5 px-4"
+                  animation="slideUp"
                   delay={0.5}
                 >
                   <div className="bg-white rounded-xl shadow-md p-6 text-center h-full flex flex-col items-center hover-card">
@@ -749,8 +773,8 @@ const LayananAdministrasiPage = () => {
                       {language === 'en' ? 'Update Request (Optional)' : 'Permintaan Update (Opsional)'}
                     </h3>
                     <p className="text-gray-600 text-sm">
-                      {language === 'en' 
-                        ? 'Contact via WhatsApp Business if no update within 2x24 hours' 
+                      {language === 'en'
+                        ? 'Contact via WhatsApp Business if no update within 2x24 hours'
                         : 'Jika tidak ada update dalam 2×24 jam kerja, hubungi via WhatsApp Business'
                       }
                     </p>
@@ -769,8 +793,8 @@ const LayananAdministrasiPage = () => {
                       </h4>
                     </div>
                     <p className="text-red-700 text-sm mt-2">
-                      {language === 'en' 
-                        ? 'Status: Needs Improvement - Please resubmit form' 
+                      {language === 'en'
+                        ? 'Status: Needs Improvement - Please resubmit form'
                         : 'Status: Perlu Perbaikan - Kembali mengisi formulir'
                       }
                     </p>
@@ -786,8 +810,8 @@ const LayananAdministrasiPage = () => {
                       </h4>
                     </div>
                     <p className="text-green-700 text-sm mt-2">
-                      {language === 'en' 
-                        ? 'Status: Completed - Document can be viewed in Document Tracking Menu' 
+                      {language === 'en'
+                        ? 'Status: Completed - Document can be viewed in Document Tracking Menu'
                         : 'Status: Selesai - Dokumen dapat dilihat di Menu Tracking Dokumen'
                       }
                     </p>
@@ -796,7 +820,7 @@ const LayananAdministrasiPage = () => {
               </div>
             </div>
           </div>
-          
+
           {/* Petunjuk Tambahan */}
           <AnimatedSection animation="fadeIn" delay={0.7} className="mt-12">
             <div className="bg-gray-50 rounded-xl p-6 max-w-3xl mx-auto">
@@ -805,17 +829,17 @@ const LayananAdministrasiPage = () => {
               </h4>
               <ul className="list-disc pl-6 space-y-2 text-gray-700">
                 <li>
-                  {language === 'en' 
+                  {language === 'en'
                     ? 'For document status inquiries, you can contact FSTI admin via WhatsApp Business within 24 hours after submission'
                     : 'Untuk menanyakan status dokumen, Anda dapat menghubungi admin FSTI melalui WhatsApp Business dalam waktu 24 jam setelah pengajuan'}
                 </li>
                 <li>
-                  {language === 'en' 
+                  {language === 'en'
                     ? 'If a revision is required, you can check it through the document tracking system.'
                     : 'Jika diperlukan revisi, Anda dapat memeriksanya melalui sistem tracking dokumen'}
                 </li>
                 <li>
-                  {language === 'en' 
+                  {language === 'en'
                     ? 'Please ensure all required documents are complete to avoid processing delays'
                     : 'Pastikan semua dokumen yang diperlukan lengkap untuk menghindari keterlambatan pemrosesan'}
                 </li>
@@ -834,42 +858,42 @@ const LayananAdministrasiPage = () => {
               {t('services.needHelp.description')}
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <Button 
-                href="mailto:fsti@itk.ac.id" 
+              <Button
+                href="mailto:fsti@itk.ac.id"
                 variant="primary"
-                icon={<svg 
-                  xmlns="http://www.w3.org/2000/svg" 
-                  className="h-5 w-5" 
-                  fill="none" 
-                  viewBox="0 0 24 24" 
+                icon={<svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
                   stroke="currentColor"
                 >
-                  <path 
-                    strokeLinecap="round" 
-                    strokeLinejoin="round" 
-                    strokeWidth={2} 
-                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" 
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
                   />
                 </svg>}
                 animate
               >
                 {t('common.email')}
               </Button>
-              <Button 
-                href="#kontak" 
+              <Button
+                href="#kontak"
                 variant="outline"
-                icon={<svg 
-                  xmlns="http://www.w3.org/2000/svg" 
-                  className="h-5 w-5" 
-                  fill="none" 
-                  viewBox="0 0 24 24" 
+                icon={<svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
                   stroke="currentColor"
                 >
-                  <path 
-                    strokeLinecap="round" 
-                    strokeLinejoin="round" 
-                    strokeWidth={2} 
-                    d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" 
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
                   />
                 </svg>}
                 animate
@@ -880,7 +904,7 @@ const LayananAdministrasiPage = () => {
           </AnimatedSection>
         </div>
       </section>
-    </MainLayout>
+    </MainLayout >
   );
 };
 
