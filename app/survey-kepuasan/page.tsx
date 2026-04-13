@@ -4,7 +4,7 @@ import { useState } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import AnimatedSection from '@/components/ui/AnimatedSection';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
-import { GraduationCap, Users, ShieldCheck, Clock, MessageCircle, ExternalLink } from 'lucide-react';
+import { GraduationCap, Users, ShieldCheck, Clock, MessageCircle, ExternalLink, Handshake, Building2 } from 'lucide-react';
 
 const SURVEY_LINKS = {
   dosenTendik: {
@@ -22,6 +22,22 @@ const SURVEY_LINKS = {
       'https://docs.google.com/forms/d/e/1FAIpQLSeTQFzGhGqFMDlKHL8qKzDuIrl04HTZWduzK60clBEK9y7Q7g/viewform?usp=header',
     label: { id: 'Mahasiswa', en: 'Student' },
     icon: GraduationCap,
+  },
+  mitraKinerja: {
+    embedUrl:
+      'https://docs.google.com/forms/d/e/1FAIpQLSeNngVVYpeDWgEarAmpB1qVf8-kfD-BLyS4k01WBh2TJeUCkg/viewform?embedded=true',
+    directUrl:
+      'https://docs.google.com/forms/d/e/1FAIpQLSeNngVVYpeDWgEarAmpB1qVf8-kfD-BLyS4k01WBh2TJeUCkg/viewform',
+    label: { id: 'Mitra – Kinerja Mahasiswa KP', en: 'Partner – Student Internship' },
+    icon: Handshake,
+  },
+  mitraPengguna: {
+    embedUrl:
+      'https://docs.google.com/forms/d/e/1FAIpQLScjIZsD5xG_-v9iinQY8vKVuCYFBencPTKftccY9Traqfm-iA/viewform?embedded=true',
+    directUrl:
+      'https://docs.google.com/forms/d/e/1FAIpQLScjIZsD5xG_-v9iinQY8vKVuCYFBencPTKftccY9Traqfm-iA/viewform',
+    label: { id: 'Mitra – Pengguna FSTI ITK', en: 'Partner – FSTI ITK Users' },
+    icon: Building2,
   },
 };
 
