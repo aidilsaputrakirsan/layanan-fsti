@@ -245,7 +245,8 @@ const LayananAdministrasiPage = () => {
           title: language === 'en' ? "Public Relations Services" : "Layanan Humas",
           items: [
             { text: language === 'en' ? "Official FSTI Instagram Feed Upload Request" : "Permohonan Upload Feed Instagram Official FSTI", url: "http://s.itk.ac.id/fstiprestasi" },
-            { text: language === 'en' ? "Official FSTI TikTok Content Upload Request" : "Permohonan Upload Konten Tiktok Official FSTI", url: "https://docs.google.com/forms/d/e/1FAIpQLSf9wlLtNU6pHNfpO20SdFOxUmCpDVBo9CtdVrWwJ1QZX03-Vg/viewform" }
+            { text: language === 'en' ? "Official FSTI TikTok Content Upload Request" : "Permohonan Upload Konten Tiktok Official FSTI", url: "https://docs.google.com/forms/d/e/1FAIpQLSf9wlLtNU6pHNfpO20SdFOxUmCpDVBo9CtdVrWwJ1QZX03-Vg/viewform" },
+            { text: language === 'en' ? "FSTI ITK Profile Website Content Upload Request" : "Permohonan Upload Konten Website Profil FSTI ITK", url: "https://docs.google.com/forms/d/e/1FAIpQLScljlNNYgOFA3pAeGocG1cXtZ1O9N9zrQ8_RKi5-QsNEtRZNA/viewform" }
           ]
         }
       ],
