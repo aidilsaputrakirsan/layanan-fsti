@@ -119,23 +119,23 @@ const TentangFSTIPage = () => {
       : "Pada tahun 2029, Fakultas Sains dan Teknologi Informasi (FSTI) ITK akan menjadi pusat keunggulan akademik dan inovasi, menghasilkan lulusan yang kompeten, adaptif, berdaya saing global, dan karya-karya dalam bidang sains dan teknologi informasi yang berdampak bagi kemajuan Kalimantan dan Indonesia",
 
     misi: language === 'en' ? [
-      "Quality Education",
-      "Leading Research and Innovation",
-      "Collaborative Ecosystem",
-      "Synergy",
-      "Optimal Governance",
-      "Civic Potential Activation",
-      "Prime Service System",
-      "Internationalization"
+      { label: "Quality Education", desc: "Delivering quality higher education to produce competent, adaptive, and globally competitive graduates with professional character and integrity." },
+      { label: "Leading Research and Innovation", desc: "Developing leading research and innovation in science and information technology oriented toward solving real-world problems and contributing to the advancement of knowledge as well as the needs of society and industry." },
+      { label: "Collaborative Ecosystem", desc: "Building and strengthening a collaborative ecosystem through cross-program and cross-department activities and cooperation with other units at ITK." },
+      { label: "Synergy", desc: "Realizing effective synergy with stakeholders to enhance the relevance of the tridharma of higher education and to support regional and national development." },
+      { label: "Optimal Governance", desc: "Implementing optimal faculty governance with integrity, upholding the principles of accountability, transparency, effectiveness, and efficiency across all academic and non-academic processes." },
+      { label: "Civic Potential Activation", desc: "Optimizing the activation of the academic community's potential through human resource capacity building, achievement development, and the creation of a conducive academic environment." },
+      { label: "Prime Service System", desc: "Providing a responsive, inclusive, and technology-based prime service system to support the satisfaction and success of the academic community and stakeholders." },
+      { label: "Internationalization", desc: "Driving faculty internationalization through improved quality of education, research, global networks, and international recognition across various aspects of the tridharma of higher education." }
     ] : [
-      "Pendidikan Berkualitas",
-      "Riset dan Inovasi Terdepan",
-      "Ekosistem Kolaboratif",
-      "Sinergi",
-      "Tata Kelola Optimal",
-      "Aktivasi Potensi Civitas",
-      "Sistem Layanan Prima",
-      "Internasionalisasi"
+      { label: "Pendidikan Berkualitas", desc: "Menyelenggarakan pendidikan tinggi yang berkualitas untuk menghasilkan lulusan yang kompeten, adaptif, berdaya saing global, serta memiliki karakter profesional dan berintegritas." },
+      { label: "Riset dan Inovasi Terdepan", desc: "Mengembangkan riset dan inovasi terdepan di bidang sains dan teknologi informasi yang berorientasi pada pemecahan masalah nyata dan memberikan kontribusi bagi pengembangan ilmu pengetahuan serta kebutuhan masyarakat dan industri." },
+      { label: "Ekosistem Kolaboratif", desc: "Membangun dan memperkuat ekosistem kolaboratif melalui kegiatan lintas program studi dan jurusan serta bekerjasama dengan unit lain di ITK." },
+      { label: "Sinergi", desc: "Mewujudkan sinergi yang efektif dengan pemangku kepentingan dalam rangka meningkatkan relevansi tridharma perguruan tinggi serta mendukung pembangunan daerah dan nasional." },
+      { label: "Tata Kelola Optimal", desc: "Menerapkan tata kelola fakultas yang optimal dan berintegritas dengan menjunjung prinsip akuntabilitas, transparansi, efektivitas, dan efisiensi dalam seluruh proses penyelenggaraan akademik dan non-akademik." },
+      { label: "Aktivasi Potensi Civitas", desc: "Mengoptimalkan aktivasi potensi sivitas akademika melalui pengembangan kapasitas sumber daya manusia, pembinaan prestasi, serta penciptaan lingkungan akademik yang kondusif." },
+      { label: "Sistem Layanan Prima", desc: "Menyelenggarakan sistem layanan prima yang responsif, inklusif, dan berbasis teknologi untuk mendukung kepuasan dan keberhasilan sivitas akademika serta pemangku kepentingan." },
+      { label: "Internasionalisasi", desc: "Mendorong internasionalisasi fakultas melalui peningkatan mutu pendidikan, riset, jejaring global, dan pengakuan internasional pada berbagai aspek penyelenggaraan tridharma perguruan tinggi." }
     ]
   };
 
@@ -531,13 +531,16 @@ const TentangFSTIPage = () => {
                       {language === 'en' ? 'Mission: Excellence' : 'Misi: Prestasi'}
                     </h3>
                   </div>
-                  <div className="grid grid-cols-1 gap-3">
+                  <div className="grid grid-cols-1 gap-4">
                     {visiMisi.misi.map((item, index) => (
-                      <div key={index} className="flex items-center">
-                        <div className="w-6 h-6 bg-primary-100 text-primary-600 rounded-full flex items-center justify-center text-sm font-bold mr-3 shadow-sm">
+                      <div key={index} className="flex items-start">
+                        <div className="w-6 h-6 bg-primary-100 text-primary-600 rounded-full flex items-center justify-center text-sm font-bold mr-3 shadow-sm flex-shrink-0 mt-0.5">
                           {index + 1}
                         </div>
-                        <span className="text-gray-700">{highlightFirstLetter(item)}</span>
+                        <div>
+                          <p className="text-gray-800 font-semibold leading-snug">{highlightFirstLetter(item.label)}</p>
+                          <p className="text-gray-600 text-sm leading-relaxed mt-1">{item.desc}</p>
+                        </div>
                       </div>
                     ))}
                   </div>
