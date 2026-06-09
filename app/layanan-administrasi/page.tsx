@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import MainLayout from '@/components/layout/MainLayout';
 import AnimatedSection from '@/components/ui/AnimatedSection';
 import Button from '@/components/ui/Button';
@@ -41,6 +42,20 @@ const LayananAdministrasiPage = () => {
   const [filter, setFilter] = useState('all');
   const [expandedAccordions, setExpandedAccordions] = useState<Record<string, boolean>>({});
   const { t, language } = useLanguage();
+
+  // Banner Zona Integritas (carousel otomatis)
+  const ziBanners = [
+    { src: "/images/zi.png", alt: language === 'en' ? "You are entering an Integrity Zone — students are prohibited from giving gifts to lecturers, staff, supervisors, examiners, or study program management" : "Anda memasuki Zona Integritas — mahasiswa dilarang memberi hadiah/bingkisan kepada Dosen, Tendik, Pembimbing, Penguji, dan Manajemen Program Studi" },
+    { src: "/images/zi2.png", alt: language === 'en' ? "All our services are free — report to Fsti@itk.ac.id if there is any charge" : "Semua layanan kami gratis — laporkan ke Fsti@itk.ac.id jika ada pungutan" },
+  ];
+  const [currentBanner, setCurrentBanner] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentBanner(prev => (prev + 1) % ziBanners.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [ziBanners.length]);
 
   const toggleAccordion = (id: string) => {
     setExpandedAccordions(prev => ({
@@ -117,6 +132,12 @@ const LayananAdministrasiPage = () => {
             { text: language === 'en' ? "Final Project Defense Registration" : "Pendaftaran Sidang Tugas Akhir (TA)", url: "https://forms.gle/XtPfYYyuCJgPkgW68" },
             { text: language === 'en' ? "Request for Final Project Defense Certificate" : "Permohonan Surat Keterangan Sidang TA", url: "https://docs.google.com/forms/d/e/1FAIpQLSfGMptnRk3vrXLxLAEZGbqrCp5WvwF7POlhAT5rMALPew30Nw/viewform" },
             { text: language === 'en' ? "Collection of Final Project Document Receipt" : "Pengumpulan Bukti Tanda Terima Berkas Tugas Akhir", url: "https://docs.google.com/forms/d/e/1FAIpQLSe5apOobV_VL4CJKSG0HtMLFsclxktmt7sNl0hyRllxq-xfKw/viewform?usp=preview" }
+          ]
+        },
+        {
+          title: language === 'en' ? "MBKM" : "MBKM",
+          items: [
+            { text: language === 'en' ? "FSTI MBKM Final Report / Results Seminar Registration" : "Pendaftaran Seminar Hasil / Laporan Akhir MBKM FSTI", url: "https://forms.gle/ogruDmFg6yiQtFLC6" }
           ]
         }
       ],
@@ -465,6 +486,40 @@ const LayananAdministrasiPage = () => {
 
       {/* Divider: Hero → Daftar Layanan */}
       <SectionDivider type="slant" fillColor="#f8fafc" bgColor="transparent" />
+
+      {/* Banner Zona Integritas (Carousel) */}
+      <section className="relative bg-[#f8fafc] pt-4 pb-10">
+        <div className="container mx-auto px-4">
+          <AnimatedSection animation="fadeIn">
+            <div className="max-w-4xl mx-auto">
+              <div className="relative w-full aspect-[16/9] rounded-xl overflow-hidden shadow-lg bg-white">
+                {ziBanners.map((banner, index) => (
+                  <Image
+                    key={banner.src}
+                    src={banner.src}
+                    alt={banner.alt}
+                    fill
+                    priority={index === 0}
+                    sizes="(max-width: 896px) 100vw, 896px"
+                    className={`object-contain transition-opacity duration-700 ease-in-out ${index === currentBanner ? 'opacity-100' : 'opacity-0'}`}
+                  />
+                ))}
+              </div>
+              {/* Indikator / navigasi */}
+              <div className="flex justify-center gap-2 mt-4">
+                {ziBanners.map((banner, index) => (
+                  <button
+                    key={banner.src}
+                    onClick={() => setCurrentBanner(index)}
+                    aria-label={`Banner ${index + 1}`}
+                    className={`h-2.5 rounded-full transition-all duration-300 ${index === currentBanner ? 'w-6 bg-primary-600' : 'w-2.5 bg-gray-300 hover:bg-gray-400'}`}
+                  />
+                ))}
+              </div>
+            </div>
+          </AnimatedSection>
+        </div>
+      </section>
 
       {/* Daftar Layanan Section */}
       <section className="relative py-16 bg-white/80 backdrop-blur-sm">

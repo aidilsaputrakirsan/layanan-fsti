@@ -180,6 +180,12 @@ const TentangFSTIPage = () => {
         website: "https://bisnisdigital.itk.ac.id/" // Tambahkan website URL
       },
       {
+        name: "Teknik Biomedis",
+        akreditasi: language === 'en' ? "In Accreditation Process" : "Proses Akreditasi",
+        gelar: "S.Bmd.",
+        website: "" // Belum tersedia
+      },
+      {
         name: "Magister Manajemen Teknologi",
         akreditasi: language === 'en' ? "Good" : "Baik",
         gelar: "M.MT.",
@@ -397,7 +403,7 @@ const TentangFSTIPage = () => {
                   <div className="text-gray-600 text-xs md:text-sm">{language === 'en' ? 'Departments' : 'Jurusan'}</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl md:text-3xl font-bold text-primary-600">8</div>
+                  <div className="text-2xl md:text-3xl font-bold text-primary-600">9</div>
                   <div className="text-gray-600 text-xs md:text-sm">{language === 'en' ? 'S1 Programs' : 'Prodi S1'}</div>
                 </div>
                 <div className="text-center">
@@ -600,15 +606,21 @@ const TentangFSTIPage = () => {
                           </div>
 
                           <div className="mt-4 pt-4 border-t border-primary-200/50">
-                            <a
-                              href={prodi.website}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-primary-700 hover:text-primary-900 text-sm font-medium flex items-center transition-colors bg-white/50 px-3 py-1.5 rounded-md w-fit"
-                            >
-                              {language === 'en' ? 'Visit Website' : 'Lihat Website'}
-                              <ExternalLink className="w-4 h-4 ml-1" />
-                            </a>
+                            {prodi.website ? (
+                              <a
+                                href={prodi.website}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-primary-700 hover:text-primary-900 text-sm font-medium flex items-center transition-colors bg-white/50 px-3 py-1.5 rounded-md w-fit"
+                              >
+                                {language === 'en' ? 'Visit Website' : 'Lihat Website'}
+                                <ExternalLink className="w-4 h-4 ml-1" />
+                              </a>
+                            ) : (
+                              <span className="text-gray-500 text-sm font-medium flex items-center bg-white/50 px-3 py-1.5 rounded-md w-fit">
+                                {language === 'en' ? 'Website coming soon' : 'Website segera hadir'}
+                              </span>
+                            )}
                           </div>
                         </div>
                       </div>

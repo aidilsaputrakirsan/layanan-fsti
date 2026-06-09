@@ -7,8 +7,27 @@ import { useLanguage } from '@/lib/i18n/LanguageContext';
 import SectionDivider from '@/components/ui/SectionDivider';
 import { Search, Download, ExternalLink, FileText, TrendingUp, FileType } from 'lucide-react';
 
+// Encode URL file (menangani spasi & kurung siku pada nama file)
+const encodeFileUrl = (url: string) =>
+  encodeURI(url).replace(/\[/g, '%5B').replace(/\]/g, '%5D');
+
+type LocalizedText = { id: string; en: string };
+
+interface DocItem {
+  id: string;
+  title: LocalizedText;
+  description: LocalizedText;
+  fileName?: string;
+  fileUrl: string;
+  coverImage: string;
+  fileSize?: string;
+  downloads?: number;
+  badge?: string;
+  files?: { label: LocalizedText; fileUrl: string }[];
+}
+
 // Daftar dokumen peraturan dan kebijakan
-const documentsList = [
+const documentsList: DocItem[] = [
   {
     id: 'akademik',
     title: {
@@ -67,11 +86,21 @@ const documentsList = [
       id: 'Panduan pelaksanaan dan penulisan Tugas Akhir mahasiswa',
       en: 'Guidelines for implementation and writing of student Final Projects',
     },
-    fileName: 'TUGAS-AKHIR.pdf',
-    fileUrl: '/file/TUGAS-AKHIR.pdf',
+    fileUrl: '/file/A-Panduan Tugas Akhir/[2025] A PEDOMAN PELAKSANAAN TUGAS AKHIR ITK.pdf',
     coverImage: '/images/docs/tugas-akhir.jpg',
-    fileSize: '2.3 MB',
+    fileSize: 'PDF',
     downloads: 5123,
+    badge: 'New',
+    files: [
+      {
+        label: { id: 'Pedoman Pelaksanaan', en: 'Implementation Guidelines' },
+        fileUrl: '/file/A-Panduan Tugas Akhir/[2025] A PEDOMAN PELAKSANAAN TUGAS AKHIR ITK.pdf',
+      },
+      {
+        label: { id: 'Panduan Kepenulisan', en: 'Writing Guidelines' },
+        fileUrl: '/file/A-Panduan Tugas Akhir/[2025] B PANDUAN KEPENULISAN TUGAS AKHIR ITK.pdf',
+      },
+    ],
   },
   {
     id: 'magang',
@@ -99,11 +128,11 @@ const documentsList = [
       id: 'Panduan pelaksanaan dan pelaporan kegiatan Kerja Praktik',
       en: 'Guidelines for implementation and reporting of Practical Work activities',
     },
-    fileName: 'KERJA-PRAKTIK.pdf',
-    fileUrl: '/file/KERJA-PRAKTIK.pdf',
+    fileUrl: '/file/B-Panduan Kerja Praktik/[2025] A PANDUAN KERJA PRAKTIK ITK.pdf',
     coverImage: '/images/docs/kerja-praktik.jpg',
-    fileSize: '2.0 MB',
+    fileSize: 'PDF',
     downloads: 2934,
+    badge: 'New',
   },
   {
     id: 'mbkm',
@@ -164,8 +193,7 @@ const documentsList = [
       id: 'Panduan pembelajaran di luar program studi untuk memperluas wawasan dan kompetensi mahasiswa',
       en: 'Guidelines for learning outside the study program to broaden student insights and competencies',
     },
-    fileName: 'PEMBELAJARAN-DILUAR-PRODI.pdf',
-    fileUrl: '/file/PEMBELAJARAN-DILUAR-PRODI.pdf',
+    fileUrl: '/file/C-Panduan Pembelajaran di Luar Program Studi/[2025] 1 BUKU PANDUAN PEMBELAJARAN DI LUAR PROGRAM STUDI INSTITUT TEKNOLOGI KALIMANTAN.pdf',
     coverImage: '/images/docs/pembelajaran-diluar-prodi.jpg',
     fileSize: '2.2 MB',
     downloads: 156,
@@ -181,8 +209,7 @@ const documentsList = [
       id: 'Panduan pelaksanaan magang riset untuk mahasiswa yang ingin mengembangkan kemampuan penelitian',
       en: 'Guidelines for research internships for students who want to develop research skills',
     },
-    fileName: 'MAGANG-RISET.pdf',
-    fileUrl: '/file/MAGANG-RISET.pdf',
+    fileUrl: '/file/C-Panduan Pembelajaran di Luar Program Studi/[2025] 2 BUKU PANDUAN MAGANG RISET INSTITUT TEKNOLOGI KALIMANTAN.pdf',
     coverImage: '/images/docs/magang-riset.jpg',
     fileSize: '1.9 MB',
     downloads: 203,
@@ -198,8 +225,7 @@ const documentsList = [
       id: 'Panduan pelaksanaan KKN Tematik sebagai bentuk pengabdian kepada masyarakat',
       en: 'Guidelines for implementing Thematic Community Service as a form of service to the community',
     },
-    fileName: 'KKN-TEMATIK.pdf',
-    fileUrl: '/file/KKN-TEMATIK.pdf',
+    fileUrl: '/file/C-Panduan Pembelajaran di Luar Program Studi/[2025] 3 BUKU PANDUAN KULIAH KERJA NYATA TEMATIK INSTITUT TEKNOLOGI KALIMANTAN.pdf',
     coverImage: '/images/docs/kkn-tematik.jpg',
     fileSize: '2.4 MB',
     downloads: 178,
@@ -215,8 +241,7 @@ const documentsList = [
       id: 'Panduan program pertukaran mahasiswa untuk pengalaman belajar di institusi lain',
       en: 'Guidelines for student exchange programs for learning experiences at other institutions',
     },
-    fileName: 'PERTUKARAN-MAHASISWA.pdf',
-    fileUrl: '/file/PERTUKARAN-MAHASISWA.pdf',
+    fileUrl: '/file/C-Panduan Pembelajaran di Luar Program Studi/[2025] 4 BUKU PANDUAN PERTUKARAN MAHASISWA INSTITUT TEKNOLOGI KALIMANTAN.pdf',
     coverImage: '/images/docs/pertukaran-mahasiswa.jpg',
     fileSize: '2.1 MB',
     downloads: 234,
@@ -232,8 +257,7 @@ const documentsList = [
       id: 'Panduan kegiatan kewirausahaan untuk mengembangkan jiwa entrepreneur mahasiswa',
       en: 'Entrepreneurship guidelines to develop student entrepreneurial spirit',
     },
-    fileName: 'KEWIRAUSAHAAN.pdf',
-    fileUrl: '/file/KEWIRAUSAHAAN.pdf',
+    fileUrl: '/file/C-Panduan Pembelajaran di Luar Program Studi/[2025] 5 BUKU PANDUAN KEWIRAUSAHAAN INSTITUT TEKNOLOGI KALIMANTAN.pdf',
     coverImage: '/images/docs/kewirausahaan.jpg',
     fileSize: '1.8 MB',
     downloads: 289,
@@ -249,8 +273,7 @@ const documentsList = [
       id: 'Panduan magang keprofesian untuk pengalaman kerja di bidang profesi tertentu',
       en: 'Professional internship guidelines for work experience in specific professional fields',
     },
-    fileName: 'MAGANG-KEPROFESIAN.pdf',
-    fileUrl: '/file/MAGANG-KEPROFESIAN.pdf',
+    fileUrl: '/file/C-Panduan Pembelajaran di Luar Program Studi/[2025] 6 BUKU PANDUAN MAGANG KEPROFESIAN INSTITUT TEKNOLOGI KALIMANTAN.pdf',
     coverImage: '/images/docs/magang-keprofesian.jpg',
     fileSize: '2.0 MB',
     downloads: 167,
@@ -266,8 +289,7 @@ const documentsList = [
       id: 'Panduan proyek kemanusiaan untuk berkontribusi dalam isu-isu sosial dan kemanusiaan',
       en: 'Humanitarian project guidelines to contribute to social and humanitarian issues',
     },
-    fileName: 'PROYEK-KEMANUSIAAN.pdf',
-    fileUrl: '/file/PROYEK-KEMANUSIAAN.pdf',
+    fileUrl: '/file/C-Panduan Pembelajaran di Luar Program Studi/[2025] 7 BUKU PANDUAN PROYEK KEMANUSIAAN INSTITUT TEKNOLOGI KALIMANTAN.pdf',
     coverImage: '/images/docs/proyek-kemanusiaan.jpg',
     fileSize: '2.3 MB',
     downloads: 145,
@@ -283,11 +305,26 @@ const documentsList = [
       id: 'Panduan studi proyek independen untuk mengembangkan proyek secara mandiri',
       en: 'Independent project study guidelines to develop projects independently',
     },
-    fileName: 'STUDI-PROYEK-INDEPENDEN.pdf',
-    fileUrl: '/file/STUDI-PROYEK-INDEPENDEN.pdf',
+    fileUrl: '/file/C-Panduan Pembelajaran di Luar Program Studi/[2025] 8 BUKU PANDUAN STUDI PROYEK INDEPENDEN INSTITUT TEKNOLOGI KALIMANTAN.pdf',
     coverImage: '/images/docs/studi-proyek-independen.jpg',
     fileSize: '2.2 MB',
     downloads: 198,
+    badge: 'New',
+  },
+  {
+    id: 'inovasiSosial',
+    title: {
+      id: 'Inovasi Sosial',
+      en: 'Social Innovation',
+    },
+    description: {
+      id: 'Panduan inovasi sosial untuk mendorong kontribusi mahasiswa terhadap pemecahan masalah di masyarakat',
+      en: 'Social innovation guidelines to encourage student contributions to solving problems in society',
+    },
+    fileUrl: '/file/D-Panduan Inovasi Sosial/[2026] PANDUAN INOVASI SOSIAL TAHUN 2026 INSTITUT TEKNOLOGI KAILIMANTAN.pdf',
+    coverImage: '/images/docs/pertukaran-mahasiswa.jpg',
+    fileSize: 'PDF',
+    downloads: 0,
     badge: 'New',
   },
 ];
@@ -429,23 +466,40 @@ const PeraturanKebijakanPage = () => {
                           </div>
 
                           {/* Actions */}
-                          <div className="flex gap-2 mt-auto">
-                            <button
-                              onClick={() => window.open(doc.fileUrl, '_blank')}
-                              className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-primary-600 to-purple-600 text-white hover:from-primary-700 hover:to-purple-700 transition-all shadow-md hover:shadow-lg"
-                            >
-                              <Download className="h-4 w-4" />
-                              <span className="text-sm font-medium">
-                                {language === 'id' ? 'Unduh' : 'Download'}
-                              </span>
-                            </button>
-                            <button
-                              onClick={() => window.open(doc.fileUrl, '_blank')}
-                              className="p-2.5 rounded-xl border-2 border-gray-200 bg-white hover:border-primary-500 hover:bg-primary-50 transition-all"
-                            >
-                              <ExternalLink className="h-4 w-4 text-gray-600" />
-                            </button>
-                          </div>
+                          {doc.files && doc.files.length > 0 ? (
+                            <div className="flex flex-col gap-2 mt-auto">
+                              {doc.files.map((file, fileIdx) => (
+                                <button
+                                  key={fileIdx}
+                                  onClick={() => window.open(encodeFileUrl(file.fileUrl), '_blank')}
+                                  className="flex items-center justify-between gap-2 px-4 py-2.5 rounded-xl border-2 border-gray-200 bg-white hover:border-primary-500 hover:bg-primary-50 transition-all text-left group/file"
+                                >
+                                  <span className="text-sm font-medium text-gray-700 group-hover/file:text-primary-700 line-clamp-1">
+                                    {file.label[language as 'id' | 'en']}
+                                  </span>
+                                  <Download className="h-4 w-4 text-primary-600 flex-shrink-0" />
+                                </button>
+                              ))}
+                            </div>
+                          ) : (
+                            <div className="flex gap-2 mt-auto">
+                              <button
+                                onClick={() => window.open(encodeFileUrl(doc.fileUrl), '_blank')}
+                                className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-primary-600 to-purple-600 text-white hover:from-primary-700 hover:to-purple-700 transition-all shadow-md hover:shadow-lg"
+                              >
+                                <Download className="h-4 w-4" />
+                                <span className="text-sm font-medium">
+                                  {language === 'id' ? 'Unduh' : 'Download'}
+                                </span>
+                              </button>
+                              <button
+                                onClick={() => window.open(encodeFileUrl(doc.fileUrl), '_blank')}
+                                className="p-2.5 rounded-xl border-2 border-gray-200 bg-white hover:border-primary-500 hover:bg-primary-50 transition-all"
+                              >
+                                <ExternalLink className="h-4 w-4 text-gray-600" />
+                              </button>
+                            </div>
+                          )}
                         </div>
                       </div>
                     </div>
