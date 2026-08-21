@@ -21,11 +21,11 @@ export default function NotFound() {
           <div className="relative mb-8">
             <h1 className="text-9xl font-display font-bold text-primary-600 opacity-20">404</h1>
             <div className="absolute inset-0 flex items-center justify-center">
-              <h2 className="text-3xl font-display font-bold text-gray-800">Page Not Found</h2>
+              <h2 className="text-3xl font-display font-bold text-tinta-900">Page Not Found</h2>
             </div>
           </div>
           
-          <p className="text-gray-600 mb-12">
+          <p className="text-tinta-500 mb-12">
             The page you are looking for could not be found. It may have been moved, 
             deleted, or the URL you entered is incorrect.
           </p>

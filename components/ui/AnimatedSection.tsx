@@ -17,15 +17,15 @@ const animations = {
     visible: { opacity: 1 }
   },
   slideUp: {
-    hidden: { opacity: 0, y: 50 },
+    hidden: { opacity: 0, y: 16 },
     visible: { opacity: 1, y: 0 }
   },
   slideDown: {
-    hidden: { opacity: 0, y: -50 },
+    hidden: { opacity: 0, y: -16 },
     visible: { opacity: 1, y: 0 }
   },
   slideInRight: {
-    hidden: { opacity: 0, x: -50 },
+    hidden: { opacity: 0, x: -16 },
     visible: { opacity: 1, x: 0 }
   },
   none: {

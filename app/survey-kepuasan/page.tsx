@@ -1,10 +1,11 @@
-"use client";
+'use client';
 
 import { useState } from 'react';
+import { Building2, ExternalLink, GraduationCap, Handshake, Users } from 'lucide-react';
+
 import MainLayout from '@/components/layout/MainLayout';
-import AnimatedSection from '@/components/ui/AnimatedSection';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
-import { GraduationCap, Users, ShieldCheck, Clock, MessageCircle, ExternalLink, Handshake, Building2 } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 const SURVEY_LINKS = {
   dosenTendik: {
@@ -41,117 +42,108 @@ const SURVEY_LINKS = {
   },
 };
 
-const FEATURES = [
-  {
-    icon: ShieldCheck,
-    label: { id: 'Layanan Berkualitas', en: 'Quality Service' },
-  },
-  {
-    icon: Clock,
-    label: { id: 'Respon Cepat', en: 'Fast Response' },
-  },
-  {
-    icon: MessageCircle,
-    label: { id: 'Pendapat Anda Penting', en: 'Your Opinion Matters' },
-  },
-];
-
-type TabKey = keyof typeof SURVEY_LINKS;
+type KunciTab = keyof typeof SURVEY_LINKS;
 
 export default function SurveyKepuasanPage() {
   const { language } = useLanguage();
-  const [activeTab, setActiveTab] = useState<TabKey>('dosenTendik');
+  const bahasa = language === 'en' ? 'en' : 'id';
+  const [tabAktif, setTabAktif] = useState<KunciTab>('mahasiswa');
 
-  const tabs = Object.entries(SURVEY_LINKS) as [TabKey, (typeof SURVEY_LINKS)[TabKey]][];
-  const lang = language as 'id' | 'en';
+  const tabs = Object.entries(SURVEY_LINKS) as [KunciTab, (typeof SURVEY_LINKS)[KunciTab]][];
+  const aktif = SURVEY_LINKS[tabAktif];
 
   return (
     <MainLayout>
-      <AnimatedSection>
-        <div className="max-w-4xl mx-auto px-4 py-10">
+      {/* ══ PITA ZONA ══════════════════════════════════════════════════════ */}
+      <section className="pita-zona pb-9 pt-10 sm:pb-11 sm:pt-14">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+          <p className="legenda text-arah-400">
+            {bahasa === 'en'
+              ? 'Faculty of Science and Information Technology · ITK'
+              : 'Fakultas Sains dan Teknologi Informasi · ITK'}
+          </p>
+          <h1 className="mt-3 max-w-[20ch] font-display text-[2rem] font-extrabold leading-[1.05] tracking-tight text-white sm:text-[2.5rem] lg:text-[3rem]">
+            {bahasa === 'en' ? 'Service Satisfaction Survey' : 'Survei Kepuasan Layanan'}
+          </h1>
+          <p className="mt-4 max-w-[68ch] text-base leading-relaxed text-primary-200">
+            {bahasa === 'en'
+              ? 'Help us improve this service by sharing your experience. Each group has its own form — choose the one that fits you.'
+              : 'Bantu kami memperbaiki layanan ini dengan menceritakan pengalaman Anda. Tiap kelompok punya formulirnya sendiri — pilih yang sesuai.'}
+          </p>
+        </div>
+      </section>
 
-          {/* Hero Header */}
-          <div className="text-center mb-10">
-            <h1 className="text-4xl font-bold text-blue-700 dark:text-blue-400 mb-3">
-              {lang === 'id' ? 'Survei Kepuasan Layanan' : 'Service Satisfaction Survey'}
-            </h1>
-            <p className="text-gray-500 dark:text-gray-400 text-base max-w-xl mx-auto">
-              {lang === 'id'
-                ? 'Bantu kami meningkatkan layanan dengan memberikan umpan balik dan penilaian atas pengalaman Anda.'
-                : 'Help us improve our services by sharing your feedback and rating your experience.'}
+      {/* ══ PILIH FORMULIR ═════════════════════════════════════════════════ */}
+      <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-10">
+        <h2 className="legenda mb-3">
+          {bahasa === 'en' ? 'I am filling this in as' : 'Saya mengisi sebagai'}
+        </h2>
+
+        <div className="flex flex-wrap gap-2" role="group">
+          {tabs.map(([kunci, isi]) => {
+            const Ikon = isi.icon;
+            const dipilih = tabAktif === kunci;
+            return (
+              <button
+                key={kunci}
+                type="button"
+                aria-pressed={dipilih}
+                onClick={() => setTabAktif(kunci)}
+                className={cn(
+                  'inline-flex items-center gap-2 rounded-sm border px-4 py-2.5 text-sm font-medium transition-colors',
+                  dipilih
+                    ? 'border-primary-950 bg-primary-950 text-white'
+                    : 'border-tinta-200 bg-white text-tinta-700 hover:border-tinta-300 hover:bg-tinta-50'
+                )}
+              >
+                <Ikon
+                  aria-hidden
+                  className={cn('h-4 w-4 shrink-0', dipilih ? 'text-arah-400' : 'text-tinta-300')}
+                  strokeWidth={1.75}
+                />
+                {isi.label[bahasa]}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* ── Panel formulir ───────────────────────────────────────────── */}
+        <div className="mt-6 overflow-hidden rounded-md border border-tinta-200 bg-white shadow-pelat">
+          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-tinta-200 bg-tinta-50 px-4 py-3">
+            <p className="legenda">
+              {bahasa === 'en' ? 'Form' : 'Formulir'}
+              <span className="mx-2 text-tinta-300">/</span>
+              <span className="normal-case tracking-normal text-tinta-900">
+                {aktif.label[bahasa]}
+              </span>
             </p>
-
-            {/* Feature Cards */}
-            <div className="grid grid-cols-3 gap-4 mt-8">
-              {FEATURES.map(({ icon: Icon, label }) => (
-                <div
-                  key={label.id}
-                  className="flex flex-col items-center gap-2 bg-white border border-gray-100 rounded-xl p-5 shadow-sm"
-                >
-                  <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center">
-                    <Icon size={20} className="text-blue-600" />
-                  </div>
-                  <span className="text-sm font-semibold text-gray-700 text-center">
-                    {label[lang]}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Tab Switcher */}
-          <div className="flex justify-center gap-3 mb-4">
-            {tabs.map(([key, config]) => {
-              const Icon = config.icon;
-              const isActive = activeTab === key;
-              return (
-                <button
-                  key={key}
-                  onClick={() => setActiveTab(key)}
-                  className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-200 border ${
-                    isActive
-                      ? 'bg-blue-600 text-white border-blue-600 shadow-md'
-                      : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:border-blue-400 hover:text-blue-600 dark:hover:text-blue-400'
-                  }`}
-                >
-                  <Icon size={16} />
-                  {config.label[lang]}
-                </button>
-              );
-            })}
-          </div>
-
-          {/* Open in new tab button */}
-          <div className="flex justify-end mb-3">
             <a
-              href={SURVEY_LINKS[activeTab].directUrl}
+              href={aktif.directUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-sm text-blue-600 dark:text-blue-400 hover:underline"
+              className="inline-flex items-center gap-1.5 text-sm font-medium text-primary-700 transition-colors hover:text-primary-800"
             >
-              <ExternalLink size={14} />
-              {lang === 'id' ? 'Buka di tab baru' : 'Open in new tab'}
+              {bahasa === 'en' ? 'Open in a new tab' : 'Buka di tab baru'}
+              <ExternalLink aria-hidden className="h-3.5 w-3.5" />
             </a>
           </div>
 
-          {/* Iframe Embed — force light background */}
-          <div className="rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 shadow-md bg-white">
-            <iframe
-              key={activeTab}
-              src={SURVEY_LINKS[activeTab].embedUrl}
-              width="100%"
-              height="700"
-              title={`Survei ${SURVEY_LINKS[activeTab].label[lang]}`}
-              className="w-full border-0 bg-white"
-              loading="lazy"
-              style={{ colorScheme: 'light' }}
-            >
-              {lang === 'id' ? 'Memuat...' : 'Loading...'}
-            </iframe>
-          </div>
-
+          <iframe
+            key={tabAktif}
+            src={aktif.embedUrl}
+            title={`${bahasa === 'en' ? 'Survey' : 'Survei'} — ${aktif.label[bahasa]}`}
+            className="block h-[70vh] min-h-[560px] w-full border-0 bg-white"
+            loading="lazy"
+            style={{ colorScheme: 'light' }}
+          />
         </div>
-      </AnimatedSection>
+
+        <p className="mt-3 text-sm text-tinta-500">
+          {bahasa === 'en'
+            ? 'The form is hosted on Google Forms. If it does not load here, open it in a new tab.'
+            : 'Formulir ini berada di Google Forms. Jika tidak termuat di sini, buka saja di tab baru.'}
+        </p>
+      </section>
     </MainLayout>
   );
 }

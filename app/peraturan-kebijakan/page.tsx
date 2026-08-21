@@ -1,566 +1,325 @@
-"use client";
+'use client';
 
-import { useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
+import { Download, FileText, Info, Search, X } from 'lucide-react';
+
 import MainLayout from '@/components/layout/MainLayout';
-import AnimatedSection from '@/components/ui/AnimatedSection';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
-import SectionDivider from '@/components/ui/SectionDivider';
-import { Search, Download, ExternalLink, FileText, TrendingUp, FileType } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import {
+  DOKUMEN,
+  KELOMPOK_DOKUMEN,
+  type Dokumen,
+  type KelompokDokumen,
+  type TeksDwibahasa,
+} from '@/lib/data/dokumen';
+import UKURAN from '@/lib/data/ukuran-berkas.json';
 
-// Encode URL file (menangani spasi & kurung siku pada nama file)
-const encodeFileUrl = (url: string) =>
-  encodeURI(url).replace(/\[/g, '%5B').replace(/\]/g, '%5D');
+type Bahasa = 'id' | 'en';
 
-type LocalizedText = { id: string; en: string };
+const petaUkuran = UKURAN as Record<string, { bita: number; teks: string }>;
 
-interface DocItem {
-  id: string;
-  title: LocalizedText;
-  description: LocalizedText;
-  fileName?: string;
-  fileUrl: string;
-  coverImage: string;
-  fileSize?: string;
-  downloads?: number;
-  badge?: string;
-  files?: { label: LocalizedText; fileUrl: string }[];
+/** Nama berkas menyertakan spasi dan kurung siku; keduanya harus disandikan. */
+function alamatBerkas(url: string): string {
+  return encodeURI(url).replace(/\[/g, '%5B').replace(/\]/g, '%5D');
 }
 
-// Daftar dokumen peraturan dan kebijakan
-const documentsList: DocItem[] = [
-  {
-    id: 'akademik',
-    title: {
-      id: 'Akademik',
-      en: 'Academic',
-    },
-    description: {
-      id: 'Panduan dan peraturan akademik untuk mahasiswa FSTI ITK (Peraturan Nomor 4 Tahun 2025 dan Peraturan Nomor 9 Tahun 2024)',
-      en: 'Academic guidelines and regulations for FSTI ITK students (Regulation Number 4 of 2025 and Regulation Number 9 of 2024)',
-    },
-    fileName: 'PERATURAN-AKADEMIK.pdf',
-    fileUrl: '/file/PERATURAN-AKADEMIK.pdf',
-    coverImage: 'https://picsum.photos/seed/akademik/800/600',
-    fileSize: '2.1 MB',
-    downloads: 3245,
-  },
-  {
-    id: 'kemahasiswaan',
-    title: {
-      id: 'Kemahasiswaan',
-      en: 'Student Affairs',
-    },
-    description: {
-      id: 'Panduan kegiatan, organisasi, dan peraturan kemahasiswaan',
-      en: 'Guidelines for activities, organizations, and student regulations',
-    },
-    fileName: 'KEMAHASISWAAN.pdf',
-    fileUrl: '/file/KEMAHASISWAAN.pdf',
-    coverImage: 'https://picsum.photos/seed/kemahasiswaan/800/600',
-    fileSize: '1.8 MB',
-    downloads: 2891,
-  },
-  {
-    id: 'biayaPendidikan',
-    title: {
-      id: 'Biaya Pendidikan Mahasiswa',
-      en: 'Student Tuition Fees',
-    },
-    description: {
-      id: 'Informasi lengkap mengenai biaya pendidikan, UKT, dan komponen biaya lainnya untuk mahasiswa ITK',
-      en: 'Complete information about tuition fees, UKT, and other fee components for ITK students',
-    },
-    fileName: 'BIAYA-PENDIDIKAN.pdf',
-    fileUrl: '/file/BIAYA-PENDIDIKAN.pdf',
-    coverImage: 'https://picsum.photos/seed/biaya/800/600',
-    fileSize: '1.5 MB',
-    downloads: 4567,
-  },
-  {
-    id: 'tugasAkhir',
-    title: {
-      id: 'Tugas Akhir',
-      en: 'Final Project',
-    },
-    description: {
-      id: 'Panduan pelaksanaan dan penulisan Tugas Akhir mahasiswa',
-      en: 'Guidelines for implementation and writing of student Final Projects',
-    },
-    fileUrl: '/file/A-Panduan Tugas Akhir/[2025] A PEDOMAN PELAKSANAAN TUGAS AKHIR ITK.pdf',
-    coverImage: '/images/docs/tugas-akhir.jpg',
-    fileSize: 'PDF',
-    downloads: 5123,
-    badge: 'New',
-    files: [
-      {
-        label: { id: 'Pedoman Pelaksanaan', en: 'Implementation Guidelines' },
-        fileUrl: '/file/A-Panduan Tugas Akhir/[2025] A PEDOMAN PELAKSANAAN TUGAS AKHIR ITK.pdf',
-      },
-      {
-        label: { id: 'Panduan Kepenulisan', en: 'Writing Guidelines' },
-        fileUrl: '/file/A-Panduan Tugas Akhir/[2025] B PANDUAN KEPENULISAN TUGAS AKHIR ITK.pdf',
-      },
-    ],
-  },
-  {
-    id: 'magang',
-    title: {
-      id: 'Magang',
-      en: 'Internship',
-    },
-    description: {
-      id: 'Panduan pelaksanaan dan pelaporan kegiatan Magang',
-      en: 'Guidelines for implementation and reporting of Internship activities',
-    },
-    fileName: 'MAGANG.pdf',
-    fileUrl: '/file/MAGANG.pdf',
-    coverImage: '/images/docs/magang.jpg',
-    fileSize: '1.9 MB',
-    downloads: 3678,
-  },
-  {
-    id: 'kerjaPraktik',
-    title: {
-      id: 'Kerja Praktik',
-      en: 'Practical Work',
-    },
-    description: {
-      id: 'Panduan pelaksanaan dan pelaporan kegiatan Kerja Praktik',
-      en: 'Guidelines for implementation and reporting of Practical Work activities',
-    },
-    fileUrl: '/file/B-Panduan Kerja Praktik/[2025] A PANDUAN KERJA PRAKTIK ITK.pdf',
-    coverImage: '/images/docs/kerja-praktik.jpg',
-    fileSize: 'PDF',
-    downloads: 2934,
-    badge: 'New',
-  },
-  {
-    id: 'mbkm',
-    title: {
-      id: 'MBKM',
-      en: 'MBKM',
-    },
-    description: {
-      id: 'Panduan Merdeka Belajar Kampus Merdeka (MBKM) FSTI ITK',
-      en: 'Independent Learning Campus (MBKM) guidelines for FSTI ITK',
-    },
-    fileName: 'MBKM.pdf',
-    fileUrl: '/file/MBKM.pdf',
-    coverImage: 'https://picsum.photos/seed/mbkm/800/600',
-    fileSize: '2.5 MB',
-    downloads: 4012,
-  },
-  {
-    id: 'tataKehidupan',
-    title: {
-      id: 'Tata Kehidupan Kampus',
-      en: 'Campus Life Code',
-    },
-    description: {
-      id: 'Pedoman tata kehidupan dan etika di lingkungan kampus',
-      en: 'Guidelines for campus life and ethics',
-    },
-    fileName: 'TATA-KEHIDUPAN.pdf',
-    fileUrl: '/file/TATA-KEHIDUPAN.pdf',
-    coverImage: 'https://picsum.photos/seed/tatakehidupan/800/600',
-    fileSize: '1.7 MB',
-    downloads: 2456,
-  },
-  {
-    id: 'kalenderAkademik',
-    title: {
-      id: 'Kalender Akademik',
-      en: 'Academic Calendar',
-    },
-    description: {
-      id: 'Jadwal kegiatan akademik selama tahun ajaran',
-      en: 'Schedule of academic activities throughout the academic year',
-    },
-    fileName: 'KALENDER-AKADEMIK.pdf',
-    fileUrl: '/file/KALENDER-AKADEMIK.pdf',
-    coverImage: 'https://picsum.photos/seed/kalender/800/600',
-    fileSize: '1.2 MB',
-    downloads: 6789,
-  },
-  // ============= 8 FILE BARU (dengan badge "New") =============
-  {
-    id: 'pembelajaranDiluarProdi',
-    title: {
-      id: 'Pembelajaran di Luar Program Studi',
-      en: 'Learning Outside Study Program',
-    },
-    description: {
-      id: 'Panduan pembelajaran di luar program studi untuk memperluas wawasan dan kompetensi mahasiswa',
-      en: 'Guidelines for learning outside the study program to broaden student insights and competencies',
-    },
-    fileUrl: '/file/C-Panduan Pembelajaran di Luar Program Studi/[2025] 1 BUKU PANDUAN PEMBELAJARAN DI LUAR PROGRAM STUDI INSTITUT TEKNOLOGI KALIMANTAN.pdf',
-    coverImage: '/images/docs/pembelajaran-diluar-prodi.jpg',
-    fileSize: '2.2 MB',
-    downloads: 156,
-    badge: 'New',
-  },
-  {
-    id: 'magangRiset',
-    title: {
-      id: 'Magang Riset',
-      en: 'Research Internship',
-    },
-    description: {
-      id: 'Panduan pelaksanaan magang riset untuk mahasiswa yang ingin mengembangkan kemampuan penelitian',
-      en: 'Guidelines for research internships for students who want to develop research skills',
-    },
-    fileUrl: '/file/C-Panduan Pembelajaran di Luar Program Studi/[2025] 2 BUKU PANDUAN MAGANG RISET INSTITUT TEKNOLOGI KALIMANTAN.pdf',
-    coverImage: '/images/docs/magang-riset.jpg',
-    fileSize: '1.9 MB',
-    downloads: 203,
-    badge: 'New',
-  },
-  {
-    id: 'kknTematik',
-    title: {
-      id: 'Kuliah Kerja Nyata Tematik',
-      en: 'Thematic Community Service',
-    },
-    description: {
-      id: 'Panduan pelaksanaan KKN Tematik sebagai bentuk pengabdian kepada masyarakat',
-      en: 'Guidelines for implementing Thematic Community Service as a form of service to the community',
-    },
-    fileUrl: '/file/C-Panduan Pembelajaran di Luar Program Studi/[2025] 3 BUKU PANDUAN KULIAH KERJA NYATA TEMATIK INSTITUT TEKNOLOGI KALIMANTAN.pdf',
-    coverImage: '/images/docs/kkn-tematik.jpg',
-    fileSize: '2.4 MB',
-    downloads: 178,
-    badge: 'New',
-  },
-  {
-    id: 'pertukaranMahasiswa',
-    title: {
-      id: 'Pertukaran Mahasiswa',
-      en: 'Student Exchange',
-    },
-    description: {
-      id: 'Panduan program pertukaran mahasiswa untuk pengalaman belajar di institusi lain',
-      en: 'Guidelines for student exchange programs for learning experiences at other institutions',
-    },
-    fileUrl: '/file/C-Panduan Pembelajaran di Luar Program Studi/[2025] 4 BUKU PANDUAN PERTUKARAN MAHASISWA INSTITUT TEKNOLOGI KALIMANTAN.pdf',
-    coverImage: '/images/docs/pertukaran-mahasiswa.jpg',
-    fileSize: '2.1 MB',
-    downloads: 234,
-    badge: 'New',
-  },
-  {
-    id: 'kewirausahaan',
-    title: {
-      id: 'Kewirausahaan',
-      en: 'Entrepreneurship',
-    },
-    description: {
-      id: 'Panduan kegiatan kewirausahaan untuk mengembangkan jiwa entrepreneur mahasiswa',
-      en: 'Entrepreneurship guidelines to develop student entrepreneurial spirit',
-    },
-    fileUrl: '/file/C-Panduan Pembelajaran di Luar Program Studi/[2025] 5 BUKU PANDUAN KEWIRAUSAHAAN INSTITUT TEKNOLOGI KALIMANTAN.pdf',
-    coverImage: '/images/docs/kewirausahaan.jpg',
-    fileSize: '1.8 MB',
-    downloads: 289,
-    badge: 'New',
-  },
-  {
-    id: 'magangKeprofesian',
-    title: {
-      id: 'Magang Keprofesian',
-      en: 'Professional Internship',
-    },
-    description: {
-      id: 'Panduan magang keprofesian untuk pengalaman kerja di bidang profesi tertentu',
-      en: 'Professional internship guidelines for work experience in specific professional fields',
-    },
-    fileUrl: '/file/C-Panduan Pembelajaran di Luar Program Studi/[2025] 6 BUKU PANDUAN MAGANG KEPROFESIAN INSTITUT TEKNOLOGI KALIMANTAN.pdf',
-    coverImage: '/images/docs/magang-keprofesian.jpg',
-    fileSize: '2.0 MB',
-    downloads: 167,
-    badge: 'New',
-  },
-  {
-    id: 'proyekKemanusiaan',
-    title: {
-      id: 'Proyek Kemanusiaan',
-      en: 'Humanitarian Project',
-    },
-    description: {
-      id: 'Panduan proyek kemanusiaan untuk berkontribusi dalam isu-isu sosial dan kemanusiaan',
-      en: 'Humanitarian project guidelines to contribute to social and humanitarian issues',
-    },
-    fileUrl: '/file/C-Panduan Pembelajaran di Luar Program Studi/[2025] 7 BUKU PANDUAN PROYEK KEMANUSIAAN INSTITUT TEKNOLOGI KALIMANTAN.pdf',
-    coverImage: '/images/docs/proyek-kemanusiaan.jpg',
-    fileSize: '2.3 MB',
-    downloads: 145,
-    badge: 'New',
-  },
-  {
-    id: 'studiProyekIndependen',
-    title: {
-      id: 'Studi Proyek Independen',
-      en: 'Independent Project Study',
-    },
-    description: {
-      id: 'Panduan studi proyek independen untuk mengembangkan proyek secara mandiri',
-      en: 'Independent project study guidelines to develop projects independently',
-    },
-    fileUrl: '/file/C-Panduan Pembelajaran di Luar Program Studi/[2025] 8 BUKU PANDUAN STUDI PROYEK INDEPENDEN INSTITUT TEKNOLOGI KALIMANTAN.pdf',
-    coverImage: '/images/docs/studi-proyek-independen.jpg',
-    fileSize: '2.2 MB',
-    downloads: 198,
-    badge: 'New',
-  },
-  {
-    id: 'inovasiSosial',
-    title: {
-      id: 'Inovasi Sosial',
-      en: 'Social Innovation',
-    },
-    description: {
-      id: 'Panduan inovasi sosial untuk mendorong kontribusi mahasiswa terhadap pemecahan masalah di masyarakat',
-      en: 'Social innovation guidelines to encourage student contributions to solving problems in society',
-    },
-    fileUrl: '/file/D-Panduan Inovasi Sosial/[2026] PANDUAN INOVASI SOSIAL TAHUN 2026 INSTITUT TEKNOLOGI KAILIMANTAN.pdf',
-    coverImage: '/images/docs/pertukaran-mahasiswa.jpg',
-    fileSize: 'PDF',
-    downloads: 0,
-    badge: 'New',
-  },
-];
+/** Ukuran nyata berkas, atau null bila berkasnya belum tercatat. */
+function ukuran(url: string): string | null {
+  return petaUkuran[url]?.teks ?? null;
+}
 
-const PeraturanKebijakanPage = () => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const { language } = useLanguage();
+function normalkan(s: string): string {
+  return s
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim();
+}
 
-  // Filter dokumen berdasarkan pencarian
-  const filteredDocuments = documentsList.filter(doc => {
-    const searchLower = searchTerm.toLowerCase();
-    return doc.title[language as 'id' | 'en'].toLowerCase().includes(searchLower) ||
-      doc.description[language as 'id' | 'en'].toLowerCase().includes(searchLower);
-  });
+function tks(t: TeksDwibahasa, bahasa: Bahasa): string {
+  return bahasa === 'en' ? t.en : t.id;
+}
+
+/** Total bita seluruh berkas milik satu dokumen. Dipakai untuk peringatan unduhan besar. */
+function bitaDokumen(d: Dokumen): number {
+  const daftar = d.files?.length ? d.files.map((f) => f.fileUrl) : [d.fileUrl];
+  return daftar.reduce((n, url) => n + (petaUkuran[url]?.bita ?? 0), 0);
+}
+
+const AMBANG_BESAR = 20 * 1024 * 1024;
+
+function BarisDokumen({ dokumen, bahasa }: { dokumen: Dokumen; bahasa: Bahasa }) {
+  const besar = bitaDokumen(dokumen) > AMBANG_BESAR;
+  const berkas = dokumen.files?.length
+    ? dokumen.files
+    : [{ label: null as TeksDwibahasa | null, fileUrl: dokumen.fileUrl }];
 
   return (
-    <MainLayout>
-      {/* Header Section dengan Animated Gradient Background */}
-      <section className="relative py-20 overflow-hidden">
-        <div className="absolute inset-0 hero-gradient"></div>
-        <div className="container mx-auto px-4 relative z-10">
-          <AnimatedSection animation="slideUp">
-            <div className="text-center max-w-3xl mx-auto">
-              <h1 className="text-4xl md:text-5xl font-display font-bold mb-6 text-gradient">
-                {language === 'id' ? 'Peraturan, Kebijakan, dan Panduan Mahasiswa' : 'Regulations, Policies, and Student Guidelines'}
-              </h1>
-              <p className="text-gray-700 text-lg mb-10">
-                {language === 'id'
-                  ? 'Dokumen-dokumen terkait aturan dan panduan untuk aktifitas mahasiswa di lingkungan FSTI'
-                  : 'Documents related to rules and guidelines for student activities within FSTI'}
-              </p>
+    <li id={dokumen.id} className="scroll-mt-28 border-t border-tinta-100 first:border-t-0">
+      <div className="flex items-start gap-4 px-4 py-4 sm:px-5">
+        <FileText
+          aria-hidden
+          className="mt-0.5 h-5 w-5 shrink-0 text-tinta-300"
+          strokeWidth={1.75}
+        />
 
-            </div>
-          </AnimatedSection>
-        </div>
-      </section>
-
-      {/* Divider: Hero → Dokumen Grid */}
-      <SectionDivider type="tilt" fillColor="#f8fafc" bgColor="transparent" />
-
-      {/* Dokumen Grid Section - GLASSMORPHISM WITH FULL BACKGROUND IMAGE */}
-      <section className="relative py-16 bg-white/80 backdrop-blur-sm">
-        <div className="container mx-auto px-4 relative z-10">
-          <AnimatedSection animation="slideUp">
-            <h2 className="text-3xl font-display font-bold text-center mb-12 text-gradient">
-              {language === 'id' ? 'Daftar Dokumen' : 'Document List'}
-            </h2>
-          </AnimatedSection>
-
-          {/* Search (Dipindahkan dari atas untuk konsistensi UI) */}
-          <div className="max-w-7xl mx-auto bg-white rounded-xl shadow-md p-6 mb-10 mt-2">
-            <div className="relative flex-grow">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
-              <input
-                type="text"
-                placeholder={language === 'id' ? 'Cari dokumen...' : 'Search documents...'}
-                className="w-full bg-gray-50 text-gray-800 py-3 pl-10 pr-4 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary-600"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-            </div>
-            {searchTerm && (
-              <div className="mt-3 text-sm text-gray-600 font-medium">
-                {filteredDocuments.length} {language === 'id' ? 'dokumen ditemukan' : 'documents found'}
-              </div>
+        <div className="min-w-0 flex-1">
+          <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
+            <h3 className="font-display text-[0.9375rem] font-bold leading-snug text-tinta-900">
+              {tks(dokumen.title, bahasa)}
+            </h3>
+            {dokumen.baru && (
+              <span className="legenda rounded-sm bg-arah-100 px-1.5 py-0.5 text-arah-700">
+                {bahasa === 'en' ? 'New' : 'Baru'}
+              </span>
             )}
           </div>
 
-          {filteredDocuments.length > 0 ? (
-            <div className="max-w-7xl mx-auto">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredDocuments.map((doc, index) => (
-                  <AnimatedSection
-                    key={doc.id}
-                    animation="slideUp"
-                    delay={index * 0.05}
+          <p className="mt-1 max-w-[72ch] text-sm leading-relaxed text-tinta-500">
+            {tks(dokumen.description, bahasa)}
+          </p>
+
+          <ul className="mt-3 flex flex-wrap gap-2">
+            {berkas.map((f) => {
+              const besarnya = ukuran(f.fileUrl);
+              return (
+                <li key={f.fileUrl}>
+                  <a
+                    href={alamatBerkas(f.fileUrl)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group inline-flex items-center gap-2 rounded-sm border border-tinta-200 px-3 py-2 transition-colors hover:border-primary-300 hover:bg-primary-50"
                   >
-                    {/* GLASSMORPHISM CARD WITH FULL BACKGROUND IMAGE */}
-                    <div className="group relative h-full">
-                      {/* Background blur effect */}
-                      <div className="absolute -inset-0.5 bg-gradient-to-r from-primary-500 to-purple-600 rounded-2xl blur opacity-30 group-hover:opacity-100 transition duration-500"></div>
+                    <Download
+                      aria-hidden
+                      className="h-3.5 w-3.5 shrink-0 text-tinta-300 transition-colors group-hover:text-primary-700"
+                      strokeWidth={2}
+                    />
+                    <span className="text-sm font-medium text-tinta-900 group-hover:text-primary-800">
+                      {f.label
+                        ? tks(f.label, bahasa)
+                        : bahasa === 'en'
+                          ? 'Download PDF'
+                          : 'Unduh PDF'}
+                    </span>
+                    {besarnya && (
+                      <span className="legenda angka-pelat text-tinta-300">{besarnya}</span>
+                    )}
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
 
-                      <div className="relative bg-white rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 h-full flex flex-col">
+          {besar && (
+            <p className="legenda mt-2.5 normal-case tracking-normal text-arah-700">
+              {bahasa === 'en'
+                ? 'Large file — consider downloading on Wi-Fi.'
+                : 'Berkas besar — sebaiknya diunduh saat terhubung Wi-Fi.'}
+            </p>
+          )}
+        </div>
+      </div>
+    </li>
+  );
+}
 
-                        {/* Background Image Header */}
-                        <div className="relative h-48 overflow-hidden bg-gray-50">
-                          {/* Main Image */}
-                          <img
-                            src={doc.coverImage}
-                            alt={doc.title[language as 'id' | 'en']}
-                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                            onError={(e) => {
-                              // Fallback ke gambar base64 SVG jika gagal
-                              const target = e.target as HTMLImageElement;
-                              target.onerror = null; // Prevent infinite loop
-                              target.src = 'data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22800%22%20height%3D%22600%22%20viewBox%3D%220%200%20800%20600%22%3E%3Crect%20fill%3D%22%23e2e8f0%22%20width%3D%22800%22%20height%3D%22600%22%2F%3E%3Ctext%20fill%3D%22%2394a3b8%22%20font-family%3D%22sans-serif%22%20font-size%3D%2230%22%20dy%3D%2210.5%22%20font-weight%3D%22bold%22%20x%3D%2250%25%22%20y%3D%2250%25%22%20text-anchor%3D%22middle%22%3EDokumen%3C%2Ftext%3E%3C%2Fsvg%3E';
-                            }}
-                          />
+export default function PeraturanKebijakanPage() {
+  const { language } = useLanguage();
+  const bahasa = (language === 'en' ? 'en' : 'id') as Bahasa;
+  const [kueri, setKueri] = useState('');
+  const kolomCari = useRef<HTMLInputElement>(null);
 
-                          {/* Gradient Overlay */}
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
+  const cocok = useMemo(() => {
+    const kata = normalkan(kueri).split(' ').filter(Boolean);
+    if (kata.length === 0) return DOKUMEN;
+    return DOKUMEN.filter((d) => {
+      const ladang = normalkan(
+        [d.title.id, d.title.en, d.description.id, d.description.en, d.fileUrl].join(' ')
+      );
+      return kata.every((k) => ladang.includes(k));
+    });
+  }, [kueri]);
 
-                          {/* Badge "New" */}
-                          {doc.badge && (
-                            <div className="absolute top-4 right-4 z-10">
-                              <span className="px-3 py-1 bg-gradient-to-r from-pink-500 to-orange-500 text-white text-xs font-bold rounded-full shadow-lg backdrop-blur-sm animate-pulse">
-                                {doc.badge}
-                              </span>
-                            </div>
-                          )}
+  const kelompokTampil = useMemo(() => {
+    const urutan: KelompokDokumen[] = ['pokok', 'tugas', 'mbkm'];
+    return urutan
+      .map((k) => ({ kunci: k, isi: cocok.filter((d) => d.kelompok === k) }))
+      .filter((g) => g.isi.length > 0);
+  }, [cocok]);
 
-                          {/* Icon floating bottom left */}
-                          <div className="absolute bottom-4 left-4 z-10">
-                            <div className="w-14 h-14 bg-white/90 backdrop-blur-md rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-                              <FileText className="h-7 w-7 text-primary-600" />
-                            </div>
-                          </div>
-                        </div>
+  const totalBita = useMemo(() => DOKUMEN.reduce((n, d) => n + bitaDokumen(d), 0), []);
 
-                        {/* Content with glass effect */}
-                        <div className="p-6 bg-white/80 backdrop-blur-sm flex-grow">
-                          <h3 className="text-lg font-bold text-gray-800 mb-2 line-clamp-2 group-hover:text-primary-600 transition-colors">
-                            {doc.title[language as 'id' | 'en']}
-                          </h3>
-                          <p className="text-sm text-gray-600 mb-4 line-clamp-2">
-                            {doc.description[language as 'id' | 'en']}
-                          </p>
+  return (
+    <MainLayout>
+      {/* ══ PITA ZONA ══════════════════════════════════════════════════════ */}
+      <section className="pita-zona pb-9 pt-10 sm:pb-11 sm:pt-14">
+        <div className="mx-auto grid max-w-7xl gap-x-12 gap-y-8 px-4 sm:px-6 lg:grid-cols-[minmax(0,1fr)_17rem]">
+          <div className="min-w-0">
+            <p className="legenda text-arah-400">
+              {bahasa === 'en'
+                ? 'Faculty of Science and Information Technology · ITK'
+                : 'Fakultas Sains dan Teknologi Informasi · ITK'}
+            </p>
 
-                          {/* Stats */}
-                          <div className="flex items-center gap-4 text-xs text-gray-500 mb-4">
-                            <div className="flex items-center gap-1">
-                              <TrendingUp className="h-3 w-3" />
-                              <span>{doc.downloads ? doc.downloads : 0}</span>
-                            </div>
-                            <div className="flex items-center gap-1">
-                              <FileType className="h-3 w-3" />
-                              <span>{doc.fileSize || 'PDF'}</span>
-                            </div>
-                          </div>
+            <h1 className="mt-3 max-w-[22ch] font-display text-[2rem] font-extrabold leading-[1.05] tracking-tight text-white sm:text-[2.5rem] lg:text-[3rem]">
+              {bahasa === 'en'
+                ? 'Regulations, Policies & Student Guidelines'
+                : 'Peraturan, Kebijakan & Panduan Mahasiswa'}
+            </h1>
 
-                          {/* Actions */}
-                          {doc.files && doc.files.length > 0 ? (
-                            <div className="flex flex-col gap-2 mt-auto">
-                              {doc.files.map((file, fileIdx) => (
-                                <button
-                                  key={fileIdx}
-                                  onClick={() => window.open(encodeFileUrl(file.fileUrl), '_blank')}
-                                  className="flex items-center justify-between gap-2 px-4 py-2.5 rounded-xl border-2 border-gray-200 bg-white hover:border-primary-500 hover:bg-primary-50 transition-all text-left group/file"
-                                >
-                                  <span className="text-sm font-medium text-gray-700 group-hover/file:text-primary-700 line-clamp-1">
-                                    {file.label[language as 'id' | 'en']}
-                                  </span>
-                                  <Download className="h-4 w-4 text-primary-600 flex-shrink-0" />
-                                </button>
-                              ))}
-                            </div>
-                          ) : (
-                            <div className="flex gap-2 mt-auto">
-                              <button
-                                onClick={() => window.open(encodeFileUrl(doc.fileUrl), '_blank')}
-                                className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-primary-600 to-purple-600 text-white hover:from-primary-700 hover:to-purple-700 transition-all shadow-md hover:shadow-lg"
-                              >
-                                <Download className="h-4 w-4" />
-                                <span className="text-sm font-medium">
-                                  {language === 'id' ? 'Unduh' : 'Download'}
-                                </span>
-                              </button>
-                              <button
-                                onClick={() => window.open(encodeFileUrl(doc.fileUrl), '_blank')}
-                                className="p-2.5 rounded-xl border-2 border-gray-200 bg-white hover:border-primary-500 hover:bg-primary-50 transition-all"
-                              >
-                                <ExternalLink className="h-4 w-4 text-gray-600" />
-                              </button>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  </AnimatedSection>
-                ))}
+            <div className="mt-6 max-w-2xl">
+              <label htmlFor="cari-dokumen" className="sr-only">
+                {bahasa === 'en' ? 'Search documents' : 'Cari dokumen'}
+              </label>
+              <div className="relative">
+                <Search
+                  aria-hidden
+                  className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-tinta-500"
+                />
+                <input
+                  id="cari-dokumen"
+                  ref={kolomCari}
+                  type="search"
+                  value={kueri}
+                  onChange={(e) => setKueri(e.target.value)}
+                  placeholder={
+                    bahasa === 'en'
+                      ? 'Search a document — e.g. final project, MBKM, tuition'
+                      : 'Cari dokumen — misal: tugas akhir, MBKM, biaya'
+                  }
+                  className={cn(
+                    'h-14 w-full rounded-md border-2 border-transparent bg-white pl-12 pr-24',
+                    'font-display text-base font-medium text-tinta-900',
+                    'placeholder:font-sans placeholder:font-normal placeholder:text-tinta-500',
+                    'shadow-angkat outline-none transition-colors focus:border-arah-400',
+                    '[&::-webkit-search-cancel-button]:hidden'
+                  )}
+                />
+                {kueri && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setKueri('');
+                      kolomCari.current?.focus();
+                    }}
+                    className="absolute right-3 top-1/2 flex h-9 -translate-y-1/2 items-center gap-1.5 rounded px-2.5 text-tinta-500 transition-colors hover:bg-tinta-50 hover:text-tinta-900"
+                  >
+                    <X className="h-4 w-4" />
+                    <span className="legenda hidden sm:inline">
+                      {bahasa === 'en' ? 'Clear' : 'Hapus'}
+                    </span>
+                  </button>
+                )}
               </div>
             </div>
-          ) : (
-            <AnimatedSection animation="fadeIn">
-              <div className="text-center py-12">
-                <div className="mb-6 text-gray-500">
-                  <Search className="h-16 w-16 mx-auto opacity-30 mb-4" />
-                  <h3 className="text-xl font-semibold mb-2">
-                    {language === 'id' ? 'Tidak Ditemukan' : 'Not Found'}
-                  </h3>
-                  <p>
-                    {language === 'id'
-                      ? 'Tidak ada dokumen yang sesuai dengan pencarian Anda.'
-                      : 'No documents match your search.'}
-                  </p>
-                </div>
-                <button
-                  onClick={() => setSearchTerm('')}
-                  className="px-6 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors"
-                >
-                  {language === 'id' ? 'Reset Pencarian' : 'Reset Search'}
-                </button>
+          </div>
+
+          <dl className="self-end border-t border-white/15 pt-5 lg:border-l lg:border-t-0 lg:pl-8 lg:pt-0">
+            <div className="grid grid-cols-2 gap-x-8 gap-y-5 lg:grid-cols-1">
+              <div>
+                <dt className="legenda text-white/50">
+                  {bahasa === 'en' ? 'On this board' : 'Isi papan ini'}
+                </dt>
+                <dd className="angka-pelat mt-1.5 font-display text-sm font-semibold text-white">
+                  {kueri
+                    ? `${cocok.length} ${bahasa === 'en' ? 'matches' : 'hasil'}`
+                    : `${DOKUMEN.length} ${bahasa === 'en' ? 'documents' : 'dokumen'}`}
+                </dd>
               </div>
-            </AnimatedSection>
-          )}
+              <div>
+                <dt className="legenda text-white/50">
+                  {bahasa === 'en' ? 'Total size' : 'Total ukuran'}
+                </dt>
+                <dd className="angka-pelat mt-1.5 text-sm text-white">
+                  {(totalBita / 1024 / 1024).toFixed(0)} MB
+                </dd>
+              </div>
+              <div className="col-span-full">
+                <dt className="legenda text-white/50">
+                  {bahasa === 'en' ? 'Format' : 'Format'}
+                </dt>
+                <dd className="mt-1.5 text-sm text-primary-200">
+                  {bahasa === 'en'
+                    ? 'PDF · opens in a new tab'
+                    : 'PDF · terbuka di tab baru'}
+                </dd>
+              </div>
+            </div>
+          </dl>
         </div>
       </section>
 
-      {/* Info Section */}
-      <section className="relative py-16 bg-white/80 backdrop-blur-sm">
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-3xl mx-auto">
-            <AnimatedSection animation="slideUp">
-              <div className="bg-gradient-to-r from-primary-50/90 to-purple-50/90 backdrop-blur-sm rounded-xl p-8 shadow-md border border-primary-100">
-                <h3 className="text-xl font-semibold mb-4 text-gray-800">
-                  {language === 'id' ? '💡 Informasi Penting' : '💡 Important Information'}
-                </h3>
-                <div className="text-gray-700 space-y-4 leading-relaxed">
-                  <p>
-                    {language === 'id'
-                      ? 'Dokumen-dokumen ini merupakan pedoman resmi yang ditetapkan oleh Institut Teknologi Kalimantan dan Fakultas Sains dan Teknologi Informasi. Mahasiswa diharapkan untuk membaca dan memahami dokumen-dokumen ini untuk kelancaran kegiatan akademik.'
-                      : 'These documents are official guidelines established by Kalimantan Institute of Technology and the Faculty of Science and Information Technology. Students are expected to read and understand these documents for the smooth running of academic activities.'}
-                  </p>
-                  <p className="text-sm text-gray-600">
-                    {language === 'id'
-                      ? '📥 Seluruh dokumen dapat diunduh dan disimpan untuk referensi. Jika terdapat pertanyaan atau hal yang perlu diklarifikasi, silakan hubungi admin FSTI.'
-                      : '📥 All documents can be downloaded and saved for reference. If there are questions or matters that need clarification, please contact the FSTI admin.'}
-                  </p>
-                </div>
-              </div>
-            </AnimatedSection>
+      {/* ══ INDEKS DOKUMEN ═════════════════════════════════════════════════ */}
+      <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-14">
+        {kelompokTampil.length > 0 ? (
+          <div className="max-w-4xl space-y-6">
+            {kelompokTampil.map(({ kunci, isi }) => (
+              <section key={kunci}>
+                <h2 className="legenda mb-3">
+                  {tks(KELOMPOK_DOKUMEN[kunci], bahasa)}
+                  <span className="mx-2 text-tinta-300">/</span>
+                  <span className="angka-pelat text-tinta-900">{isi.length}</span>
+                </h2>
+                <ul className="overflow-hidden rounded-md border border-tinta-200 bg-white shadow-pelat">
+                  {isi.map((d) => (
+                    <BarisDokumen key={d.id} dokumen={d} bahasa={bahasa} />
+                  ))}
+                </ul>
+              </section>
+            ))}
+          </div>
+        ) : (
+          <div className="max-w-4xl rounded-md border border-dashed border-tinta-300 bg-white px-6 py-12 text-center">
+            <p className="font-display text-lg font-bold text-tinta-900">
+              {bahasa === 'en'
+                ? `No document matches “${kueri}”`
+                : `Tidak ada dokumen yang cocok dengan “${kueri}”`}
+            </p>
+            <p className="mx-auto mt-2 max-w-[52ch] text-sm leading-relaxed text-tinta-500">
+              {bahasa === 'en'
+                ? 'Try a shorter keyword, or the term used on the document cover.'
+                : 'Coba kata kunci yang lebih pendek, atau istilah yang tertulis pada sampul dokumennya.'}
+            </p>
+            <button
+              type="button"
+              onClick={() => {
+                setKueri('');
+                kolomCari.current?.focus();
+              }}
+              className="mt-6 rounded-sm bg-primary-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-primary-700"
+            >
+              {bahasa === 'en' ? 'Show all documents' : 'Tampilkan semua dokumen'}
+            </button>
+          </div>
+        )}
+      </section>
+
+      {/* ══ KETERANGAN ═════════════════════════════════════════════════════ */}
+      <section className="border-t border-tinta-200 bg-white">
+        <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-14">
+          <div className="flex max-w-3xl items-start gap-3.5">
+            <Info aria-hidden className="mt-0.5 h-5 w-5 shrink-0 text-arah-500" strokeWidth={1.75} />
+            <div>
+              <h2 className="font-display text-lg font-extrabold tracking-tight text-tinta-900">
+                {bahasa === 'en' ? 'Important information' : 'Informasi penting'}
+              </h2>
+              <p className="mt-2 text-sm leading-relaxed text-tinta-700">
+                {bahasa === 'en'
+                  ? 'These documents are official guidelines established by Kalimantan Institute of Technology and the Faculty of Science and Information Technology. Students are expected to read and understand them for the smooth running of academic activities.'
+                  : 'Dokumen-dokumen ini merupakan pedoman resmi yang ditetapkan oleh Institut Teknologi Kalimantan dan Fakultas Sains dan Teknologi Informasi. Mahasiswa diharapkan membaca dan memahaminya demi kelancaran kegiatan akademik.'}
+              </p>
+              <p className="mt-3 text-sm leading-relaxed text-tinta-500">
+                {bahasa === 'en'
+                  ? 'All documents can be downloaded and kept for reference. If anything needs clarification, contact the FSTI administration.'
+                  : 'Seluruh dokumen dapat diunduh dan disimpan sebagai rujukan. Jika ada yang perlu diklarifikasi, silakan hubungi tata usaha FSTI.'}
+              </p>
+            </div>
           </div>
         </div>
       </section>
     </MainLayout>
   );
-};
-
-export default PeraturanKebijakanPage;
+}

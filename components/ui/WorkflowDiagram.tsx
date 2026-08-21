@@ -24,7 +24,7 @@ const DiamondNode = React.memo(({ data }: { data: any }) => {
       <Handle type="source" position={Position.Left} id="diamond-left" />
       <Handle type="source" position={Position.Right} id="diamond-right" />
       <div
-        className="group relative w-24 h-24 bg-gradient-to-br from-orange-100 to-orange-200 border-2 border-orange-600 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 transform rotate-45 flex items-center justify-center cursor-pointer"
+        className="group relative w-24 h-24 bg-gradient-to-br from-orange-100 to-orange-200 border-2 border-orange-600 rounded-lg shadow-pelat hover:shadow-angkat transition-all duration-300 transform rotate-45 flex items-center justify-center cursor-pointer"
       >
         <div className="transform -rotate-45 text-orange-800 font-semibold text-xs text-center leading-tight px-2">
           {data.label}
@@ -48,12 +48,12 @@ const ProcessNode = React.memo(({ data }: { data: any }) => {
       <Handle type="source" position={Position.Bottom} id="bottom" />
       <Handle type="source" position={Position.Left} id="left-source" />
       <div
-        className={`group relative w-56 min-h-20 bg-gradient-to-br ${data.backgroundGradient || 'from-blue-50 to-blue-100'} border-2 ${data.borderColor || 'border-blue-600'} rounded-lg shadow-md hover:shadow-xl transition-all duration-300 flex items-center justify-center text-center p-4 cursor-pointer`}
+        className={`group relative w-56 min-h-20 bg-gradient-to-br ${data.backgroundGradient || 'from-blue-50 to-blue-100'} border-2 ${data.borderColor || 'border-blue-600'} rounded-lg shadow-pelat hover:shadow-angkat transition-all duration-300 flex items-center justify-center text-center p-4 cursor-pointer`}
       >
         <div>
-          <div className="font-bold text-sm text-gray-800 mb-2">{data.title}</div>
+          <div className="font-bold text-sm text-tinta-900 mb-2">{data.title}</div>
           {data.description && (
-            <div className="text-xs text-gray-600 leading-relaxed">
+            <div className="text-xs text-tinta-500 leading-relaxed">
               {data.description.split(' • ').map((item: string, index: number) => (
                 <div key={index}>{item}</div>
               ))}
@@ -399,13 +399,13 @@ const WorkflowDiagram: React.FC<WorkflowDiagramProps> = ({ language = 'id' }) =>
   console.log({ ReactFlowProvider });
 
   return (
-    <div className="w-full h-[700px] border rounded-xl overflow-hidden bg-white shadow-lg">
+    <div className="w-full h-[700px] border rounded-md overflow-hidden bg-white shadow-angkat">
       <div className="h-[600px]">
         <ReactFlowProvider>
           <WorkflowDiagramInner language={language} />
         </ReactFlowProvider>
       </div>
-      <div className="text-center p-3 text-sm text-gray-500 border-t border-gray-200 bg-gray-50">
+      <div className="text-center p-3 text-sm text-tinta-500 border-t border-tinta-200 bg-tinta-50">
         {language === 'en'
           ? 'FSTI Service Application Process Flow - Structured Manual Layout'
           : 'Alur Proses Permohonan Layanan FSTI - Layout Manual Terstruktur'}

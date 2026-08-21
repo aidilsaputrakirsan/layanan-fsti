@@ -1,11 +1,7 @@
 import type { Metadata, Viewport } from 'next';
-import { Inter } from 'next/font/google';
 import './globals.css';
 import { LanguageProvider } from '@/lib/i18n/LanguageContext';
 import MaklumatPelayanan from '@/components/ui/MaklumatPelayanan';
-import ParticleBackground from '@/components/backgrounds/ParticleBackground';
-
-const inter = Inter({ subsets: ['latin'] });
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -27,10 +23,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="scroll-smooth">
-      <body className={inter.className}>
-        {/* Professional Blue ParticleBackground */}
-        <ParticleBackground />
-        
+      <body>
         <LanguageProvider>
           {children}
           <MaklumatPelayanan />

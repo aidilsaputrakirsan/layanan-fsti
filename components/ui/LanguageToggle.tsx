@@ -1,12 +1,27 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
-import { useLanguage, Language } from '@/lib/i18n/LanguageContext';
-import { motion } from 'framer-motion';
+import { useEffect, useRef, useState } from 'react';
+import { Check, ChevronDown } from 'lucide-react';
 
-// Inline SVG flags for cross-platform compatibility (emoji flags don't render on Windows)
-const USFlag = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 30" className="w-5 h-3.5 rounded-sm shadow-sm border border-gray-200 flex-shrink-0">
+import { useLanguage, type Language } from '@/lib/i18n/LanguageContext';
+import { cn } from '@/lib/utils';
+
+/**
+ * Pemilih bahasa.
+ *
+ * Bendera digambar sebagai SVG, bukan emoji: emoji bendera tidak dirender sama
+ * sekali di Windows.
+ */
+
+const BenderaID = () => (
+  <svg viewBox="0 0 640 480" aria-hidden className="h-3.5 w-5 shrink-0 rounded-[2px]">
+    <path fill="#e70011" d="M0 0h640v240H0z" />
+    <path fill="#fff" d="M0 240h640v240H0z" />
+  </svg>
+);
+
+const BenderaEN = () => (
+  <svg viewBox="0 0 60 30" aria-hidden className="h-3.5 w-5 shrink-0 rounded-[2px]">
     <rect width="60" height="30" fill="#bf0a30" />
     <rect y="2.31" width="60" height="2.31" fill="#fff" />
     <rect y="6.92" width="60" height="2.31" fill="#fff" />
@@ -18,111 +33,95 @@ const USFlag = () => (
   </svg>
 );
 
-const IDFlag = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480" className="w-5 h-4 rounded-sm shadow-sm border border-gray-200">
-    <path fill="#e70011" d="M0 0h640v240H0z" />
-    <path fill="#fff" d="M0 240h640v240H0z" />
-  </svg>
-);
+const BAHASA: { kode: Language; ringkas: string; nama: string; Bendera: () => React.ReactElement }[] =
+  [
+    { kode: 'id', ringkas: 'ID', nama: 'Bahasa Indonesia', Bendera: BenderaID },
+    { kode: 'en', ringkas: 'EN', nama: 'English', Bendera: BenderaEN },
+  ];
 
-const LanguageToggle = () => {
+export default function LanguageToggle() {
   const { language, setLanguage, t } = useLanguage();
-  const [isOpen, setIsOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
+  const [terbuka, setTerbuka] = useState(false);
+  const bungkusRef = useRef<HTMLDivElement>(null);
 
-  // Close dropdown when clicking outside
+  const aktif = BAHASA.find((b) => b.kode === language) ?? BAHASA[0];
+
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setIsOpen(false);
+    const klikLuar = (e: MouseEvent) => {
+      if (bungkusRef.current && !bungkusRef.current.contains(e.target as Node)) {
+        setTerbuka(false);
       }
     };
-
-    document.addEventListener('mousedown', handleClickOutside);
+    const tekanEsc = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setTerbuka(false);
+    };
+    document.addEventListener('mousedown', klikLuar);
+    document.addEventListener('keydown', tekanEsc);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('mousedown', klikLuar);
+      document.removeEventListener('keydown', tekanEsc);
     };
   }, []);
 
-  const toggleDropdown = () => {
-    setIsOpen(!isOpen);
-  };
-
-  const handleLanguageChange = (lang: Language) => {
-    setLanguage(lang);
-    setIsOpen(false);
-  };
-
   return (
-    <div className="relative" ref={dropdownRef}>
+    <div className="relative" ref={bungkusRef}>
       <button
-        onClick={toggleDropdown}
-        className="flex items-center gap-2 px-3 py-2 text-primary-600 border border-primary-200 rounded-md hover:bg-primary-50 transition-colors"
-        aria-expanded={isOpen}
+        type="button"
+        onClick={() => setTerbuka((v) => !v)}
+        aria-expanded={terbuka}
+        aria-haspopup="menu"
         aria-label={t('nav.language')}
+        className={cn(
+          'flex h-9 items-center gap-2 rounded-sm border px-2.5 transition-colors',
+          terbuka
+            ? 'border-tinta-300 bg-tinta-50 text-tinta-900'
+            : 'border-tinta-200 text-tinta-700 hover:border-tinta-300 hover:bg-tinta-50'
+        )}
       >
-        {language === 'en' ? <USFlag /> : <IDFlag />}
-        <span className="font-medium text-sm">{language === 'en' ? 'EN' : 'ID'}</span>
-        <svg
-          className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-180' : ''}`}
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-        </svg>
+        <aktif.Bendera />
+        <span className="legenda">{aktif.ringkas}</span>
+        <ChevronDown
+          aria-hidden
+          className={cn(
+            'h-3.5 w-3.5 text-tinta-300 transition-transform duration-200',
+            terbuka && 'rotate-180'
+          )}
+        />
       </button>
 
-      {isOpen && (
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
-          transition={{ duration: 0.2 }}
-          className="absolute right-0 mt-2 w-44 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50"
+      {terbuka && (
+        <div
+          role="menu"
+          className="absolute right-0 top-full z-50 mt-1.5 w-52 overflow-hidden rounded-md border border-tinta-200 bg-white shadow-angkat"
         >
-          <div className="py-1" role="menu" aria-orientation="vertical">
-            <button
-              onClick={() => handleLanguageChange('en')}
-              className={`flex items-center w-full text-left px-4 py-2.5 text-sm gap-3 ${language === 'en' ? 'bg-primary-50 text-primary-700' : 'text-gray-700 hover:bg-gray-100'
-                }`}
-              role="menuitem"
-            >
-              <USFlag />
-              <span>English</span>
-              {language === 'en' && (
-                <svg className="w-4 h-4 ml-auto text-primary-600" fill="currentColor" viewBox="0 0 20 20">
-                  <path
-                    fillRule="evenodd"
-                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              )}
-            </button>
-            <button
-              onClick={() => handleLanguageChange('id')}
-              className={`flex items-center w-full text-left px-4 py-2.5 text-sm gap-3 ${language === 'id' ? 'bg-primary-50 text-primary-700' : 'text-gray-700 hover:bg-gray-100'
-                }`}
-              role="menuitem"
-            >
-              <IDFlag />
-              <span>Bahasa Indonesia</span>
-              {language === 'id' && (
-                <svg className="w-4 h-4 ml-auto text-primary-600" fill="currentColor" viewBox="0 0 20 20">
-                  <path
-                    fillRule="evenodd"
-                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              )}
-            </button>
-          </div>
-        </motion.div>
+          {BAHASA.map(({ kode, nama, Bendera }, i) => {
+            const dipilih = kode === language;
+            return (
+              <button
+                key={kode}
+                type="button"
+                role="menuitemradio"
+                aria-checked={dipilih}
+                onClick={() => {
+                  setLanguage(kode);
+                  setTerbuka(false);
+                }}
+                className={cn(
+                  'flex w-full items-center gap-3 px-3.5 py-2.5 text-left text-sm transition-colors',
+                  i > 0 && 'border-t border-tinta-100',
+                  dipilih
+                    ? 'bg-primary-50 font-medium text-primary-800'
+                    : 'text-tinta-700 hover:bg-tinta-50 hover:text-tinta-900'
+                )}
+              >
+                <Bendera />
+                <span className="flex-1">{nama}</span>
+                {dipilih && <Check aria-hidden className="h-4 w-4 shrink-0 text-arah-600" />}
+              </button>
+            );
+          })}
+        </div>
       )}
     </div>
   );
-};
-
-export default LanguageToggle;
+}

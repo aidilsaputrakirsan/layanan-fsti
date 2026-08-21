@@ -44,7 +44,7 @@ const MaklumatPelayanan = () => {
           >
             <button 
               onClick={closeModal}
-              className="absolute right-3 top-3 text-gray-500 hover:text-gray-700 bg-white rounded-full z-10 p-1"
+              className="absolute right-3 top-3 text-tinta-500 hover:text-tinta-700 bg-white rounded-full z-10 p-1"
             >
               <X size={24} />
             </button>

@@ -1,22 +1,47 @@
 import React from 'react';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+
+import { cn } from '@/lib/utils';
+
+/**
+ * Tombol dalam bahasa sistem rambu: sudut kecil, bidang padat, tanpa gradasi
+ * dan tanpa efek melar saat disentuh. Ini permukaan layanan publik — tombolnya
+ * harus terbaca sebagai tombol, bukan sebagai animasi.
+ */
+
+type Varian = 'primary' | 'secondary' | 'outline' | 'white';
+type Ukuran = 'sm' | 'md' | 'lg';
 
 interface ButtonProps {
   children: React.ReactNode;
   href?: string;
-  variant?: 'primary' | 'secondary' | 'outline' | 'white';
-  size?: 'sm' | 'md' | 'lg';
+  variant?: Varian;
+  size?: Ukuran;
   className?: string;
   icon?: React.ReactNode;
   disabled?: boolean;
   onClick?: () => void;
   type?: 'button' | 'submit' | 'reset';
   fullWidth?: boolean;
+  /** Dipertahankan demi kecocokan dengan pemanggil lama; tidak lagi berefek. */
   animate?: boolean;
 }
 
-const Button = ({
+const VARIAN: Record<Varian, string> = {
+  primary: 'bg-primary-600 text-white hover:bg-primary-700',
+  secondary: 'bg-primary-950 text-white hover:bg-primary-900',
+  outline:
+    'border border-tinta-200 bg-white text-tinta-900 hover:border-tinta-300 hover:bg-tinta-50',
+  white: 'bg-white text-primary-700 hover:bg-tinta-50',
+};
+
+const UKURAN: Record<Ukuran, string> = {
+  sm: 'h-9 gap-1.5 px-3.5 text-sm',
+  md: 'h-11 gap-2 px-5 text-sm',
+  lg: 'h-12 gap-2 px-6 text-base',
+};
+
+export default function Button({
   children,
   href,
   variant = 'primary',
@@ -27,78 +52,34 @@ const Button = ({
   onClick,
   type = 'button',
   fullWidth = false,
-  animate = false,
-}: ButtonProps) => {
-  const baseClasses = 'inline-flex items-center justify-center font-medium rounded-lg transition-all duration-300 focus:outline-none';
-  
-  const variantClasses = {
-    primary: 'bg-primary-600 text-white hover:bg-primary-700 shadow-md hover:shadow-lg',
-    secondary: 'bg-secondary-600 text-white hover:bg-secondary-700 shadow-md hover:shadow-lg',
-    outline: 'bg-transparent border-2 border-primary-600 text-primary-600 hover:bg-primary-50',
-    white: 'bg-white text-primary-600 hover:bg-gray-100 shadow-md hover:shadow-lg',
-  };
-  
-  const sizeClasses = {
-    sm: 'text-sm px-4 py-2',
-    md: 'px-6 py-3',
-    lg: 'text-lg px-8 py-4',
-  };
-  
-  const disabledClasses = disabled
-    ? 'opacity-60 cursor-not-allowed pointer-events-none'
-    : 'cursor-pointer';
-  
-  const widthClass = fullWidth ? 'w-full' : '';
-  
-  const buttonClasses = `${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${disabledClasses} ${widthClass} ${className}`;
-  
-  const content = (
+}: ButtonProps) {
+  const kelas = cn(
+    'inline-flex items-center justify-center rounded-sm font-medium transition-colors',
+    VARIAN[variant],
+    UKURAN[size],
+    disabled && 'pointer-events-none opacity-50',
+    fullWidth && 'w-full',
+    className
+  );
+
+  const isi = (
     <>
-      {icon && <span className="mr-2">{icon}</span>}
+      {icon && <span className="shrink-0">{icon}</span>}
       {children}
     </>
   );
-  
+
   if (href) {
-    return animate ? (
-      <motion.div
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.98 }}
-        transition={{ type: 'spring', stiffness: 400, damping: 17 }}
-      >
-        <Link href={href} className={buttonClasses}>
-          {content}
-        </Link>
-      </motion.div>
-    ) : (
-      <Link href={href} className={buttonClasses}>
-        {content}
+    return (
+      <Link href={href} className={kelas}>
+        {isi}
       </Link>
     );
   }
-  
-  return animate ? (
-    <motion.button
-      type={type}
-      className={buttonClasses}
-      onClick={onClick}
-      disabled={disabled}
-      whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 0.98 }}
-      transition={{ type: 'spring', stiffness: 400, damping: 17 }}
-    >
-      {content}
-    </motion.button>
-  ) : (
-    <button
-      type={type}
-      className={buttonClasses}
-      onClick={onClick}
-      disabled={disabled}
-    >
-      {content}
+
+  return (
+    <button type={type} className={kelas} onClick={onClick} disabled={disabled}>
+      {isi}
     </button>
   );
-};
-
-export default Button;
+}

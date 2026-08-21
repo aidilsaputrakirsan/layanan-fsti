@@ -391,81 +391,82 @@ const MahasiswaTrackingPage = () => {
 
   return (
     <MainLayout>
-      {/* Header Section - Lebih kompak dan fokus */}
-      <section className="relative py-12 md:py-16 overflow-hidden bg-gradient-to-br from-primary-50 to-gray-50">
-        <div className="container mx-auto px-4 relative z-10">
-          <AnimatedSection animation="slideUp">
-            <div className="text-center max-w-3xl mx-auto">
-              <h1 className="text-3xl md:text-4xl font-display font-bold mb-3 text-gradient">{t('studentTracking.title')}</h1>
-              <p className="text-gray-700 text-lg mb-6">
-                {t('studentTracking.description')}
-              </p>
+      {/* PITA ZONA */}
+      <section className="pita-zona pb-9 pt-10 sm:pb-11 sm:pt-14">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+          <Link
+            href="/tracking"
+            className="legenda inline-flex items-center gap-1.5 text-arah-400 transition-colors hover:text-arah-300"
+          >
+            <ChevronLeft aria-hidden className="h-3.5 w-3.5" />
+            {t('studentTracking.backToMain')}
+          </Link>
 
-              <div className="hidden md:flex flex-wrap justify-center gap-2 mb-6">
-                {docTypes.slice(0, 6).map((type, index) => (
-                  <span key={index} className="px-3 py-1 bg-white shadow-sm border border-gray-100 rounded-full text-sm text-gray-700">
-                    {type}
-                  </span>
-                ))}
-                {docTypes.length > 6 && (
-                  <span className="px-3 py-1 bg-white shadow-sm border border-gray-100 rounded-full text-sm text-gray-700">
-                    +{docTypes.length - 6} {language === 'en' ? 'more' : 'lainnya'}
-                  </span>
-                )}
-              </div>
+          <h1 className="mt-4 max-w-[20ch] font-display text-[2rem] font-extrabold leading-[1.05] tracking-tight text-white sm:text-[2.5rem] lg:text-[3rem]">
+            {t('studentTracking.title')}
+          </h1>
+          <p className="mt-4 max-w-[68ch] text-base leading-relaxed text-primary-200">
+            {t('studentTracking.description')}
+          </p>
 
-              <Link href="/tracking" className="inline-flex items-center text-primary-600 hover:text-primary-800 transition-colors">
-                <ChevronLeft className="w-4 h-4 mr-1" />
-                {t('studentTracking.backToMain')}
-              </Link>
-            </div>
-          </AnimatedSection>
+          <div className="mt-7 border-t border-white/15 pt-5">
+            <p className="legenda text-white/50">
+              {language === 'en' ? 'Document types tracked' : 'Jenis dokumen yang terlacak'}
+            </p>
+            <ul className="mt-3 flex flex-wrap gap-x-5 gap-y-2">
+              {docTypes.map((type) => (
+                <li key={type} className="text-sm text-primary-200">
+                  {type}
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </section>
 
       {/* Tracking Form Section - Dioptimalkan dan dibuat lebih intuitif */}
-      <section className="relative py-10 bg-white/80 backdrop-blur-sm">
+      <section className="relative py-10 bg-white">
         <div className="container mx-auto px-4 relative z-10">
           <AnimatedSection animation="slideUp">
-            <div className="max-w-xl mx-auto bg-white/95 backdrop-blur-sm rounded-xl shadow-md p-6 border border-gray-100 relative overflow-hidden">
+            <div className="max-w-xl mx-auto bg-white rounded-md shadow-pelat p-6 border border-tinta-100 relative overflow-hidden">
               {/* Background decoration */}
               <div className="absolute -top-16 -right-16 w-32 h-32 bg-primary-50 rounded-full blur-2xl opacity-70"></div>
 
-              <h2 className="text-xl font-display font-bold mb-4 text-center text-gray-800">{t('studentTracking.trackStatus')}</h2>
+              <h2 className="text-xl font-display font-bold mb-4 text-center text-tinta-900">{t('studentTracking.trackStatus')}</h2>
 
               <form onSubmit={handleSearch} className="mb-5 relative z-10">
                 {/* NEW: Document Type Selector */}
                 <div className="mb-4">
-                  <label htmlFor="documentType" className="block text-gray-700 text-sm font-medium mb-2">
+                  <label htmlFor="documentType" className="block text-tinta-700 text-sm font-medium mb-2">
                     {language === 'en' ? 'Document Type (Optional - for faster search)' : 'Jenis Dokumen (Opsional - untuk pencarian lebih cepat)'}
                   </label>
                   <select
                     id="documentType"
                     value={selectedSheet}
                     onChange={(e) => setSelectedSheet(e.target.value)}
-                    className="w-full border border-gray-200 bg-white/80 text-gray-800 rounded-lg px-3 py-3 focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent"
+                    className="w-full border border-tinta-200 bg-white/80 text-tinta-900 rounded-lg px-3 py-3 focus:outline-none focus:border-arah-400"
                   >
                     <option value="">
-                      {language === 'en' ? '🔍 All Documents (slower but complete)' : '🔍 Semua Dokumen (lebih lambat tapi lengkap)'}
+                      {language === 'en' ? 'All Documents (slower but complete)' : 'Semua Dokumen (lebih lambat tapi lengkap)'}
                     </option>
-                    <option value="SURAT_AKADEMIK">📄 Surat Akademik</option>
-                    <option value="SEBELUM_KP">💼 Permohonan Kerja Praktik</option>
-                    <option value="SETELAH_KP">📋 Laporan Kerja Praktik</option>
-                    <option value="SURAT_REKOMENDASI">📝 Surat Rekomendasi</option>
-                    <option value="LEGALISASI">🏛️ Legalisasi Dokumen</option>
-                    <option value="DISPENSASI">📅 Dispensasi Perkuliahan</option>
-                    <option value="NOMOR_SERTIFIKAT">🎓 Nomor Sertifikat</option>
-                    <option value="PERUBAHAN_FRS">✏️ Perubahan FRS</option>
-                    <option value="SURAT_TUGAS">📄 Surat Tugas Mahasiswa</option>
-                    <option value="TTD_DEKANAT">✍️ TTD Dekanat</option>
-                    <option value="TERIMA_BERKAS_TA">📁 Tanda Terima Berkas TA</option>
-                    <option value="TRANSKRIP_NILAI">📊 Transkrip Nilai & KHS</option>
-                    <option value="SURAT_AKTIF">📋 Surat Aktif Studi</option>
-                    <option value="SKL">🎓 Surat Keterangan Lulus</option>
-                    <option value="PENGUNDURAN_DIRI">📤 Pengunduran Diri</option>
-                    <option value="SUKET_SIDANG_TA">📑 Suket Sidang TA</option>
+                    <option value="SURAT_AKADEMIK">Surat Akademik</option>
+                    <option value="SEBELUM_KP">Permohonan Kerja Praktik</option>
+                    <option value="SETELAH_KP">Laporan Kerja Praktik</option>
+                    <option value="SURAT_REKOMENDASI">Surat Rekomendasi</option>
+                    <option value="LEGALISASI">Legalisasi Dokumen</option>
+                    <option value="DISPENSASI">Dispensasi Perkuliahan</option>
+                    <option value="NOMOR_SERTIFIKAT">Nomor Sertifikat</option>
+                    <option value="PERUBAHAN_FRS">Perubahan FRS</option>
+                    <option value="SURAT_TUGAS">Surat Tugas Mahasiswa</option>
+                    <option value="TTD_DEKANAT">TTD Dekanat</option>
+                    <option value="TERIMA_BERKAS_TA">Tanda Terima Berkas TA</option>
+                    <option value="TRANSKRIP_NILAI">Transkrip Nilai & KHS</option>
+                    <option value="SURAT_AKTIF">Surat Aktif Studi</option>
+                    <option value="SKL">Surat Keterangan Lulus</option>
+                    <option value="PENGUNDURAN_DIRI">Pengunduran Diri</option>
+                    <option value="SUKET_SIDANG_TA">Suket Sidang TA</option>
                   </select>
-                  <p className="mt-1 text-xs text-gray-500">
+                  <p className="mt-1 text-xs text-tinta-500">
                     {language === 'en'
                       ? 'Select a specific document type for faster search, or leave empty to search all documents'
                       : 'Pilih jenis dokumen spesifik untuk pencarian lebih cepat, atau kosongkan untuk mencari semua dokumen'}
@@ -474,15 +475,15 @@ const MahasiswaTrackingPage = () => {
 
                 {/* Existing NIM input field */}
                 <div className="mb-4">
-                  <label htmlFor="searchQuery" className="block text-gray-700 text-sm font-medium mb-2">
+                  <label htmlFor="searchQuery" className="block text-tinta-700 text-sm font-medium mb-2">
                     {t('studentTracking.nimLabel')}
                   </label>
                   <div className="relative">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-tinta-300 h-5 w-5" />
                     <input
                       type="text"
                       id="searchQuery"
-                      className="w-full border border-gray-200 bg-white/80 text-gray-800 rounded-lg px-10 py-3 focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent"
+                      className="w-full border border-tinta-200 bg-white/80 text-tinta-900 rounded-lg px-10 py-3 focus:outline-none focus:border-arah-400"
                       placeholder={t('studentTracking.nimExample')}
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
@@ -501,7 +502,7 @@ const MahasiswaTrackingPage = () => {
                   type="submit"
                   fullWidth
                   disabled={isLoading || !dataLoaded}
-                  className="flex items-center justify-center shadow-md"
+                  className="flex items-center justify-center shadow-pelat"
                 >
                   {isLoading ? (
                     <>
@@ -533,13 +534,13 @@ const MahasiswaTrackingPage = () => {
                 </Button>
               </form>
 
-              <div className="border-t border-gray-100 pt-4 relative z-10">
+              <div className="border-t border-tinta-100 pt-4 relative z-10">
                 <details className="text-sm">
                   <summary className="text-primary-600 cursor-pointer font-medium flex items-center bg-primary-50/50 p-2 rounded-lg hover:bg-primary-50 transition-colors">
                     <HelpCircle className="w-4 h-4 mr-1" />
                     {language === 'en' ? 'Search Tips' : 'Tips Pencarian'}
                   </summary>
-                  <div className="mt-3 text-gray-600 p-2 bg-white/50 rounded-lg border border-gray-100">
+                  <div className="mt-3 text-tinta-500 p-2 bg-tinta-50 rounded-lg border border-tinta-100">
                     <p className="mb-2">{language === 'en' ? 'For best search experience:' : 'Untuk pengalaman pencarian terbaik:'}</p>
                     <ul className="space-y-2">
                       <li className="flex items-start">
@@ -570,29 +571,29 @@ const MahasiswaTrackingPage = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.3 }}
-                className="max-w-3xl mx-auto mt-8 bg-white/95 backdrop-blur-sm rounded-xl shadow-md p-6 border border-gray-100"
+                className="max-w-3xl mx-auto mt-8 bg-white rounded-md shadow-pelat p-6 border border-tinta-100"
               >
-                <h3 className="text-lg font-bold mb-4 text-gray-800">
+                <h3 className="text-lg font-bold mb-4 text-tinta-900">
                   {t('studentTracking.searchResults')} ({searchResults.length} {t('studentTracking.documents')})
                 </h3>
                 <div className="space-y-3">
                   {searchResults.map((doc, index) => (
                     <div
                       key={index}
-                      className="p-4 bg-white/80 border border-gray-100 rounded-lg hover:border-primary-200 hover:bg-primary-50/50 transition cursor-pointer shadow-sm hover:shadow-md"
+                      className="p-4 bg-white/80 border border-tinta-100 rounded-lg hover:border-primary-200 hover:bg-primary-50/50 transition cursor-pointer shadow-pelat hover:shadow-pelat"
                       onClick={() => handleViewDetail(doc)}
                     >
                       <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center">
                           {getDocTypeIcon(doc.type)}
-                          <h4 className="font-medium text-gray-800">{doc.title}</h4>
+                          <h4 className="font-medium text-tinta-900">{doc.title}</h4>
                         </div>
-                        <span className="text-xs px-2 py-1 rounded bg-gray-100/80 text-gray-700 border border-gray-200">
+                        <span className="text-xs px-2 py-1 rounded bg-tinta-100/80 text-tinta-700 border border-tinta-200">
                           {doc.type}
                         </span>
                       </div>
                       <div className="flex items-center justify-between">
-                        <div className="text-sm text-gray-500">
+                        <div className="text-sm text-tinta-500">
                           <span className="flex items-center">
                             <User className="w-3 h-3 mr-1" />
                             {doc.requestor}
@@ -620,14 +621,14 @@ const MahasiswaTrackingPage = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.3 }}
-                className="max-w-3xl mx-auto mt-8 bg-white/95 backdrop-blur-sm rounded-xl shadow-md overflow-hidden border border-gray-100"
+                className="max-w-3xl mx-auto mt-8 bg-white rounded-md shadow-pelat overflow-hidden border border-tinta-100"
               >
                 {/* Header dengan tombol kembali */}
-                <div className="bg-gradient-to-r from-primary-50/80 to-primary-100/80 p-6 border-b border-gray-100">
+                <div className="bg-gradient-to-r from-primary-50/80 to-primary-100/80 p-6 border-b border-tinta-100">
                   {searchResults.length > 1 && (
                     <button
                       onClick={handleBackToResults}
-                      className="flex items-center text-sm text-primary-700 hover:text-primary-900 transition-colors mb-3 bg-white/50 px-2 py-1 rounded-md mb-4"
+                      className="flex items-center text-sm text-primary-700 hover:text-primary-900 transition-colors mb-3 bg-tinta-50 px-2 py-1 rounded-md mb-4"
                     >
                       <ArrowLeft className="w-4 h-4 mr-1" />
                       {language === 'en' ? 'Back to results' : 'Kembali ke hasil'}
@@ -637,9 +638,9 @@ const MahasiswaTrackingPage = () => {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center">
                       {getDocTypeIcon(trackingResult.type)}
-                      <h3 className="text-xl font-bold text-gray-800">{trackingResult.title}</h3>
+                      <h3 className="text-xl font-bold text-tinta-900">{trackingResult.title}</h3>
                     </div>
-                    <div className="px-3 py-1 rounded-lg bg-white/90 text-primary-700 text-sm font-medium border border-primary-100 shadow-sm">
+                    <div className="px-3 py-1 rounded-lg bg-white/90 text-primary-700 text-sm font-medium border border-primary-100 shadow-pelat">
                       {trackingResult.type}
                     </div>
                   </div>
@@ -649,19 +650,19 @@ const MahasiswaTrackingPage = () => {
                 <div className="p-6 relative z-10">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                     {getDocumentDetails(trackingResult).map((detail, index) => (
-                      <div key={index} className="flex items-start bg-gray-50/50 p-3 rounded-lg border border-gray-100">
+                      <div key={index} className="flex items-start bg-tinta-50/50 p-3 rounded-lg border border-tinta-100">
                         {detail.icon}
                         <div>
-                          <p className="text-gray-500 text-sm mb-1">{detail.label}</p>
-                          <div className="font-medium text-gray-800">{detail.value}</div>
+                          <p className="text-tinta-500 text-sm mb-1">{detail.label}</p>
+                          <div className="font-medium text-tinta-900">{detail.value}</div>
                         </div>
                       </div>
                     ))}
 
-                    <div className="flex items-start md:col-span-2 bg-gray-50/50 p-3 rounded-lg border border-gray-100">
+                    <div className="flex items-start md:col-span-2 bg-tinta-50/50 p-3 rounded-lg border border-tinta-100">
                       <div className="w-5 h-5 mr-3"></div>
                       <div>
-                        <p className="text-gray-500 text-sm mb-1">{t('studentTracking.status.status')}</p>
+                        <p className="text-tinta-500 text-sm mb-1">{t('studentTracking.status.status')}</p>
                         <div className="font-medium">
                           {getStatusBadge(trackingResult.status)}
                         </div>
@@ -670,34 +671,34 @@ const MahasiswaTrackingPage = () => {
                   </div>
 
                   {/* Timeline */}
-                  <h3 className="text-lg font-bold mb-4 text-gray-800 border-t border-gray-100 pt-6">{t('studentTracking.submissionStatus')}</h3>
+                  <h3 className="text-lg font-bold mb-4 text-tinta-900 border-t border-tinta-100 pt-6">{t('studentTracking.submissionStatus')}</h3>
                   {trackingResult.timeline && trackingResult.timeline.length > 0 ? (
-                    <div className="timeline-container relative pl-8 before:content-[''] before:absolute before:left-3 before:top-2 before:bottom-2 before:w-0.5 before:bg-gradient-to-b before:from-primary-600/80 before:via-primary-400/50 before:to-gray-300/30 space-y-6 z-10">
+                    <div className="relative pl-8 before:content-[''] before:absolute before:left-3 before:top-2 before:bottom-2 before:w-0.5 before:bg-gradient-to-b before:from-primary-600/80 before:via-primary-400/50 before:to-gray-300/30 space-y-6 z-10">
                       {trackingResult.timeline.map((item, index) => (
-                        <div key={index} className="timeline-item relative">
-                          <div className={`timeline-dot absolute -left-8 flex items-center justify-center w-6 h-6 rounded-full shadow-sm ${item.status === 'completed' ? 'bg-primary-600 text-white' :
+                        <div key={index} className="relative">
+                          <div className={`absolute -left-8 flex items-center justify-center w-6 h-6 rounded-full shadow-pelat ${item.status === 'completed' ? 'bg-primary-600 text-white' :
                             item.status === 'active' ? 'bg-blue-500 text-white' :
-                              'bg-white border border-gray-300 text-gray-500'
+                              'bg-white border border-tinta-300 text-tinta-500'
                             }`}>
                             {item.status === 'completed' && <CheckCircle2 className="w-4 h-4" />}
                             {item.status === 'active' && <Clock className="w-4 h-4" />}
                             {item.status === 'pending' && <AlertCircle className="w-4 h-4" />}
                           </div>
-                          <div className={`ml-2 p-4 rounded-lg shadow-sm transition-all ${item.status === 'completed' ? 'bg-primary-50/80 border border-primary-100' :
+                          <div className={`ml-2 p-4 rounded-lg shadow-pelat transition-all ${item.status === 'completed' ? 'bg-primary-50/80 border border-primary-100' :
                             item.status === 'active' ? 'bg-blue-50/80 border border-blue-100' :
-                              'bg-white/80 border border-gray-200 opacity-75'
+                              'bg-white/80 border border-tinta-200 opacity-75'
                             }`}>
-                            <h4 className={`text-base font-semibold ${item.status === 'pending' ? 'text-gray-500' : 'text-gray-800'
+                            <h4 className={`text-base font-semibold ${item.status === 'pending' ? 'text-tinta-500' : 'text-tinta-900'
                               }`}>{item.title}</h4>
-                            <p className={`${item.status === 'pending' ? 'text-gray-500' : 'text-gray-600'
+                            <p className={`${item.status === 'pending' ? 'text-tinta-500' : 'text-tinta-500'
                               } mb-1 text-sm`}>{item.description}</p>
-                            <p className="text-xs text-gray-500">{item.date}</p>
+                            <p className="text-xs text-tinta-500">{item.date}</p>
                           </div>
                         </div>
                       ))}
                     </div>
                   ) : (
-                    <p className="text-gray-500">{t('studentTracking.timeline')}</p>
+                    <p className="text-tinta-500">{t('studentTracking.timeline')}</p>
                   )}
                 </div>
               </motion.div>
@@ -707,27 +708,26 @@ const MahasiswaTrackingPage = () => {
           {/* Survey modal prompting navigation */}
           <AnimatePresence>
             {showSurveyModal && (
-              <motion.div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                <motion.div className="bg-white/95 backdrop-blur-md rounded-xl p-6 max-w-md mx-auto relative shadow-2xl border border-gray-200" initial={{ scale: 0.8 }} animate={{ scale: 1 }} exit={{ scale: 0.8 }}>
-                  <button className="absolute top-3 right-3 text-gray-500 hover:bg-gray-100 p-1 rounded-full transition-colors" onClick={() => setShowSurveyModal(false)}><X className="w-5 h-5" /></button>
-                  <h2 className="text-xl font-bold mb-4">
-                    {language === 'en' ? '🥺 Help us with a quick survey!' : '🥺 Bantu kami dengan survey singkat!'}
+              <motion.div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                <motion.div className="relative mx-4 w-full max-w-md rounded-md border border-tinta-200 bg-white p-6 shadow-angkat" initial={{ scale: 0.8 }} animate={{ scale: 1 }} exit={{ scale: 0.8 }}>
+                  <button className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-sm text-tinta-500 transition-colors hover:bg-tinta-50 hover:text-tinta-900" onClick={() => setShowSurveyModal(false)}><X className="w-5 h-5" /></button>
+                  <h2 className="font-display text-lg font-extrabold tracking-tight text-tinta-900">
+                    {language === 'en' ? 'Help us with a quick survey' : 'Bantu kami dengan survei singkat'}
                   </h2>
-                  <p className="mb-6 text-gray-600">
+                  <p className="mt-2 text-sm leading-relaxed text-tinta-500">
                     {language === 'en'
-                      ? 'Your feedback means the world to us! It only takes 30 seconds...'
-                      : 'Masukan Anda sangat berharga bagi kami! Hanya butuh 30 detik...'}
+                      ? 'Your feedback helps us improve this service. It takes about 30 seconds.'
+                      : 'Masukan Anda membantu kami memperbaiki layanan ini. Kira-kira 30 detik.'}
                   </p>
-                  <div className="flex justify-end space-x-3 mt-2">
+                  <div className="mt-6 flex justify-end gap-2">
                     <Button
                       variant="outline"
-                      className="text-gray-600 border-gray-300 hover:bg-gray-50"
                       onClick={() => setShowSurveyModal(false)}
                     >
-                      {language === 'en' ? '💔 Break Our Hearts' : '💔 Hancurkan Hati Kami'}
+                      {language === 'en' ? 'Later' : 'Nanti saja'}
                     </Button>
                     <Button onClick={() => { setShowSurveyModal(false); router.push('/survey-kepuasan'); }}>
-                      {language === 'en' ? '❤️ Isi Survey' : '❤️ Isi Survey'}
+                      {language === 'en' ? 'Fill the survey' : 'Isi Survei'}
                     </Button>
                   </div>
                 </motion.div>
@@ -739,77 +739,77 @@ const MahasiswaTrackingPage = () => {
       </section>
 
       {/* FAQ Section - Diperbarui dengan tampilan accordion */}
-      <section className="relative py-12 bg-white/80 backdrop-blur-sm">
+      <section className="relative py-12 bg-white">
         <div className="container mx-auto px-4 relative z-10">
           <AnimatedSection animation="slideUp">
-            <h2 className="text-2xl font-display font-bold text-center mb-8 text-gradient">{t('studentTracking.faq.title')}</h2>
+            <h2 className="text-2xl font-display font-bold text-center mb-8 text-tinta-900">{t('studentTracking.faq.title')}</h2>
           </AnimatedSection>
 
           <div className="max-w-3xl mx-auto">
             <div className="space-y-4">
               <AnimatedSection animation="slideUp" delay={0.1}>
-                <details className="bg-white/90 backdrop-blur-sm rounded-xl shadow-sm p-4 group border border-gray-100 hover:border-primary-200 transition-colors">
+                <details className="bg-white rounded-md shadow-pelat p-4 group border border-tinta-100 hover:border-primary-200 transition-colors">
                   <summary className="flex items-center justify-between cursor-pointer font-medium">
-                    <div className="flex items-center text-gray-800">
+                    <div className="flex items-center text-tinta-900">
                       <HelpCircle className="w-5 h-5 mr-3 text-primary-600" />
                       <span>{t('studentTracking.faq.whatTypes.question')}</span>
                     </div>
                     <div className="transition group-open:rotate-180">
-                      <ChevronLeft className="w-5 h-5 -rotate-90 text-gray-500" />
+                      <ChevronLeft className="w-5 h-5 -rotate-90 text-tinta-500" />
                     </div>
                   </summary>
-                  <div className="mt-4 ml-8 text-gray-600">
+                  <div className="mt-4 ml-8 text-tinta-500">
                     <p>{t('studentTracking.faq.whatTypes.answer')}</p>
                   </div>
                 </details>
               </AnimatedSection>
 
               <AnimatedSection animation="slideUp" delay={0.2}>
-                <details className="bg-white/90 backdrop-blur-sm rounded-xl shadow-sm p-4 group border border-gray-100 hover:border-primary-200 transition-colors">
+                <details className="bg-white rounded-md shadow-pelat p-4 group border border-tinta-100 hover:border-primary-200 transition-colors">
                   <summary className="flex items-center justify-between cursor-pointer font-medium">
-                    <div className="flex items-center text-gray-800">
+                    <div className="flex items-center text-tinta-900">
                       <HelpCircle className="w-5 h-5 mr-3 text-primary-600" />
                       <span>{t('studentTracking.faq.howToFind.question')}</span>
                     </div>
                     <div className="transition group-open:rotate-180">
-                      <ChevronLeft className="w-5 h-5 -rotate-90 text-gray-500" />
+                      <ChevronLeft className="w-5 h-5 -rotate-90 text-tinta-500" />
                     </div>
                   </summary>
-                  <div className="mt-4 ml-8 text-gray-600">
+                  <div className="mt-4 ml-8 text-tinta-500">
                     <p>{t('studentTracking.faq.howToFind.answer')}</p>
                   </div>
                 </details>
               </AnimatedSection>
 
               <AnimatedSection animation="slideUp" delay={0.3}>
-                <details className="bg-white/90 backdrop-blur-sm rounded-xl shadow-sm p-4 group border border-gray-100 hover:border-primary-200 transition-colors">
+                <details className="bg-white rounded-md shadow-pelat p-4 group border border-tinta-100 hover:border-primary-200 transition-colors">
                   <summary className="flex items-center justify-between cursor-pointer font-medium">
-                    <div className="flex items-center text-gray-800">
+                    <div className="flex items-center text-tinta-900">
                       <HelpCircle className="w-5 h-5 mr-3 text-primary-600" />
                       <span>{t('studentTracking.faq.processingTime.question')}</span>
                     </div>
                     <div className="transition group-open:rotate-180">
-                      <ChevronLeft className="w-5 h-5 -rotate-90 text-gray-500" />
+                      <ChevronLeft className="w-5 h-5 -rotate-90 text-tinta-500" />
                     </div>
                   </summary>
-                  <div className="mt-4 ml-8 text-gray-600">
+                  <div className="mt-4 ml-8 text-tinta-500">
                     <p>{t('studentTracking.faq.processingTime.answer')}</p>
                   </div>
                 </details>
               </AnimatedSection>
 
               <AnimatedSection animation="slideUp" delay={0.4}>
-                <details className="bg-white/90 backdrop-blur-sm rounded-xl shadow-sm p-4 group border border-gray-100 hover:border-primary-200 transition-colors">
+                <details className="bg-white rounded-md shadow-pelat p-4 group border border-tinta-100 hover:border-primary-200 transition-colors">
                   <summary className="flex items-center justify-between cursor-pointer font-medium">
-                    <div className="flex items-center text-gray-800">
+                    <div className="flex items-center text-tinta-900">
                       <HelpCircle className="w-5 h-5 mr-3 text-primary-600" />
                       <span>{t('studentTracking.faq.statusNotChanging.question')}</span>
                     </div>
                     <div className="transition group-open:rotate-180">
-                      <ChevronLeft className="w-5 h-5 -rotate-90 text-gray-500" />
+                      <ChevronLeft className="w-5 h-5 -rotate-90 text-tinta-500" />
                     </div>
                   </summary>
-                  <div className="mt-4 ml-8 text-gray-600">
+                  <div className="mt-4 ml-8 text-tinta-500">
                     <p>{t('studentTracking.faq.statusNotChanging.answer')}</p>
                   </div>
                 </details>

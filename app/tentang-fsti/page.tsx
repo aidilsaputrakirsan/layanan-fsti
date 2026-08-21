@@ -37,6 +37,19 @@ import {
   Clipboard
 } from 'lucide-react';
 
+/** Logo prodi yang berkasnya benar-benar ada di public/images/program-studi/. */
+const LOGO_PRODI = new Set([
+  'bisnis-digital',
+  'fisika',
+  'ilmu-aktuaria',
+  'informatika',
+  'magister-manajemen-teknologi',
+  'matematika',
+  'sistem-informasi',
+  'statistika',
+  'teknik-elektro',
+]);
+
 const TentangFSTIPage = () => {
   const { t, language } = useLanguage();
 
@@ -377,66 +390,57 @@ const TentangFSTIPage = () => {
   return (
     <MainLayout>
       {/* Hero Section */}
-      <section className="relative py-20 overflow-hidden">
-        <div className="absolute inset-0 hero-gradient"></div>
-        <div className="container mx-auto px-4 relative z-10">
+      <section className="pita-zona pb-9 pt-10 sm:pb-11 sm:pt-14">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <AnimatedSection animation="slideUp">
-            <div className="text-center max-w-4xl mx-auto">
-              <h1 className="text-4xl md:text-5xl font-display font-bold mb-6 text-gradient">
+            <div>
+              <p className="legenda text-arah-400">
+                {language === 'en'
+                  ? 'Kalimantan Institute of Technology'
+                  : 'Institut Teknologi Kalimantan'}
+              </p>
+              <h1 className="mt-3 font-display text-[2rem] font-extrabold leading-[1.05] tracking-tight text-white sm:text-[2.5rem] lg:text-[3rem]">
                 {language === 'en' ? 'About FSTI' : 'Tentang FSTI'}
               </h1>
-              <p className="text-gray-700 text-lg mb-8">
+              <p className="mt-4 max-w-[68ch] text-base leading-relaxed text-primary-200">
                 {language === 'en'
                   ? 'Faculty of Science and Information Technology - Kalimantan Institute of Technology'
                   : 'Fakultas Sains dan Teknologi Informasi - Institut Teknologi Kalimantan'
                 }
               </p>
 
-              {/* Quick Stats */}
-              <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4 mt-12">
-                <div className="text-center">
-                  <div className="text-2xl md:text-3xl font-bold text-primary-600">2.260</div>
-                  <div className="text-gray-600 text-xs md:text-sm">{language === 'en' ? 'Students' : 'Mahasiswa'}</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl md:text-3xl font-bold text-primary-600">2</div>
-                  <div className="text-gray-600 text-xs md:text-sm">{language === 'en' ? 'Departments' : 'Jurusan'}</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl md:text-3xl font-bold text-primary-600">9</div>
-                  <div className="text-gray-600 text-xs md:text-sm">{language === 'en' ? 'S1 Programs' : 'Prodi S1'}</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl md:text-3xl font-bold text-primary-600">1</div>
-                  <div className="text-gray-600 text-xs md:text-sm">{language === 'en' ? 'S2 Programs' : 'Prodi S2'}</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl md:text-3xl font-bold text-primary-600">5</div>
-                  <div className="text-gray-600 text-xs md:text-sm">{language === 'en' ? 'Laboratories' : 'Laboratorium'}</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl md:text-3xl font-bold text-primary-600">1.404</div>
-                  <div className="text-gray-600 text-xs md:text-sm">{language === 'en' ? 'Alumni' : 'Alumni'}</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl md:text-3xl font-bold text-primary-600">107</div>
-                  <div className="text-gray-600 text-xs md:text-sm">{language === 'en' ? 'Faculty Members' : 'Dosen'}</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl md:text-3xl font-bold text-primary-600">8</div>
-                  <div className="text-gray-600 text-xs md:text-sm">{language === 'en' ? 'Staff' : 'Tendik'}</div>
-                </div>
-              </div>
+              {/* Angka pokok fakultas */}
+              <dl className="mt-9 grid grid-cols-2 gap-x-8 gap-y-6 border-t border-white/15 pt-6 sm:grid-cols-4 lg:grid-cols-8">
+                {[
+                  { nilai: '2.260', label: { en: 'Students', id: 'Mahasiswa' } },
+                  { nilai: '2', label: { en: 'Departments', id: 'Jurusan' } },
+                  { nilai: '9', label: { en: 'S1 Programs', id: 'Prodi S1' } },
+                  { nilai: '1', label: { en: 'S2 Programs', id: 'Prodi S2' } },
+                  { nilai: '5', label: { en: 'Laboratories', id: 'Laboratorium' } },
+                  { nilai: '1.404', label: { en: 'Alumni', id: 'Alumni' } },
+                  { nilai: '107', label: { en: 'Faculty Members', id: 'Dosen' } },
+                  { nilai: '8', label: { en: 'Staff', id: 'Tendik' } },
+                ].map((a) => (
+                  <div key={a.label.en}>
+                    <dt className="legenda text-white/50">
+                      {language === 'en' ? a.label.en : a.label.id}
+                    </dt>
+                    <dd className="angka-pelat mt-1.5 font-display text-2xl font-extrabold tracking-tight text-white">
+                      {a.nilai}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
             </div>
           </AnimatedSection>
         </div>
       </section>
 
       {/* Tugas dan Fungsi Fakultas Section - SECTION BARU */}
-      <section className="relative py-16 bg-white/80 backdrop-blur-sm">
+      <section className="relative py-16 bg-white">
         <div className="container mx-auto px-4 relative z-10">
           <AnimatedSection animation="slideUp">
-            <h2 className="text-3xl font-display font-bold text-center mb-12 text-gradient">
+            <h2 className="mb-8 font-display text-2xl font-extrabold tracking-tight text-tinta-900">
               {language === 'en' ? 'Faculty Duties and Functions' : 'Tugas dan Fungsi Fakultas'}
             </h2>
           </AnimatedSection>
@@ -445,17 +449,17 @@ const TentangFSTIPage = () => {
             {/* Tugas Fakultas */}
             <div className="mb-12">
               <AnimatedSection animation="slideUp" delay={0.1}>
-                <div className="bg-gradient-to-r from-primary-50 to-primary-100 rounded-xl p-8 shadow-md">
+                <div className="bg-white">
                   <div className="flex items-center mb-6">
                     <div className="w-12 h-12 bg-primary-600 rounded-full flex items-center justify-center mr-4">
                       <Briefcase className="w-6 h-6 text-white" />
                     </div>
                     <h3 className="text-2xl font-bold text-primary-800">{tugasFungsi.tugas.title}</h3>
                   </div>
-                  <p className="text-gray-700 leading-relaxed text-lg mb-4">
+                  <p className="text-tinta-700 leading-relaxed text-lg mb-4">
                     {tugasFungsi.tugas.content}
                   </p>
-                  <p className="text-sm text-gray-600 italic border-l-4 border-primary-300 pl-4">
+                  <p className="text-sm text-tinta-500 italic border-l-4 border-primary-300 pl-4">
                     {tugasFungsi.tugas.source}
                   </p>
                 </div>
@@ -465,7 +469,7 @@ const TentangFSTIPage = () => {
             {/* Fungsi Fakultas */}
             <div>
               <AnimatedSection animation="slideUp" delay={0.2}>
-                <h3 className="text-2xl font-bold text-center mb-8 text-primary-800">
+                <h3 className="mb-6 font-display text-xl font-extrabold tracking-tight text-tinta-900">
                   {tugasFungsi.fungsi.title}
                 </h3>
               </AnimatedSection>
@@ -473,14 +477,14 @@ const TentangFSTIPage = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
                 {tugasFungsi.fungsi.items.map((item, index) => (
                   <AnimatedSection key={index} animation="slideUp" delay={(index + 3) * 0.1}>
-                    <div className="bg-white rounded-xl shadow-md p-6 hover-card border border-gray-100">
+                    <div className="bg-white rounded-md shadow-pelat p-6 border border-tinta-100">
                       <div className="flex items-center mb-4">
                         <div className="w-10 h-10 bg-primary-50 rounded-full flex items-center justify-center mr-3">
                           <div className="text-primary-600">{item.icon}</div>
                         </div>
-                        <h4 className="font-bold text-gray-800 text-sm leading-tight">{item.title}</h4>
+                        <h4 className="font-bold text-tinta-900 text-sm leading-tight">{item.title}</h4>
                       </div>
-                      <p className="text-gray-600 text-sm leading-relaxed">{item.description}</p>
+                      <p className="text-tinta-500 text-sm leading-relaxed">{item.description}</p>
                     </div>
                   </AnimatedSection>
                 ))}
@@ -488,7 +492,7 @@ const TentangFSTIPage = () => {
 
               <AnimatedSection animation="slideUp" delay={0.8}>
                 <div className="text-center">
-                  <p className="text-sm text-gray-600 italic border-l-4 border-primary-300 pl-4 inline-block">
+                  <p className="text-sm text-tinta-500 italic border-l-4 border-primary-300 pl-4 inline-block">
                     {tugasFungsi.fungsi.source}
                   </p>
                 </div>
@@ -499,10 +503,10 @@ const TentangFSTIPage = () => {
       </section>
 
       {/* Visi dan Misi Section */}
-      <section className="relative py-16 bg-white/80 backdrop-blur-sm">
+      <section className="relative py-16 bg-white">
         <div className="container mx-auto px-4 relative z-10">
           <AnimatedSection animation="slideUp">
-            <h2 className="text-3xl font-display font-bold text-center mb-12 text-gradient">
+            <h2 className="mb-8 font-display text-2xl font-extrabold tracking-tight text-tinta-900">
               {language === 'en' ? 'Vision and Mission' : 'Visi dan Misi FSTI'}
             </h2>
           </AnimatedSection>
@@ -511,16 +515,16 @@ const TentangFSTIPage = () => {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               {/* Visi */}
               <AnimatedSection animation="slideUp" delay={0.1}>
-                <div className="bg-white/95 backdrop-blur-sm rounded-xl shadow-md p-8 h-full border border-gray-100">
+                <div className="bg-white rounded-md shadow-pelat p-8 h-full border border-tinta-100">
                   <div className="flex items-center mb-6">
                     <div className="w-12 h-12 bg-primary-50 rounded-full flex items-center justify-center mr-4">
                       <Eye className="w-6 h-6 text-primary-600" />
                     </div>
-                    <h3 className="text-2xl font-bold text-gray-800">
+                    <h3 className="text-2xl font-bold text-tinta-900">
                       {language === 'en' ? 'Vision' : 'Visi'}
                     </h3>
                   </div>
-                  <p className="text-gray-700 leading-relaxed">
+                  <p className="text-tinta-700 leading-relaxed">
                     {visiMisi.visi}
                   </p>
                 </div>
@@ -528,24 +532,24 @@ const TentangFSTIPage = () => {
 
               {/* Misi */}
               <AnimatedSection animation="slideUp" delay={0.2}>
-                <div className="bg-white/95 backdrop-blur-sm rounded-xl shadow-md p-8 h-full border border-gray-100">
+                <div className="bg-white rounded-md shadow-pelat p-8 h-full border border-tinta-100">
                   <div className="flex items-center mb-6">
                     <div className="w-12 h-12 bg-primary-50 rounded-full flex items-center justify-center mr-4">
                       <Target className="w-6 h-6 text-primary-600" />
                     </div>
-                    <h3 className="text-2xl font-bold text-gray-800">
+                    <h3 className="text-2xl font-bold text-tinta-900">
                       {language === 'en' ? 'Mission: Excellence' : 'Misi: Prestasi'}
                     </h3>
                   </div>
                   <div className="grid grid-cols-1 gap-4">
                     {visiMisi.misi.map((item, index) => (
                       <div key={index} className="flex items-start">
-                        <div className="w-6 h-6 bg-primary-100 text-primary-600 rounded-full flex items-center justify-center text-sm font-bold mr-3 shadow-sm flex-shrink-0 mt-0.5">
+                        <div className="w-6 h-6 bg-primary-100 text-primary-600 rounded-full flex items-center justify-center text-sm font-bold mr-3 shadow-pelat flex-shrink-0 mt-0.5">
                           {index + 1}
                         </div>
                         <div>
-                          <p className="text-gray-800 font-semibold leading-snug">{highlightFirstLetter(item.label)}</p>
-                          <p className="text-gray-600 text-sm leading-relaxed mt-1">{item.desc}</p>
+                          <p className="text-tinta-900 font-semibold leading-snug">{highlightFirstLetter(item.label)}</p>
+                          <p className="text-tinta-500 text-sm leading-relaxed mt-1">{item.desc}</p>
                         </div>
                       </div>
                     ))}
@@ -558,10 +562,10 @@ const TentangFSTIPage = () => {
       </section>
 
       {/* Program Studi Section */}
-      <section className="relative py-16 bg-white/80 backdrop-blur-sm">
+      <section className="relative py-16 bg-white">
         <div className="container mx-auto px-4 relative z-10">
           <AnimatedSection animation="slideUp">
-            <h2 className="text-3xl font-display font-bold text-center mb-12 text-gradient">
+            <h2 className="mb-8 font-display text-2xl font-extrabold tracking-tight text-tinta-900">
               {language === 'en' ? 'Study Programs' : 'Program Studi'}
             </h2>
           </AnimatedSection>
@@ -570,22 +574,31 @@ const TentangFSTIPage = () => {
             {Object.entries(programStudi).map(([jurusan, prodis], jurusanIndex) => (
               <div key={jurusan} className="mb-12">
                 <AnimatedSection animation="slideUp" delay={jurusanIndex * 0.1}>
-                  <h3 className="text-xl font-bold mb-6 text-primary-600 text-center">{jurusan}</h3>
+                  <h3 className="legenda mb-4">{jurusan}</h3>
                 </AnimatedSection>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                   {prodis.map((prodi, index) => (
                     <AnimatedSection key={index} animation="slideUp" delay={(jurusanIndex * prodis.length + index) * 0.1}>
                       {/* ===== CARD DENGAN BACKGROUND LOGO ===== */}
-                      <div className="bg-gradient-to-br from-primary-50/90 to-primary-100/90 backdrop-blur-sm rounded-xl p-6 hover-card relative overflow-hidden border border-primary-100 shadow-sm">
+                      <div className="relative overflow-hidden rounded-md border border-tinta-200 bg-white p-6 shadow-pelat transition-colors hover:border-tinta-300">
 
                         {/* ===== BACKGROUND LOGO TRANSPARAN ===== */}
-                        <Image
-                          src={`/images/program-studi/${prodi.name.toLowerCase().replace(/\s+/g, '-')}.png`}
-                          alt=""
-                          fill
-                          className="opacity-[0.18] object-contain p-4"
-                        />
+                        {/* Hanya dirender bila berkas logonya memang ada; nama
+                            prodi yang belum punya logo dulu menghasilkan
+                            permintaan gambar yang gagal. */}
+                        {(() => {
+                          const berkasLogo = prodi.name.toLowerCase().replace(/\s+/g, '-');
+                          if (!LOGO_PRODI.has(berkasLogo)) return null;
+                          return (
+                            <Image
+                              src={`/images/program-studi/${berkasLogo}.png`}
+                              alt=""
+                              fill
+                              className="opacity-[0.18] object-contain p-4"
+                            />
+                          );
+                        })()}
 
                         {/* Content Card - Tetap sama */}
                         <div className="relative z-10">
@@ -594,14 +607,14 @@ const TentangFSTIPage = () => {
                             <h4 className="font-bold text-primary-800">{prodi.name}</h4>
                           </div>
 
-                          <div className="space-y-2 text-sm bg-white/60 p-3 rounded-lg backdrop-blur-sm">
+                          <div className="space-y-2 text-sm bg-white/60 p-3 rounded-lg">
                             <div className="flex justify-between">
-                              <span className="text-gray-600">{language === 'en' ? 'Accreditation' : 'Akreditasi'}:</span>
-                              <span className="font-medium text-gray-800">{prodi.akreditasi}</span>
+                              <span className="text-tinta-500">{language === 'en' ? 'Accreditation' : 'Akreditasi'}:</span>
+                              <span className="font-medium text-tinta-900">{prodi.akreditasi}</span>
                             </div>
                             <div className="flex justify-between">
-                              <span className="text-gray-600">{language === 'en' ? 'Degree' : 'Gelar'}:</span>
-                              <span className="font-medium text-gray-800">{prodi.gelar}</span>
+                              <span className="text-tinta-500">{language === 'en' ? 'Degree' : 'Gelar'}:</span>
+                              <span className="font-medium text-tinta-900">{prodi.gelar}</span>
                             </div>
                           </div>
 
@@ -611,13 +624,13 @@ const TentangFSTIPage = () => {
                                 href={prodi.website}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-primary-700 hover:text-primary-900 text-sm font-medium flex items-center transition-colors bg-white/50 px-3 py-1.5 rounded-md w-fit"
+                                className="text-primary-700 hover:text-primary-900 text-sm font-medium flex items-center transition-colors bg-tinta-50 px-3 py-1.5 rounded-md w-fit"
                               >
                                 {language === 'en' ? 'Visit Website' : 'Lihat Website'}
                                 <ExternalLink className="w-4 h-4 ml-1" />
                               </a>
                             ) : (
-                              <span className="text-gray-500 text-sm font-medium flex items-center bg-white/50 px-3 py-1.5 rounded-md w-fit">
+                              <span className="text-tinta-500 text-sm font-medium flex items-center bg-tinta-50 px-3 py-1.5 rounded-md w-fit">
                                 {language === 'en' ? 'Website coming soon' : 'Website segera hadir'}
                               </span>
                             )}
@@ -634,10 +647,10 @@ const TentangFSTIPage = () => {
       </section>
 
       {/* Struktur Organisasi Section - FIXED STYLE */}
-      <section className="relative py-16 bg-white/80 backdrop-blur-sm">
+      <section className="relative py-16 bg-white">
         <div className="container mx-auto px-4 relative z-10">
           <AnimatedSection animation="slideUp">
-            <h2 className="text-3xl font-display font-bold text-center mb-12 text-gradient">
+            <h2 className="mb-8 font-display text-2xl font-extrabold tracking-tight text-tinta-900">
               {language === 'en' ? 'Organizational Structure' : 'Struktur Organisasi'}
             </h2>
           </AnimatedSection>
@@ -646,8 +659,8 @@ const TentangFSTIPage = () => {
             {/* Dekan */}
             <div className="text-center mb-8">
               <AnimatedSection animation="slideUp" delay={0.1}>
-                <div className="relative hover-card group mx-auto" style={{ width: '250px' }}>
-                  <div className="w-full aspect-[3/4] rounded-xl overflow-hidden shadow-lg relative">
+                <div className="relative group mx-auto" style={{ width: '250px' }}>
+                  <div className="w-full aspect-[3/4] rounded-md overflow-hidden shadow-angkat relative">
                     <Image
                       src={strukturOrganisasi[0].foto}
                       alt={strukturOrganisasi[0].nama}
@@ -671,8 +684,8 @@ const TentangFSTIPage = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8 max-w-lg mx-auto">
               {strukturOrganisasi.slice(1, 3).map((pejabat, index) => (
                 <AnimatedSection key={index} animation="slideUp" delay={(index + 2) * 0.1}>
-                  <div className="relative hover-card group">
-                    <div className="w-full aspect-[3/4] rounded-xl overflow-hidden shadow-lg relative">
+                  <div className="relative group">
+                    <div className="w-full aspect-[3/4] rounded-md overflow-hidden shadow-angkat relative">
                       <Image
                         src={pejabat.foto}
                         alt={pejabat.nama}
@@ -696,8 +709,8 @@ const TentangFSTIPage = () => {
             {/* Level 3: Kasubbag */}
             <div className="flex justify-center mb-8">
               <AnimatedSection animation="slideUp" delay={0.4}>
-                <div className="relative hover-card group" style={{ width: '160px' }}>
-                  <div className="w-full aspect-[3/4] rounded-xl overflow-hidden shadow-lg relative">
+                <div className="relative group" style={{ width: '160px' }}>
+                  <div className="w-full aspect-[3/4] rounded-md overflow-hidden shadow-angkat relative">
                     <Image
                       src={strukturOrganisasi[3].foto}
                       alt={strukturOrganisasi[3].nama}
@@ -721,8 +734,8 @@ const TentangFSTIPage = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-lg mx-auto">
               {strukturOrganisasi.slice(4).map((pejabat, index) => (
                 <AnimatedSection key={index} animation="slideUp" delay={(index + 5) * 0.1}>
-                  <div className="relative hover-card group">
-                    <div className="w-full aspect-[3/4] rounded-xl overflow-hidden shadow-lg relative">
+                  <div className="relative group">
+                    <div className="w-full aspect-[3/4] rounded-md overflow-hidden shadow-angkat relative">
                       <Image
                         src={pejabat.foto}
                         alt={pejabat.nama}
@@ -746,7 +759,7 @@ const TentangFSTIPage = () => {
             {/* Koordinator Program Studi */}
             <div className="mt-12">
               <AnimatedSection animation="slideUp">
-                <h3 className="text-xl font-bold text-center mb-8 text-gray-800">
+                <h3 className="mb-6 font-display text-lg font-extrabold tracking-tight text-tinta-900">
                   {language === 'en' ? 'Program Study Coordinators' : 'Koordinator Program Studi'}
                 </h3>
               </AnimatedSection>
@@ -755,8 +768,8 @@ const TentangFSTIPage = () => {
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
                 {koordinatorProdi.slice(0, 4).map((koor, index) => (
                   <AnimatedSection key={index} animation="slideUp" delay={index * 0.1}>
-                    <div className="relative hover-card group">
-                      <div className="w-full aspect-[3/4] rounded-lg overflow-hidden shadow-md relative">
+                    <div className="relative group">
+                      <div className="w-full aspect-[3/4] rounded-lg overflow-hidden shadow-pelat relative">
                         <Image
                           src={koor.foto}
                           alt={koor.nama}
@@ -778,8 +791,8 @@ const TentangFSTIPage = () => {
               {/* Baris 2: 1 Koordinator MMT (Kiri) */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
                 <AnimatedSection animation="slideUp" delay={0.4}>
-                  <div className="relative hover-card group">
-                    <div className="w-full aspect-[3/4] rounded-lg overflow-hidden shadow-md relative">
+                  <div className="relative group">
+                    <div className="w-full aspect-[3/4] rounded-lg overflow-hidden shadow-pelat relative">
                       <Image
                         src={koordinatorProdi[4].foto}
                         alt={koordinatorProdi[4].nama}
@@ -801,8 +814,8 @@ const TentangFSTIPage = () => {
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                 {koordinatorProdi.slice(5).map((koor, index) => (
                   <AnimatedSection key={index + 5} animation="slideUp" delay={(index + 5) * 0.1}>
-                    <div className="relative hover-card group">
-                      <div className="w-full aspect-[3/4] rounded-lg overflow-hidden shadow-md relative">
+                    <div className="relative group">
+                      <div className="w-full aspect-[3/4] rounded-lg overflow-hidden shadow-pelat relative">
                         <Image
                           src={koor.foto}
                           alt={koor.nama}
@@ -826,10 +839,10 @@ const TentangFSTIPage = () => {
       </section>
 
       {/* Laboratorium Section */}
-      <section className="relative py-16 bg-white/80 backdrop-blur-sm">
+      <section className="relative py-16 bg-white">
         <div className="container mx-auto px-4 relative z-10">
           <AnimatedSection animation="slideUp">
-            <h2 className="text-3xl font-display font-bold text-center mb-12 text-gradient">
+            <h2 className="mb-8 font-display text-2xl font-extrabold tracking-tight text-tinta-900">
               {language === 'en' ? 'Laboratories' : 'Laboratorium'}
             </h2>
           </AnimatedSection>
@@ -839,8 +852,8 @@ const TentangFSTIPage = () => {
               {/* Row 1: 3 labs */}
               {kepalaLaboratorium.slice(0, 3).map((kalab, index) => (
                 <AnimatedSection key={index} animation="slideUp" delay={index * 0.1}>
-                  <div className="relative hover-card group">
-                    <div className="w-full aspect-[3/4] rounded-xl overflow-hidden shadow-lg">
+                  <div className="relative group">
+                    <div className="w-full aspect-[3/4] rounded-md overflow-hidden shadow-angkat">
                       <img
                         src={kalab.foto}
                         alt={kalab.nama}
@@ -863,8 +876,8 @@ const TentangFSTIPage = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8 max-w-2xl mx-auto">
               {kepalaLaboratorium.slice(3).map((kalab, index) => (
                 <AnimatedSection key={index + 3} animation="slideUp" delay={(index + 3) * 0.1}>
-                  <div className="relative hover-card group">
-                    <div className="w-full aspect-[3/4] rounded-xl overflow-hidden shadow-lg">
+                  <div className="relative group">
+                    <div className="w-full aspect-[3/4] rounded-md overflow-hidden shadow-angkat">
                       <img
                         src={kalab.foto}
                         alt={kalab.nama}
@@ -887,10 +900,10 @@ const TentangFSTIPage = () => {
       </section>
 
       {/* Prestasi Section */}
-      <section className="relative py-16 bg-white/80 backdrop-blur-sm">
+      <section className="relative py-16 bg-white">
         <div className="container mx-auto px-4 relative z-10">
           <AnimatedSection animation="slideUp">
-            <h2 className="text-3xl font-display font-bold text-center mb-12 text-gradient">
+            <h2 className="mb-8 font-display text-2xl font-extrabold tracking-tight text-tinta-900">
               {language === 'en' ? 'Achievements' : 'Prestasi'}
             </h2>
           </AnimatedSection>
@@ -899,16 +912,16 @@ const TentangFSTIPage = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {prestasi.map((item, index) => (
                 <AnimatedSection key={index} animation="slideUp" delay={index * 0.1}>
-                  <div className="bg-white/95 backdrop-blur-sm rounded-xl p-6 shadow-md hover-card h-full border border-gray-100 flex flex-col relative overflow-hidden">
+                  <div className="bg-white rounded-md p-6 shadow-pelat h-full border border-tinta-100 flex flex-col relative overflow-hidden">
                     {/* Decorative element */}
                     <div className="absolute -top-10 -right-10 w-24 h-24 bg-primary-50 rounded-full opacity-50 z-0"></div>
 
                     <div className="relative z-10 flex flex-col h-full">
-                      <div className="w-12 h-12 bg-primary-100/80 rounded-full flex items-center justify-center mb-4 text-primary-600 shadow-sm">
+                      <div className="w-12 h-12 bg-primary-100/80 rounded-full flex items-center justify-center mb-4 text-primary-600 shadow-pelat">
                         {item.icon}
                       </div>
-                      <h3 className="text-xl font-bold mb-3 text-gray-800">{item.title}</h3>
-                      <p className="text-gray-600 flex-grow text-sm leading-relaxed">{item.description}</p>
+                      <h3 className="text-xl font-bold mb-3 text-tinta-900">{item.title}</h3>
+                      <p className="text-tinta-500 flex-grow text-sm leading-relaxed">{item.description}</p>
                     </div>
                   </div>
                 </AnimatedSection>
@@ -919,10 +932,10 @@ const TentangFSTIPage = () => {
       </section>
 
       {/* Fasilitas Section */}
-      <section className="relative py-16 bg-white/80 backdrop-blur-sm">
+      <section className="relative py-16 bg-white">
         <div className="container mx-auto px-4 relative z-10">
           <AnimatedSection animation="slideUp">
-            <h2 className="text-3xl font-display font-bold text-center mb-12 text-gradient">
+            <h2 className="mb-8 font-display text-2xl font-extrabold tracking-tight text-tinta-900">
               {language === 'en' ? 'Facilities' : 'Fasilitas'}
             </h2>
           </AnimatedSection>
@@ -931,12 +944,12 @@ const TentangFSTIPage = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {fasilitas.map((item, index) => (
                 <AnimatedSection key={index} animation="slideUp" delay={index * 0.1}>
-                  <div className="bg-white/95 backdrop-blur-sm rounded-xl p-6 shadow-md hover-card h-full border border-gray-100 group">
-                    <div className="w-12 h-12 bg-primary-50/80 rounded-lg flex items-center justify-center mb-4 text-primary-600 group-hover:bg-primary-600 group-hover:text-white transition-colors duration-300 shadow-sm">
+                  <div className="bg-white rounded-md p-6 shadow-pelat h-full border border-tinta-100 group">
+                    <div className="w-12 h-12 bg-primary-50/80 rounded-lg flex items-center justify-center mb-4 text-primary-600 group-hover:bg-primary-600 group-hover:text-white transition-colors duration-300 shadow-pelat">
                       {item.icon}
                     </div>
-                    <h3 className="text-lg font-bold mb-2 text-gray-800">{item.title}</h3>
-                    <p className="text-gray-600 text-sm leading-relaxed">{item.description}</p>
+                    <h3 className="text-lg font-bold mb-2 text-tinta-900">{item.title}</h3>
+                    <p className="text-tinta-500 text-sm leading-relaxed">{item.description}</p>
                   </div>
                 </AnimatedSection>
               ))}
@@ -946,9 +959,9 @@ const TentangFSTIPage = () => {
       </section>
 
       {/* Contact Section */}
-      <section className="relative py-16 bg-white/80 backdrop-blur-sm">
+      <section className="relative py-16 bg-white">
         <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-4xl mx-auto bg-primary-900 rounded-2xl overflow-hidden shadow-xl">
+          <div className="max-w-4xl mx-auto bg-primary-900 rounded-md overflow-hidden shadow-angkat">
             <div className="grid grid-cols-1 md:grid-cols-2">
               <div className="p-10 text-white flex flex-col justify-center relative z-10">
                 <AnimatedSection animation="slideInRight">
