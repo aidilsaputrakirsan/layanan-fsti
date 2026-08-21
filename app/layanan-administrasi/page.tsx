@@ -137,6 +137,7 @@ const LayananAdministrasiPage = () => {
         {
           title: language === 'en' ? "MBKM" : "MBKM",
           items: [
+            { text: language === 'en' ? "Faculty of Science and Information Technology MBKM Registration" : "Pendaftaran MBKM Fakultas Sains dan Teknologi Informasi", url: "https://s.itk.ac.id/mbkmfsti" },
             { text: language === 'en' ? "FSTI MBKM Final Report / Results Seminar Registration" : "Pendaftaran Seminar Hasil / Laporan Akhir MBKM FSTI", url: "https://forms.gle/ogruDmFg6yiQtFLC6" }
           ]
         }
