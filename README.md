@@ -41,7 +41,6 @@ Aplikasi web komprehensif untuk Fakultas Sains dan Teknologi Informasi (FSTI) di
 layanan-fsti/
 ├── app/                         # Direktori app Next.js (App Router)
 │   ├── api/                     # Rute API
-│   │   ├── cors-proxy/          # Proxy CORS untuk Google Apps Script
 │   │   └── survey-proxy/        # Proxy CORS untuk Google Apps Script Survey
 │   ├── layanan-administrasi/    # Halaman layanan administrasi
 │   ├── peraturan-kebijakan/     # Halaman peraturan dan kebijakan
@@ -107,19 +106,17 @@ layanan-fsti/
 
 ### Integrasi Google Sheets
 
-Sistem pelacakan menggunakan Google Sheets sebagai backend melalui Google Apps Script. Anda perlu mengonfigurasi hal berikut:
+Halaman pelacakan menampilkan spreadsheet Google Sheets secara langsung (embed read-only) melalui komponen `components/tracking/SpreadsheetTrackingPage.tsx`. Spreadsheet harus dibagikan "Siapa saja yang memiliki link: Viewer". ID spreadsheet diatur di:
+- `app/tracking/dosen/page.tsx`
+- `app/tracking/mahasiswa/page.tsx`
 
-1. Buat proyek Google Apps Script dan deploy sebagai web app
-2. Perbarui variabel `SCRIPT_URL` di:
-   - `app/tracking/dosen/page.tsx`
-   - `app/tracking/mahasiswa/page.tsx`
+### Dashboard Rekap (Apps Script)
 
-### CORS Proxy
+Kode dashboard rekap yang dipasang di masing-masing spreadsheet (Extensions > Apps Script) ada di:
+- `apps-script/tracking-mahasiswa/` (`Dashboard.gs` + `Dashboard.html`)
+- `apps-script/tracking-dosen/` (`Dashboard.gs` + `Dashboard.html`)
 
-Aplikasi ini menyertakan CORS proxy untuk menangani permintaan API ke Google Apps Script:
-
-- Terletak di: `app/api/cors-proxy/route.js`
-- Secara otomatis menangani masalah CORS saat memanggil API eksternal
+Dashboard hanya membaca data dan dibuka lewat menu "Dashboard" di spreadsheet dengan password.
 
 ## Pengembangan
 

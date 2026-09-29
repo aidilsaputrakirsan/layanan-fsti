@@ -47,3 +47,6 @@ GOOGLE_API_KEY=your_google_api_key_here
 
 # Only required for client-side API calls (use sparingly for security)
 NEXT_PUBLIC_GOOGLE_API_KEY=your_google_api_key_here
+
+# Data export spreadsheet (berisi data pribadi mahasiswa)
+*.xlsx
