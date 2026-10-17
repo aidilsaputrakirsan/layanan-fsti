@@ -18,7 +18,8 @@ import PintuKartu from '@/components/layanan/PintuKartu';
 import TiketContoh from '@/components/layanan/TiketContoh';
 import ZiBanner from '@/components/ui/ZiBanner';
 import { pintu, layanan, ESTIMASI_UMUM } from '@/data/layanan';
-import { periodeDashboard } from '@/data/dashboard';
+import { kepuasan } from '@/data/dashboard';
+import { ambilRekap, semesterSekarang } from '@/lib/rekap';
 import { kontak, waLink } from '@/data/situs';
 
 const langkah = [
@@ -37,8 +38,12 @@ const aksesCepat = [
   { href: '/panduan#faq', judul: 'Tanya Jawab', isi: 'Jawaban atas pertanyaan yang sering diajukan.', ikon: HelpCircle },
 ];
 
-export default function Beranda() {
-  const d = periodeDashboard[0];
+// Ringkasan dashboard dibaca ulang paling sering sekali per jam
+export const revalidate = 3600;
+
+export default async function Beranda() {
+  const rekap = await ambilRekap();
+  const d = rekap?.semester.find((x) => x.id === semesterSekarang()) ?? rekap?.semester[0];
 
   return (
     <MainLayout>
@@ -149,36 +154,35 @@ export default function Beranda() {
         </div>
       </section>
 
-      {/* Ringkasan dashboard */}
-      <section className="wadah mt-24">
-        <div className="kartu overflow-hidden">
-          <div className="flex flex-col justify-between gap-3 border-b border-garis px-6 py-5 sm:flex-row sm:items-center">
-            <div>
-              <h2 className="text-xl font-extrabold">Kinerja layanan · {d.label}</h2>
-              <p className="text-sm text-ink-3">
-                Diperbarui berkala oleh admin FSTI
-                {d.contoh && <span className="ml-2 rounded-md bg-sorot-100 px-1.5 py-0.5 text-xs font-bold text-sorot-700">Data contoh</span>}
-              </p>
-            </div>
-            <Link href="/dashboard" className="tombol-garis self-start sm:self-auto">
-              Buka dashboard <ArrowRight className="h-4 w-4" />
-            </Link>
-          </div>
-          <dl className="grid grid-cols-2 divide-garis lg:grid-cols-4 lg:divide-x">
-            {[
-              { k: 'Permohonan', v: d.ringkasan.total.toLocaleString('id-ID') },
-              { k: 'Selesai', v: `${Math.round((d.ringkasan.selesai / d.ringkasan.total) * 100)}%` },
-              { k: 'Rata-rata proses', v: `${d.ringkasan.rataHari.toLocaleString('id-ID')} hari` },
-              { k: 'Indeks kepuasan', v: d.ringkasan.ikm.toLocaleString('id-ID') },
-            ].map((s) => (
-              <div key={s.k} className="px-6 py-6">
-                <dt className="text-sm text-ink-3">{s.k}</dt>
-                <dd className="mt-1 text-3xl font-extrabold tabular-nums text-ink">{s.v}</dd>
+      {/* Ringkasan dashboard (otomatis dari rekap spreadsheet) */}
+      {d && (
+        <section className="wadah mt-24">
+          <div className="kartu overflow-hidden">
+            <div className="flex flex-col justify-between gap-3 border-b border-garis px-6 py-5 sm:flex-row sm:items-center">
+              <div>
+                <h2 className="text-xl font-extrabold">Kinerja layanan · {d.label}</h2>
+                <p className="text-sm text-ink-3">Diperbarui otomatis dari data layanan</p>
               </div>
-            ))}
-          </dl>
-        </div>
-      </section>
+              <Link href="/dashboard" className="tombol-garis self-start sm:self-auto">
+                Buka dashboard <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
+            <dl className="grid grid-cols-2 divide-garis lg:grid-cols-4 lg:divide-x">
+              {[
+                { k: 'Permohonan', v: d.total.toLocaleString('id-ID') },
+                { k: 'Selesai', v: `${d.total - d.status.none ? Math.round((d.status.done / (d.total - d.status.none)) * 100) : 0}%` },
+                { k: 'Antrean saat ini', v: (d.status.waiting + d.status.progress).toLocaleString('id-ID') },
+                { k: 'Indeks kepuasan', v: kepuasan[d.id] ? kepuasan[d.id].ikm.toLocaleString('id-ID') : '—' },
+              ].map((s) => (
+                <div key={s.k} className="px-6 py-6">
+                  <dt className="text-sm text-ink-3">{s.k}</dt>
+                  <dd className="mt-1 text-3xl font-extrabold tabular-nums text-ink">{s.v}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        </section>
+      )}
 
       {/* Zona Integritas & bantuan */}
       <section className="wadah mt-24 grid items-start gap-8 lg:grid-cols-[1.2fr_1fr]">
