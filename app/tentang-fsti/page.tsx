@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import AnimatedSection from '@/components/ui/AnimatedSection';
-import { useLanguage } from '@/lib/i18n/LanguageContext';
 import Button from '@/components/ui/Button';
 import Image from 'next/image';
 import {
@@ -38,48 +37,17 @@ import {
 } from 'lucide-react';
 
 const TentangFSTIPage = () => {
-  const { t, language } = useLanguage();
 
   // Data Tugas dan Fungsi Fakultas (berdasarkan Permendikbudristek No. 41 Tahun 2024)
   const tugasFungsi = {
     tugas: {
-      title: language === 'en' ? 'Faculty Duties' : 'Tugas Fakultas',
-      content: language === 'en'
-        ? "The Faculty has the duty to organize and manage academic, vocational, and/or professional education in one or several trees/groups of science and/or technology."
-        : "Fakultas mempunyai tugas menyelenggarakan dan mengelola pendidikan akademik, vokasi, dan/atau profesi dalam 1 (satu) atau beberapa pohon/kelompok ilmu pengetahuan dan/atau teknologi.",
-      source: language === 'en'
-        ? "Based on: Minister of Education, Culture, Research, and Technology Regulation No. 41/2024, Article 12"
-        : "Berdasarkan: Peraturan Menteri Pendidikan, Kebudayaan, Riset, dan Teknologi No. 41 Tahun 2024, Pasal 12"
+      title: 'Tugas Fakultas',
+      content: "Fakultas mempunyai tugas menyelenggarakan dan mengelola pendidikan akademik, vokasi, dan/atau profesi dalam 1 (satu) atau beberapa pohon/kelompok ilmu pengetahuan dan/atau teknologi.",
+      source: "Berdasarkan: Peraturan Menteri Pendidikan, Kebudayaan, Riset, dan Teknologi No. 41 Tahun 2024, Pasal 12"
     },
     fungsi: {
-      title: language === 'en' ? 'Faculty Functions' : 'Fungsi Fakultas',
-      items: language === 'en' ? [
-        {
-          title: "Education Implementation and Development",
-          description: "Implementation and development of education within the faculty environment",
-          icon: <GraduationCap className="w-6 h-6" />
-        },
-        {
-          title: "Research Implementation",
-          description: "Implementation of research for the development of science and/or technology within the faculty environment",
-          icon: <Microscope className="w-6 h-6" />
-        },
-        {
-          title: "Community Service Implementation",
-          description: "Implementation of community service in accordance with the scientific field within the faculty environment",
-          icon: <Users className="w-6 h-6" />
-        },
-        {
-          title: "Academic Community Development",
-          description: "Development of Academic Community and Educational Personnel within the faculty environment",
-          icon: <UserCheck className="w-6 h-6" />
-        },
-        {
-          title: "Faculty Administration",
-          description: "Implementation of faculty administrative affairs",
-          icon: <Clipboard className="w-6 h-6" />
-        }
-      ] : [
+      title: 'Fungsi Fakultas',
+      items: [
         {
           title: "Pelaksanaan dan Pengembangan Pendidikan",
           description: "Pelaksanaan dan pengembangan pendidikan di lingkungan fakultas",
@@ -106,28 +74,15 @@ const TentangFSTIPage = () => {
           icon: <Clipboard className="w-6 h-6" />
         }
       ],
-      source: language === 'en'
-        ? "Based on: Minister of Education, Culture, Research, and Technology Regulation No. 41/2024, Article 13"
-        : "Berdasarkan: Peraturan Menteri Pendidikan, Kebudayaan, Riset, dan Teknologi No. 41 Tahun 2024, Pasal 13"
+      source: "Berdasarkan: Peraturan Menteri Pendidikan, Kebudayaan, Riset, dan Teknologi No. 41 Tahun 2024, Pasal 13"
     }
   };
 
   // Data Visi Misi (dari gambar 1)
   const visiMisi = {
-    visi: language === 'en'
-      ? "By 2029, the Faculty of Science and Information Technology (FSTI) ITK will become a center of excellence in the field of academic and innovation, producing competitive, adaptive, globally empowered graduates, and works in the field of science and information technology that benefits the progress of Kalimantan and Indonesia."
-      : "Pada tahun 2029, Fakultas Sains dan Teknologi Informasi (FSTI) ITK akan menjadi pusat keunggulan akademik dan inovasi, menghasilkan lulusan yang kompeten, adaptif, berdaya saing global, dan karya-karya dalam bidang sains dan teknologi informasi yang berdampak bagi kemajuan Kalimantan dan Indonesia",
+    visi: "Pada tahun 2029, Fakultas Sains dan Teknologi Informasi (FSTI) ITK akan menjadi pusat keunggulan akademik dan inovasi, menghasilkan lulusan yang kompeten, adaptif, berdaya saing global, dan karya-karya dalam bidang sains dan teknologi informasi yang berdampak bagi kemajuan Kalimantan dan Indonesia",
 
-    misi: language === 'en' ? [
-      { label: "Quality Education", desc: "Delivering quality higher education to produce competent, adaptive, and globally competitive graduates with professional character and integrity." },
-      { label: "Leading Research and Innovation", desc: "Developing leading research and innovation in science and information technology oriented toward solving real-world problems and contributing to the advancement of knowledge as well as the needs of society and industry." },
-      { label: "Collaborative Ecosystem", desc: "Building and strengthening a collaborative ecosystem through cross-program and cross-department activities and cooperation with other units at ITK." },
-      { label: "Synergy", desc: "Realizing effective synergy with stakeholders to enhance the relevance of the tridharma of higher education and to support regional and national development." },
-      { label: "Optimal Governance", desc: "Implementing optimal faculty governance with integrity, upholding the principles of accountability, transparency, effectiveness, and efficiency across all academic and non-academic processes." },
-      { label: "Civic Potential Activation", desc: "Optimizing the activation of the academic community's potential through human resource capacity building, achievement development, and the creation of a conducive academic environment." },
-      { label: "Prime Service System", desc: "Providing a responsive, inclusive, and technology-based prime service system to support the satisfaction and success of the academic community and stakeholders." },
-      { label: "Internationalization", desc: "Driving faculty internationalization through improved quality of education, research, global networks, and international recognition across various aspects of the tridharma of higher education." }
-    ] : [
+    misi: [
       { label: "Pendidikan Berkualitas", desc: "Menyelenggarakan pendidikan tinggi yang berkualitas untuk menghasilkan lulusan yang kompeten, adaptif, berdaya saing global, serta memiliki karakter profesional dan berintegritas." },
       { label: "Riset dan Inovasi Terdepan", desc: "Mengembangkan riset dan inovasi terdepan di bidang sains dan teknologi informasi yang berorientasi pada pemecahan masalah nyata dan memberikan kontribusi bagi pengembangan ilmu pengetahuan serta kebutuhan masyarakat dan industri." },
       { label: "Ekosistem Kolaboratif", desc: "Membangun dan memperkuat ekosistem kolaboratif melalui kegiatan lintas program studi dan jurusan serta bekerjasama dengan unit lain di ITK." },
@@ -157,37 +112,37 @@ const TentangFSTIPage = () => {
     "Jurusan Teknik Elektro, Informatika, dan Bisnis": [
       {
         name: "Teknik Elektro",
-        akreditasi: language === 'en' ? "Good to Excellent and ASIIN" : "Baik Sekali dan ASIIN",
+        akreditasi: "Baik Sekali dan ASIIN",
         gelar: "S.T.",
         website: "https://ee.itk.ac.id/" // Tambahkan website URL
       },
       {
         name: "Sistem Informasi",
-        akreditasi: language === 'en' ? "Good to Excellent and ASIIN" : "Baik Sekali dan ASIIN",
+        akreditasi: "Baik Sekali dan ASIIN",
         gelar: "S.Kom.",
         website: "https://is.itk.ac.id" // Tambahkan website URL
       },
       {
         name: "Informatika",
-        akreditasi: language === 'en' ? "Good to Excellent and ASIIN" : "Baik Sekali dan ASIIN",
+        akreditasi: "Baik Sekali dan ASIIN",
         gelar: "S.Kom.",
         website: "https://if.itk.ac.id" // Tambahkan website URL
       },
       {
         name: "Bisnis Digital",
-        akreditasi: language === 'en' ? "Good" : "Baik",
+        akreditasi: "Baik",
         gelar: "S.Bns.",
         website: "https://bisnisdigital.itk.ac.id/" // Tambahkan website URL
       },
       {
         name: "Teknik Biomedis",
-        akreditasi: language === 'en' ? "In Accreditation Process" : "Proses Akreditasi",
+        akreditasi: "Proses Akreditasi",
         gelar: "S.Bmd.",
         website: "" // Belum tersedia
       },
       {
         name: "Magister Manajemen Teknologi",
-        akreditasi: language === 'en' ? "Good" : "Baik",
+        akreditasi: "Baik",
         gelar: "M.MT.",
         website: "https://itk.ac.id/pasca-mmt" // Tambahkan website URL
       }
@@ -196,25 +151,25 @@ const TentangFSTIPage = () => {
     "Jurusan Sains dan Analitika Data": [
       {
         name: "Fisika",
-        akreditasi: language === 'en' ? "Good to Excellent" : "Baik Sekali",
+        akreditasi: "Baik Sekali",
         gelar: "S.Si",
         website: "https://phy.itk.ac.id/" // Tambahkan website URL
       },
       {
         name: "Matematika",
-        akreditasi: language === 'en' ? "Good" : "Baik",
+        akreditasi: "Baik",
         gelar: "S.Math.",
         website: "https://math.itk.ac.id" // Tambahkan website URL
       },
       {
         name: "Statistika",
-        akreditasi: language === 'en' ? "Good" : "Baik",
+        akreditasi: "Baik",
         gelar: "S.Stat.",
         website: "https://stat.itk.ac.id" // Tambahkan website URL
       },
       {
         name: "Ilmu Aktuaria",
-        akreditasi: language === 'en' ? "Good" : "Baik",
+        akreditasi: "Baik",
         gelar: "S.Aktr.",
         website: "https://actsci.itk.ac.id/" // Tambahkan website URL
       }
@@ -226,37 +181,37 @@ const TentangFSTIPage = () => {
   const strukturOrganisasi = [
     {
       nama: "Adi Mahmud Jaya Marindra, S.T., M.Eng., Ph.D.",
-      jabatan: language === 'en' ? "Dean" : "Dekan",
+      jabatan: "Dekan",
       foto: "/images/pimpinan/dekan.png",
       level: 1
     },
     {
       nama: "Irma Fitria, S.Si., M.Si.",
-      jabatan: language === 'en' ? "Vice Dean I (Academic and Student Affairs)" : "Wakil Dekan I (Akademik dan Kemahasiswaan)",
+      jabatan: "Wakil Dekan I (Akademik dan Kemahasiswaan)",
       foto: "/images/pimpinan/wd1.png",
       level: 2
     },
     {
       nama: "Yun Tonce Kusuma Priyanto, S.T., M.T.",
-      jabatan: language === 'en' ? "Vice Dean II (Finance and General Affairs)" : "Wakil Dekan II (Keuangan dan Umum)",
+      jabatan: "Wakil Dekan II (Keuangan dan Umum)",
       foto: "/images/pimpinan/wd2.png",
       level: 2
     },
     {
       nama: "Desy Ridho Rahayu, S.Si",
-      jabatan: language === 'en' ? "Head of General Sub-Division" : "Kepala Sub Bagian Umum",
+      jabatan: "Kepala Sub Bagian Umum",
       foto: "/images/pimpinan/kasubbag.png",
       level: 3
     },
     {
       nama: "Dr. Swastya Rahastama, S.Si., M.Si.",
-      jabatan: language === 'en' ? "Head of Science and Data Analytics Department" : "Ketua Jurusan Sains dan Analitika Data",
+      jabatan: "Ketua Jurusan Sains dan Analitika Data",
       foto: "/images/pimpinan/kajur-sad.png",
       level: 3
     },
     {
       nama: "M. Ihsan Alfani Putera, S.Tr.Kom, M.Kom",
-      jabatan: language === 'en' ? "Head of Electrical Engineering, Informatics, and Business Department" : "Ketua Jurusan Teknik Elektro, Informatika, dan Bisnis",
+      jabatan: "Ketua Jurusan Teknik Elektro, Informatika, dan Bisnis",
       foto: "/images/pimpinan/kajur-teib.png",
       level: 3
     }
@@ -281,27 +236,27 @@ const TentangFSTIPage = () => {
   const kepalaLaboratorium = [
     {
       nama: "Meidi Arisalwadi, S.Si, M.Si",
-      jabatan: language === 'en' ? "Head of Advanced Physics Laboratory" : "Kepala Laboratorium Fisika Lanjut",
+      jabatan: "Kepala Laboratorium Fisika Lanjut",
       foto: "/images/pimpinan/kalab-fisika-lanjut.png"
     },
     {
       nama: "Fadli Robiandi, S.Si, M.Si",
-      jabatan: language === 'en' ? "Head of Basic Physics Laboratory" : "Kepala Laboratorium Fisika Dasar",
+      jabatan: "Kepala Laboratorium Fisika Dasar",
       foto: "/images/pimpinan/kalab-fisika-dasar.png"
     },
     {
       nama: "Dr. Moh. Januar Ismail Burhan, S.Si, M.Si",
-      jabatan: language === 'en' ? "Head of Computing and Data Laboratory" : "Kepala Laboratorium Komputasi dan Data",
+      jabatan: "Kepala Laboratorium Komputasi dan Data",
       foto: "/images/pimpinan/kalab-komputasi-data.png"
     },
     {
       nama: "Aidil Saputra Kirsan, S.ST., M.Tr.Kom.",
-      jabatan: language === 'en' ? "Head of Digital Innovation Laboratory" : "Kepala Laboratorium Inovasi Digital",
+      jabatan: "Kepala Laboratorium Inovasi Digital",
       foto: "/images/pimpinan/kalab-inovasi-digital.png"
     },
     {
       nama: "Boby Mugi Pratama, S.Si, M.Han",
-      jabatan: language === 'en' ? "Head of Intelligent Systems Laboratory" : "Kepala Laboratorium Sistem Cerdas",
+      jabatan: "Kepala Laboratorium Sistem Cerdas",
       foto: "/images/pimpinan/kalab-sistem-cerdas.png"
     },
   ];
@@ -309,28 +264,28 @@ const TentangFSTIPage = () => {
   // ===== DATA PRESTASI YANG TERVERIFIKASI 100% =====
   const prestasi = [
     {
-      title: language === 'en' ? "International ASIIN Accreditation" : "Akreditasi Internasional ASIIN",
-      description: language === 'en' ? "Informatics, Information Systems, and Electrical Engineering programs have achieved ASIIN international accreditation" : "Program Studi Informatika, Sistem Informasi, dan Teknik Elektro telah meraih akreditasi internasional ASIIN",
+      title: "Akreditasi Internasional ASIIN",
+      description: "Program Studi Informatika, Sistem Informasi, dan Teknik Elektro telah meraih akreditasi internasional ASIIN",
       icon: <Award className="w-6 h-6" />
     },
     {
-      title: language === 'en' ? "Bronze Medal MaG-D XVI 2025" : "Medali Perunggu MaG-D XVI 2025",
-      description: language === 'en' ? "ITK Mathematics students Awanda Adel Liyanto Putri and Tegar Dwi Nugraha won bronze medal at Mathematical Analysis and Geometry Day XVI 2025" : "Mahasiswa Matematika ITK Awanda Adel Liyanto Putri dan Tegar Dwi Nugraha meraih medali perunggu di Mathematical Analysis and Geometry Day XVI 2025",
+      title: "Medali Perunggu MaG-D XVI 2025",
+      description: "Mahasiswa Matematika ITK Awanda Adel Liyanto Putri dan Tegar Dwi Nugraha meraih medali perunggu di Mathematical Analysis and Geometry Day XVI 2025",
       icon: <Trophy className="w-6 h-6" />
     },
     {
-      title: language === 'en' ? "3rd Place TTG Competition 2025" : "Juara 3 Lomba TTG 2025",
-      description: language === 'en' ? "ITK Chemical Engineering students won 3rd place in North Balikpapan Appropriate Technology Competition 2025 with SCANOT supercapacitor innovation" : "Mahasiswa Teknik Kimia ITK meraih Juara 3 Lomba Teknologi Tepat Guna Balikpapan Utara 2025 dengan inovasi Superkapasitor SCANOT",
+      title: "Juara 3 Lomba TTG 2025",
+      description: "Mahasiswa Teknik Kimia ITK meraih Juara 3 Lomba Teknologi Tepat Guna Balikpapan Utara 2025 dengan inovasi Superkapasitor SCANOT",
       icon: <Zap className="w-6 h-6" />
     },
     {
-      title: language === 'en' ? "1st Place UI/UX Design" : "Juara 1 Desain UI/UX",
-      description: language === 'en' ? "Team Rusdisain from Information Systems Study Program ITK won 1st place in UI/UX Design competition at MIT WEEK UNMUL" : "Tim Rusdisain dari Program Studi Sistem Informasi ITK meraih Juara 1 kompetisi Desain UI/UX MIT WEEK UNMUL",
+      title: "Juara 1 Desain UI/UX",
+      description: "Tim Rusdisain dari Program Studi Sistem Informasi ITK meraih Juara 1 kompetisi Desain UI/UX MIT WEEK UNMUL",
       icon: <Laptop className="w-6 h-6" />
     },
     {
-      title: language === 'en' ? "2nd Place Choir Competition" : "Juara 2 Paduan Suara",
-      description: language === 'en' ? "ITK Student Choir achieved 2nd place in Symphony of Voices 2024 competition" : "Paduan Suara Mahasiswa ITK meraih Juara 2 di lomba Symphony of Voices 2024",
+      title: "Juara 2 Paduan Suara",
+      description: "Paduan Suara Mahasiswa ITK meraih Juara 2 di lomba Symphony of Voices 2024",
       icon: <Star className="w-6 h-6" />
     }
   ];
@@ -338,38 +293,38 @@ const TentangFSTIPage = () => {
   // ===== DATA FASILITAS YANG TERVERIFIKASI 100% =====
   const fasilitas = [
     {
-      title: language === 'en' ? "Integrated Laboratory" : "Laboratorium Terpadu",
-      description: language === 'en' ? "15 laboratory rooms supporting student learning and research across various study programs" : "15 ruang laboratorium yang mendukung pembelajaran dan penelitian mahasiswa di berbagai program studi",
+      title: "Laboratorium Terpadu",
+      description: "15 ruang laboratorium yang mendukung pembelajaran dan penelitian mahasiswa di berbagai program studi",
       icon: <Microscope className="w-6 h-6" />
     },
     {
-      title: language === 'en' ? "Library" : "Perpustakaan",
-      description: language === 'en' ? "UPA ITK Library serves as a learning resource center and scientific information provider for the academic community" : "UPA Perpustakaan ITK sebagai pusat sumber belajar dan penyedia informasi ilmiah bagi civitas akademika",
+      title: "Perpustakaan",
+      description: "UPA Perpustakaan ITK sebagai pusat sumber belajar dan penyedia informasi ilmiah bagi civitas akademika",
       icon: <BookOpen className="w-6 h-6" />
     },
     {
-      title: language === 'en' ? "Student Dormitory" : "Asrama Mahasiswa",
-      description: language === 'en' ? "Accommodation facilities for students who need housing within the campus" : "Fasilitas tempat tinggal bagi mahasiswa yang membutuhkan akomodasi di dalam kampus",
+      title: "Asrama Mahasiswa",
+      description: "Fasilitas tempat tinggal bagi mahasiswa yang membutuhkan akomodasi di dalam kampus",
       icon: <Home className="w-6 h-6" />
     },
     {
-      title: language === 'en' ? "Sports Facilities" : "Fasilitas Olahraga",
-      description: language === 'en' ? "Sports fields and fitness center to support student physical activities" : "Lapangan olahraga dan pusat kebugaran untuk mendukung aktivitas fisik mahasiswa",
+      title: "Fasilitas Olahraga",
+      description: "Lapangan olahraga dan pusat kebugaran untuk mendukung aktivitas fisik mahasiswa",
       icon: <Activity className="w-6 h-6" />
     },
     {
-      title: language === 'en' ? "Al-Fatih Mosque" : "Masjid Al-Fatih",
-      description: language === 'en' ? "Adequate worship facilities for religious activities of the academic community" : "Fasilitas ibadah yang memadai untuk kegiatan keagamaan civitas akademika",
+      title: "Masjid Al-Fatih",
+      description: "Fasilitas ibadah yang memadai untuk kegiatan keagamaan civitas akademika",
       icon: <Building className="w-6 h-6" />
     },
     {
-      title: language === 'en' ? "Health Services" : "Layanan Kesehatan",
-      description: language === 'en' ? "Campus clinic providing basic health services for students and staff" : "Klinik kampus yang menyediakan pelayanan kesehatan dasar bagi mahasiswa dan staff",
+      title: "Layanan Kesehatan",
+      description: "Klinik kampus yang menyediakan pelayanan kesehatan dasar bagi mahasiswa dan staff",
       icon: <Heart className="w-6 h-6" />
     },
     {
-      title: language === 'en' ? "Integrated Service Unit" : "Unit Pelayanan Terpadu",
-      description: language === 'en' ? "Integrated administrative services for academic and non-academic affairs convenience" : "Layanan administrasi terpadu untuk kemudahan urusan akademik dan non-akademik",
+      title: "Unit Pelayanan Terpadu",
+      description: "Layanan administrasi terpadu untuk kemudahan urusan akademik dan non-akademik",
       icon: <Users className="w-6 h-6" />
     }
   ];
@@ -383,12 +338,10 @@ const TentangFSTIPage = () => {
           <AnimatedSection animation="slideUp">
             <div className="text-center max-w-4xl mx-auto">
               <h1 className="text-4xl md:text-5xl font-display font-bold mb-6 text-gradient">
-                {language === 'en' ? 'About FSTI' : 'Tentang FSTI'}
+                Tentang FSTI
               </h1>
               <p className="text-gray-700 text-lg mb-8">
-                {language === 'en'
-                  ? 'Faculty of Science and Information Technology - Kalimantan Institute of Technology'
-                  : 'Fakultas Sains dan Teknologi Informasi - Institut Teknologi Kalimantan'
+                {'Fakultas Sains dan Teknologi Informasi - Institut Teknologi Kalimantan'
                 }
               </p>
 
@@ -396,35 +349,35 @@ const TentangFSTIPage = () => {
               <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4 mt-12">
                 <div className="text-center">
                   <div className="text-2xl md:text-3xl font-bold text-primary-600">2.260</div>
-                  <div className="text-gray-600 text-xs md:text-sm">{language === 'en' ? 'Students' : 'Mahasiswa'}</div>
+                  <div className="text-gray-600 text-xs md:text-sm">Mahasiswa</div>
                 </div>
                 <div className="text-center">
                   <div className="text-2xl md:text-3xl font-bold text-primary-600">2</div>
-                  <div className="text-gray-600 text-xs md:text-sm">{language === 'en' ? 'Departments' : 'Jurusan'}</div>
+                  <div className="text-gray-600 text-xs md:text-sm">Jurusan</div>
                 </div>
                 <div className="text-center">
                   <div className="text-2xl md:text-3xl font-bold text-primary-600">9</div>
-                  <div className="text-gray-600 text-xs md:text-sm">{language === 'en' ? 'S1 Programs' : 'Prodi S1'}</div>
+                  <div className="text-gray-600 text-xs md:text-sm">Prodi S1</div>
                 </div>
                 <div className="text-center">
                   <div className="text-2xl md:text-3xl font-bold text-primary-600">1</div>
-                  <div className="text-gray-600 text-xs md:text-sm">{language === 'en' ? 'S2 Programs' : 'Prodi S2'}</div>
+                  <div className="text-gray-600 text-xs md:text-sm">Prodi S2</div>
                 </div>
                 <div className="text-center">
                   <div className="text-2xl md:text-3xl font-bold text-primary-600">5</div>
-                  <div className="text-gray-600 text-xs md:text-sm">{language === 'en' ? 'Laboratories' : 'Laboratorium'}</div>
+                  <div className="text-gray-600 text-xs md:text-sm">Laboratorium</div>
                 </div>
                 <div className="text-center">
                   <div className="text-2xl md:text-3xl font-bold text-primary-600">1.404</div>
-                  <div className="text-gray-600 text-xs md:text-sm">{language === 'en' ? 'Alumni' : 'Alumni'}</div>
+                  <div className="text-gray-600 text-xs md:text-sm">Alumni</div>
                 </div>
                 <div className="text-center">
                   <div className="text-2xl md:text-3xl font-bold text-primary-600">107</div>
-                  <div className="text-gray-600 text-xs md:text-sm">{language === 'en' ? 'Faculty Members' : 'Dosen'}</div>
+                  <div className="text-gray-600 text-xs md:text-sm">Dosen</div>
                 </div>
                 <div className="text-center">
                   <div className="text-2xl md:text-3xl font-bold text-primary-600">8</div>
-                  <div className="text-gray-600 text-xs md:text-sm">{language === 'en' ? 'Staff' : 'Tendik'}</div>
+                  <div className="text-gray-600 text-xs md:text-sm">Tendik</div>
                 </div>
               </div>
             </div>
@@ -437,7 +390,7 @@ const TentangFSTIPage = () => {
         <div className="container mx-auto px-4 relative z-10">
           <AnimatedSection animation="slideUp">
             <h2 className="text-3xl font-display font-bold text-center mb-12 text-gradient">
-              {language === 'en' ? 'Faculty Duties and Functions' : 'Tugas dan Fungsi Fakultas'}
+              Tugas dan Fungsi Fakultas
             </h2>
           </AnimatedSection>
 
@@ -503,7 +456,7 @@ const TentangFSTIPage = () => {
         <div className="container mx-auto px-4 relative z-10">
           <AnimatedSection animation="slideUp">
             <h2 className="text-3xl font-display font-bold text-center mb-12 text-gradient">
-              {language === 'en' ? 'Vision and Mission' : 'Visi dan Misi FSTI'}
+              Visi dan Misi FSTI
             </h2>
           </AnimatedSection>
 
@@ -517,7 +470,7 @@ const TentangFSTIPage = () => {
                       <Eye className="w-6 h-6 text-primary-600" />
                     </div>
                     <h3 className="text-2xl font-bold text-gray-800">
-                      {language === 'en' ? 'Vision' : 'Visi'}
+                      Visi
                     </h3>
                   </div>
                   <p className="text-gray-700 leading-relaxed">
@@ -534,7 +487,7 @@ const TentangFSTIPage = () => {
                       <Target className="w-6 h-6 text-primary-600" />
                     </div>
                     <h3 className="text-2xl font-bold text-gray-800">
-                      {language === 'en' ? 'Mission: Excellence' : 'Misi: Prestasi'}
+                      Misi: Prestasi
                     </h3>
                   </div>
                   <div className="grid grid-cols-1 gap-4">
@@ -562,7 +515,7 @@ const TentangFSTIPage = () => {
         <div className="container mx-auto px-4 relative z-10">
           <AnimatedSection animation="slideUp">
             <h2 className="text-3xl font-display font-bold text-center mb-12 text-gradient">
-              {language === 'en' ? 'Study Programs' : 'Program Studi'}
+              Program Studi
             </h2>
           </AnimatedSection>
 
@@ -596,11 +549,11 @@ const TentangFSTIPage = () => {
 
                           <div className="space-y-2 text-sm bg-white/60 p-3 rounded-lg backdrop-blur-sm">
                             <div className="flex justify-between">
-                              <span className="text-gray-600">{language === 'en' ? 'Accreditation' : 'Akreditasi'}:</span>
+                              <span className="text-gray-600">{'Akreditasi'}:</span>
                               <span className="font-medium text-gray-800">{prodi.akreditasi}</span>
                             </div>
                             <div className="flex justify-between">
-                              <span className="text-gray-600">{language === 'en' ? 'Degree' : 'Gelar'}:</span>
+                              <span className="text-gray-600">{'Gelar'}:</span>
                               <span className="font-medium text-gray-800">{prodi.gelar}</span>
                             </div>
                           </div>
@@ -613,12 +566,12 @@ const TentangFSTIPage = () => {
                                 rel="noopener noreferrer"
                                 className="text-primary-700 hover:text-primary-900 text-sm font-medium flex items-center transition-colors bg-white/50 px-3 py-1.5 rounded-md w-fit"
                               >
-                                {language === 'en' ? 'Visit Website' : 'Lihat Website'}
+                                Lihat Website
                                 <ExternalLink className="w-4 h-4 ml-1" />
                               </a>
                             ) : (
                               <span className="text-gray-500 text-sm font-medium flex items-center bg-white/50 px-3 py-1.5 rounded-md w-fit">
-                                {language === 'en' ? 'Website coming soon' : 'Website segera hadir'}
+                                Website segera hadir
                               </span>
                             )}
                           </div>
@@ -638,7 +591,7 @@ const TentangFSTIPage = () => {
         <div className="container mx-auto px-4 relative z-10">
           <AnimatedSection animation="slideUp">
             <h2 className="text-3xl font-display font-bold text-center mb-12 text-gradient">
-              {language === 'en' ? 'Organizational Structure' : 'Struktur Organisasi'}
+              Struktur Organisasi
             </h2>
           </AnimatedSection>
 
@@ -747,7 +700,7 @@ const TentangFSTIPage = () => {
             <div className="mt-12">
               <AnimatedSection animation="slideUp">
                 <h3 className="text-xl font-bold text-center mb-8 text-gray-800">
-                  {language === 'en' ? 'Program Study Coordinators' : 'Koordinator Program Studi'}
+                  Koordinator Program Studi
                 </h3>
               </AnimatedSection>
 
@@ -830,7 +783,7 @@ const TentangFSTIPage = () => {
         <div className="container mx-auto px-4 relative z-10">
           <AnimatedSection animation="slideUp">
             <h2 className="text-3xl font-display font-bold text-center mb-12 text-gradient">
-              {language === 'en' ? 'Laboratories' : 'Laboratorium'}
+              Laboratorium
             </h2>
           </AnimatedSection>
 
@@ -891,7 +844,7 @@ const TentangFSTIPage = () => {
         <div className="container mx-auto px-4 relative z-10">
           <AnimatedSection animation="slideUp">
             <h2 className="text-3xl font-display font-bold text-center mb-12 text-gradient">
-              {language === 'en' ? 'Achievements' : 'Prestasi'}
+              Prestasi
             </h2>
           </AnimatedSection>
 
@@ -923,7 +876,7 @@ const TentangFSTIPage = () => {
         <div className="container mx-auto px-4 relative z-10">
           <AnimatedSection animation="slideUp">
             <h2 className="text-3xl font-display font-bold text-center mb-12 text-gradient">
-              {language === 'en' ? 'Facilities' : 'Fasilitas'}
+              Fasilitas
             </h2>
           </AnimatedSection>
 
@@ -953,7 +906,7 @@ const TentangFSTIPage = () => {
               <div className="p-10 text-white flex flex-col justify-center relative z-10">
                 <AnimatedSection animation="slideInRight">
                   <h2 className="text-3xl font-bold mb-6">
-                    {language === 'en' ? 'Contact Us' : 'Hubungi Kami'}
+                    Hubungi Kami
                   </h2>
                   <div className="space-y-6">
                     <div className="flex items-start">

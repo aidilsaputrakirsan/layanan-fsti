@@ -7,9 +7,14 @@
  * Pemasangan: Extensions > Apps Script > tambah file script "Dashboard"
  * (isi file ini) dan file HTML "Dashboard" (isi Dashboard.html), simpan,
  * lalu muat ulang spreadsheet. Menu "Dashboard" muncul di samping "Help".
+ * Tambahkan Script Property DASHBOARD_PASSWORD (Project Settings > Script Properties).
  */
 
-var DASHBOARD_PASSWORD = 'password123';
+// Password disimpan di Project Settings > Script Properties dengan nama DASHBOARD_PASSWORD
+// (jangan ditulis di file ini karena repo bersifat publik).
+function dashboardPassword_() {
+  return PropertiesService.getScriptProperties().getProperty('DASHBOARD_PASSWORD');
+}
 
 // Sheet yang bukan data permohonan
 var DASHBOARD_EXCLUDED_SHEETS = ['TOTAL'];
@@ -43,7 +48,8 @@ function openDashboard() {
  * Dipanggil dari dialog. Data hanya dikirim jika password benar.
  */
 function getDashboardData(password) {
-  if (String(password) !== DASHBOARD_PASSWORD) {
+  var expected = dashboardPassword_();
+  if (!expected || String(password) !== expected) {
     return { ok: false };
   }
 

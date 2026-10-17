@@ -2,91 +2,64 @@
 module.exports = {
   content: [
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
-    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./data/**/*.{js,ts}",
   ],
   theme: {
     extend: {
       colors: {
+        // Biru FSTI (#2f4dd3 = 600)
         primary: {
           50: '#eef2ff',
-          100: '#e0e7ff',
-          200: '#c7d2fe',
-          300: '#a5b4fc',
-          400: '#818cf8',
-          500: '#6366f1',
-          600: '#2f4dd3',  /* Our main primary color */
-          700: '#3b5bdb',
-          800: '#5978ff',
-          900: '#202540',
+          100: '#dfe6fe',
+          200: '#c4d0fd',
+          300: '#9aaefa',
+          400: '#6c84f2',
+          500: '#4a63e4',
+          600: '#2f4dd3',
+          700: '#263db0',
+          800: '#22348c',
+          900: '#1f2e6e',
+          950: '#121a42',
         },
+        // Kuning sorotan (tiket, penanda)
+        sorot: {
+          100: '#fff4c7',
+          300: '#ffd95a',
+          400: '#fbc72a',
+          500: '#eeac0b',
+          700: '#9a6406',
+        },
+        ink: {
+          DEFAULT: '#151a2d',
+          2: '#474f66',
+          3: '#7a8297',
+        },
+        garis: '#e3e6ee',
+        latar: '#f5f6fa',
+        // Dipakai halaman lama (Tentang FSTI, Peraturan)
         secondary: {
-          50: '#f8fafc',
-          100: '#f1f5f9',
-          200: '#e2e8f0',
-          300: '#cbd5e1',
-          400: '#94a3b8',
-          500: '#64748b',
-          600: '#475569',
-          700: '#334155',
-          800: '#1e293b',
-          900: '#0f172a',
+          50: '#f8fafc', 100: '#f1f5f9', 200: '#e2e8f0', 300: '#cbd5e1', 400: '#94a3b8',
+          500: '#64748b', 600: '#475569', 700: '#334155', 800: '#1e293b', 900: '#0f172a',
         },
-        // Renamed from "dark" to "light"
-        light: {
-          bg: '#f8fafc',
-          card: '#ffffff',
-          cardHover: '#f1f5f9',
-          border: '#e2e8f0',
-          muted: '#64748b',
-        },
-        accent: '#4f46e5',
+        light: { bg: '#f8fafc', card: '#ffffff', cardHover: '#f1f5f9', border: '#e2e8f0', muted: '#64748b' },
+        accent: '#2f4dd3',
       },
       fontFamily: {
-        sans: ['Inter', 'sans-serif'],
-        display: ['Lexend', 'sans-serif'],
-      },
-      zIndex: {
-        '-1': '-1',
-      },
-      transitionProperty: {
-        'height': 'height',
-        'spacing': 'margin, padding',
-      },
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+        sans: ['var(--font-jakarta)', 'system-ui', 'sans-serif'],
+        display: ['var(--font-jakarta)', 'system-ui', 'sans-serif'],
       },
       boxShadow: {
-        'glow': '0 0 15px rgba(47, 77, 211, 0.5)',
-        'glow-lg': '0 0 25px rgba(47, 77, 211, 0.6)',
+        kartu: '0 1px 2px rgba(21,26,45,.04), 0 4px 16px -4px rgba(21,26,45,.08)',
+        angkat: '0 2px 4px rgba(21,26,45,.04), 0 18px 40px -12px rgba(31,46,110,.28)',
+      },
+      keyframes: {
+        muncul: { from: { opacity: 0, transform: 'translateY(8px)' }, to: { opacity: 1, transform: 'none' } },
+      },
+      animation: {
+        muncul: 'muncul .5s cubic-bezier(.2,.7,.2,1) both',
       },
     },
   },
-  plugins: [
-    function({ addUtilities, theme }) {
-      const newUtilities = {
-        '.animation-delay-2000': {
-          'animation-delay': '2s',
-        },
-        '.animation-delay-3000': {
-          'animation-delay': '3s',
-        },
-        '.animation-delay-5000': {
-          'animation-delay': '5s',
-        },
-        '.animation-delay-7000': {
-          'animation-delay': '7s',
-        },
-        '.animation-delay-11000': {
-          'animation-delay': '11s',
-        },
-        // Adding negative z-index if not already there
-        '.z-\\[-1\\]': {
-          'z-index': '-1',
-        },
-      }
-      addUtilities(newUtilities)
-    },
-  ],
+  plugins: [],
 }
