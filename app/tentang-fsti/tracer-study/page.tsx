@@ -3,7 +3,6 @@
 import MainLayout from '@/components/layout/MainLayout';
 import AnimatedSection from '@/components/ui/AnimatedSection';
 import Button from '@/components/ui/Button';
-import { useLanguage } from '@/lib/i18n/LanguageContext';
 import { 
   GraduationCap, 
   Users, 
@@ -16,7 +15,6 @@ import {
 } from 'lucide-react';
 
 const TracerStudyPage = () => {
-  const { t, language } = useLanguage();
 
   return (
     <MainLayout>
@@ -34,15 +32,15 @@ const TracerStudyPage = () => {
                   icon={<ChevronLeft className="w-4 h-4" />}
                   size="sm"
                 >
-                  {language === 'en' ? 'Back to About FSTI' : 'Kembali ke Tentang FSTI'}
+                  Kembali ke Tentang FSTI
                 </Button>
               </div>
 
               <h1 className="text-4xl md:text-5xl font-display font-bold mb-6 text-gradient">
-                {t('tracerStudy.title')}
+                Tracer Study Alumni
               </h1>
               <p className="text-gray-700 text-lg mb-8">
-                {t('tracerStudy.subtitle')}
+                Fakultas Sains dan Teknologi Informasi - Institut Teknologi Kalimantan
               </p>
             </div>
           </AnimatedSection>
@@ -54,7 +52,7 @@ const TracerStudyPage = () => {
         <div className="container mx-auto px-4">
           <AnimatedSection animation="slideUp">
             <h2 className="text-3xl font-display font-bold text-center mb-12 text-gradient">
-              {t('tracerStudy.whyImportant.title')}
+              Mengapa Tracer Study Penting?
             </h2>
           </AnimatedSection>
 
@@ -64,8 +62,8 @@ const TracerStudyPage = () => {
                 <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
                   <TrendingUp className="w-8 h-8 text-white" />
                 </div>
-                <h3 className="font-bold text-gray-800 mb-2">{t('tracerStudy.whyImportant.quality.title')}</h3>
-                <p className="text-gray-600 text-sm">{t('tracerStudy.whyImportant.quality.desc')}</p>
+                <h3 className="font-bold text-gray-800 mb-2">Kualitas Pendidikan</h3>
+                <p className="text-gray-600 text-sm">Mengevaluasi efektivitas program pendidikan dan kurikulum</p>
               </div>
             </AnimatedSection>
 
@@ -74,8 +72,8 @@ const TracerStudyPage = () => {
                 <div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Building className="w-8 h-8 text-white" />
                 </div>
-                <h3 className="font-bold text-gray-800 mb-2">{t('tracerStudy.whyImportant.relevance.title')}</h3>
-                <p className="text-gray-600 text-sm">{t('tracerStudy.whyImportant.relevance.desc')}</p>
+                <h3 className="font-bold text-gray-800 mb-2">Relevansi Industri</h3>
+                <p className="text-gray-600 text-sm">Memastikan kompetensi lulusan sesuai dengan kebutuhan dunia kerja</p>
               </div>
             </AnimatedSection>
 
@@ -84,8 +82,8 @@ const TracerStudyPage = () => {
                 <div className="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Users className="w-8 h-8 text-white" />
                 </div>
-                <h3 className="font-bold text-gray-800 mb-2">{t('tracerStudy.whyImportant.network.title')}</h3>
-                <p className="text-gray-600 text-sm">{t('tracerStudy.whyImportant.network.desc')}</p>
+                <h3 className="font-bold text-gray-800 mb-2">Jaringan Alumni</h3>
+                <p className="text-gray-600 text-sm">Membangun koneksi antara alumni, mahasiswa, dan institusi</p>
               </div>
             </AnimatedSection>
 
@@ -94,8 +92,8 @@ const TracerStudyPage = () => {
                 <div className="w-16 h-16 bg-orange-600 rounded-full flex items-center justify-center mx-auto mb-4">
                   <GraduationCap className="w-8 h-8 text-white" />
                 </div>
-                <h3 className="font-bold text-gray-800 mb-2">{t('tracerStudy.whyImportant.accreditation.title')}</h3>
-                <p className="text-gray-600 text-sm">{t('tracerStudy.whyImportant.accreditation.desc')}</p>
+                <h3 className="font-bold text-gray-800 mb-2">Akreditasi</h3>
+                <p className="text-gray-600 text-sm">Mendukung proses akreditasi dan peningkatan mutu</p>
               </div>
             </AnimatedSection>
           </div>
@@ -112,10 +110,10 @@ const TracerStudyPage = () => {
                 <div className="bg-gradient-to-r from-primary-600 to-primary-800 text-white p-8 text-center">
                   <FileText className="w-16 h-16 mx-auto mb-4" />
                   <h2 className="text-2xl md:text-3xl font-bold mb-2">
-                    {t('tracerStudy.form.title')}
+                    Formulir Tracer Study Lulusan
                   </h2>
                   <p className="text-primary-100">
-                    {t('tracerStudy.form.description')}
+                    Silakan isi formulir ini untuk membantu kami meningkatkan kualitas pendidikan di FSTI ITK
                   </p>
                 </div>
 
@@ -136,9 +134,7 @@ const TracerStudyPage = () => {
                   {/* Alternative Link */}
                   <div className="mt-6 text-center">
                     <p className="text-gray-600 mb-4">
-                      {language === 'en' 
-                        ? 'Having trouble viewing the form? Open it in a new tab' 
-                        : 'Kesulitan melihat form? Buka di tab baru'}
+                      Kesulitan melihat form? Buka di tab baru
                     </p>
                     <a
                       href="https://docs.google.com/forms/d/e/1FAIpQLSe09s1JB6Sm4005NakxU9uNVnLyGBEiIEv8oSO2EdLG81LIeA/viewform"
@@ -146,7 +142,7 @@ const TracerStudyPage = () => {
                       rel="noopener noreferrer"
                       className="inline-flex items-center px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors duration-300 font-medium"
                     >
-                      {language === 'en' ? 'Open Form in New Tab' : 'Buka Form di Tab Baru'}
+                      Buka Form di Tab Baru
                       <ExternalLink className="w-4 h-4 ml-2" />
                     </a>
                   </div>
@@ -162,7 +158,7 @@ const TracerStudyPage = () => {
         <div className="container mx-auto px-4">
           <AnimatedSection animation="slideUp">
             <h2 className="text-3xl font-display font-bold text-center mb-12 text-gradient">
-              {t('tracerStudy.benefits.title')}
+              Manfaat Mengisi Tracer Study
             </h2>
           </AnimatedSection>
 
@@ -173,8 +169,8 @@ const TracerStudyPage = () => {
                   <CheckCircle className="w-6 h-6 text-green-600" />
                 </div>
                 <div className="ml-4">
-                  <h3 className="font-bold text-gray-800 mb-2">{t('tracerStudy.benefits.benefit1.title')}</h3>
-                  <p className="text-gray-600 text-sm">{t('tracerStudy.benefits.benefit1.desc')}</p>
+                  <h3 className="font-bold text-gray-800 mb-2">Berkontribusi untuk Pendidikan</h3>
+                  <p className="text-gray-600 text-sm">Masukan Anda sangat berharga untuk pengembangan kurikulum dan program studi yang lebih baik</p>
                 </div>
               </div>
             </AnimatedSection>
@@ -185,8 +181,8 @@ const TracerStudyPage = () => {
                   <CheckCircle className="w-6 h-6 text-blue-600" />
                 </div>
                 <div className="ml-4">
-                  <h3 className="font-bold text-gray-800 mb-2">{t('tracerStudy.benefits.benefit2.title')}</h3>
-                  <p className="text-gray-600 text-sm">{t('tracerStudy.benefits.benefit2.desc')}</p>
+                  <h3 className="font-bold text-gray-800 mb-2">Tetap Terhubung</h3>
+                  <p className="text-gray-600 text-sm">Mempertahankan hubungan dengan almamater dan sesama alumni</p>
                 </div>
               </div>
             </AnimatedSection>
@@ -197,8 +193,8 @@ const TracerStudyPage = () => {
                   <CheckCircle className="w-6 h-6 text-purple-600" />
                 </div>
                 <div className="ml-4">
-                  <h3 className="font-bold text-gray-800 mb-2">{t('tracerStudy.benefits.benefit3.title')}</h3>
-                  <p className="text-gray-600 text-sm">{t('tracerStudy.benefits.benefit3.desc')}</p>
+                  <h3 className="font-bold text-gray-800 mb-2">Pengembangan Karir</h3>
+                  <p className="text-gray-600 text-sm">Mendapatkan informasi tentang peluang kerja dan pengembangan karir</p>
                 </div>
               </div>
             </AnimatedSection>
@@ -209,8 +205,8 @@ const TracerStudyPage = () => {
                   <CheckCircle className="w-6 h-6 text-orange-600" />
                 </div>
                 <div className="ml-4">
-                  <h3 className="font-bold text-gray-800 mb-2">{t('tracerStudy.benefits.benefit4.title')}</h3>
-                  <p className="text-gray-600 text-sm">{t('tracerStudy.benefits.benefit4.desc')}</p>
+                  <h3 className="font-bold text-gray-800 mb-2">Pengakuan</h3>
+                  <p className="text-gray-600 text-sm">Pengakuan dan apresiasi atas prestasi dan kontribusi alumni</p>
                 </div>
               </div>
             </AnimatedSection>
@@ -223,10 +219,10 @@ const TracerStudyPage = () => {
         <div className="container mx-auto px-4 text-center">
           <AnimatedSection animation="slideUp">
             <h2 className="text-2xl font-display font-bold mb-6 text-gray-800">
-              {t('tracerStudy.cta.title')}
+              Butuh Bantuan?
             </h2>
             <p className="text-gray-600 mb-8 max-w-2xl mx-auto">
-              {t('tracerStudy.cta.description')}
+              Jika Anda memiliki pertanyaan tentang tracer study atau membutuhkan bantuan dalam mengisi formulir, jangan ragu untuk menghubungi kami.
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
               <Button 
@@ -248,7 +244,7 @@ const TracerStudyPage = () => {
                 </svg>}
                 animate
               >
-                {t('common.email')}
+                Email Kami
               </Button>
               <Button 
                 href="/tentang-fsti" 
@@ -256,7 +252,7 @@ const TracerStudyPage = () => {
                 icon={<ChevronLeft className="w-4 h-4" />}
                 animate
               >
-                {language === 'en' ? 'Back to About FSTI' : 'Kembali ke Tentang FSTI'}
+                Kembali ke Tentang FSTI
               </Button>
             </div>
           </AnimatedSection>

@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import AnimatedSection from '@/components/ui/AnimatedSection';
-import { useLanguage } from '@/lib/i18n/LanguageContext';
 import SectionDivider from '@/components/ui/SectionDivider';
 import { Search, Download, ExternalLink, FileText, TrendingUp, FileType } from 'lucide-react';
 
@@ -11,7 +10,7 @@ import { Search, Download, ExternalLink, FileText, TrendingUp, FileType } from '
 const encodeFileUrl = (url: string) =>
   encodeURI(url).replace(/\[/g, '%5B').replace(/\]/g, '%5D');
 
-type LocalizedText = { id: string; en: string };
+type LocalizedText = { id: string; };
 
 interface DocItem {
   id: string;
@@ -32,11 +31,9 @@ const documentsList: DocItem[] = [
     id: 'akademik',
     title: {
       id: 'Akademik',
-      en: 'Academic',
     },
     description: {
       id: 'Panduan dan peraturan akademik untuk mahasiswa FSTI ITK (Peraturan Nomor 4 Tahun 2025 dan Peraturan Nomor 9 Tahun 2024)',
-      en: 'Academic guidelines and regulations for FSTI ITK students (Regulation Number 4 of 2025 and Regulation Number 9 of 2024)',
     },
     fileName: 'PERATURAN-AKADEMIK.pdf',
     fileUrl: '/file/PERATURAN-AKADEMIK.pdf',
@@ -48,11 +45,9 @@ const documentsList: DocItem[] = [
     id: 'kemahasiswaan',
     title: {
       id: 'Kemahasiswaan',
-      en: 'Student Affairs',
     },
     description: {
       id: 'Panduan kegiatan, organisasi, dan peraturan kemahasiswaan',
-      en: 'Guidelines for activities, organizations, and student regulations',
     },
     fileName: 'KEMAHASISWAAN.pdf',
     fileUrl: '/file/KEMAHASISWAAN.pdf',
@@ -64,11 +59,9 @@ const documentsList: DocItem[] = [
     id: 'biayaPendidikan',
     title: {
       id: 'Biaya Pendidikan Mahasiswa',
-      en: 'Student Tuition Fees',
     },
     description: {
       id: 'Informasi lengkap mengenai biaya pendidikan, UKT, dan komponen biaya lainnya untuk mahasiswa ITK',
-      en: 'Complete information about tuition fees, UKT, and other fee components for ITK students',
     },
     fileName: 'BIAYA-PENDIDIKAN.pdf',
     fileUrl: '/file/BIAYA-PENDIDIKAN.pdf',
@@ -80,11 +73,9 @@ const documentsList: DocItem[] = [
     id: 'tugasAkhir',
     title: {
       id: 'Tugas Akhir',
-      en: 'Final Project',
     },
     description: {
       id: 'Panduan pelaksanaan dan penulisan Tugas Akhir mahasiswa',
-      en: 'Guidelines for implementation and writing of student Final Projects',
     },
     fileUrl: '/file/A-Panduan Tugas Akhir/[2025] A PEDOMAN PELAKSANAAN TUGAS AKHIR ITK.pdf',
     coverImage: '/images/docs/tugas-akhir.jpg',
@@ -93,11 +84,11 @@ const documentsList: DocItem[] = [
     badge: 'New',
     files: [
       {
-        label: { id: 'Pedoman Pelaksanaan', en: 'Implementation Guidelines' },
+        label: { id: 'Pedoman Pelaksanaan', },
         fileUrl: '/file/A-Panduan Tugas Akhir/[2025] A PEDOMAN PELAKSANAAN TUGAS AKHIR ITK.pdf',
       },
       {
-        label: { id: 'Panduan Kepenulisan', en: 'Writing Guidelines' },
+        label: { id: 'Panduan Kepenulisan', },
         fileUrl: '/file/A-Panduan Tugas Akhir/[2025] B PANDUAN KEPENULISAN TUGAS AKHIR ITK.pdf',
       },
     ],
@@ -106,11 +97,9 @@ const documentsList: DocItem[] = [
     id: 'magang',
     title: {
       id: 'Magang',
-      en: 'Internship',
     },
     description: {
       id: 'Panduan pelaksanaan dan pelaporan kegiatan Magang',
-      en: 'Guidelines for implementation and reporting of Internship activities',
     },
     fileName: 'MAGANG.pdf',
     fileUrl: '/file/MAGANG.pdf',
@@ -122,11 +111,9 @@ const documentsList: DocItem[] = [
     id: 'kerjaPraktik',
     title: {
       id: 'Kerja Praktik',
-      en: 'Practical Work',
     },
     description: {
       id: 'Panduan pelaksanaan dan pelaporan kegiatan Kerja Praktik',
-      en: 'Guidelines for implementation and reporting of Practical Work activities',
     },
     fileUrl: '/file/B-Panduan Kerja Praktik/[2025] A PANDUAN KERJA PRAKTIK ITK.pdf',
     coverImage: '/images/docs/kerja-praktik.jpg',
@@ -138,11 +125,9 @@ const documentsList: DocItem[] = [
     id: 'mbkm',
     title: {
       id: 'MBKM',
-      en: 'MBKM',
     },
     description: {
       id: 'Panduan Merdeka Belajar Kampus Merdeka (MBKM) FSTI ITK',
-      en: 'Independent Learning Campus (MBKM) guidelines for FSTI ITK',
     },
     fileName: 'MBKM.pdf',
     fileUrl: '/file/MBKM.pdf',
@@ -154,11 +139,9 @@ const documentsList: DocItem[] = [
     id: 'tataKehidupan',
     title: {
       id: 'Tata Kehidupan Kampus',
-      en: 'Campus Life Code',
     },
     description: {
       id: 'Pedoman tata kehidupan dan etika di lingkungan kampus',
-      en: 'Guidelines for campus life and ethics',
     },
     fileName: 'TATA-KEHIDUPAN.pdf',
     fileUrl: '/file/TATA-KEHIDUPAN.pdf',
@@ -170,11 +153,9 @@ const documentsList: DocItem[] = [
     id: 'kalenderAkademik',
     title: {
       id: 'Kalender Akademik',
-      en: 'Academic Calendar',
     },
     description: {
       id: 'Jadwal kegiatan akademik selama tahun ajaran',
-      en: 'Schedule of academic activities throughout the academic year',
     },
     fileName: 'KALENDER-AKADEMIK.pdf',
     fileUrl: '/file/KALENDER-AKADEMIK.pdf',
@@ -187,11 +168,9 @@ const documentsList: DocItem[] = [
     id: 'pembelajaranDiluarProdi',
     title: {
       id: 'Pembelajaran di Luar Program Studi',
-      en: 'Learning Outside Study Program',
     },
     description: {
       id: 'Panduan pembelajaran di luar program studi untuk memperluas wawasan dan kompetensi mahasiswa',
-      en: 'Guidelines for learning outside the study program to broaden student insights and competencies',
     },
     fileUrl: '/file/C-Panduan Pembelajaran di Luar Program Studi/[2025] 1 BUKU PANDUAN PEMBELAJARAN DI LUAR PROGRAM STUDI INSTITUT TEKNOLOGI KALIMANTAN.pdf',
     coverImage: '/images/docs/pembelajaran-diluar-prodi.jpg',
@@ -203,11 +182,9 @@ const documentsList: DocItem[] = [
     id: 'magangRiset',
     title: {
       id: 'Magang Riset',
-      en: 'Research Internship',
     },
     description: {
       id: 'Panduan pelaksanaan magang riset untuk mahasiswa yang ingin mengembangkan kemampuan penelitian',
-      en: 'Guidelines for research internships for students who want to develop research skills',
     },
     fileUrl: '/file/C-Panduan Pembelajaran di Luar Program Studi/[2025] 2 BUKU PANDUAN MAGANG RISET INSTITUT TEKNOLOGI KALIMANTAN.pdf',
     coverImage: '/images/docs/magang-riset.jpg',
@@ -219,11 +196,9 @@ const documentsList: DocItem[] = [
     id: 'kknTematik',
     title: {
       id: 'Kuliah Kerja Nyata Tematik',
-      en: 'Thematic Community Service',
     },
     description: {
       id: 'Panduan pelaksanaan KKN Tematik sebagai bentuk pengabdian kepada masyarakat',
-      en: 'Guidelines for implementing Thematic Community Service as a form of service to the community',
     },
     fileUrl: '/file/C-Panduan Pembelajaran di Luar Program Studi/[2025] 3 BUKU PANDUAN KULIAH KERJA NYATA TEMATIK INSTITUT TEKNOLOGI KALIMANTAN.pdf',
     coverImage: '/images/docs/kkn-tematik.jpg',
@@ -235,11 +210,9 @@ const documentsList: DocItem[] = [
     id: 'pertukaranMahasiswa',
     title: {
       id: 'Pertukaran Mahasiswa',
-      en: 'Student Exchange',
     },
     description: {
       id: 'Panduan program pertukaran mahasiswa untuk pengalaman belajar di institusi lain',
-      en: 'Guidelines for student exchange programs for learning experiences at other institutions',
     },
     fileUrl: '/file/C-Panduan Pembelajaran di Luar Program Studi/[2025] 4 BUKU PANDUAN PERTUKARAN MAHASISWA INSTITUT TEKNOLOGI KALIMANTAN.pdf',
     coverImage: '/images/docs/pertukaran-mahasiswa.jpg',
@@ -251,11 +224,9 @@ const documentsList: DocItem[] = [
     id: 'kewirausahaan',
     title: {
       id: 'Kewirausahaan',
-      en: 'Entrepreneurship',
     },
     description: {
       id: 'Panduan kegiatan kewirausahaan untuk mengembangkan jiwa entrepreneur mahasiswa',
-      en: 'Entrepreneurship guidelines to develop student entrepreneurial spirit',
     },
     fileUrl: '/file/C-Panduan Pembelajaran di Luar Program Studi/[2025] 5 BUKU PANDUAN KEWIRAUSAHAAN INSTITUT TEKNOLOGI KALIMANTAN.pdf',
     coverImage: '/images/docs/kewirausahaan.jpg',
@@ -267,11 +238,9 @@ const documentsList: DocItem[] = [
     id: 'magangKeprofesian',
     title: {
       id: 'Magang Keprofesian',
-      en: 'Professional Internship',
     },
     description: {
       id: 'Panduan magang keprofesian untuk pengalaman kerja di bidang profesi tertentu',
-      en: 'Professional internship guidelines for work experience in specific professional fields',
     },
     fileUrl: '/file/C-Panduan Pembelajaran di Luar Program Studi/[2025] 6 BUKU PANDUAN MAGANG KEPROFESIAN INSTITUT TEKNOLOGI KALIMANTAN.pdf',
     coverImage: '/images/docs/magang-keprofesian.jpg',
@@ -283,11 +252,9 @@ const documentsList: DocItem[] = [
     id: 'proyekKemanusiaan',
     title: {
       id: 'Proyek Kemanusiaan',
-      en: 'Humanitarian Project',
     },
     description: {
       id: 'Panduan proyek kemanusiaan untuk berkontribusi dalam isu-isu sosial dan kemanusiaan',
-      en: 'Humanitarian project guidelines to contribute to social and humanitarian issues',
     },
     fileUrl: '/file/C-Panduan Pembelajaran di Luar Program Studi/[2025] 7 BUKU PANDUAN PROYEK KEMANUSIAAN INSTITUT TEKNOLOGI KALIMANTAN.pdf',
     coverImage: '/images/docs/proyek-kemanusiaan.jpg',
@@ -299,11 +266,9 @@ const documentsList: DocItem[] = [
     id: 'studiProyekIndependen',
     title: {
       id: 'Studi Proyek Independen',
-      en: 'Independent Project Study',
     },
     description: {
       id: 'Panduan studi proyek independen untuk mengembangkan proyek secara mandiri',
-      en: 'Independent project study guidelines to develop projects independently',
     },
     fileUrl: '/file/C-Panduan Pembelajaran di Luar Program Studi/[2025] 8 BUKU PANDUAN STUDI PROYEK INDEPENDEN INSTITUT TEKNOLOGI KALIMANTAN.pdf',
     coverImage: '/images/docs/studi-proyek-independen.jpg',
@@ -315,11 +280,9 @@ const documentsList: DocItem[] = [
     id: 'inovasiSosial',
     title: {
       id: 'Inovasi Sosial',
-      en: 'Social Innovation',
     },
     description: {
       id: 'Panduan inovasi sosial untuk mendorong kontribusi mahasiswa terhadap pemecahan masalah di masyarakat',
-      en: 'Social innovation guidelines to encourage student contributions to solving problems in society',
     },
     fileUrl: '/file/D-Panduan Inovasi Sosial/[2026] PANDUAN INOVASI SOSIAL TAHUN 2026 INSTITUT TEKNOLOGI KAILIMANTAN.pdf',
     coverImage: '/images/docs/pertukaran-mahasiswa.jpg',
@@ -331,13 +294,12 @@ const documentsList: DocItem[] = [
 
 const PeraturanKebijakanPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const { language } = useLanguage();
 
   // Filter dokumen berdasarkan pencarian
   const filteredDocuments = documentsList.filter(doc => {
     const searchLower = searchTerm.toLowerCase();
-    return doc.title[language as 'id' | 'en'].toLowerCase().includes(searchLower) ||
-      doc.description[language as 'id' | 'en'].toLowerCase().includes(searchLower);
+    return doc.title.id.toLowerCase().includes(searchLower) ||
+      doc.description.id.toLowerCase().includes(searchLower);
   });
 
   return (
@@ -349,12 +311,10 @@ const PeraturanKebijakanPage = () => {
           <AnimatedSection animation="slideUp">
             <div className="text-center max-w-3xl mx-auto">
               <h1 className="text-4xl md:text-5xl font-display font-bold mb-6 text-gradient">
-                {language === 'id' ? 'Peraturan, Kebijakan, dan Panduan Mahasiswa' : 'Regulations, Policies, and Student Guidelines'}
+                Peraturan, Kebijakan, dan Panduan Mahasiswa
               </h1>
               <p className="text-gray-700 text-lg mb-10">
-                {language === 'id'
-                  ? 'Dokumen-dokumen terkait aturan dan panduan untuk aktifitas mahasiswa di lingkungan FSTI'
-                  : 'Documents related to rules and guidelines for student activities within FSTI'}
+                Dokumen-dokumen terkait aturan dan panduan untuk aktifitas mahasiswa di lingkungan FSTI
               </p>
 
             </div>
@@ -370,7 +330,7 @@ const PeraturanKebijakanPage = () => {
         <div className="container mx-auto px-4 relative z-10">
           <AnimatedSection animation="slideUp">
             <h2 className="text-3xl font-display font-bold text-center mb-12 text-gradient">
-              {language === 'id' ? 'Daftar Dokumen' : 'Document List'}
+              Daftar Dokumen
             </h2>
           </AnimatedSection>
 
@@ -380,7 +340,7 @@ const PeraturanKebijakanPage = () => {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
               <input
                 type="text"
-                placeholder={language === 'id' ? 'Cari dokumen...' : 'Search documents...'}
+                placeholder={'Cari dokumen...'}
                 className="w-full bg-gray-50 text-gray-800 py-3 pl-10 pr-4 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary-600"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
@@ -388,7 +348,7 @@ const PeraturanKebijakanPage = () => {
             </div>
             {searchTerm && (
               <div className="mt-3 text-sm text-gray-600 font-medium">
-                {filteredDocuments.length} {language === 'id' ? 'dokumen ditemukan' : 'documents found'}
+                {filteredDocuments.length} {'dokumen ditemukan'}
               </div>
             )}
           </div>
@@ -414,7 +374,7 @@ const PeraturanKebijakanPage = () => {
                           {/* Main Image */}
                           <img
                             src={doc.coverImage}
-                            alt={doc.title[language as 'id' | 'en']}
+                            alt={doc.title.id}
                             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                             onError={(e) => {
                               // Fallback ke gambar base64 SVG jika gagal
@@ -447,10 +407,10 @@ const PeraturanKebijakanPage = () => {
                         {/* Content with glass effect */}
                         <div className="p-6 bg-white/80 backdrop-blur-sm flex-grow">
                           <h3 className="text-lg font-bold text-gray-800 mb-2 line-clamp-2 group-hover:text-primary-600 transition-colors">
-                            {doc.title[language as 'id' | 'en']}
+                            {doc.title.id}
                           </h3>
                           <p className="text-sm text-gray-600 mb-4 line-clamp-2">
-                            {doc.description[language as 'id' | 'en']}
+                            {doc.description.id}
                           </p>
 
                           {/* Stats */}
@@ -475,7 +435,7 @@ const PeraturanKebijakanPage = () => {
                                   className="flex items-center justify-between gap-2 px-4 py-2.5 rounded-xl border-2 border-gray-200 bg-white hover:border-primary-500 hover:bg-primary-50 transition-all text-left group/file"
                                 >
                                   <span className="text-sm font-medium text-gray-700 group-hover/file:text-primary-700 line-clamp-1">
-                                    {file.label[language as 'id' | 'en']}
+                                    {file.label.id}
                                   </span>
                                   <Download className="h-4 w-4 text-primary-600 flex-shrink-0" />
                                 </button>
@@ -489,7 +449,7 @@ const PeraturanKebijakanPage = () => {
                               >
                                 <Download className="h-4 w-4" />
                                 <span className="text-sm font-medium">
-                                  {language === 'id' ? 'Unduh' : 'Download'}
+                                  Unduh
                                 </span>
                               </button>
                               <button
@@ -513,19 +473,17 @@ const PeraturanKebijakanPage = () => {
                 <div className="mb-6 text-gray-500">
                   <Search className="h-16 w-16 mx-auto opacity-30 mb-4" />
                   <h3 className="text-xl font-semibold mb-2">
-                    {language === 'id' ? 'Tidak Ditemukan' : 'Not Found'}
+                    Tidak Ditemukan
                   </h3>
                   <p>
-                    {language === 'id'
-                      ? 'Tidak ada dokumen yang sesuai dengan pencarian Anda.'
-                      : 'No documents match your search.'}
+                    Tidak ada dokumen yang sesuai dengan pencarian Anda.
                   </p>
                 </div>
                 <button
                   onClick={() => setSearchTerm('')}
                   className="px-6 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors"
                 >
-                  {language === 'id' ? 'Reset Pencarian' : 'Reset Search'}
+                  Reset Pencarian
                 </button>
               </div>
             </AnimatedSection>
@@ -540,18 +498,14 @@ const PeraturanKebijakanPage = () => {
             <AnimatedSection animation="slideUp">
               <div className="bg-gradient-to-r from-primary-50/90 to-purple-50/90 backdrop-blur-sm rounded-xl p-8 shadow-md border border-primary-100">
                 <h3 className="text-xl font-semibold mb-4 text-gray-800">
-                  {language === 'id' ? '💡 Informasi Penting' : '💡 Important Information'}
+                  💡 Informasi Penting
                 </h3>
                 <div className="text-gray-700 space-y-4 leading-relaxed">
                   <p>
-                    {language === 'id'
-                      ? 'Dokumen-dokumen ini merupakan pedoman resmi yang ditetapkan oleh Institut Teknologi Kalimantan dan Fakultas Sains dan Teknologi Informasi. Mahasiswa diharapkan untuk membaca dan memahami dokumen-dokumen ini untuk kelancaran kegiatan akademik.'
-                      : 'These documents are official guidelines established by Kalimantan Institute of Technology and the Faculty of Science and Information Technology. Students are expected to read and understand these documents for the smooth running of academic activities.'}
+                    Dokumen-dokumen ini merupakan pedoman resmi yang ditetapkan oleh Institut Teknologi Kalimantan dan Fakultas Sains dan Teknologi Informasi. Mahasiswa diharapkan untuk membaca dan memahami dokumen-dokumen ini untuk kelancaran kegiatan akademik.
                   </p>
                   <p className="text-sm text-gray-600">
-                    {language === 'id'
-                      ? '📥 Seluruh dokumen dapat diunduh dan disimpan untuk referensi. Jika terdapat pertanyaan atau hal yang perlu diklarifikasi, silakan hubungi admin FSTI.'
-                      : '📥 All documents can be downloaded and saved for reference. If there are questions or matters that need clarification, please contact the FSTI admin.'}
+                    📥 Seluruh dokumen dapat diunduh dan disimpan untuk referensi. Jika terdapat pertanyaan atau hal yang perlu diklarifikasi, silakan hubungi admin FSTI.
                   </p>
                 </div>
               </div>
