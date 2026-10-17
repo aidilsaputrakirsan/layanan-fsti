@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from 'react';
-import { CalendarClock, AlertTriangle, Hourglass } from 'lucide-react';
+import { CalendarClock, AlertTriangle } from 'lucide-react';
 import type { Rekap, StatusKey } from '@/lib/rekap';
 import { kepuasan } from '@/data/dashboard';
 import { kontak, waLink } from '@/data/situs';
@@ -119,7 +119,9 @@ const DashboardView = ({ rekap, semesterKini }: { rekap: Rekap | null; semesterK
         <div className="kartu p-5">
           <dt className="text-sm text-ink-3">Selesai</dt>
           <dd className="mt-2 text-3xl font-extrabold tabular-nums sm:text-[2.1rem]">{persen(s.status.done, s.total - s.status.none)}%</dd>
-          <dd className="mt-1 text-xs text-ink-3">{angka(s.status.done)} permohonan berstatus selesai</dd>
+          <dd className="mt-1 text-xs text-ink-3">
+            {angka(s.status.done)} dari {angka(s.total - s.status.none)} permohonan yang mencatat status
+          </dd>
         </div>
         <div className="kartu p-5">
           <dt className="text-sm text-ink-3">{kini ? 'Antrean saat ini' : 'Belum selesai'}</dt>
@@ -144,17 +146,6 @@ const DashboardView = ({ rekap, semesterKini }: { rekap: Rekap | null; semesterK
         </div>
       </dl>
 
-      {/* Antrean */}
-      {kini && berjalan > 0 && (
-        <div className="flex items-start gap-3 rounded-2xl bg-primary-950 px-5 py-4 text-sm text-primary-100">
-          <Hourglass className="mt-0.5 h-4 w-4 shrink-0 text-sorot-400" />
-          <p>
-            Ada <strong className="text-white">{angka(s.status.waiting)}</strong> permohonan menunggu verifikasi dan{' '}
-            <strong className="text-white">{angka(s.status.progress)}</strong> sedang diproses di semester ini. Cek status
-            permohonan Anda di menu Cek Status.
-          </p>
-        </div>
-      )}
 
       {/* Status */}
       <Panel judul="Status permohonan" ket={`${angka(s.total)} permohonan`}>
@@ -206,7 +197,7 @@ const DashboardView = ({ rekap, semesterKini }: { rekap: Rekap | null; semesterK
         </Panel>
 
         {/* Per prodi */}
-        <Panel judul="Permohonan per program studi" ket={<LegendaJenis />}>
+        <Panel judul="Permohonan per program studi / unit" ket={<LegendaJenis />}>
           <ul className="max-h-[300px] space-y-3.5 overflow-y-auto pr-1">
             {s.prodi.map((p) => {
               const n = p.mahasiswa + p.dosen;

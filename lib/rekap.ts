@@ -1,4 +1,5 @@
 import { cache } from 'react';
+import { unstable_cache } from 'next/cache';
 
 /**
  * Rekap otomatis untuk Dashboard — mengambil aksi "rekap" (baca-saja, hanya angka total)
@@ -49,20 +50,32 @@ export function semesterSekarang(d = new Date()) {
   return m >= 8 ? `${y}-ganjil` : m === 1 ? `${y - 1}-ganjil` : `${y - 1}-genap`;
 }
 
-async function ambilSatu(jenis: Jenis): Promise<{ semester: Record<string, RekapSemesterGAS>; dibuat: number } | null> {
-  const url = jenis === 'dosen' ? process.env.TRACKING_GAS_URL_DOSEN : process.env.TRACKING_GAS_URL_MAHASISWA;
-  const secret = process.env.TRACKING_API_SECRET;
-  if (!url || !secret) return null;
+type DataGAS = { semester: Record<string, RekapSemesterGAS>; dibuat: number };
+
+const urlGAS = (jenis: Jenis) => (jenis === 'dosen' ? process.env.TRACKING_GAS_URL_DOSEN : process.env.TRACKING_GAS_URL_MAHASISWA);
+
+/** Melempar error bila gagal — supaya kegagalan TIDAK ikut tersimpan di cache. */
+async function mintaRekap(jenis: Jenis): Promise<DataGAS> {
+  const res = await fetch(urlGAS(jenis)!, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ secret: process.env.TRACKING_API_SECRET, aksi: 'rekap' }),
+    cache: 'no-store',
+    redirect: 'follow',
+    signal: AbortSignal.timeout(45000),
+  });
+  const data = await res.json();
+  if (!data.ok || !data.semester) throw new Error(`Rekap ${jenis} gagal: ${data.pesan || res.status}`);
+  return { semester: data.semester, dibuat: data.dibuat };
+}
+
+// Hanya hasil yang berhasil disimpan, selama 1 jam
+const rekapTersimpan = unstable_cache(mintaRekap, ['rekap-gas-v1'], { revalidate: 3600 });
+
+async function ambilSatu(jenis: Jenis): Promise<DataGAS | null> {
+  if (!urlGAS(jenis) || !process.env.TRACKING_API_SECRET) return null;
   try {
-    const res = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ secret, aksi: 'rekap' }),
-      redirect: 'follow',
-      signal: AbortSignal.timeout(45000),
-    });
-    const data = await res.json();
-    return data.ok && data.semester ? { semester: data.semester, dibuat: data.dibuat } : null;
+    return await rekapTersimpan(jenis);
   } catch {
     return null;
   }
