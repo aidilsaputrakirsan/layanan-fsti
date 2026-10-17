@@ -14,24 +14,23 @@
  * setiap sheet permohonan dan diisi kode.
  *
  * ───────────── PEMASANGAN (lakukan di masing-masing spreadsheet) ─────────────
- * 1. Extensions > Apps Script > tambah file script "Tracking", tempel isi file ini.
- * 2. Ubah TRK.JENIS dan TRK.PREFIX di bawah (mahasiswa: 'mahasiswa' & 'M', dosen: 'dosen' & 'D').
- * 3. Project Settings > Script Properties, tambahkan:
+ * 1. Extensions > Apps Script > tambah file script "Tracking", tempel isi file ini APA ADANYA
+ *    (tidak perlu diedit; file ini aman berdampingan dengan Dashboard.gs di project yang sama).
+ * 2. Project Settings > Script Properties, tambahkan:
+ *      TRACKING_JENIS      = mahasiswa   atau   dosen   (sesuai spreadsheet ini)
  *      TRACKING_API_SECRET = string acak panjang (sama persis dengan env TRACKING_API_SECRET di website)
  *      SITE_URL            = alamat website, mis. https://layanan-fsti.vercel.app
  *      NOTIFIKASI_STATUS   = ya   (isi "tidak" jika tidak ingin email notifikasi status)
- * 4. Pilih fungsi trkSetup lalu Run (izinkan akses). Ini memasang trigger otomatis.
- * 5. Pilih fungsi trkBackfill lalu Run, untuk memberi kode pada permohonan lama.
- * 6. Deploy > New deployment > Web app:
+ * 3. Pilih fungsi trkSetup lalu Run (izinkan akses). Ini memasang trigger otomatis.
+ * 4. Pilih fungsi trkBackfill lalu Run, untuk memberi kode pada permohonan lama.
+ * 5. Deploy > New deployment > Web app:
  *      Execute as: Me   ·   Who has access: Anyone
  *    Salin URL "/exec" ke env website (TRACKING_GAS_URL_MAHASISWA atau TRACKING_GAS_URL_DOSEN).
  *    "Anyone" aman: tanpa secret yang benar, web app tidak mengembalikan data apa pun.
- * 7. Setelah website memakai versi ini, ubah berbagi spreadsheet menjadi "Restricted".
+ * 6. Setelah website memakai versi ini, ubah berbagi spreadsheet menjadi "Restricted".
  */
 
 var TRK = {
-  JENIS: 'mahasiswa', // 'mahasiswa' atau 'dosen'
-  PREFIX: 'M', // 'M' untuk mahasiswa, 'D' untuk dosen
   KOLOM_KODE: 'Kode Tiket',
   RUANG_PENGAMBILAN: 'ruang B110', // tempat ambil dokumen secara langsung (disebut di email "selesai")
   SHEET_DIKECUALIKAN: ['TOTAL'],
@@ -46,6 +45,17 @@ var TRK = {
   INDEKS_BASI_DETIK: 120, // pencarian yang gagal memicu indeks ulang jika indeks lebih tua dari ini
   JEDA_KIRIM_ULANG_DETIK: 900
 };
+
+/** Jenis spreadsheet dari Script Property TRACKING_JENIS: 'mahasiswa' (default) atau 'dosen'. */
+function trkJenis_() {
+  var j = String(PropertiesService.getScriptProperties().getProperty('TRACKING_JENIS') || 'mahasiswa').trim().toLowerCase();
+  return j === 'dosen' ? 'dosen' : 'mahasiswa';
+}
+
+/** Awalan kode tiket: M untuk mahasiswa, D untuk dosen. */
+function trkPrefix_() {
+  return trkJenis_() === 'dosen' ? 'D' : 'M';
+}
 
 var TRK_ABJAD = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
 
@@ -106,7 +116,7 @@ function trkOnFormSubmit(e) {
       '<p>Permohonan <b>' + trkEsc_(rec.layanan) + '</b> sudah kami terima.</p>' +
       '<p style="font-size:22px;letter-spacing:2px"><b>' + kode + '</b></p>' +
       '<p>Simpan kode ini. Cek status kapan saja di <a href="' + trkUrlTracking_() + '">' + trkUrlTracking_() + '</a> ' +
-      'dengan ' + (TRK.JENIS === 'mahasiswa' ? 'NIM' : 'NIP') + ' dan kode tiket.</p>');
+      'dengan ' + (trkJenis_() === 'mahasiswa' ? 'NIM' : 'NIP') + ' dan kode tiket.</p>');
   }
 }
 
@@ -166,7 +176,7 @@ function doPost(e) {
 }
 
 function doGet() {
-  return trkJson_({ ok: true, layanan: 'tracking-fsti', jenis: TRK.JENIS });
+  return trkJson_({ ok: true, layanan: 'tracking-fsti', jenis: trkJenis_() });
 }
 
 function trkCari_(id, kode) {
@@ -294,7 +304,7 @@ function trkPetaKolom_(h) {
   return {
     kode: cari(function (x) { return x === TRK.KOLOM_KODE.toLowerCase(); }),
     status: cari(function (x) { return x.indexOf('status persetujuan') === 0 || x.indexOf('progress layanan') === 0 || x === 'status'; }),
-    id: TRK.JENIS === 'mahasiswa'
+    id: trkJenis_() === 'mahasiswa'
       ? semua(function (x) { return /^nim\b/.test(x) || x.indexOf('(nim)') !== -1; })
       : semua(function (x) { return /^nip\b/.test(x) || /^niph\b/.test(x) || x.indexOf('(nip)') !== -1; }),
     email: cari(function (x) { return x === 'email address' || x === 'email' || x === 'alamat email'; }),
@@ -343,7 +353,7 @@ function trkRecord_(sheet, headers, kol, row, richRow) {
   var id = '';
   kol.id.forEach(function (c) { if (!id) id = trkNormId_(row[c]); });
   var email = kol.email !== -1 ? String(row[kol.email]).trim() : '';
-  if (!id && TRK.JENIS === 'mahasiswa') {
+  if (!id && trkJenis_() === 'mahasiswa') {
     var m = email.match(/^(\d{6,})@student\.itk\.ac\.id$/i);
     if (m) id = m[1];
   }
@@ -400,7 +410,7 @@ function trkKodeBaru_() {
   var bytes = Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, Utilities.getUuid() + Date.now());
   var s = '';
   for (var i = 0; i < 6; i++) s += TRK_ABJAD.charAt((bytes[i] + 256) % TRK_ABJAD.length);
-  return TRK.PREFIX + '-' + s;
+  return trkPrefix_() + '-' + s;
 }
 
 function trkUrlSitus_() {
@@ -408,7 +418,7 @@ function trkUrlSitus_() {
 }
 
 function trkUrlTracking_() {
-  return trkUrlSitus_() + '/tracking?jenis=' + TRK.JENIS;
+  return trkUrlSitus_() + '/tracking?jenis=' + trkJenis_();
 }
 
 function trkKirimEmail_(to, subjek, html) {
