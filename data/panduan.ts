@@ -1,16 +1,28 @@
 /**
- * Video tutorial. Isi `youtubeId` (bagian setelah "v=" di link YouTube)
- * ketika videonya sudah diunggah; selama kosong, kartu tampil sebagai "Segera hadir".
+ * Video tutorial. Taruh MP4 di /public/video lalu isi `file` (dan `poster`, gambar sampul);
+ * file diputar apa adanya tanpa kompresi ulang. Sebagai alternatif, isi `youtubeId`.
+ * Selama keduanya kosong, kartu tampil sebagai "Segera hadir".
+ *
+ * Agar video langsung diputar tanpa menunggu unduhan selesai, MP4 harus "faststart"
+ * (ffmpeg -movflags +faststart). Render dari pipeline video sudah demikian.
  */
 export interface Video {
   judul: string;
   ringkas: string;
+  file?: string;
+  poster?: string;
   youtubeId?: string;
   durasi?: string;
 }
 
 export const videoTutorial: Video[] = [
-  { judul: 'Cara Mengajukan Layanan', ringkas: 'Memilih pintu S1, S2, atau Dosen, membaca detail layanan, lalu mengisi formulir.' },
+  {
+    judul: 'Cara Mengajukan Layanan',
+    ringkas: 'Memilih pintu S1, S2, atau Dosen, membaca detail layanan, lalu mengisi formulir.',
+    file: '/video/panduan_layanan_fsti_part1_final.mp4',
+    poster: '/video/panduan_layanan_fsti_part1_poster.jpg',
+    durasi: '2:39',
+  },
   { judul: 'Cek Status, Ambil Hasil & Isi Survei', ringkas: 'Melacak permohonan dengan NIM/NIP, membaca catatan admin, dan mengambil dokumen hasil.' },
   { judul: 'Layanan untuk Dosen', ringkas: 'Surat tugas, pengesahan Dekan, SK Rektor, template, dan sistem informasi.' },
 ];
