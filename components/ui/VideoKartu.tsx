@@ -4,14 +4,28 @@ import { useState } from 'react';
 import { Play, Clock3 } from 'lucide-react';
 import type { Video } from '@/data/panduan';
 
-/** Kartu video YouTube; iframe baru dimuat saat diklik. Tanpa youtubeId tampil "Segera hadir". */
+/**
+ * Kartu video. File lokal diputar dengan pemutar bawaan browser (kualitas asli, bisa layar penuh);
+ * hanya metadata yang dimuat sebelum diputar. YouTube: iframe baru dimuat saat diklik.
+ * Tanpa file maupun youtubeId tampil "Segera hadir".
+ */
 const VideoKartu = ({ v, no }: { v: Video; no: number }) => {
   const [putar, setPutar] = useState(false);
 
   return (
     <article className="kartu overflow-hidden">
       <div className="relative aspect-video bg-primary-900">
-        {v.youtubeId ? (
+        {v.file ? (
+          <video
+            src={v.file}
+            poster={v.poster}
+            controls
+            preload="metadata"
+            playsInline
+            className="absolute inset-0 h-full w-full bg-primary-950"
+            aria-label={v.judul}
+          />
+        ) : v.youtubeId ? (
           putar ? (
             <iframe
               src={`https://www.youtube-nocookie.com/embed/${v.youtubeId}?autoplay=1&rel=0`}
