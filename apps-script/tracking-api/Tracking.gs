@@ -4,6 +4,9 @@
  * HANYA MEMBACA. Script ini tidak menulis, tidak menambah kolom, tidak memasang trigger,
  * dan tidak mengirim email. Admin tetap bekerja di spreadsheet seperti biasa.
  *
+ * Aksi "rekap" (untuk halaman Dashboard) hanya mengembalikan ANGKA TOTAL per semester:
+ * jumlah permohonan, status, per bulan, dan per program studi — tanpa nama/NIM/NIP.
+ *
  * Cara kerja: website mengirim NIM/NIP → script mencari baris dengan NIM/NIP itu di setiap
  * sheet → yang dikembalikan hanya: nama layanan (nama sheet), tanggal, status, keterangan admin,
  * dan tautan dokumen hasil. Kolom lain tidak pernah dikirim.
@@ -57,6 +60,8 @@ function doPost(e) {
   }
   var secret = PropertiesService.getScriptProperties().getProperty('TRACKING_API_SECRET');
   if (!secret || body.secret !== secret) return trkJson_({ ok: false, status: 403, pesan: 'Akses ditolak.' });
+
+  if (body.aksi === 'rekap') return trkJson_(trkRekap_());
 
   var id = trkNormId_(body.id);
   if (!id || body.aksi !== 'cari') return trkJson_({ ok: false, status: 400, pesan: 'Permintaan tidak valid.' });
@@ -153,6 +158,64 @@ function trkRingkas_(layanan, kol, row, richRow) {
     keterangan: kol.keterangan !== -1 ? String(row[kol.keterangan]).trim().slice(0, 1000) : '',
     tautan: tautan.filter(function (u, i) { return tautan.indexOf(u) === i; }).slice(0, 5)
   };
+}
+
+// ───────────────────────────── Rekap untuk Dashboard (hanya angka total, tanpa data pribadi)
+
+/**
+ * Rekap per semester: total, komposisi status, jumlah per bulan, dan per program studi.
+ * Semester Ganjil = Agustus–Januari, Genap = Februari–Juli (kunci: "2025-ganjil", "2025-genap" untuk TA 2025/2026).
+ * Baris tanpa tanggal pengajuan tidak dihitung.
+ */
+function trkRekap_() {
+  var cache = CacheService.getScriptCache();
+  var simpan = cache.get('rekap');
+  if (simpan) return JSON.parse(simpan);
+
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var tz = ss.getSpreadsheetTimeZone();
+  var semester = {};
+  var namaProdi = {}; // kunci huruf kecil -> nama tampilan pertama yang ditemukan
+
+  ss.getSheets().forEach(function (sheet) {
+    if (TRK.SHEET_DIKECUALIKAN.indexOf(sheet.getName().trim()) !== -1 || sheet.isSheetHidden()) return;
+    var values = sheet.getDataRange().getValues();
+    if (values.length < 2) return;
+    var h = values[0].map(function (x) { return String(x).replace(/\s+/g, ' ').trim().toLowerCase(); });
+    var kStatus = -1, kProdi = -1;
+    for (var i = 0; i < h.length; i++) {
+      if (kStatus === -1 && h[i] && TRK.HEADER_STATUS(h[i])) kStatus = i;
+      if (kProdi === -1 && (h[i] === 'program studi' || h[i] === 'prodi' || h[i].indexOf('jurusan/prodi') === 0)) kProdi = i;
+    }
+
+    for (var r = 1; r < values.length; r++) {
+      var ts = values[r][0];
+      if (!(ts instanceof Date) || isNaN(ts.getTime())) continue;
+      var bulan = Utilities.formatDate(ts, tz, 'yyyy-MM');
+      var y = Number(bulan.slice(0, 4)), m = Number(bulan.slice(5, 7));
+      var kunci = m >= 8 ? y + '-ganjil' : m === 1 ? (y - 1) + '-ganjil' : (y - 1) + '-genap';
+
+      var s = semester[kunci] || (semester[kunci] = {
+        total: 0,
+        status: { done: 0, progress: 0, waiting: 0, rejected: 0, duplicate: 0, none: 0 },
+        bulan: {},
+        prodi: {}
+      });
+      s.total++;
+      s.status[kStatus === -1 ? 'none' : trkStatus_(values[r][kStatus], true)]++;
+      s.bulan[bulan] = (s.bulan[bulan] || 0) + 1;
+
+      var p = kProdi === -1 ? '' : String(values[r][kProdi]).replace(/\s+/g, ' ').trim();
+      if (p.toLowerCase() === 'aktuaria') p = 'Ilmu Aktuaria';
+      var pk = p.toLowerCase() || '-';
+      if (!(pk in namaProdi)) namaProdi[pk] = p || 'Tidak diisi';
+      s.prodi[namaProdi[pk]] = (s.prodi[namaProdi[pk]] || 0) + 1;
+    }
+  });
+
+  var hasil = { ok: true, jenis: trkJenis_(), dibuat: Date.now(), semester: semester };
+  try { cache.put('rekap', JSON.stringify(hasil), 1800); } catch (err) {}
+  return hasil;
 }
 
 // ───────────────────────────── Utilitas
