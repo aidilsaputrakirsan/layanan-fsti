@@ -11,8 +11,8 @@ export interface Video {
 
 export const videoTutorial: Video[] = [
   { judul: 'Mengenal Portal Layanan FSTI', ringkas: 'Tur singkat: pintu layanan, pencarian, dan menu informasi.' },
-  { judul: 'Cara Mengajukan Layanan', ringkas: 'Memilih layanan, mengisi formulir, dan menyimpan kode tiket.' },
-  { judul: 'Cara Cek Status Permohonan', ringkas: 'Melacak permohonan dengan NIM/NIP dan kode tiket.' },
+  { judul: 'Cara Mengajukan Layanan', ringkas: 'Memilih layanan dan mengisi formulir dengan benar.' },
+  { judul: 'Cara Cek Status Permohonan', ringkas: 'Melacak permohonan dengan NIM/NIP.' },
   { judul: 'Layanan Kerja Praktik & Tugas Akhir', ringkas: 'Urutan formulir KP dan TA dari pendaftaran sampai berkas akhir.' },
   { judul: 'Legalisasi Dokumen', ringkas: 'Dokumen yang bisa dilegalisasi dan cara mengajukannya.' },
   { judul: 'Layanan untuk Dosen', ringkas: 'Surat tugas, pengesahan Dekan, dan SK Rektor.' },
@@ -32,12 +32,8 @@ export const langkahWebsite = [
     isi: 'Klik "Ajukan" untuk membuka formulir online. Isi data dengan lengkap dan benar, lalu kirim. Untuk layanan bertipe template, unduh dan isi template terlebih dahulu.',
   },
   {
-    judul: 'Simpan kode tiket',
-    isi: 'Setelah formulir terkirim, kode tiket dikirim ke email Anda. Simpan kode ini untuk mengecek status permohonan.',
-  },
-  {
     judul: 'Cek status & ambil hasil',
-    isi: 'Buka menu Cek Status, masukkan NIM/NIP dan kode tiket. Jika status sudah Selesai, unduh dokumen lewat tautan yang tampil atau ambil langsung di ruang B110.',
+    isi: 'Buka menu Cek Status, masukkan NIM/NIP yang Anda isi di formulir. Jika status sudah Selesai, unduh dokumen lewat tautan yang tampil atau ambil langsung di ruang B110.',
   },
   {
     judul: 'Isi survei kepuasan',
@@ -56,11 +52,11 @@ export const faqUmum = [
   },
   {
     t: 'Status permohonan saya tidak berubah, apa yang harus dilakukan?',
-    j: 'Jika lebih dari 3 hari kerja status tidak berubah, hubungi admin melalui WhatsApp layanan atau email fsti@itk.ac.id dengan menyebutkan kode tiket Anda.',
+    j: 'Jika lebih dari 3 hari kerja status tidak berubah, hubungi admin melalui WhatsApp layanan atau email fsti@itk.ac.id dengan menyebutkan NIM/NIP dan nama layanan.',
   },
   {
-    t: 'Saya lupa kode tiket.',
-    j: 'Di halaman Cek Status, pilih "Lupa kode tiket?" lalu masukkan NIM/NIP. Kode tiket akan dikirim ulang ke email yang Anda isi saat mengajukan.',
+    t: 'Permohonan saya tidak muncul di Cek Status.',
+    j: 'Pastikan NIM/NIP sama persis dengan yang Anda isi di formulir. Permohonan yang baru dikirim bisa butuh beberapa menit sebelum muncul. Jika tetap tidak ada, hubungi admin melalui WhatsApp layanan.',
   },
   {
     t: 'Permohonan saya ditolak atau perlu perbaikan.',

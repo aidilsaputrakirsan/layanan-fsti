@@ -16,7 +16,7 @@ export default function Panduan() {
       <PageHeader
         label="Panduan"
         judul="Panduan & video tutorial"
-        deskripsi="Pelajari cara mengajukan layanan, menyimpan kode tiket, dan mengecek status permohonan."
+        deskripsi="Pelajari cara mengajukan layanan dan mengecek status permohonan."
         jejak={[{ label: 'Panduan & Video' }]}
       >
         <nav className="mt-8 flex flex-wrap gap-2 text-sm font-semibold">
@@ -47,7 +47,7 @@ export default function Panduan() {
           <p className="label-kecil text-primary-600">Panduan website</p>
           <h2 className="mt-2 text-3xl font-extrabold">Cara memakai portal ini.</h2>
           <p className="mt-3 text-ink-2">
-            Enam langkah dari mencari layanan sampai mengisi survei. Berlaku untuk mahasiswa S1, S2, dan dosen.
+            {langkahWebsite.length} langkah dari mencari layanan sampai mengisi survei. Berlaku untuk mahasiswa S1, S2, dan dosen.
           </p>
         </div>
         <ol className="space-y-4">

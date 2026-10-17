@@ -7,7 +7,7 @@ import { faqUmum } from '@/data/panduan';
 
 export const metadata: Metadata = {
   title: 'Cek Status Permohonan',
-  description: 'Lacak status permohonan layanan FSTI ITK dengan NIM/NIP dan kode tiket.',
+  description: 'Lacak status permohonan layanan FSTI ITK dengan NIM/NIP.',
 };
 
 export default function Tracking() {
@@ -16,7 +16,7 @@ export default function Tracking() {
       <PageHeader
         label="Cek status"
         judul="Lacak permohonan Anda"
-        deskripsi="Masukkan NIM/NIP dan kode tiket yang dikirim ke email saat Anda mengajukan. Hanya Anda yang bisa melihat permohonan Anda."
+        deskripsi="Masukkan NIM atau NIP yang Anda isi di formulir untuk melihat status permohonan, catatan admin, dan dokumen hasil."
         jejak={[{ label: 'Cek Status' }]}
       />
       <TrackingView />

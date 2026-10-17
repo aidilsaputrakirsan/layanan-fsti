@@ -14,8 +14,8 @@ const TiketContoh = () => (
     <div className="relative overflow-hidden rounded-3xl bg-white text-ink shadow-angkat">
       <div className="flex items-start justify-between px-6 pb-5 pt-6">
         <div>
-          <p className="label-kecil text-ink-3">Kode tiket</p>
-          <p className="mt-1 font-mono text-2xl font-bold tracking-wider text-primary-700">M-7K2QDM</p>
+          <p className="label-kecil text-ink-3">Cek status · NIM</p>
+          <p className="mt-1 font-mono text-2xl font-bold tracking-wider text-primary-700">1122••••</p>
         </div>
         <span className="rounded-full bg-sorot-100 px-2.5 py-1 text-xs font-bold text-sorot-700">Diproses</span>
       </div>

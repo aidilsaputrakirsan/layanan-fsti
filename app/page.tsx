@@ -23,7 +23,7 @@ import { kontak, waLink } from '@/data/situs';
 
 const langkah = [
   { judul: 'Pilih layanan', isi: 'Masuk lewat pintu S1, S2, atau Dosen — atau cari langsung.' },
-  { judul: 'Isi formulir', isi: 'Lengkapi formulir online. Kode tiket dikirim ke email Anda.' },
+  { judul: 'Isi formulir', isi: 'Lengkapi formulir online sesuai layanan yang dipilih, lalu kirim.' },
   { judul: 'Diverifikasi & diproses', isi: `Admin memeriksa dan memproses berkas, umumnya ${ESTIMASI_UMUM}.` },
   { judul: 'Ambil hasil & isi survei', isi: 'Unduh dokumen atau ambil di ruang B110 setelah status Selesai, lalu isi survei kepuasan.' },
 ];
@@ -128,7 +128,7 @@ export default function Beranda() {
               </span>
               <h3 className="mt-5 text-2xl font-extrabold text-white">Cek status permohonan</h3>
               <p className="mt-2 text-sm text-primary-100">
-                Masukkan NIM/NIP dan kode tiket untuk melihat status, catatan admin, dan dokumen hasil.
+                Masukkan NIM/NIP untuk melihat status, catatan admin, dan dokumen hasil permohonan Anda.
               </p>
             </div>
             <span className="relative mt-8 inline-flex items-center gap-2 text-sm font-bold text-sorot-300">
@@ -190,7 +190,7 @@ export default function Beranda() {
         <div className="kartu p-6 sm:p-7 lg:mt-[92px]">
           <h2 className="text-xl font-extrabold">Butuh bantuan?</h2>
           <p className="mt-1 text-sm text-ink-2">
-            Hubungi admin layanan. Sertakan kode tiket jika menanyakan permohonan yang sudah diajukan.
+            Hubungi admin layanan. Sebutkan NIM/NIP dan nama layanan jika menanyakan permohonan yang sudah diajukan.
           </p>
           <div className="mt-5 grid gap-2.5">
             {kontak.whatsapp.map((w) => (

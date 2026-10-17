@@ -35,7 +35,7 @@ export interface LangkahAlur {
 
 export const alurUmum: LangkahAlur[] = [
   { judul: 'Siapkan persyaratan', isi: 'Cek persyaratan layanan di Katalog, siapkan berkas dan tanda tangan yang dibutuhkan.', oleh: 'Pemohon' },
-  { judul: 'Isi & kirim formulir', isi: 'Pilih layanan di portal, isi formulir online dengan lengkap, lalu kirim. Kode tiket dikirim ke email.', oleh: 'Pemohon' },
+  { judul: 'Isi & kirim formulir', isi: 'Pilih layanan di portal, isi formulir online dengan lengkap, lalu kirim.', oleh: 'Pemohon' },
   { judul: 'Verifikasi berkas', isi: 'Admin memeriksa kelengkapan dan keabsahan data permohonan.', oleh: 'Admin FSTI' },
   { judul: 'Diproses & disahkan', isi: 'Berkas yang sesuai diproses dan ditandatangani pimpinan.', oleh: 'Admin FSTI' },
   {

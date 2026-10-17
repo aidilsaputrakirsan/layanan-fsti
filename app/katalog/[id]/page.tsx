@@ -184,9 +184,9 @@ export default async function DetailLayanan({ params }: { params: Promise<{ id: 
           {berformulir && (
             <div className="rounded-2xl bg-primary-950 p-5 text-primary-100">
               <Ticket className="h-6 w-6 text-sorot-400" />
-              <p className="mt-3 font-bold text-white">Simpan kode tiket Anda</p>
+              <p className="mt-3 font-bold text-white">Pantau status permohonan</p>
               <p className="mt-1 text-sm">
-                Setelah formulir terkirim, kode tiket dikirim ke email. Gunakan kode itu bersama NIM/NIP untuk mengecek status.
+                Setelah formulir terkirim, cek status kapan saja di menu Cek Status cukup dengan NIM/NIP yang Anda isi di formulir.
               </p>
             </div>
           )}

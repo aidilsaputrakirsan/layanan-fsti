@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 /**
- * Proxy pelacakan permohonan ke Apps Script (apps-script/tracking-api/Tracking.gs).
+ * Proxy Cek Status ke Apps Script (apps-script/tracking-api/Tracking.gs) — hanya membaca.
  *
- * Spreadsheet tetap privat: Apps Script hanya mengembalikan SATU permohonan
- * yang cocok dengan NIM/NIP + kode tiket. URL Apps Script dan secret disimpan
- * di environment variable server (tidak pernah dikirim ke browser):
+ * Spreadsheet tetap privat: Apps Script hanya mengembalikan ringkasan permohonan
+ * (layanan, tanggal, status, keterangan, tautan hasil) milik NIM/NIP yang dicari.
+ * URL Apps Script dan secret disimpan di environment variable server (tidak dikirim ke browser):
  *
  *   TRACKING_GAS_URL_MAHASISWA = https://script.google.com/macros/s/.../exec
  *   TRACKING_GAS_URL_DOSEN     = https://script.google.com/macros/s/.../exec
@@ -23,11 +23,10 @@ const POLA_ID: Record<Jenis, RegExp> = {
   mahasiswa: /^\d{6,12}$/,
   dosen: /^[0-9A-Za-z.\-]{6,25}$/,
 };
-const POLA_KODE = /^[MD]-[A-Z0-9]{6}$/;
 
-// Pembatas sederhana per IP (per instance server)
+// Pembatas sederhana per IP (per instance server) untuk mencegah tebak-tebakan NIM/NIP massal
 const jejak = new Map<string, number[]>();
-const BATAS = 20;
+const BATAS = 15;
 const JENDELA_MS = 10 * 60 * 1000;
 
 function kebanyakan(ip: string) {
@@ -46,34 +45,31 @@ export async function POST(req: NextRequest) {
   const ip = req.headers.get('x-forwarded-for')?.split(',')[0].trim() || 'lokal';
   if (kebanyakan(ip)) return gagal(429, 'Terlalu banyak percobaan. Coba lagi dalam beberapa menit.');
 
-  let body: { aksi?: string; jenis?: string; id?: string; kode?: string };
+  let body: { jenis?: string; id?: string };
   try {
     body = await req.json();
   } catch {
     return gagal(400, 'Permintaan tidak valid.');
   }
 
-  const jenis = body.jenis === 'dosen' ? 'dosen' : body.jenis === 'mahasiswa' ? 'mahasiswa' : null;
-  const aksi = body.aksi === 'kirim-kode' ? 'kirim-kode' : body.aksi === 'cari' ? 'cari' : null;
+  const jenis: Jenis | null = body.jenis === 'dosen' ? 'dosen' : body.jenis === 'mahasiswa' ? 'mahasiswa' : null;
   const id = String(body.id || '').replace(/\s+/g, '');
-  const kode = String(body.kode || '').trim().toUpperCase();
-
-  if (!jenis || !aksi) return gagal(400, 'Permintaan tidak valid.');
+  if (!jenis) return gagal(400, 'Permintaan tidak valid.');
   if (!POLA_ID[jenis].test(id)) return gagal(400, jenis === 'mahasiswa' ? 'NIM tidak valid.' : 'NIP tidak valid.');
-  if (aksi === 'cari' && !POLA_KODE.test(kode)) return gagal(400, 'Format kode tiket tidak valid (contoh: M-7K2QDM).');
 
   const url = GAS_URL[jenis];
   const secret = process.env.TRACKING_API_SECRET;
   if (!url || !secret) return gagal(503, 'Layanan cek status sedang disiapkan.', 'belum-dikonfigurasi');
 
   try {
+    // Apps Script menjawab lewat redirect 302; fetch mengikutinya dengan GET (perilaku yang diharapkan)
     const res = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ secret, aksi, id, kode }),
+      body: JSON.stringify({ secret, aksi: 'cari', id }),
       cache: 'no-store',
       redirect: 'follow',
-      signal: AbortSignal.timeout(25000),
+      signal: AbortSignal.timeout(30000),
     });
     const data = await res.json();
     return NextResponse.json(data, { status: data.ok ? 200 : data.status || 200 });
