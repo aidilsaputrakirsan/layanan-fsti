@@ -10,12 +10,9 @@ export interface Video {
 }
 
 export const videoTutorial: Video[] = [
-  { judul: 'Mengenal Portal Layanan FSTI', ringkas: 'Tur singkat: pintu layanan, pencarian, dan menu informasi.' },
-  { judul: 'Cara Mengajukan Layanan', ringkas: 'Memilih layanan dan mengisi formulir dengan benar.' },
-  { judul: 'Cara Cek Status Permohonan', ringkas: 'Melacak permohonan dengan NIM/NIP.' },
-  { judul: 'Layanan Kerja Praktik & Tugas Akhir', ringkas: 'Urutan formulir KP dan TA dari pendaftaran sampai berkas akhir.' },
-  { judul: 'Legalisasi Dokumen', ringkas: 'Dokumen yang bisa dilegalisasi dan cara mengajukannya.' },
-  { judul: 'Layanan untuk Dosen', ringkas: 'Surat tugas, pengesahan Dekan, dan SK Rektor.' },
+  { judul: 'Cara Mengajukan Layanan', ringkas: 'Memilih pintu S1, S2, atau Dosen, membaca detail layanan, lalu mengisi formulir.' },
+  { judul: 'Cek Status, Ambil Hasil & Isi Survei', ringkas: 'Melacak permohonan dengan NIM/NIP, membaca catatan admin, dan mengambil dokumen hasil.' },
+  { judul: 'Layanan untuk Dosen', ringkas: 'Surat tugas, pengesahan Dekan, SK Rektor, template, dan sistem informasi.' },
 ];
 
 export const langkahWebsite = [
