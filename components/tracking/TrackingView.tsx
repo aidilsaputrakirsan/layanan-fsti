@@ -38,6 +38,7 @@ const TrackingView = () => {
   const [id, setId] = useState('');
   const [muat, setMuat] = useState(false);
   const [hasil, setHasil] = useState<Permohonan[] | null>(null);
+  const [dicari, setDicari] = useState('');
   const [galat, setGalat] = useState<{ pesan: string; kode?: string } | null>(null);
 
   // ?jenis=dosen dibaca di klien agar form tetap dirender di server (tanpa menunggu JavaScript)
@@ -60,7 +61,10 @@ const TrackingView = () => {
       });
       const data = await res.json();
       if (!data.ok) setGalat({ pesan: data.pesan || 'Terjadi kesalahan.', kode: data.kode });
-      else setHasil(data.data);
+      else {
+        setHasil(data.data);
+        setDicari(id.replace(/\s+/g, ''));
+      }
     } catch {
       setGalat({ pesan: 'Tidak dapat terhubung. Periksa koneksi internet Anda.' });
     } finally {
@@ -151,8 +155,12 @@ const TrackingView = () => {
 
         {hasil && (
           <div className="space-y-4">
-            <p className="text-sm text-ink-3">
-              <strong className="text-ink">{hasil.length}</strong> permohonan ditemukan · terbaru di atas
+            <p className="kartu flex flex-wrap items-center justify-between gap-2 px-5 py-3.5 text-sm text-ink-2 shadow-kartu">
+              <span>
+                <strong className="text-ink">{hasil.length}</strong> permohonan ditemukan untuk {labelId}{' '}
+                <span className="font-mono font-semibold text-ink">{dicari}</span>
+              </span>
+              <span className="text-xs text-ink-3">Terbaru di atas</span>
             </p>
             {hasil.map((p, i) => (
               <KartuPermohonan key={`${p.layanan}-${p.tanggal}-${i}`} p={p} />
