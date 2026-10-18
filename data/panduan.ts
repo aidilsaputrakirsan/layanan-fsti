@@ -23,8 +23,20 @@ export const videoTutorial: Video[] = [
     poster: '/video/panduan_layanan_fsti_part1_poster.jpg',
     durasi: '2:39',
   },
-  { judul: 'Cek Status, Ambil Hasil & Isi Survei', ringkas: 'Melacak permohonan dengan NIM/NIP, membaca catatan admin, dan mengambil dokumen hasil.' },
-  { judul: 'Layanan untuk Dosen', ringkas: 'Surat tugas, pengesahan Dekan, SK Rektor, template, dan sistem informasi.' },
+  {
+    judul: 'Cek Status, Ambil Hasil & Isi Survei',
+    ringkas: 'Melacak permohonan dengan NIM/NIP, membaca catatan admin, dan mengambil dokumen hasil.',
+    file: '/video/panduan_layanan_fsti_part2_final.mp4',
+    poster: '/video/panduan_layanan_fsti_part2_poster.jpg',
+    durasi: '2:10',
+  },
+  {
+    judul: 'Layanan untuk Dosen',
+    ringkas: 'Surat tugas, pengesahan Dekan, SK Rektor, template, dan sistem informasi.',
+    file: '/video/panduan_layanan_fsti_part3_final.mp4',
+    poster: '/video/panduan_layanan_fsti_part3_poster.jpg',
+    durasi: '1:47',
+  },
 ];
 
 export const langkahWebsite = [
