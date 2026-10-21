@@ -12,13 +12,20 @@
  * dan tautan dokumen hasil. Kolom lain tidak pernah dikirim.
  * Kolom dikenali dari judul kolom (sama seperti Dashboard.gs). Sheet tanpa kolom NIM/NIP dilewati.
  *
+ * Aksi "unduh": website meminta file hasil (ID file Drive) untuk NIM/NIP tertentu. File hanya dikirim
+ * bila ID itu memang tercantum di kolom tautan hasil milik NIM/NIP tersebut, jadi file Drive lain milik
+ * akun ini tidak bisa diminta. File di Drive tidak perlu dibagikan ke publik.
+ *
  * ───────────── PEMASANGAN (di masing-masing spreadsheet) ─────────────
  * 1. Extensions > Apps Script > file script "Tracking", tempel isi file ini apa adanya.
  * 2. Project Settings > Script Properties:
  *      TRACKING_JENIS      = mahasiswa   atau   dosen
  *      TRACKING_API_SECRET = string acak panjang (sama dengan env TRACKING_API_SECRET di website;
  *                            boleh sama untuk mahasiswa & dosen)
- * 3. Deploy > New deployment > Web app — Execute as: Me · Who has access: Anyone.
+ * 3. Services (+) > Google Sheets API > Add  (agar chip file .pdf di kolom hasil ikut terbaca).
+ * 4. Pilih fungsi trkIzinkan lalu Run, setujui izin (membaca spreadsheet & file Drive).
+ *    Jalankan dengan akun yang bisa membuka file-file hasil di Drive (akun admin).
+ * 5. Deploy > New deployment > Web app — Execute as: Me · Who has access: Anyone.
  *    Salin URL "/exec" ke env website (TRACKING_GAS_URL_MAHASISWA / TRACKING_GAS_URL_DOSEN).
  *    Setelah mengubah kode: Deploy > Manage deployments > Edit > Version: New version (URL tetap).
  *
@@ -30,12 +37,17 @@ var TRK = {
   HEADER_STATUS: function (x) { return x.indexOf('status persetujuan') === 0 || x.indexOf('progress layanan') === 0 || x === 'status'; },
   HEADER_KETERANGAN: ['keterangan', 'catatan', 'catatan admin'],
   // Judul kolom (huruf kecil) yang berisi tautan dokumen hasil dari admin
-  HEADER_TAUTAN: ['link', 'link st', 'link hasil', 'sk', 'file/ dokumen yang sudah di sah kan'],
+  HEADER_TAUTAN: [
+    'link', 'link st', 'link hasil', 'sk', 'file/ dokumen yang sudah di sah kan',
+    'silakan download surat anda disini', 'download dokumen'
+  ],
   HEADER_SUBJENIS: [
     'jenis surat', 'pilih jenis dokumen', 'jenis rekomendasi', 'keperluan legalisasi', 'jenis dokumen',
     'kehadiran sebagai', 'pilih bidang surat keputusan', 'sarana / prasarana', 'alasan pembuatan suket'
   ],
   MAKS_HASIL: 20,
+  // Batas ukuran file yang dikirim lewat website (batas respons server website ±4,5 MB)
+  MAKS_UNDUH_BYTE: 4 * 1024 * 1024,
   // Hasil baca disimpan sementara agar cepat; perubahan status oleh admin tampil paling lambat sekian detik
   CACHE_DETIK: 180
 };
@@ -64,6 +76,7 @@ function doPost(e) {
   if (body.aksi === 'rekap') return trkJson_(trkRekap_());
 
   var id = trkNormId_(body.id);
+  if (id && body.aksi === 'unduh') return trkJson_(trkUnduh_(id, String(body.berkas || '')));
   if (!id || body.aksi !== 'cari') return trkJson_({ ok: false, status: 400, pesan: 'Permintaan tidak valid.' });
 
   var data = trkCari_(id);
@@ -80,8 +93,9 @@ function trkCari_(id) {
   var simpan = cache.get('cari:' + id);
   if (simpan) return JSON.parse(simpan);
 
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
   var hasil = [];
-  SpreadsheetApp.getActiveSpreadsheet().getSheets().forEach(function (sheet) {
+  ss.getSheets().forEach(function (sheet) {
     if (TRK.SHEET_DIKECUALIKAN.indexOf(sheet.getName().trim()) !== -1 || sheet.isSheetHidden()) return;
     var range = sheet.getDataRange();
     var values = range.getValues();
@@ -98,12 +112,18 @@ function trkCari_(id) {
 
     var rich = kol.tautan.length ? range.getRichTextValues() : null;
     barisCocok.forEach(function (r) {
-      hasil.push(trkRingkas_(sheet.getName().trim(), kol, values[r], rich ? rich[r] : null));
+      hasil.push({
+        data: trkRingkas_(sheet.getName().trim(), kol, values[r], rich ? rich[r] : null),
+        sheet: sheet.getName(),
+        sel: kol.tautan.map(function (c) { return trkA1_(r, c); })
+      });
     });
   });
 
-  hasil.sort(function (a, b) { return (b.tanggal || '').localeCompare(a.tanggal || ''); });
+  hasil.sort(function (a, b) { return (b.data.tanggal || '').localeCompare(a.data.tanggal || ''); });
   hasil = hasil.slice(0, TRK.MAKS_HASIL);
+  trkTautanChip_(ss, hasil);
+  hasil = hasil.map(function (h) { return h.data; });
   try { cache.put('cari:' + id, JSON.stringify(hasil), TRK.CACHE_DETIK); } catch (err) {}
   return hasil;
 }
@@ -156,8 +176,107 @@ function trkRingkas_(layanan, kol, row, richRow) {
     status: trkStatus_(statusAsli, kol.status !== -1),
     statusAsli: statusAsli,
     keterangan: kol.keterangan !== -1 ? String(row[kol.keterangan]).trim().slice(0, 1000) : '',
-    tautan: tautan.filter(function (u, i) { return tautan.indexOf(u) === i; }).slice(0, 5)
+    tautan: trkUnikTautan_(tautan).slice(0, 5)
   };
+}
+
+/**
+ * Admin mengisi kolom hasil dengan chip file Drive (nama file .pdf). Chip tidak selalu terbaca lewat
+ * RichTextValue, jadi tautannya dibaca lewat layanan lanjutan Sheets API (langkah pemasangan no. 3).
+ * Hanya sel tautan milik baris yang cocok yang diminta. Bila layanan belum aktif atau gagal, dilewati.
+ */
+function trkTautanChip_(ss, hasil) {
+  var ranges = [];
+  var pemilik = {};
+  hasil.forEach(function (h) {
+    h.sel.forEach(function (a1) {
+      pemilik[h.sheet + '!' + a1] = h;
+      ranges.push("'" + h.sheet.replace(/'/g, "''") + "'!" + a1);
+    });
+  });
+  if (!ranges.length || typeof Sheets === 'undefined') return;
+  try {
+    var res = Sheets.Spreadsheets.get(ss.getId(), {
+      ranges: ranges,
+      fields: 'sheets(properties(title),data(startRow,startColumn,rowData(values(hyperlink,chipRuns(chip(richLinkProperties(uri)))))))'
+    });
+    (res.sheets || []).forEach(function (sh) {
+      (sh.data || []).forEach(function (g) {
+        var v = g.rowData && g.rowData[0] && g.rowData[0].values && g.rowData[0].values[0];
+        var h = pemilik[sh.properties.title + '!' + trkA1_(g.startRow || 0, g.startColumn || 0)];
+        if (!v || !h) return;
+        var urls = v.hyperlink ? [v.hyperlink] : [];
+        (v.chipRuns || []).forEach(function (run) {
+          var u = run.chip && run.chip.richLinkProperties && run.chip.richLinkProperties.uri;
+          if (u) urls.push(u);
+        });
+        h.data.tautan = trkUnikTautan_(h.data.tautan.concat(urls)).slice(0, 5);
+      });
+    });
+  } catch (err) {
+    Logger.log('Gagal membaca chip: ' + err);
+  }
+}
+
+// File Drive yang sama sering ditulis di dua kolom dengan akhiran berbeda (…/view vs …/view?usp=drive_link)
+function trkUnikTautan_(list) {
+  var lihat = {};
+  return list.filter(function (u) {
+    var kunci = trkIdDrive_(u) || u;
+    if (lihat[kunci]) return false;
+    lihat[kunci] = true;
+    return true;
+  });
+}
+
+function trkIdDrive_(u) {
+  var m = String(u).match(/(?:drive|docs)\.google\.com\/(?:file\/d\/|open\?id=|uc\?(?:export=\w+&)?id=|(?:document|spreadsheets|presentation)\/d\/)([\w-]{20,})/);
+  return m ? m[1] : '';
+}
+
+// Indeks baris & kolom dari getValues() (mulai 0, data mulai A1) → notasi A1, mis. (4, 28) → "AC5"
+function trkA1_(r, c) {
+  var huruf = '';
+  for (var n = c + 1; n > 0; n = Math.floor((n - 1) / 26)) huruf = String.fromCharCode(65 + (n - 1) % 26) + huruf;
+  return huruf + (r + 1);
+}
+
+// ───────────────────────────── Unduh dokumen hasil (baca saja)
+
+function trkUnduh_(id, berkas) {
+  if (!/^[\w-]{20,}$/.test(berkas)) return { ok: false, status: 400, pesan: 'Permintaan tidak valid.' };
+  // Hanya file yang tercantum di permohonan milik NIM/NIP ini
+  var milik = trkCari_(id).some(function (p) {
+    return (p.tautan || []).some(function (u) { return trkIdDrive_(u) === berkas; });
+  });
+  if (!milik) return { ok: false, status: 404, pesan: 'Dokumen tidak ditemukan.' };
+
+  var file;
+  try {
+    file = DriveApp.getFileById(berkas);
+  } catch (err) {
+    return { ok: false, status: 404, kode: 'tidak-terbuka', pesan: 'Dokumen tidak dapat dibuka dari server. Silakan hubungi admin.' };
+  }
+  var besar = { ok: false, status: 413, kode: 'terlalu-besar', pesan: 'Ukuran dokumen terlalu besar untuk diunduh di sini.' };
+  if (file.getSize() > TRK.MAKS_UNDUH_BYTE) return besar;
+  var blob = file.getBlob(); // Google Docs/Sheets otomatis menjadi PDF
+  var bytes = blob.getBytes();
+  if (bytes.length > TRK.MAKS_UNDUH_BYTE) return besar;
+  return {
+    ok: true,
+    nama: blob.getName() || file.getName(),
+    mime: blob.getContentType() || 'application/octet-stream',
+    data: Utilities.base64Encode(bytes)
+  };
+}
+
+/** Jalankan sekali dari editor untuk menyetujui izin baca spreadsheet & Drive (langkah pemasangan no. 4). */
+function trkIzinkan() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  DriveApp.getFileById(ss.getId()).getName();
+  var chip = typeof Sheets !== 'undefined';
+  if (chip) Sheets.Spreadsheets.get(ss.getId(), { fields: 'spreadsheetId' });
+  Logger.log('Izin OK. Pembacaan chip file: ' + (chip ? 'aktif' : 'BELUM aktif — tambahkan Services > Google Sheets API'));
 }
 
 // ───────────────────────────── Rekap untuk Dashboard (hanya angka total, tanpa data pribadi)

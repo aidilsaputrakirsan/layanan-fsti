@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { FormEvent, useEffect, useState } from 'react';
-import { Check, Loader2, Search, AlertCircle, ArrowUpRight, RotateCcw, MessageSquareHeart, Info, MapPin } from 'lucide-react';
+import { Check, Loader2, Search, AlertCircle, ArrowUpRight, RotateCcw, MessageSquareHeart, Info, MapPin, Download } from 'lucide-react';
 import { kontak, waLink } from '@/data/situs';
 import { RUANG_PENGAMBILAN } from '@/data/standar';
 
@@ -29,6 +29,16 @@ const LABEL_STATUS: Record<Status, { teks: string; kelas: string }> = {
 
 const TAHAP = ['Diterima', 'Diverifikasi', 'Diproses', 'Selesai'];
 const posisi: Record<Status, number> = { waiting: 1, progress: 2, done: 4, rejected: 1, duplicate: 1 };
+
+// ID file dari tautan Google Drive/Docs; tautan lain dibuka apa adanya
+const idDrive = (u: string) =>
+  u.match(/(?:drive|docs)\.google\.com\/(?:file\/d\/|open\?id=|uc\?(?:export=\w+&)?id=|(?:document|spreadsheets|presentation)\/d\/)([\w-]{20,})/)?.[1] ?? '';
+
+const namaBerkas = (cd: string | null) => {
+  const utf = cd?.match(/filename\*=UTF-8''([^;]+)/i);
+  if (utf) return decodeURIComponent(utf[1]);
+  return cd?.match(/filename="([^"]+)"/i)?.[1] || 'dokumen-hasil.pdf';
+};
 
 const tgl = (iso?: string) =>
   iso ? new Date(iso).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) : '—';
@@ -163,7 +173,7 @@ const TrackingView = () => {
               <span className="text-xs text-ink-3">Terbaru di atas</span>
             </p>
             {hasil.map((p, i) => (
-              <KartuPermohonan key={`${p.layanan}-${p.tanggal}-${i}`} p={p} />
+              <KartuPermohonan key={`${p.layanan}-${p.tanggal}-${i}`} p={p} pemohon={{ jenis, id: dicari }} />
             ))}
             {hasil.some((p) => p.status === 'done') && (
               <Link
@@ -184,7 +194,7 @@ const TrackingView = () => {
               {[
                 'Daftar permohonan Anda: nama layanan, tanggal pengajuan, dan status terkini.',
                 'Catatan dari admin jika permohonan perlu diperbaiki.',
-                `Tautan dokumen hasil bila sudah selesai — atau ambil langsung di ${RUANG_PENGAMBILAN}.`,
+                `Dokumen hasil yang bisa langsung diunduh bila sudah selesai — atau ambil di ${RUANG_PENGAMBILAN}.`,
                 'Status diperbarui oleh admin; perubahan tampil di sini dalam beberapa menit.',
               ].map((t) => (
                 <li key={t} className="flex gap-2">
@@ -200,7 +210,7 @@ const TrackingView = () => {
   );
 };
 
-const KartuPermohonan = ({ p }: { p: Permohonan }) => {
+const KartuPermohonan = ({ p, pemohon }: { p: Permohonan; pemohon: { jenis: Jenis; id: string } }) => {
   const st = LABEL_STATUS[p.status] ?? LABEL_STATUS.progress;
   const pos = posisi[p.status] ?? 2;
   const berhenti = p.status === 'rejected' || p.status === 'duplicate';
@@ -245,11 +255,9 @@ const KartuPermohonan = ({ p }: { p: Permohonan }) => {
         )}
 
         {p.tautan && p.tautan.length > 0 && (
-          <div className="flex flex-wrap gap-2">
+          <div className="space-y-2">
             {p.tautan.map((t, i) => (
-              <a key={t} href={t} target="_blank" rel="noopener noreferrer" className="tombol-utama py-2">
-                Buka dokumen hasil{p.tautan!.length > 1 ? ` ${i + 1}` : ''} <ArrowUpRight className="h-4 w-4" />
-              </a>
+              <TombolDokumen key={t} url={t} label={p.tautan!.length > 1 ? ` ${i + 1}` : ''} pemohon={pemohon} />
             ))}
           </div>
         )}
@@ -258,7 +266,7 @@ const KartuPermohonan = ({ p }: { p: Permohonan }) => {
           <p className="flex items-start gap-2 text-sm text-ink-2">
             <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-primary-600" />
             <span>
-              Dokumen dapat {p.tautan?.length ? 'diunduh lewat tautan di atas atau ' : ''}diambil langsung di{' '}
+              Dokumen dapat {p.tautan?.length ? 'diunduh lewat tombol di atas atau ' : ''}diambil langsung di{' '}
               <strong className="text-ink">{RUANG_PENGAMBILAN}</strong>.
             </span>
           </p>
@@ -272,6 +280,67 @@ const KartuPermohonan = ({ p }: { p: Permohonan }) => {
         )}
       </div>
     </article>
+  );
+};
+
+// File Drive diunduh lewat server (/api/tracking/berkas) karena file di Drive tidak dibagikan ke publik
+const TombolDokumen = ({ url, label, pemohon }: { url: string; label: string; pemohon: { jenis: Jenis; id: string } }) => {
+  const berkas = idDrive(url);
+  const [muat, setMuat] = useState(false);
+  const [galat, setGalat] = useState('');
+
+  if (!berkas) {
+    return (
+      <a href={url} target="_blank" rel="noopener noreferrer" className="tombol-utama py-2">
+        Buka dokumen hasil{label} <ArrowUpRight className="h-4 w-4" />
+      </a>
+    );
+  }
+
+  const unduh = async () => {
+    setMuat(true);
+    setGalat('');
+    try {
+      const res = await fetch('/api/tracking/berkas', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...pemohon, berkas }),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        setGalat(data.pesan || 'Dokumen tidak dapat diunduh.');
+        return;
+      }
+      const href = URL.createObjectURL(await res.blob());
+      const a = document.createElement('a');
+      a.href = href;
+      a.download = namaBerkas(res.headers.get('Content-Disposition'));
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(href), 10000);
+    } catch {
+      setGalat('Tidak dapat terhubung. Periksa koneksi internet Anda.');
+    } finally {
+      setMuat(false);
+    }
+  };
+
+  return (
+    <div>
+      <button type="button" onClick={unduh} disabled={muat} className="tombol-utama py-2">
+        {muat ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
+        {muat ? 'Menyiapkan dokumen…' : `Unduh dokumen hasil${label}`}
+      </button>
+      {galat && (
+        <p className="mt-1.5 text-sm text-rose-700">
+          {galat}{' '}
+          <a href={url} target="_blank" rel="noopener noreferrer" className="font-semibold underline">
+            Coba buka di Google Drive
+          </a>
+        </p>
+      )}
+    </div>
   );
 };
 
