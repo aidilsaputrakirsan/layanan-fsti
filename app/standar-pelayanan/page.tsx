@@ -1,10 +1,14 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { FileText, Download, Clock3, ArrowRight } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import MainLayout from '@/components/layout/MainLayout';
 import PageHeader from '@/components/ui/PageHeader';
 import AlurDiagram from '@/components/standar/AlurDiagram';
-import { komponenStandar, dokumenStandar } from '@/data/standar';
+import SopDaftar from '@/components/standar/SopDaftar';
+import { komponenStandar } from '@/data/standar';
+import { daftarSop } from '@/data/sop';
+
+const totalSop = Object.values(daftarSop).reduce((n, l) => n + l.length, 0);
 
 export const metadata: Metadata = {
   title: 'SOP & Standar Pelayanan',
@@ -57,36 +61,12 @@ export default function StandarPelayanan() {
 
       {/* Dokumen */}
       <section className="wadah mt-20">
-        <div className="flex flex-col justify-between gap-2 sm:flex-row sm:items-end">
-          <div>
-            <p className="label-kecil text-primary-600">Dokumen</p>
-            <h2 className="mt-2 text-3xl font-extrabold">SOP & dokumen acuan.</h2>
-          </div>
-          <p className="text-sm text-ink-3">Dokumen diunggah bertahap oleh admin FSTI.</p>
-        </div>
-        <ul className="mt-8 grid gap-3 md:grid-cols-2">
-          {dokumenStandar.map((d) => (
-            <li key={d.judul} className="kartu flex items-center gap-4 p-4 sm:p-5">
-              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary-50 text-primary-600">
-                <FileText className="h-5 w-5" />
-              </span>
-              <div className="min-w-0 flex-1">
-                <p className="text-xs font-semibold text-ink-3">{d.kategori}</p>
-                <p className="font-bold leading-snug">{d.judul}</p>
-                <p className="text-sm text-ink-2">{d.ringkas}</p>
-              </div>
-              {d.file ? (
-                <a href={d.file} target="_blank" rel="noopener noreferrer" className="tombol-garis shrink-0 px-3 py-2">
-                  <Download className="h-4 w-4" /> <span className="hidden sm:inline">Unduh</span>
-                </a>
-              ) : (
-                <span className="flex shrink-0 items-center gap-1 rounded-full bg-latar px-2.5 py-1 text-xs font-semibold text-ink-3">
-                  <Clock3 className="h-3.5 w-3.5" /> Segera
-                </span>
-              )}
-            </li>
-          ))}
-        </ul>
+        <p className="label-kecil text-primary-600">Dokumen</p>
+        <h2 className="mt-2 text-3xl font-extrabold">SOP & dokumen acuan.</h2>
+        <p className="mt-3 max-w-2xl text-ink-2">
+          {totalSop} SOP FSTI yang disahkan Dekan. Pilih jenisnya atau cari langsung judul SOP.
+        </p>
+        <SopDaftar />
         <Link href="/panduan" className="mt-8 inline-flex items-center gap-1.5 text-sm font-semibold text-primary-700 hover:underline">
           Butuh penjelasan langkah demi langkah? Lihat panduan & video <ArrowRight className="h-4 w-4" />
         </Link>
