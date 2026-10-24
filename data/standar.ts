@@ -1,27 +1,3 @@
-/**
- * Dokumen SOP & standar pelayanan.
- * Letakkan file PDF di /public/file/standar/ lalu isi `file` dengan path-nya,
- * mis. '/file/standar/sop-legalisasi.pdf'. Selama `file` kosong, dokumen tampil "Segera tersedia".
- */
-export interface DokumenStandar {
-  judul: string;
-  ringkas: string;
-  kategori: 'Standar Pelayanan' | 'SOP' | 'Alur';
-  file?: string;
-  diperbarui?: string;
-}
-
-export const dokumenStandar: DokumenStandar[] = [
-  { judul: 'Standar Pelayanan FSTI', ringkas: 'Komponen standar pelayanan seluruh layanan administrasi FSTI.', kategori: 'Standar Pelayanan' },
-  { judul: 'SOP Layanan Akademik', ringkas: 'Surat & dokumen akademik, legalisasi, perubahan FRS.', kategori: 'SOP' },
-  { judul: 'SOP Kerja Praktik, Magang & Tugas Akhir', ringkas: 'Pendaftaran sampai pengumpulan berkas akhir.', kategori: 'SOP' },
-  { judul: 'SOP Layanan Keuangan', ringkas: 'Keringanan UKT dan uang muka kegiatan.', kategori: 'SOP' },
-  { judul: 'SOP Layanan Kemahasiswaan', ringkas: 'Rekomendasi, nomor sertifikat, tanda tangan proposal, surat tugas.', kategori: 'SOP' },
-  { judul: 'SOP Layanan Humas', ringkas: 'Pengajuan publikasi di kanal resmi FSTI.', kategori: 'SOP' },
-  { judul: 'SOP Layanan Dosen', ringkas: 'Surat tugas, pengesahan Dekan, SK Rektor, sarana prasarana.', kategori: 'SOP' },
-  { judul: 'Alur Layanan Umum', ringkas: 'Diagram alur permohonan dari pengajuan sampai selesai.', kategori: 'Alur' },
-];
-
 /** Alur layanan umum (berlaku untuk semua layanan berbasis formulir). */
 /** Tempat pengambilan dokumen hasil secara langsung (offline). */
 export const RUANG_PENGAMBILAN = 'ruang B110';
