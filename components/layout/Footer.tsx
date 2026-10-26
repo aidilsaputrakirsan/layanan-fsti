@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Mail, MapPin, Clock, ShieldCheck } from 'lucide-react';
 import { kontak, waLink } from '@/data/situs';
+import PenghitungKunjungan from './PenghitungKunjungan';
 
 const tautan = [
   {
@@ -54,6 +55,7 @@ const Footer = () => (
               {kontak.alamat[1]}
             </span>
           </p>
+          <PenghitungKunjungan />
         </div>
 
         <div>
