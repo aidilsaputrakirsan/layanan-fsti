@@ -9,6 +9,8 @@ import { bacaPemohon, gagal, ipDari, panggilGas, pembatas, sudahDikonfigurasi } 
  * Konfigurasi environment variable: lihat lib/tracking.ts.
  */
 
+export const maxDuration = 60;
+
 // Mencegah tebak-tebakan NIM/NIP massal
 const kebanyakan = pembatas(15, 10 * 60 * 1000);
 

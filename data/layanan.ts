@@ -108,7 +108,7 @@ export const layanan: Layanan[] = [
   // ───────────── S1 · Kemahasiswaan
   L({ id: 'surat-rekomendasi', nama: 'Surat Rekomendasi Kegiatan/Beasiswa', ringkas: 'Rekomendasi fakultas untuk kegiatan, beasiswa, atau keperluan lain.', url: 'https://docs.google.com/forms/d/1nTZZM4hKMTcFOenFbIOUBrnCyaRLqzlifiDx6QAZEO0/viewform', tipe: 'formulir' }),
   L({ id: 'nomor-sertifikat', nama: 'Nomor Sertifikat Kegiatan Mahasiswa', ringkas: 'Permohonan nomor resmi untuk sertifikat kegiatan.', url: 'https://docs.google.com/forms/d/1youLu99r0g6uLTEAgX8rNJF5t3b8id-MKk6KsPi_nko/viewform', tipe: 'formulir' }),
-  L({ id: 'ttd-proposal', nama: 'Tanda Tangan Kegiatan/Proposal', ringkas: 'Permohonan tanda tangan pimpinan untuk proposal atau dokumen kegiatan.', url: 'https://forms.gle/aiYkVXLen6jThVJf8', tipe: 'formulir' }),
+  L({ id: 'ttd-proposal', nama: 'Tanda Tangan (TTD) Dekanat', ringkas: 'Permohonan tanda tangan Dekan/Wakil Dekan untuk proposal, dokumen kegiatan, atau dokumen lain.', url: 'https://forms.gle/aiYkVXLen6jThVJf8', tipe: 'formulir' }),
   L({ id: 'surat-tugas-mahasiswa', nama: 'Surat Tugas Mahasiswa', ringkas: 'Surat tugas untuk mahasiswa yang mewakili fakultas/kampus.', url: 'https://forms.gle/7pDSng1cQVmvyWEP9', tipe: 'formulir' }),
 
   // ───────────── S1 · Humas

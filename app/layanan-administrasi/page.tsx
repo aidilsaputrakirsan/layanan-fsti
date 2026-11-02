@@ -228,7 +228,7 @@ const LayananAdministrasiPage = () => {
           title: language === 'en' ? "Student Affairs Services" : "Layanan Kemahasiswaan",
           items: [
             { text: language === 'en' ? "Student Activity Certificate Number Request" : "Permohonan Nomor Sertifikat Kegiatan Mahasiswa", url: "https://docs.google.com/forms/d/1youLu99r0g6uLTEAgX8rNJF5t3b8id-MKk6KsPi_nko/viewform?edit_requested=true" },
-            { text: language === 'en' ? "Activity/Proposal Signature Request" : "Permohonan Tanda Tangan Kegiatan/Proposal", url: "https://forms.gle/aiYkVXLen6jThVJf8" },
+            { text: language === 'en' ? "Dean's Office Signature Request" : "Permohonan Tanda Tangan (TTD) Dekanat", url: "https://forms.gle/aiYkVXLen6jThVJf8" },
             { text: language === 'en' ? "Student Assignment Letter Request" : "Permohonan Surat Tugas Mahasiswa", url: "https://forms.gle/7pDSng1cQVmvyWEP9" }
           ]
         }

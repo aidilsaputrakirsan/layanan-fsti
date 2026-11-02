@@ -59,7 +59,8 @@ export async function panggilGas(jenis: Jenis, payload: Record<string, unknown>)
     body: JSON.stringify({ secret: process.env.TRACKING_API_SECRET, ...payload }),
     cache: 'no-store',
     redirect: 'follow',
-    signal: AbortSignal.timeout(30000),
+    // Pencarian pertama per NIM/NIP ikut membaca spreadsheet arsip (bisa ±20 detik); berikutnya tersimpan di cache
+    signal: AbortSignal.timeout(55000),
   });
   return res.json();
 }

@@ -203,7 +203,7 @@
     </div>
 
     <section class="panel">
-      <div class="panel-head"><h2>Perlu ditindaklanjuti</h2><span>Status diproses atau belum diisi, urut dari yang paling lama</span></div>
+      <div class="panel-head"><h2>Perlu ditindaklanjuti</h2><span>Status diproses atau belum diisi, direkap per minggu masuk. Klik minggu untuk melihat daftarnya</span></div>
       <div class="panel-body" id="queue"></div>
     </section>
   </main>
@@ -223,7 +223,7 @@
 
   var password = '';
   var data = null;
-  var state = { range: 'all', prodi: -1, service: -1, queueLimit: 25 };
+  var state = { range: 'all', prodi: -1, service: -1, queueLimit: 25, queueWeek: null };
 
   function $(id) { return document.getElementById(id); }
   function esc(s) {
@@ -316,9 +316,9 @@
     }).join('');
   }
 
-  $('fRange').addEventListener('change', function () { state.range = this.value; state.queueLimit = 25; render(); });
-  $('fProdi').addEventListener('change', function () { state.prodi = +this.value; state.queueLimit = 25; render(); });
-  $('fService').addEventListener('change', function () { state.service = +this.value; state.queueLimit = 25; render(); });
+  $('fRange').addEventListener('change', function () { state.range = this.value; state.queueLimit = 25; state.queueWeek = null; render(); });
+  $('fProdi').addEventListener('change', function () { state.prodi = +this.value; state.queueLimit = 25; state.queueWeek = null; render(); });
+  $('fService').addEventListener('change', function () { state.service = +this.value; state.queueLimit = 25; state.queueWeek = null; render(); });
 
   function inRange(ms) {
     if (state.range === 'all') return true;
@@ -491,6 +491,7 @@
         var i = +tr.getAttribute('data-i');
         state.service = state.service === i ? -1 : i;
         state.queueLimit = 25;
+        state.queueWeek = null;
         render();
       });
     });
@@ -547,6 +548,14 @@
       hbars(shown, recs.length);
   }
 
+  // Senin pukul 00.00 dari minggu tanggal masuk
+  function weekStart(ms) {
+    var d = new Date(ms);
+    d.setHours(0, 0, 0, 0);
+    d.setDate(d.getDate() - (d.getDay() + 6) % 7);
+    return d.getTime();
+  }
+
   function renderQueue() {
     var now = Date.now();
     var items = data.queue.filter(function (q) {
@@ -560,28 +569,75 @@
       $('queue').innerHTML = '<div class="hint">Tidak ada permohonan yang menunggu pada filter ini.</div>';
       return;
     }
-    var html = '<table class="data"><thead><tr><th>Tanggal masuk</th><th class="r">Umur</th><th>Layanan</th><th>Nama</th>' +
-      '<th>NIP</th><th>Prodi / unit</th><th>Status</th><th class="r">Baris</th></tr></thead><tbody>';
-    items.slice(0, state.queueLimit).forEach(function (q) {
-      var age = q.d == null ? null : Math.floor((now - q.d) / DAY);
+
+    // Rekap per minggu masuk: yang tampil angkanya saja, daftar permohonan muncul setelah minggu dipilih
+    var weeks = {};
+    var order = [];
+    var totals = { progress: 0, waiting: 0 };
+    items.forEach(function (q) {
+      var k = q.d == null ? 'none' : String(weekStart(q.d));
+      if (!weeks[k]) { weeks[k] = { progress: 0, waiting: 0, items: [] }; order.push(k); }
       var st = data.statuses[q.st];
-      html += '<tr><td class="num">' + fmtDate(q.d) + '</td>' +
-        '<td class="r num' + (age != null && age > 14 ? ' age-old' : '') + '">' + (age == null ? '-' : fmt(age) + ' hari') + '</td>' +
-        '<td>' + esc(data.services[q.s].name) + '</td>' +
-        '<td class="name" title="' + esc(q.name) + '">' + esc(q.name || '-') + '</td>' +
-        '<td class="num">' + esc(q.nim || '-') + '</td>' +
-        '<td>' + esc(data.prodis[q.p]) + '</td>' +
-        '<td><span class="pill ' + st + '">' + (st === 'progress' && q.raw ? esc(q.raw) : STATUS_LABEL[st]) + '</span></td>' +
-        '<td class="r num muted">' + q.row + '</td></tr>';
+      weeks[k][st]++;
+      totals[st]++;
+      weeks[k].items.push(q);
     });
-    html += '</tbody></table>';
-    if (items.length > state.queueLimit) {
-      html += '<div class="more"><button class="btn btn-ghost" id="moreBtn" type="button">Tampilkan ' +
-        fmt(Math.min(25, items.length - state.queueLimit)) + ' lagi (' + fmt(items.length - state.queueLimit) + ' tersisa)</button></div>';
+    order.sort(function (a, b) { return a === 'none' ? 1 : b === 'none' ? -1 : b - a; });
+    if (state.queueWeek && !weeks[state.queueWeek]) state.queueWeek = null;
+    var thisWeek = String(weekStart(now));
+    var labelWeek = function (k) { return k === 'none' ? 'Tanpa tanggal' : fmtDate(+k) + ' – ' + fmtDate(+k + 6 * DAY); };
+
+    var html = '<table class="data"><thead><tr><th>Minggu masuk</th><th class="r">Perlu ditindaklanjuti</th>' +
+      '<th class="r">Diproses</th><th class="r">Belum ada status</th><th class="r">Umur</th><th></th></tr></thead><tbody>';
+    order.forEach(function (k) {
+      var w = weeks[k];
+      var age = k === 'none' ? null : Math.max(0, Math.floor((now - (+k + 6 * DAY)) / DAY));
+      html += '<tr class="click' + (state.queueWeek === k ? ' selected' : '') + '" data-w="' + k + '">' +
+        '<td>' + labelWeek(k) + (k === thisWeek ? ' <span class="muted">(minggu ini)</span>' : '') + '</td>' +
+        '<td class="r num"><strong>' + fmt(w.items.length) + '</strong></td>' +
+        '<td class="r num">' + cell(w.progress) + '</td>' +
+        '<td class="r num">' + cell(w.waiting, true) + '</td>' +
+        '<td class="r num' + (age != null && age > 14 ? ' age-old' : '') + '">' + (age == null ? '-' : '≥ ' + fmt(age) + ' hari') + '</td>' +
+        '<td class="r muted">' + (state.queueWeek === k ? 'Tutup' : 'Lihat daftar') + '</td></tr>';
+    });
+    html += '</tbody><tfoot><tr><td>Total</td><td class="r num">' + fmt(items.length) + '</td><td class="r num">' + fmt(totals.progress) +
+      '</td><td class="r num">' + fmt(totals.waiting) + '</td><td></td><td></td></tr></tfoot></table>';
+
+    if (state.queueWeek) {
+      var list = weeks[state.queueWeek].items;
+      html += '<h3 style="margin:22px 0 6px;font-size:13px;font-weight:600">Daftar permohonan: ' + labelWeek(state.queueWeek) + '</h3>';
+      html += '<table class="data"><thead><tr><th>Tanggal masuk</th><th class="r">Umur</th><th>Layanan</th><th>Nama</th>' +
+        '<th>NIP</th><th>Prodi / unit</th><th>Status</th><th class="r">Baris</th></tr></thead><tbody>';
+      list.slice(0, state.queueLimit).forEach(function (q) {
+        var age = q.d == null ? null : Math.floor((now - q.d) / DAY);
+        var st = data.statuses[q.st];
+        html += '<tr><td class="num">' + fmtDate(q.d) + '</td>' +
+          '<td class="r num' + (age != null && age > 14 ? ' age-old' : '') + '">' + (age == null ? '-' : fmt(age) + ' hari') + '</td>' +
+          '<td>' + esc(data.services[q.s].name) + '</td>' +
+          '<td class="name" title="' + esc(q.name) + '">' + esc(q.name || '-') + '</td>' +
+          '<td class="num">' + esc(q.nim || '-') + '</td>' +
+          '<td>' + esc(data.prodis[q.p]) + '</td>' +
+          '<td><span class="pill ' + st + '">' + (st === 'progress' && q.raw ? esc(q.raw) : STATUS_LABEL[st]) + '</span></td>' +
+          '<td class="r num muted">' + q.row + '</td></tr>';
+      });
+      html += '</tbody></table>';
+      if (list.length > state.queueLimit) {
+        html += '<div class="more"><button class="btn btn-ghost" id="moreBtn" type="button">Tampilkan ' +
+          fmt(Math.min(25, list.length - state.queueLimit)) + ' lagi (' + fmt(list.length - state.queueLimit) + ' tersisa)</button></div>';
+      }
     } else {
-      html += '<div class="note">' + fmt(items.length) + ' permohonan. Umur lebih dari 14 hari ditandai merah.</div>';
+      html += '<div class="note">Klik salah satu minggu untuk melihat daftar permohonannya. Umur lebih dari 14 hari ditandai merah.</div>';
     }
+
     $('queue').innerHTML = html;
+    Array.prototype.forEach.call($('queue').querySelectorAll('tr[data-w]'), function (tr) {
+      tr.addEventListener('click', function () {
+        var k = tr.getAttribute('data-w');
+        state.queueWeek = state.queueWeek === k ? null : k;
+        state.queueLimit = 25;
+        renderQueue();
+      });
+    });
     if ($('moreBtn')) $('moreBtn').addEventListener('click', function () { state.queueLimit += 25; renderQueue(); });
   }
 </script>

@@ -22,6 +22,10 @@
  *      TRACKING_JENIS      = mahasiswa   atau   dosen
  *      TRACKING_API_SECRET = string acak panjang (sama dengan env TRACKING_API_SECRET di website;
  *                            boleh sama untuk mahasiswa & dosen)
+ *      TRACKING_ARSIP_IDS  = (opsional) ID spreadsheet arsip, pisahkan dengan koma. Dipakai bila
+ *                            pengajuan lama dipindah ke spreadsheet lain (mis. "Pengajuan Lama ...").
+ *                            ID = bagian URL di antara /d/ dan /edit. Pengajuan di arsip tetap muncul
+ *                            di Cek Status dan ikut dihitung di Dashboard (baris yang sama tidak dihitung dua kali).
  * 3. Services (+) > Google Sheets API > Add  (agar chip file .pdf di kolom hasil ikut terbaca).
  * 4. Pilih fungsi trkIzinkan lalu Run, setujui izin (membaca spreadsheet & file Drive).
  *    Jalankan dengan akun yang bisa membuka file-file hasil di Drive (akun admin).
@@ -39,22 +43,52 @@ var TRK = {
   // Judul kolom (huruf kecil) yang berisi tautan dokumen hasil dari admin
   HEADER_TAUTAN: [
     'link', 'link st', 'link hasil', 'sk', 'file/ dokumen yang sudah di sah kan',
-    'silakan download surat anda disini', 'download dokumen'
+    'silakan download surat anda disini', 'download dokumen', 'dokumen suket kerja'
   ],
   HEADER_SUBJENIS: [
     'jenis surat', 'pilih jenis dokumen', 'jenis rekomendasi', 'keperluan legalisasi', 'jenis dokumen',
     'kehadiran sebagai', 'pilih bidang surat keputusan', 'sarana / prasarana', 'alasan pembuatan suket'
   ],
-  MAKS_HASIL: 20,
+  MAKS_HASIL: 60,
   // Batas ukuran file yang dikirim lewat website (batas respons server website ±4,5 MB)
   MAKS_UNDUH_BYTE: 4 * 1024 * 1024,
   // Hasil baca disimpan sementara agar cepat; perubahan status oleh admin tampil paling lambat sekian detik
-  CACHE_DETIK: 180
+  CACHE_DETIK: 180,
+  // Spreadsheet arsip jarang berubah, jadi hasilnya disimpan lebih lama (6 jam)
+  CACHE_ARSIP_DETIK: 21600
 };
 
 function trkJenis_() {
   var j = String(PropertiesService.getScriptProperties().getProperty('TRACKING_JENIS') || 'mahasiswa').trim().toLowerCase();
   return j === 'dosen' ? 'dosen' : 'mahasiswa';
+}
+
+// Spreadsheet arsip dari Script Property TRACKING_ARSIP_IDS; yang tidak bisa dibuka dilewati (dicatat di log)
+function trkArsip_() {
+  var ids = String(PropertiesService.getScriptProperties().getProperty('TRACKING_ARSIP_IDS') || '');
+  var aktif = SpreadsheetApp.getActiveSpreadsheet().getId();
+  var hasil = [];
+  ids.split(/[\s,;]+/).forEach(function (id) {
+    if (!id || id === aktif) return;
+    try {
+      hasil.push(SpreadsheetApp.openById(id));
+    } catch (err) {
+      Logger.log('Arsip ' + id + ' tidak dapat dibuka: ' + err);
+    }
+  });
+  return hasil;
+}
+
+// Baris yang sama bisa ada di spreadsheet utama dan arsip (bila disalin, bukan dipindah): yang pertama dipakai
+function trkTanpaGanda_(list, kunci) {
+  var lihat = {};
+  return list.filter(function (x) {
+    var k = kunci(x);
+    if (!k) return true;
+    if (lihat[k]) return false;
+    lihat[k] = true;
+    return true;
+  });
 }
 
 // ───────────────────────────── Web app
@@ -93,7 +127,25 @@ function trkCari_(id) {
   var simpan = cache.get('cari:' + id);
   if (simpan) return JSON.parse(simpan);
 
-  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var arsip = cache.get('arsip:' + id);
+  arsip = arsip ? JSON.parse(arsip) : null;
+  if (!arsip) {
+    arsip = [];
+    trkArsip_().forEach(function (ss) { arsip = arsip.concat(trkCariDi_(ss, id)); });
+    try { cache.put('arsip:' + id, JSON.stringify(arsip), TRK.CACHE_ARSIP_DETIK); } catch (err) {}
+  }
+
+  // Spreadsheet utama didahulukan: bila baris yang sama ada juga di arsip, status terbaru yang dipakai
+  var hasil = trkTanpaGanda_(trkCariDi_(SpreadsheetApp.getActiveSpreadsheet(), id).concat(arsip), function (p) {
+    return p.tanggal ? p.layanan + '|' + p.tanggal : '';
+  });
+  hasil.sort(function (a, b) { return (b.tanggal || '').localeCompare(a.tanggal || ''); });
+  hasil = hasil.slice(0, TRK.MAKS_HASIL);
+  try { cache.put('cari:' + id, JSON.stringify(hasil), TRK.CACHE_DETIK); } catch (err) {}
+  return hasil;
+}
+
+function trkCariDi_(ss, id) {
   var hasil = [];
   ss.getSheets().forEach(function (sheet) {
     if (TRK.SHEET_DIKECUALIKAN.indexOf(sheet.getName().trim()) !== -1 || sheet.isSheetHidden()) return;
@@ -106,7 +158,7 @@ function trkCari_(id) {
 
     var barisCocok = [];
     for (var r = 1; r < values.length; r++) {
-      if (trkIdBaris_(kol, values[r]) === id) barisCocok.push(r);
+      if (trkIdBaris_(kol, values[r]).indexOf(id) !== -1) barisCocok.push(r);
     }
     if (!barisCocok.length) return;
 
@@ -120,12 +172,8 @@ function trkCari_(id) {
     });
   });
 
-  hasil.sort(function (a, b) { return (b.data.tanggal || '').localeCompare(a.data.tanggal || ''); });
-  hasil = hasil.slice(0, TRK.MAKS_HASIL);
   trkTautanChip_(ss, hasil);
-  hasil = hasil.map(function (h) { return h.data; });
-  try { cache.put('cari:' + id, JSON.stringify(hasil), TRK.CACHE_DETIK); } catch (err) {}
-  return hasil;
+  return hasil.map(function (h) { return h.data; });
 }
 
 function trkPetaKolom_(h) {
@@ -144,16 +192,18 @@ function trkPetaKolom_(h) {
   };
 }
 
+// Semua NIM/NIP di baris itu: pengaju dan anggota kelompok (kolom "NIM 2" dst.), atau NIM dari email kampus
 function trkIdBaris_(kol, row) {
-  for (var i = 0; i < kol.id.length; i++) {
-    var v = trkNormId_(row[kol.id[i]]);
-    if (v) return v;
-  }
-  if (kol.email !== -1) {
+  var ids = [];
+  kol.id.forEach(function (c) {
+    var v = trkNormId_(row[c]);
+    if (v) ids.push(v);
+  });
+  if (!ids.length && kol.email !== -1) {
     var m = String(row[kol.email]).trim().match(/^(\d{6,})@student\.itk\.ac\.id$/i);
-    if (m) return m[1];
+    if (m) ids.push(m[1]);
   }
-  return '';
+  return ids;
 }
 
 function trkRingkas_(layanan, kol, row, richRow) {
@@ -277,6 +327,7 @@ function trkIzinkan() {
   var chip = typeof Sheets !== 'undefined';
   if (chip) Sheets.Spreadsheets.get(ss.getId(), { fields: 'spreadsheetId' });
   Logger.log('Izin OK. Pembacaan chip file: ' + (chip ? 'aktif' : 'BELUM aktif — tambahkan Services > Google Sheets API'));
+  Logger.log('Spreadsheet arsip terbaca: ' + (trkArsip_().map(function (a) { return a.getName(); }).join(', ') || '(tidak ada)'));
 }
 
 // ───────────────────────────── Rekap untuk Dashboard (hanya angka total, tanpa data pribadi)
@@ -295,8 +346,9 @@ function trkRekap_() {
   var tz = ss.getSpreadsheetTimeZone();
   var semester = {};
   var namaProdi = {}; // kunci huruf kecil -> nama tampilan pertama yang ditemukan
+  var terhitung = {}; // layanan|waktu pengajuan, agar baris yang ada di utama & arsip dihitung sekali
 
-  ss.getSheets().forEach(function (sheet) {
+  [ss].concat(trkArsip_()).forEach(function (sumber) { sumber.getSheets().forEach(function (sheet) {
     if (TRK.SHEET_DIKECUALIKAN.indexOf(sheet.getName().trim()) !== -1 || sheet.isSheetHidden()) return;
     var values = sheet.getDataRange().getValues();
     if (values.length < 2) return;
@@ -310,6 +362,9 @@ function trkRekap_() {
     for (var r = 1; r < values.length; r++) {
       var ts = values[r][0];
       if (!(ts instanceof Date) || isNaN(ts.getTime())) continue;
+      var kunciBaris = sheet.getName().trim() + '|' + ts.getTime();
+      if (terhitung[kunciBaris]) continue;
+      terhitung[kunciBaris] = true;
       var bulan = Utilities.formatDate(ts, tz, 'yyyy-MM');
       var y = Number(bulan.slice(0, 4)), m = Number(bulan.slice(5, 7));
       var kunci = m >= 8 ? y + '-ganjil' : m === 1 ? (y - 1) + '-ganjil' : (y - 1) + '-genap';
@@ -330,7 +385,7 @@ function trkRekap_() {
       if (!(pk in namaProdi)) namaProdi[pk] = p || 'Tidak diisi';
       s.prodi[namaProdi[pk]] = (s.prodi[namaProdi[pk]] || 0) + 1;
     }
-  });
+  }); });
 
   var hasil = { ok: true, jenis: trkJenis_(), dibuat: Date.now(), semester: semester };
   try { cache.put('rekap', JSON.stringify(hasil), 1800); } catch (err) {}
