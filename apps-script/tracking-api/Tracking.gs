@@ -1,8 +1,9 @@
 /**
  * API Cek Status Permohonan FSTI — dipasang di spreadsheet tracking (mahasiswa / dosen).
  *
- * HANYA MEMBACA. Script ini tidak menulis, tidak menambah kolom, tidak memasang trigger,
- * dan tidak mengirim email. Admin tetap bekerja di spreadsheet seperti biasa.
+ * HANYA MEMBACA. Script ini tidak menulis ke spreadsheet/Drive, tidak menambah kolom, dan tidak
+ * mengirim email. Admin tetap bekerja di spreadsheet seperti biasa. Satu-satunya pemicu (opsional)
+ * adalah pembangun indeks arsip tiap 4 jam, yang hanya mengisi cache Apps Script.
  *
  * Aksi "rekap" (untuk halaman Dashboard) hanya mengembalikan ANGKA TOTAL per semester:
  * jumlah permohonan, status, per bulan, dan per program studi — tanpa nama/NIM/NIP.
@@ -29,6 +30,8 @@
  * 3. Services (+) > Google Sheets API > Add  (agar chip file .pdf di kolom hasil ikut terbaca).
  * 4. Pilih fungsi trkIzinkan lalu Run, setujui izin (membaca spreadsheet & file Drive).
  *    Jalankan dengan akun yang bisa membuka file-file hasil di Drive (akun admin).
+ *    Bila TRACKING_ARSIP_IDS diisi: Run juga trkPasangIndeksArsip SEKALI (memasang pembangun indeks
+ *    arsip tiap 4 jam). Setelah memindahkan baris ke arsip, Run trkBangunIndeksArsip agar langsung terbaca.
  * 5. Deploy > New deployment > Web app — Execute as: Me · Who has access: Anyone.
  *    Salin URL "/exec" ke env website (TRACKING_GAS_URL_MAHASISWA / TRACKING_GAS_URL_DOSEN).
  *    Setelah mengubah kode: Deploy > Manage deployments > Edit > Version: New version (URL tetap).
@@ -54,7 +57,7 @@ var TRK = {
   MAKS_UNDUH_BYTE: 4 * 1024 * 1024,
   // Hasil baca disimpan sementara agar cepat; perubahan status oleh admin tampil paling lambat sekian detik
   CACHE_DETIK: 180,
-  // Spreadsheet arsip jarang berubah, jadi hasilnya disimpan lebih lama (6 jam)
+  // Spreadsheet arsip jarang berubah, jadi hasilnya disimpan lebih lama (6 jam, batas maksimum cache Apps Script)
   CACHE_ARSIP_DETIK: 21600
 };
 
@@ -127,16 +130,9 @@ function trkCari_(id) {
   var simpan = cache.get('cari:' + id);
   if (simpan) return JSON.parse(simpan);
 
-  var arsip = cache.get('arsip:' + id);
-  arsip = arsip ? JSON.parse(arsip) : null;
-  if (!arsip) {
-    arsip = [];
-    trkArsip_().forEach(function (ss) { arsip = arsip.concat(trkCariDi_(ss, id)); });
-    try { cache.put('arsip:' + id, JSON.stringify(arsip), TRK.CACHE_ARSIP_DETIK); } catch (err) {}
-  }
-
   // Spreadsheet utama didahulukan: bila baris yang sama ada juga di arsip, status terbaru yang dipakai
-  var hasil = trkTanpaGanda_(trkCariDi_(SpreadsheetApp.getActiveSpreadsheet(), id).concat(arsip), function (p) {
+  var utama = trkPindai_(SpreadsheetApp.getActiveSpreadsheet(), id).map(function (h) { return h.data; });
+  var hasil = trkTanpaGanda_(utama.concat(trkArsipUntuk_(id)), function (p) {
     return p.tanggal ? p.layanan + '|' + p.tanggal : '';
   });
   hasil.sort(function (a, b) { return (b.tanggal || '').localeCompare(a.tanggal || ''); });
@@ -145,35 +141,50 @@ function trkCari_(id) {
   return hasil;
 }
 
-function trkCariDi_(ss, id) {
+/**
+ * Membaca semua sheet di satu spreadsheet. id diisi → hanya baris milik NIM/NIP itu;
+ * id null → semua baris (untuk indeks arsip). Hasil: [{ ids: [NIM/NIP di baris], data: ringkasan }].
+ */
+function trkPindai_(ss, id) {
   var hasil = [];
+  var pemilikSel = {}; // 'Nama sheet!A1' -> hasil, untuk menempelkan tautan dari chip file
+  var rentangChip = [];
   ss.getSheets().forEach(function (sheet) {
     if (TRK.SHEET_DIKECUALIKAN.indexOf(sheet.getName().trim()) !== -1 || sheet.isSheetHidden()) return;
-    var range = sheet.getDataRange();
-    var values = range.getValues();
+    var values = sheet.getDataRange().getValues();
     if (values.length < 2) return;
     var headers = values[0].map(function (h) { return String(h).replace(/\s+/g, ' ').trim().toLowerCase(); });
     var kol = trkPetaKolom_(headers);
     if (!kol.id.length && kol.email === -1) return;
 
-    var barisCocok = [];
+    var cocok = [];
     for (var r = 1; r < values.length; r++) {
-      if (trkIdBaris_(kol, values[r]).indexOf(id) !== -1) barisCocok.push(r);
+      var ids = trkIdBaris_(kol, values[r]);
+      if (ids.length && (!id || ids.indexOf(id) !== -1)) cocok.push({ r: r, ids: ids });
     }
-    if (!barisCocok.length) return;
+    if (!cocok.length) return;
 
-    var rich = kol.tautan.length ? range.getRichTextValues() : null;
-    barisCocok.forEach(function (r) {
-      hasil.push({
-        data: trkRingkas_(sheet.getName().trim(), kol, values[r], rich ? rich[r] : null),
-        sheet: sheet.getName(),
-        sel: kol.tautan.map(function (c) { return trkA1_(r, c); })
+    // Hyperlink biasa dibaca per kolom tautan saja (bukan seluruh sheet) agar tetap ringan untuk arsip besar
+    var rich = {};
+    kol.tautan.forEach(function (c) { rich[c] = sheet.getRange(1, c + 1, values.length, 1).getRichTextValues(); });
+    var nama = sheet.getName();
+    var kutip = "'" + nama.replace(/'/g, "''") + "'!";
+    cocok.forEach(function (x) {
+      var richRow = {};
+      kol.tautan.forEach(function (c) { richRow[c] = rich[c][x.r][0]; });
+      var h = { ids: x.ids, data: trkRingkas_(nama.trim(), kol, values[x.r], richRow) };
+      kol.tautan.forEach(function (c) {
+        pemilikSel[nama + '!' + trkA1_(x.r, c)] = h;
+        if (id) rentangChip.push(kutip + trkA1_(x.r, c));
       });
+      hasil.push(h);
     });
+    // Mode semua baris: minta satu kolom utuh, bukan ribuan sel satu per satu
+    if (!id) kol.tautan.forEach(function (c) { rentangChip.push(kutip + trkA1_(0, c) + ':' + trkA1_(values.length - 1, c)); });
   });
 
-  trkTautanChip_(ss, hasil);
-  return hasil.map(function (h) { return h.data; });
+  trkTautanChip_(ss, rentangChip, pemilikSel);
+  return hasil;
 }
 
 function trkPetaKolom_(h) {
@@ -197,7 +208,7 @@ function trkIdBaris_(kol, row) {
   var ids = [];
   kol.id.forEach(function (c) {
     var v = trkNormId_(row[c]);
-    if (v) ids.push(v);
+    if (v && ids.indexOf(v) === -1) ids.push(v);
   });
   if (!ids.length && kol.email !== -1) {
     var m = String(row[kol.email]).trim().match(/^(\d{6,})@student\.itk\.ac\.id$/i);
@@ -233,17 +244,10 @@ function trkRingkas_(layanan, kol, row, richRow) {
 /**
  * Admin mengisi kolom hasil dengan chip file Drive (nama file .pdf). Chip tidak selalu terbaca lewat
  * RichTextValue, jadi tautannya dibaca lewat layanan lanjutan Sheets API (langkah pemasangan no. 3).
- * Hanya sel tautan milik baris yang cocok yang diminta. Bila layanan belum aktif atau gagal, dilewati.
+ * Yang diminta hanya sel/kolom tautan (ranges); pemilik memetakan 'Nama sheet!A1' ke hasil pencarian.
+ * Bila layanan belum aktif atau gagal, dilewati.
  */
-function trkTautanChip_(ss, hasil) {
-  var ranges = [];
-  var pemilik = {};
-  hasil.forEach(function (h) {
-    h.sel.forEach(function (a1) {
-      pemilik[h.sheet + '!' + a1] = h;
-      ranges.push("'" + h.sheet.replace(/'/g, "''") + "'!" + a1);
-    });
-  });
+function trkTautanChip_(ss, ranges, pemilik) {
   if (!ranges.length || typeof Sheets === 'undefined') return;
   try {
     var res = Sheets.Spreadsheets.get(ss.getId(), {
@@ -252,15 +256,18 @@ function trkTautanChip_(ss, hasil) {
     });
     (res.sheets || []).forEach(function (sh) {
       (sh.data || []).forEach(function (g) {
-        var v = g.rowData && g.rowData[0] && g.rowData[0].values && g.rowData[0].values[0];
-        var h = pemilik[sh.properties.title + '!' + trkA1_(g.startRow || 0, g.startColumn || 0)];
-        if (!v || !h) return;
-        var urls = v.hyperlink ? [v.hyperlink] : [];
-        (v.chipRuns || []).forEach(function (run) {
-          var u = run.chip && run.chip.richLinkProperties && run.chip.richLinkProperties.uri;
-          if (u) urls.push(u);
+        (g.rowData || []).forEach(function (baris, i) {
+          (baris.values || []).forEach(function (v, j) {
+            var h = pemilik[sh.properties.title + '!' + trkA1_((g.startRow || 0) + i, (g.startColumn || 0) + j)];
+            if (!v || !h) return;
+            var urls = v.hyperlink ? [v.hyperlink] : [];
+            (v.chipRuns || []).forEach(function (run) {
+              var u = run.chip && run.chip.richLinkProperties && run.chip.richLinkProperties.uri;
+              if (u) urls.push(u);
+            });
+            if (urls.length) h.data.tautan = trkUnikTautan_(h.data.tautan.concat(urls)).slice(0, 5);
+          });
         });
-        h.data.tautan = trkUnikTautan_(h.data.tautan.concat(urls)).slice(0, 5);
       });
     });
   } catch (err) {
@@ -289,6 +296,83 @@ function trkA1_(r, c) {
   var huruf = '';
   for (var n = c + 1; n > 0; n = Math.floor((n - 1) / 26)) huruf = String.fromCharCode(65 + (n - 1) % 26) + huruf;
   return huruf + (r + 1);
+}
+
+// ───────────────────────────── Indeks arsip (dibangun berkala, agar arsip tidak dibaca di setiap pencarian)
+
+/**
+ * Seluruh baris arsip diringkas lalu disimpan di cache, dibagi ke 400 kelompok menurut NIM/NIP
+ * (tiap kelompok harus < 100 KB; ±12 ribu baris arsip ≈ 10 KB per kelompok). Cache Apps Script paling lama 6 jam, jadi indeks dibangun ulang tiap 4 jam
+ * oleh pemicu dari trkPasangIndeksArsip. Tidak ada yang ditulis ke spreadsheet atau Drive.
+ * Jalankan manual setelah admin memindahkan baris ke arsip agar langsung terbaca.
+ */
+function trkBangunIndeksArsip() {
+  var mulai = Date.now();
+  var kelompok = {};
+  var baris = 0;
+  trkArsip_().forEach(function (ss) {
+    trkPindai_(ss, null).forEach(function (h) {
+      baris++;
+      h.ids.forEach(function (id) {
+        var k = trkIdxKelompok_(id);
+        var isi = kelompok[k] || (kelompok[k] = {});
+        (isi[id] = isi[id] || []).push(h.data);
+      });
+    });
+  });
+
+  var cache = CacheService.getScriptCache();
+  var kunci = Object.keys(kelompok);
+  var besar = 0;
+  for (var i = 0; i < kunci.length; i += 200) {
+    var paket = {};
+    kunci.slice(i, i + 200).forEach(function (k) {
+      var json = JSON.stringify(kelompok[k]);
+      // Kelompok yang terlalu besar tidak disimpan; NIM/NIP di dalamnya dibaca langsung dari arsip
+      if (json.length < 95000) paket['idx:' + k] = json; else besar++;
+    });
+    cache.putAll(paket, TRK.CACHE_ARSIP_DETIK);
+  }
+  // Ditulis paling akhir: selama belum ada, pencarian membaca arsip langsung seperti biasa
+  cache.put('idx:meta', JSON.stringify({ dibuat: Date.now(), kelompok: kunci }), TRK.CACHE_ARSIP_DETIK);
+  Logger.log('Indeks arsip: ' + baris + ' baris, ' + kunci.length + ' kelompok' +
+    (besar ? ', ' + besar + ' kelompok terlalu besar (dibaca langsung)' : '') + ', ' + ((Date.now() - mulai) / 1000).toFixed(1) + ' detik.');
+}
+
+/** Jalankan SEKALI dari editor: memasang pemicu tiap 4 jam lalu langsung membangun indeks pertama. */
+function trkPasangIndeksArsip() {
+  ScriptApp.getProjectTriggers().forEach(function (t) {
+    if (t.getHandlerFunction() === 'trkBangunIndeksArsip') ScriptApp.deleteTrigger(t);
+  });
+  ScriptApp.newTrigger('trkBangunIndeksArsip').timeBased().everyHours(4).create();
+  trkBangunIndeksArsip();
+}
+
+// Sebar NIM/NIP merata ke 400 kelompok (hash sederhana), agar tidak ada kelompok yang membengkak
+function trkIdxKelompok_(id) {
+  var h = 0;
+  for (var i = 0; i < id.length; i++) h = (h * 31 + id.charCodeAt(i)) % 400;
+  return String(h);
+}
+
+// Pengajuan di arsip untuk satu NIM/NIP: dari indeks bila ada, kalau tidak dibaca langsung dari arsip
+function trkArsipUntuk_(id) {
+  var cache = CacheService.getScriptCache();
+  var meta = cache.get('idx:meta');
+  if (meta) {
+    var k = trkIdxKelompok_(id);
+    if (JSON.parse(meta).kelompok.indexOf(k) === -1) return []; // tidak ada NIM/NIP berakhiran ini di arsip
+    var isi = cache.get('idx:' + k);
+    if (isi) return JSON.parse(isi)[id] || [];
+  }
+  var simpan = cache.get('arsip:' + id);
+  if (simpan) return JSON.parse(simpan);
+  var arsip = [];
+  trkArsip_().forEach(function (ss) {
+    arsip = arsip.concat(trkPindai_(ss, id).map(function (h) { return h.data; }));
+  });
+  try { cache.put('arsip:' + id, JSON.stringify(arsip), TRK.CACHE_ARSIP_DETIK); } catch (err) {}
+  return arsip;
 }
 
 // ───────────────────────────── Unduh dokumen hasil (baca saja)
