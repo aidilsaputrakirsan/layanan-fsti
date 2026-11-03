@@ -46,8 +46,10 @@ var TRK = {
   // Judul kolom (huruf kecil) yang berisi tautan dokumen hasil dari admin
   HEADER_TAUTAN: [
     'link', 'link st', 'link hasil', 'sk', 'file/ dokumen yang sudah di sah kan',
-    'silakan download surat anda disini', 'download dokumen', 'dokumen suket kerja'
+    'silakan download surat anda disini', 'download dokumen', 'dokumen suket kerja', 'berikut nomor sertifikat'
   ],
+  // Kolom hasil berupa teks (bukan file) yang ditampilkan apa adanya: judul kolom (huruf kecil) → label di website
+  HEADER_HASIL_TEKS: { 'berikut nomor sertifikat': 'Nomor sertifikat' },
   HEADER_SUBJENIS: [
     'jenis surat', 'pilih jenis dokumen', 'jenis rekomendasi', 'keperluan legalisasi', 'jenis dokumen',
     'kehadiran sebagai', 'pilih bidang surat keputusan', 'sarana / prasarana', 'alasan pembuatan suket'
@@ -199,7 +201,11 @@ function trkPetaKolom_(h) {
     email: trkJenis_() === 'mahasiswa' ? cari(function (x) { return x === 'email address' || x === 'email'; }) : -1,
     keterangan: cari(function (x) { return TRK.HEADER_KETERANGAN.indexOf(x) !== -1; }),
     subjenis: cari(function (x) { return TRK.HEADER_SUBJENIS.some(function (p) { return x.indexOf(p) === 0; }); }),
-    tautan: semua(function (x) { return TRK.HEADER_TAUTAN.indexOf(x) !== -1; })
+    // Kolom hasil + kolom keterangan (admin kadang menaruh link dokumen hasil di keterangan)
+    tautan: semua(function (x) { return TRK.HEADER_TAUTAN.indexOf(x) !== -1 || TRK.HEADER_KETERANGAN.indexOf(x) !== -1; }),
+    hasilTeks: semua(function (x) { return Object.prototype.hasOwnProperty.call(TRK.HEADER_HASIL_TEKS, x); }).map(function (c) {
+      return { c: c, label: TRK.HEADER_HASIL_TEKS[h[c]] };
+    })
   };
 }
 
@@ -237,6 +243,9 @@ function trkRingkas_(layanan, kol, row, richRow) {
     status: trkStatus_(statusAsli, kol.status !== -1),
     statusAsli: statusAsli,
     keterangan: kol.keterangan !== -1 ? String(row[kol.keterangan]).trim().slice(0, 1000) : '',
+    hasil: kol.hasilTeks.map(function (x) {
+      return { label: x.label, isi: String(row[x.c] == null ? '' : row[x.c]).replace(/https?:\/\/\S+/g, '').trim().slice(0, 500) };
+    }).filter(function (x) { return x.isi; }),
     tautan: trkUnikTautan_(tautan).slice(0, 5)
   };
 }

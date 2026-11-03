@@ -16,6 +16,8 @@ interface Permohonan {
   status: Status;
   statusAsli?: string;
   keterangan?: string;
+  /** Hasil berupa teks dari admin, mis. { label: 'Nomor sertifikat', isi: '123/IT10.4/...' } */
+  hasil?: { label: string; isi: string }[];
   tautan?: string[];
 }
 
@@ -246,6 +248,13 @@ const KartuPermohonan = ({ p, pemohon }: { p: Permohonan; pemohon: { jenis: Jeni
             );
           })}
         </ol>
+
+        {p.hasil?.map((x) => (
+          <div key={x.label} className="rounded-xl border border-primary-100 bg-primary-50 p-3.5">
+            <p className="text-xs font-bold uppercase tracking-wider text-primary-700">{x.label}</p>
+            <p className="mt-1 whitespace-pre-line break-words font-mono text-sm font-semibold text-ink">{x.isi}</p>
+          </div>
+        ))}
 
         {p.keterangan && (
           <div className="rounded-xl bg-latar p-3.5">
